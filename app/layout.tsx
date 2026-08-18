@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Poppins, Fredoka } from "next/font/google";
+import { Poppins, Fredoka, Playfair_Display, Caveat } from "next/font/google";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -11,8 +11,20 @@ const poppins = Poppins({
 
 const fredoka = Fredoka({
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-fredoka",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-playfair",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-caveat",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${poppins.variable} ${fredoka.variable}`}
+      className={`h-full antialiased scroll-smooth ${poppins.variable} ${fredoka.variable} ${playfair.variable} ${caveat.variable}`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

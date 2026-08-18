@@ -57,7 +57,7 @@ const ScrollExpandMedia = ({
         e.preventDefault();
       } else if (!mediaFullyExpanded) {
         e.preventDefault();
-        const scrollDelta = e.deltaY * 0.0009;
+        const scrollDelta = e.deltaY * 0.0016;
         const newProgress = Math.min(
           Math.max(scrollProgress + scrollDelta, 0),
           1
@@ -153,7 +153,7 @@ const ScrollExpandMedia = ({
   const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
   const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);
   const textTranslateX = scrollProgress * (isMobileState ? 180 : 150);
-  const dateTextScale = 1 + scrollProgress * (isMobileState ? 0.15 : 0.25);
+  const dateTextScale = 1 + scrollProgress * (isMobileState ? 0.08 : 0.12);
   const firstWord = title ? title.split(' ')[0] : '';
   const restOfTitle = title ? title.split(' ').slice(1).join(' ') : '';
 
@@ -202,19 +202,19 @@ const ScrollExpandMedia = ({
                 <div
                   className='absolute z-0 top-[24%] left-1/2 flex flex-col items-center justify-center px-8 transition-none max-w-[90vw]'
                   style={{
-                    transform: `translate(-50%, -50%) scale(${dateTextScale})`,
+                    transform: `translate(-50%, calc(-50% - 32px)) scale(${dateTextScale})`,
                   }}
                 >
                   {date && (
                     <p
-                      className='text-5xl text-white font-[family-name:var(--font-fredoka)] font-bold uppercase tracking-normal whitespace-nowrap'
+                      className='text-3xl sm:text-5xl md:text-6xl xl:text-7xl text-[#F5F1E8] font-[family-name:var(--font-playfair)] font-medium tracking-tight whitespace-nowrap'
                       style={{ textShadow: '0 2px 16px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.5)' }}
                     >
                       {date}
                     </p>
                   )}
                   <p
-                    className='mt-4 text-base text-white font-[family-name:var(--font-poppins)] font-light tracking-normal whitespace-nowrap lowercase'
+                    className='mt-4 text-xs sm:text-sm md:text-base text-[#F5F1E8] font-[family-name:var(--font-poppins)] font-bold tracking-normal whitespace-nowrap lowercase'
                     style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
                   >
                     travel • memories • places worth remembering

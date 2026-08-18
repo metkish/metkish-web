@@ -1,49 +1,145 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
 import TravelGallery from '@/components/ui/travel-gallery';
 
-const BG_IMAGE_SRC =
-  'https://pub-639db9eee0bc4d35bfa9f777a62a6f91.r2.dev/Landing%20page/metkish_provansa.jpg';
-const LOGO_SRC =
-  'https://pub-639db9eee0bc4d35bfa9f777a62a6f91.r2.dev/Landing%20page/Logo%20metkish/metkish-logo-transparent-circle.png';
+const BG_IMAGE_SRC = '/metkish-provansa.jpg';
+const LOGO_SRC = '/metkish-logo.png';
 
 export default function Home() {
+  const [pastHero, setPastHero] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setPastHero(window.scrollY > window.innerHeight * 0.85);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <div className='min-h-screen'>
       <div className='fixed top-0 left-0 w-full h-28 z-50 pointer-events-none backdrop-blur-md [mask-image:linear-gradient(to_bottom,black,transparent)]' />
-      <a
-        href='mailto:info@metkish.com'
-        className='fixed top-4 left-4 z-50'
-        aria-label='Pošlji e-pošto na info@metkish.com'
+      <button
+        type='button'
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className='fixed top-4 left-4 z-50 cursor-pointer transition-all duration-300'
+        aria-label='Nazaj na vrh strani'
       >
         <Image
           src={LOGO_SRC}
           alt='Metkish logo'
           width={104}
           height={104}
-          className='rounded-full'
+          className={`rounded-full transition-all duration-300 ${
+            pastHero ? 'w-14 h-14 opacity-60 hover:opacity-100' : 'w-[104px] h-[104px] opacity-100'
+          }`}
           priority
         />
-      </a>
+      </button>
       <ScrollExpandMedia
         bgImageSrc={BG_IMAGE_SRC}
-        date='The world through my eyes'
+        date='The World Through My Eyes'
         textBlend
       >
-        <div className='max-w-4xl mx-auto flex flex-col items-center'>
-          <h2 className='text-3xl font-[family-name:var(--font-fredoka)] font-bold uppercase text-black dark:text-white mb-10'>
-            My travels
+        <div id='travels' className='w-full max-w-[100rem] mx-auto px-6 md:px-12 flex flex-col items-center scroll-mt-24'>
+          <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
+            My Travels
           </h2>
+          <div className='flex items-center justify-center gap-3 mt-4'>
+            <span className='h-px w-10 bg-pink-300 dark:bg-pink-400/60' />
+            <span className='text-pink-400 text-2xl leading-none'>♥</span>
+            <span className='h-px w-10 bg-pink-300 dark:bg-pink-400/60' />
+          </div>
+          <p className='mt-4 mb-10 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
+            places I&apos;ve been · memories I&apos;ve kept
+          </p>
           <TravelGallery />
         </div>
       </ScrollExpandMedia>
+
+      <section
+        id='guides'
+        className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#faf9f6] dark:bg-black'
+      >
+        <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
+          Guides
+        </h2>
+        <p className='mt-6 mb-6 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
+          tips · itineraries · travel notes
+        </p>
+        <p className='max-w-xl text-center text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
+          What was worth it, what wasn&apos;t, and everything I learned along
+          the way.
+        </p>
+      </section>
+
+      <section
+        id='about'
+        className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#faf9f6] dark:bg-black'
+      >
+        <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
+          About
+        </h2>
+        <p className='mt-6 mb-6 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
+          the story behind the journeys
+        </p>
+        <p className='max-w-2xl text-center text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
+          I&apos;m Metka, and I plan our family travels. With every trip,
+          I&apos;ve learned a little more about what works, what doesn&apos;t,
+          and how to plan the next one better.
+        </p>
+        <a
+          href='#'
+          className='mt-4 inline-block text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+        >
+          More about me →
+        </a>
+      </section>
+
+      <footer className='flex flex-col items-center gap-3 px-8 py-12 bg-[#2a2a2a] text-white'>
+        <span className='text-2xl font-[family-name:var(--font-fredoka)] font-normal lowercase tracking-wide'>
+          metkish
+        </span>
+        <p className='text-sm lowercase font-[family-name:var(--font-poppins)] font-bold text-white/70 text-center max-w-xs sm:max-w-none'>
+          travel · memories · places worth remembering
+        </p>
+        <nav className='flex items-center gap-6 mt-1'>
+          <a
+            href='#travels'
+            className='text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+          >
+            Travels
+          </a>
+          <a
+            href='#guides'
+            className='text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+          >
+            Guides
+          </a>
+          <a
+            href='#about'
+            className='text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+          >
+            About
+          </a>
+        </nav>
+        <a
+          href='mailto:info@metkish.com'
+          className='text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+        >
+          info@metkish.com
+        </a>
+        <p className='mt-4 text-xs font-[family-name:var(--font-poppins)] text-white/40 text-center'>
+          © {new Date().getFullYear()} Metkish. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
