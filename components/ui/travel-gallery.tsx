@@ -11,7 +11,6 @@ interface GalleryItem {
 }
 
 interface Caption {
-  index: string;
   location: string;
   title: string;
   description: string;
@@ -29,29 +28,31 @@ type Block =
       smallWidth: string;
     };
 
-// Placeholder photos/captions — swap `src`, `href` and caption text once real content is ready.
+// Real Tenerife photo.
 const tenerife: GalleryItem = {
   id: 'tenerife',
-  src: 'https://picsum.photos/seed/metkish-travel-1/1800/1000',
+  src: '/Tenerife/Tenerife_landing%20page.jpeg',
   alt: 'Tenerife',
   href: '#',
 };
-const barcelona: GalleryItem = {
-  id: 'barcelona',
-  src: 'https://picsum.photos/seed/metkish-travel-2/1200/900',
-  alt: 'Barcelona',
+// Real Iceland photos.
+const reykjavikPhoto1: GalleryItem = {
+  id: 'reykjavik-1',
+  src: '/Iceland/Iceland_metkish%20page/Iceland_landing%20page.jpeg',
+  alt: 'Reykjavik',
   href: '#',
 };
-const barcelonaMemory: GalleryItem = {
-  id: 'barcelona-memory',
-  src: 'https://picsum.photos/seed/metkish-memory-a/700/1000',
-  alt: 'Potovanje',
+const reykjavikPhoto2: GalleryItem = {
+  id: 'reykjavik-2',
+  src: '/Iceland/Iceland_metkish%20page/Iceland_landing%20page2.jpeg',
+  alt: 'Reykjavik',
   href: '#',
 };
-const sardinia: GalleryItem = {
-  id: 'sardinia',
-  src: 'https://picsum.photos/seed/metkish-travel-15/1800/1000',
-  alt: 'Sardinia',
+// Placeholder photos/captions — swap `src`, `href` and caption text once real content is ready.
+const italy: GalleryItem = {
+  id: 'italy',
+  src: '/Italy/Milan%20Cinque%20Terre%20Pisa/Italy_landing%20page.jpeg',
+  alt: 'Italy',
   href: '#',
 };
 const santoriniMemory: GalleryItem = {
@@ -130,39 +131,36 @@ const BLOCKS: Block[] = [
     item: tenerife,
     width: 'w-full',
     caption: {
-      index: '01',
       location: 'Spain · Canary Islands',
       title: 'Tenerife',
       description:
-        "Volcanic landscapes, warm evenings and a few things we'd do differently.",
+        'More than the beaches — it was the variety, the easy exploring and the feeling that there was always more to see.',
     },
   },
   {
     kind: 'pair',
-    big: barcelona,
+    big: reykjavikPhoto1,
     bigSide: 'left',
     bigWidth: 'w-full md:w-[60%]',
-    small: barcelonaMemory,
+    small: reykjavikPhoto2,
     smallWidth: 'w-full md:w-[27%]',
     bigCaption: {
-      index: '02',
-      location: 'Spain',
-      title: 'Barcelona',
+      location: 'Iceland',
+      title: 'Iceland',
       description:
-        'City walks, late dinners and a place we always seem to come back to.',
+        "Freezing winds, dark mornings and landscapes so unreal I could have stared at them forever. Iceland was unlike anywhere we'd been before.",
     },
   },
   {
     kind: 'solo',
-    item: sardinia,
+    item: italy,
     width: 'w-full md:w-[85%]',
     marginLeft: 'md:ml-[15%]',
     caption: {
-      index: '03',
-      location: 'Italy · Sardinia',
-      title: 'Sardinia',
+      location: 'Italy · Road Trip',
+      title: 'Italy',
       description:
-        'Clear water, mountain roads and the corners of the island we still talk about.',
+        "From Milan to Cinque Terre and Pisa — with a return to Lake Garda we couldn't resist.",
     },
   },
   {
@@ -173,7 +171,6 @@ const BLOCKS: Block[] = [
     small: santoriniMemory,
     smallWidth: 'w-full md:w-[22%]',
     bigCaption: {
-      index: '04',
       location: 'Greece',
       title: 'Santorini',
       description:
@@ -185,7 +182,6 @@ const BLOCKS: Block[] = [
     item: reykjavik,
     width: 'w-full',
     caption: {
-      index: '05',
       location: 'Iceland',
       title: 'Reykjavik',
       description:
@@ -200,7 +196,6 @@ const BLOCKS: Block[] = [
     small: amsterdamMemory,
     smallWidth: 'w-full md:w-[25%]',
     bigCaption: {
-      index: '06',
       location: 'Netherlands',
       title: 'Amsterdam',
       description:
@@ -212,7 +207,6 @@ const BLOCKS: Block[] = [
     item: lisbon,
     width: 'w-full md:w-[84%]',
     caption: {
-      index: '07',
       location: 'Portugal',
       title: 'Lisbon',
       description:
@@ -227,7 +221,6 @@ const BLOCKS: Block[] = [
     small: provenceMemory,
     smallWidth: 'w-full md:w-[24%]',
     bigCaption: {
-      index: '08',
       location: 'France · Provence',
       title: 'Provence',
       description:
@@ -239,7 +232,6 @@ const BLOCKS: Block[] = [
     item: dubrovnik,
     width: 'w-full',
     caption: {
-      index: '09',
       location: 'Croatia',
       title: 'Dubrovnik',
       description: 'Old stone, blue water and more stairs than we expected.',
@@ -253,7 +245,6 @@ const BLOCKS: Block[] = [
     small: marrakechMemory,
     smallWidth: 'w-full md:w-[28%]',
     bigCaption: {
-      index: '10',
       location: 'Morocco',
       title: 'Marrakech',
       description:
@@ -280,7 +271,7 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
   return (
     <div className='mt-6'>
       <span className='text-xs uppercase tracking-wide font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50'>
-        {caption.index} — {caption.location}
+        {caption.location}
       </span>
       <h3 className='mt-1 text-2xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
         {caption.title}

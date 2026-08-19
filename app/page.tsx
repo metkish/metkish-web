@@ -78,6 +78,12 @@ export default function Home() {
           What was worth it, what wasn&apos;t, and everything I learned along
           the way.
         </p>
+        <a
+          href='#'
+          className='mt-4 inline-block text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+        >
+          Explore the guides →
+        </a>
       </section>
 
       <section
@@ -91,9 +97,10 @@ export default function Home() {
           the story behind the journeys
         </p>
         <p className='max-w-2xl text-center text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-          I&apos;m Metka, and I plan our family travels. With every trip,
-          I&apos;ve learned a little more about what works, what doesn&apos;t,
-          and how to plan the next one better.
+          I&apos;m Metka, and I plan our family travels. I love new places,
+          beautiful landscapes and being close to nature — and with every
+          trip, I&apos;ve learned a little more about what works, what
+          doesn&apos;t, and how to plan the next one better.
         </p>
         <a
           href='#'
@@ -103,11 +110,11 @@ export default function Home() {
         </a>
       </section>
 
-      <footer className='flex flex-col items-center gap-3 px-8 py-12 bg-[#2a2a2a] text-white'>
-        <span className='text-2xl font-[family-name:var(--font-fredoka)] font-normal lowercase tracking-wide'>
-          metkish
+      <footer className='flex flex-col items-center gap-3 px-8 py-12 bg-[#2a2a2a] text-white text-center'>
+        <span className='text-2xl font-[family-name:var(--font-playfair)] font-bold'>
+          The World Through My Eyes
         </span>
-        <p className='text-sm lowercase font-[family-name:var(--font-poppins)] font-bold text-white/70 text-center max-w-xs sm:max-w-none'>
+        <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
           travel · memories · places worth remembering
         </p>
         <nav className='flex items-center gap-6 mt-1'>
@@ -134,9 +141,9 @@ export default function Home() {
           href='mailto:info@metkish.com'
           className='text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
         >
-          info@metkish.com
+          info@metkish.com ↗
         </a>
-        <p className='mt-4 text-xs font-[family-name:var(--font-poppins)] text-white/40 text-center'>
+        <p className='mt-4 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
           © {new Date().getFullYear()} Metkish. All rights reserved.
         </p>
       </footer>

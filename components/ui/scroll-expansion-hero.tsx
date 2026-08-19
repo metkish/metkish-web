@@ -214,7 +214,7 @@ const ScrollExpandMedia = ({
                     </p>
                   )}
                   <p
-                    className='mt-4 text-xs sm:text-sm md:text-base text-[#F5F1E8] font-[family-name:var(--font-poppins)] font-bold tracking-normal whitespace-nowrap lowercase'
+                    className='mt-4 text-xs sm:text-sm md:text-base text-[#F5F1E8]/85 font-[family-name:var(--font-poppins)] font-medium tracking-normal whitespace-nowrap lowercase'
                     style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
                   >
                     travel • memories • places worth remembering
