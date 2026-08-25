@@ -198,8 +198,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: prague,
-    width: 'w-full md:w-[26%]',
-    marginLeft: 'md:ml-[74%]',
+    width: 'w-full md:w-[37%]',
+    marginLeft: 'md:ml-[63%]',
     aspect: 'aspect-[3314/5708]',
     caption: {
       location: 'Czech Republic',
@@ -259,7 +259,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: paris,
-    width: 'w-full md:w-[28%]',
+    width: 'w-full md:w-[34%]',
     aspect: 'aspect-[9/16]',
     caption: {
       location: 'France',
@@ -308,8 +308,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: floridaBahamas,
-    width: 'w-full md:w-[30%]',
-    marginLeft: 'md:ml-[70%]',
+    width: 'w-full md:w-[33%]',
+    marginLeft: 'md:ml-[67%]',
     aspect: 'aspect-[3/4]',
     caption: {
       title: 'Florida & Bahamas',
@@ -383,29 +383,27 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
   );
 }
 
-// Three spacing rhythms rather than one fixed value: tight transitions keep
-// consecutive large/XL moments feeling connected, normal is the baseline, and
-// airy gaps give the small editorial images (Prague, Paris, Florida & Bahamas)
-// room to breathe on both sides — so the rhythm follows the composition
-// instead of repeating a single margin everywhere.
+// Two spacing rhythms rather than one fixed value: tight transitions keep
+// consecutive large/XL moments feeling connected, normal is the baseline used
+// everywhere else — so the rhythm follows the composition instead of
+// repeating a single margin everywhere.
 const TIGHT_GAP = 'mt-10 md:mt-[70px]';
 const NORMAL_GAP = 'mt-16 md:mt-[110px]';
-const AIRY_GAP = 'mt-28 md:mt-[190px]';
 const GAP_SEQUENCE = [
   TIGHT_GAP, // Tenerife → Italy: two big opening landscapes, kept close
   NORMAL_GAP, // Italy → Iceland
   TIGHT_GAP, // Iceland → Sardinia: still riding the strong opening quartet
-  AIRY_GAP, // Sardinia → Prague: settling into the first small, quiet moment
-  AIRY_GAP, // Prague → Vietnam: room around the small Prague photo on both sides
+  NORMAL_GAP, // Sardinia → Prague: enough of a beat before Prague, not isolating
+  NORMAL_GAP, // Prague → Vietnam
   NORMAL_GAP, // Vietnam → Germany (Euro 2024)
   NORMAL_GAP, // Germany → Rome
   TIGHT_GAP, // Rome → Belek: two large architectural moments, kept close
-  AIRY_GAP, // Belek → Paris: settling into the small Paris moment
-  AIRY_GAP, // Paris → Lefkada: room around the small Paris photo on both sides
-  NORMAL_GAP, // Lefkada → Budapest
-  NORMAL_GAP, // Budapest → Maldives
-  AIRY_GAP, // Maldives → Florida & Bahamas: from the grand postcard to a small snapshot
-  AIRY_GAP, // Florida & Bahamas → Marseille & Provence: room around that snapshot
+  NORMAL_GAP, // Belek → Paris
+  NORMAL_GAP, // Paris → Lefkada
+  TIGHT_GAP, // Lefkada → Budapest: keeps Budapest feeling placed, not isolated
+  TIGHT_GAP, // Budapest → Maldives
+  NORMAL_GAP, // Maldives → Florida & Bahamas
+  NORMAL_GAP, // Florida & Bahamas → Marseille & Provence
   TIGHT_GAP, // Marseille & Provence → Seychelles: build straight into the finale
 ];
 
