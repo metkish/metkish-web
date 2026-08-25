@@ -258,8 +258,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: budapest,
-    width: 'w-full md:w-[46%]',
-    marginLeft: 'md:ml-[54%]',
+    width: 'w-full md:w-[60%]',
+    marginLeft: 'md:ml-[40%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Hungary · Budapest',
