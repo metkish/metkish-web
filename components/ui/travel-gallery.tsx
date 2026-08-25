@@ -132,9 +132,9 @@ const floridaBahamas: GalleryItem = {
 };
 // Real France / Marseille & Provence photo.
 const marseilleProvence: GalleryItem = {
-  id: 'marseille-provence',
+  id: 'provence-marseille',
   src: '/2018-09%20-%20France%20Marseille%20%26%20Provence/Landing%20page.jpeg',
-  alt: 'Marseille & Provence',
+  alt: 'Provence & Marseille',
   href: '#',
 };
 // Real Seychelles photo.
@@ -197,9 +197,9 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: prague,
-    width: 'w-full md:w-[46%]',
-    marginLeft: 'md:ml-[27%]',
-    aspect: 'aspect-[3/4]',
+    width: 'w-full md:w-[38%]',
+    marginLeft: 'md:ml-[31%]',
+    aspect: 'aspect-[3314/5708]',
     caption: {
       location: 'Czech Republic',
       title: 'Prague',
@@ -210,7 +210,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: vietnam,
-    width: 'w-full md:w-[46%]',
+    width: 'w-full md:w-[58%]',
     aspect: 'aspect-[3/4]',
     caption: {
       title: 'Vietnam',
@@ -221,8 +221,9 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: euro2024,
-    width: 'w-full md:w-[68%]',
-    aspect: 'aspect-square',
+    width: 'w-full md:w-[48%]',
+    marginLeft: 'md:ml-[52%]',
+    aspect: 'aspect-[4/3]',
     caption: {
       location: 'Germany · Euro 2024',
       title: 'Germany',
@@ -234,7 +235,7 @@ const BLOCKS: Block[] = [
     kind: 'solo',
     item: rome,
     width: 'w-full',
-    aspect: 'aspect-[2/1]',
+    aspect: 'aspect-[4/3]',
     caption: {
       location: 'Italy',
       title: 'Rome',
@@ -257,8 +258,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: paris,
-    width: 'w-full md:w-[38%]',
-    marginLeft: 'md:ml-[31%]',
+    width: 'w-full md:w-[44%]',
+    marginLeft: 'md:ml-[28%]',
     aspect: 'aspect-[9/16]',
     caption: {
       location: 'France',
@@ -270,8 +271,9 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: lefkada,
-    width: 'w-full',
-    aspect: 'aspect-[21/9]',
+    width: 'w-full md:w-[54%]',
+    marginLeft: 'md:ml-[23%]',
+    aspect: 'aspect-[3/4]',
     caption: {
       location: 'Greece',
       title: 'Lefkada',
@@ -282,8 +284,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: budapest,
-    width: 'w-full md:w-[60%]',
-    marginLeft: 'md:ml-[40%]',
+    width: 'w-full md:w-[48%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Hungary',
@@ -295,11 +296,11 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: maldives,
-    width: 'w-full md:w-[80%]',
+    width: 'w-full md:w-[90%]',
     aspect: 'aspect-[4/3]',
     caption: {
-      location: 'Kuramathi',
-      title: 'Maldives',
+      location: 'Maldives',
+      title: 'Kuramathi',
       description:
         'Overwater villas, endless turquoise and absolutely nothing on the agenda — the trip that taught me how to properly switch off.',
     },
@@ -318,12 +319,12 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: marseilleProvence,
-    width: 'w-full md:w-[70%]',
-    marginLeft: 'md:ml-[30%]',
+    width: 'w-full md:w-[50%]',
+    marginLeft: 'md:ml-[50%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'France',
-      title: 'Marseille & Provence',
+      title: 'Provence & Marseille',
       description:
         'Lavender fields, harbour towns and long lunches in the sun — the south of France at its most relaxed.',
     },
@@ -331,8 +332,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: seychelles,
-    width: 'w-full md:w-[85%]',
-    marginLeft: 'md:ml-[15%]',
+    width: 'w-full',
     aspect: 'aspect-[4/3]',
     caption: {
       title: 'Seychelles',
