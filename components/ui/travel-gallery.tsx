@@ -73,7 +73,7 @@ const maldives: GalleryItem = {
 // Real Budapest photo.
 const budapest: GalleryItem = {
   id: 'budapest',
-  src: '/2023-05%20-%20Budapest/IMG_1785.jpeg',
+  src: '/2023-05%20-%20Budapest/Budapest_landing%20page.jpeg',
   alt: 'Budapest',
   href: '#',
 };
@@ -87,7 +87,7 @@ const lefkada: GalleryItem = {
 // Real Paris photo.
 const paris: GalleryItem = {
   id: 'paris',
-  src: '/2023-08%20-%20France%20Paris/IMG_2953.jpeg',
+  src: '/2023-08%20-%20France%20Paris/Paris%20landing%20page.jpg',
   alt: 'Paris',
   href: '#',
 };
@@ -101,7 +101,7 @@ const belek: GalleryItem = {
 // Real Italy / Rome photo.
 const rome: GalleryItem = {
   id: 'rome',
-  src: '/2023-11%20-%20Italy_Rome/IMG_4072.jpeg',
+  src: '/2023-11%20-%20Italy_Rome/Rome_landing%20page.jpeg',
   alt: 'Rome',
   href: '#',
 };
@@ -115,7 +115,7 @@ const euro2024: GalleryItem = {
 // Real Vietnam photo.
 const vietnam: GalleryItem = {
   id: 'vietnam',
-  src: '/2024-12%20-%20Vietnam/Vietnam_landing%20page.jpeg',
+  src: '/2024-12%20-%20Vietnam/Vietnam_landing%20page.jpg',
   alt: 'Vietnam',
   href: '#',
 };
