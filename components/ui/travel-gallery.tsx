@@ -62,12 +62,6 @@ const italy: GalleryItem = {
   alt: 'Italy',
   href: '#',
 };
-const sardiniaMemory: GalleryItem = {
-  id: 'sardinia-memory',
-  src: '/Sardinia/Sardinia_landing%20page2.jpeg',
-  alt: 'Sardinia',
-  href: '#',
-};
 const sardinia: GalleryItem = {
   id: 'sardinia',
   src: '/Sardinia/Sardinia_landing%20page.jpeg',
@@ -171,13 +165,10 @@ const BLOCKS: Block[] = [
     },
   },
   {
-    kind: 'pair',
-    big: sardinia,
-    bigSide: 'left',
-    bigWidth: 'w-full md:w-[56%]',
-    small: sardiniaMemory,
-    smallWidth: 'w-full md:w-[36%]',
-    bigCaption: {
+    kind: 'solo',
+    item: sardinia,
+    width: 'w-full md:w-[85%]',
+    caption: {
       location: 'Italy · Sardinia',
       title: 'Sardinia',
       description:
