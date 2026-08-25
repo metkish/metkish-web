@@ -289,7 +289,7 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
         href={item.href}
         target='_blank'
         rel='noopener noreferrer'
-        className='mt-2 inline-block text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+        className='mt-2 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
       >
         Explore {caption.title} →
       </a>

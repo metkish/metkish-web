@@ -29,7 +29,9 @@ export default function Home() {
       <button
         type='button'
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className='fixed top-4 left-4 z-50 cursor-pointer transition-all duration-300'
+        className={`fixed top-4 left-4 z-50 cursor-pointer transition-all duration-300 rounded-full ${
+          pastHero ? 'backdrop-blur-sm bg-white/40 dark:bg-black/40' : ''
+        }`}
         aria-label='Nazaj na vrh strani'
       >
         <Image
@@ -38,7 +40,9 @@ export default function Home() {
           width={104}
           height={104}
           className={`rounded-full transition-all duration-300 ${
-            pastHero ? 'w-14 h-14 opacity-60 hover:opacity-100' : 'w-[104px] h-[104px] opacity-100'
+            pastHero
+              ? 'w-11 h-11 sm:w-14 sm:h-14 opacity-70 hover:opacity-100'
+              : 'w-[104px] h-[104px] opacity-100'
           }`}
           priority
         />
@@ -80,7 +84,7 @@ export default function Home() {
         </p>
         <a
           href='#'
-          className='mt-4 inline-block text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+          className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
         >
           Explore the guides →
         </a>
@@ -104,7 +108,7 @@ export default function Home() {
         </p>
         <a
           href='#'
-          className='mt-4 inline-block text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+          className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
         >
           More about me →
         </a>
@@ -117,29 +121,29 @@ export default function Home() {
         <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
           travel · memories · places worth remembering
         </p>
-        <nav className='flex items-center gap-6 mt-1'>
+        <nav className='flex items-center gap-2 sm:gap-6 mt-1'>
           <a
             href='#travels'
-            className='text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+            className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
             Travels
           </a>
           <a
             href='#guides'
-            className='text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+            className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
             Guides
           </a>
           <a
             href='#about'
-            className='text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+            className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
             About
           </a>
         </nav>
         <a
           href='mailto:info@metkish.com'
-          className='text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+          className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
         >
           info@metkish.com ↗
         </a>

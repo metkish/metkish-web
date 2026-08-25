@@ -44,11 +44,17 @@ const ScrollExpandMedia = ({
   const [isMobileState, setIsMobileState] = useState<boolean>(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  // Reset the expand progress whenever `mediaType` changes. Adjusted during
+  // render (React's recommended pattern for resetting state in response to a
+  // prop change) rather than in an effect, which would cause an extra render
+  // and briefly show stale state before the reset took effect.
+  const [prevMediaType, setPrevMediaType] = useState(mediaType);
+  if (prevMediaType !== mediaType) {
+    setPrevMediaType(mediaType);
     setScrollProgress(0);
     setShowContent(false);
     setMediaFullyExpanded(false);
-  }, [mediaType]);
+  }
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -200,21 +206,21 @@ const ScrollExpandMedia = ({
             <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
               {!mediaSrc && (
                 <div
-                  className='absolute z-0 top-[24%] left-1/2 flex flex-col items-center justify-center px-8 transition-none max-w-[90vw]'
+                  className='absolute z-0 top-[34%] sm:top-[24%] left-1/2 flex flex-col items-center justify-center px-6 transition-none w-full max-w-[92vw] sm:max-w-[90vw]'
                   style={{
                     transform: `translate(-50%, calc(-50% - 32px)) scale(${dateTextScale})`,
                   }}
                 >
                   {date && (
                     <p
-                      className='text-3xl sm:text-5xl md:text-6xl xl:text-7xl text-[#F5F1E8] font-[family-name:var(--font-playfair)] font-medium tracking-tight whitespace-nowrap'
+                      className='text-2xl sm:text-5xl md:text-6xl xl:text-7xl text-[#F5F1E8] font-[family-name:var(--font-playfair)] font-medium tracking-tight whitespace-normal sm:whitespace-nowrap text-center'
                       style={{ textShadow: '0 2px 16px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.5)' }}
                     >
                       {date}
                     </p>
                   )}
                   <p
-                    className='mt-4 text-xs sm:text-sm md:text-base text-[#F5F1E8]/85 font-[family-name:var(--font-poppins)] font-medium tracking-normal whitespace-nowrap lowercase'
+                    className='mt-4 text-xs sm:text-sm md:text-base text-[#F5F1E8]/85 font-[family-name:var(--font-poppins)] font-medium tracking-normal whitespace-normal sm:whitespace-nowrap lowercase text-center'
                     style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
                   >
                     travel • memories • places worth remembering
