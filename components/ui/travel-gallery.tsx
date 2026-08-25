@@ -17,7 +17,7 @@ interface Caption {
 }
 
 type Block =
-  | { kind: 'solo'; item: GalleryItem; caption: Caption; width: string; marginLeft?: string }
+  | { kind: 'solo'; item: GalleryItem; caption: Caption; width: string; marginLeft?: string; aspect?: string }
   | {
       kind: 'pair';
       big: GalleryItem;
@@ -48,6 +48,13 @@ const reykjavikPhoto2: GalleryItem = {
   alt: 'Reykjavik',
   href: '#',
 };
+// Real Prague photo.
+const prague: GalleryItem = {
+  id: 'prague',
+  src: '/Czechia/Prague_landing%20page.jpeg',
+  alt: 'Prague',
+  href: '#',
+};
 // Placeholder photos/captions — swap `src`, `href` and caption text once real content is ready.
 const italy: GalleryItem = {
   id: 'italy',
@@ -55,70 +62,70 @@ const italy: GalleryItem = {
   alt: 'Italy',
   href: '#',
 };
-const santoriniMemory: GalleryItem = {
-  id: 'santorini-memory',
-  src: 'https://picsum.photos/seed/metkish-memory-b/700/1000',
-  alt: 'Potovanje',
+const sardiniaMemory: GalleryItem = {
+  id: 'sardinia-memory',
+  src: '/Sardinia/Sardinia_landing%20page2.jpeg',
+  alt: 'Sardinia',
   href: '#',
 };
-const santorini: GalleryItem = {
-  id: 'santorini',
-  src: 'https://picsum.photos/seed/metkish-travel-8/1200/900',
-  alt: 'Santorini',
+const sardinia: GalleryItem = {
+  id: 'sardinia',
+  src: '/Sardinia/Sardinia_landing%20page.jpeg',
+  alt: 'Sardinia',
   href: '#',
 };
 const reykjavik: GalleryItem = {
   id: 'reykjavik',
-  src: 'https://picsum.photos/seed/metkish-travel-4/1800/1000',
-  alt: 'Reykjavik',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const amsterdam: GalleryItem = {
   id: 'amsterdam',
-  src: 'https://picsum.photos/seed/metkish-travel-9/1200/900',
-  alt: 'Amsterdam',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const amsterdamMemory: GalleryItem = {
   id: 'amsterdam-memory',
-  src: 'https://picsum.photos/seed/metkish-memory-c/700/1000',
-  alt: 'Potovanje',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const lisbon: GalleryItem = {
   id: 'lisbon',
-  src: 'https://picsum.photos/seed/metkish-travel-11/1800/1000',
-  alt: 'Lisbon',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const provenceMemory: GalleryItem = {
   id: 'provence-memory',
-  src: 'https://picsum.photos/seed/metkish-memory-d/700/1000',
-  alt: 'Potovanje',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const provence: GalleryItem = {
   id: 'provence',
-  src: 'https://picsum.photos/seed/metkish-travel-12/1200/900',
-  alt: 'Provence',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const dubrovnik: GalleryItem = {
   id: 'dubrovnik',
-  src: 'https://picsum.photos/seed/metkish-travel-16/1800/1000',
-  alt: 'Dubrovnik',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const marrakech: GalleryItem = {
   id: 'marrakech',
-  src: 'https://picsum.photos/seed/metkish-travel-17/1200/900',
-  alt: 'Marrakech',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 const marrakechMemory: GalleryItem = {
   id: 'marrakech-memory',
-  src: 'https://picsum.photos/seed/metkish-memory-e/700/1000',
-  alt: 'Potovanje',
+  src: '/placeholder_picture.jpg',
+  alt: 'Unknown',
   href: '#',
 };
 
@@ -160,21 +167,34 @@ const BLOCKS: Block[] = [
       location: 'Italy · Road Trip',
       title: 'Italy',
       description:
-        "From Milan to Cinque Terre and Pisa — with a return to Lake Garda we couldn't resist.",
+        "From Milan to Cinque Terre and Pisa — and back to Lake Garda, because we simply couldn't resist.",
     },
   },
   {
     kind: 'pair',
-    big: santorini,
+    big: sardinia,
     bigSide: 'left',
     bigWidth: 'w-full md:w-[60%]',
-    small: santoriniMemory,
+    small: sardiniaMemory,
     smallWidth: 'w-full md:w-[22%]',
     bigCaption: {
-      location: 'Greece',
-      title: 'Santorini',
+      location: 'Italy · Sardinia',
+      title: 'Sardinia',
       description:
-        "Sunsets that live up to the hype, and the hikes that don't.",
+        'Crystal-clear water and crowded beaches — but the places we loved most were the quieter ones we discovered from the sea.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: prague,
+    width: 'w-full md:w-[46%]',
+    marginLeft: 'md:ml-[27%]',
+    aspect: 'aspect-[3/4]',
+    caption: {
+      location: 'Czech Republic · Prague',
+      title: 'Prague',
+      description:
+        "Cobblestone streets, an old stone gate and long afternoon shadows — Prague felt like walking straight into a postcard.",
     },
   },
   {
@@ -182,10 +202,9 @@ const BLOCKS: Block[] = [
     item: reykjavik,
     width: 'w-full',
     caption: {
-      location: 'Iceland',
-      title: 'Reykjavik',
-      description:
-        'Black sand beaches, northern lights and cold mornings worth waking up for.',
+      location: 'Unknown',
+      title: 'Unknown',
+      description: 'Coming soon.',
     },
   },
   {
@@ -196,10 +215,9 @@ const BLOCKS: Block[] = [
     small: amsterdamMemory,
     smallWidth: 'w-full md:w-[25%]',
     bigCaption: {
-      location: 'Netherlands',
-      title: 'Amsterdam',
-      description:
-        "Canals, bicycles and the best pancakes we didn't expect to love.",
+      location: 'Unknown',
+      title: 'Unknown',
+      description: 'Coming soon.',
     },
   },
   {
@@ -207,10 +225,9 @@ const BLOCKS: Block[] = [
     item: lisbon,
     width: 'w-full md:w-[84%]',
     caption: {
-      location: 'Portugal',
-      title: 'Lisbon',
-      description:
-        'Steep streets, good coffee and evenings that went on longer than planned.',
+      location: 'Unknown',
+      title: 'Unknown',
+      description: 'Coming soon.',
     },
   },
   {
@@ -221,10 +238,9 @@ const BLOCKS: Block[] = [
     small: provenceMemory,
     smallWidth: 'w-full md:w-[24%]',
     bigCaption: {
-      location: 'France · Provence',
-      title: 'Provence',
-      description:
-        "Lavender fields, quiet villages and the drive we'd happily repeat.",
+      location: 'Unknown',
+      title: 'Unknown',
+      description: 'Coming soon.',
     },
   },
   {
@@ -232,9 +248,9 @@ const BLOCKS: Block[] = [
     item: dubrovnik,
     width: 'w-full',
     caption: {
-      location: 'Croatia',
-      title: 'Dubrovnik',
-      description: 'Old stone, blue water and more stairs than we expected.',
+      location: 'Unknown',
+      title: 'Unknown',
+      description: 'Coming soon.',
     },
   },
   {
@@ -245,10 +261,9 @@ const BLOCKS: Block[] = [
     small: marrakechMemory,
     smallWidth: 'w-full md:w-[28%]',
     bigCaption: {
-      location: 'Morocco',
-      title: 'Marrakech',
-      description:
-        "Spice markets, rooftop views and a little bit of chaos we'd repeat.",
+      location: 'Unknown',
+      title: 'Unknown',
+      description: 'Coming soon.',
     },
   },
 ];
@@ -296,15 +311,16 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
 const NORMAL_GAP = 'mt-16 md:mt-[110px]';
 const BIG_GAP = 'mt-24 md:mt-[165px]';
 const GAP_SEQUENCE = [
-  NORMAL_GAP, // Tenerife → Barcelona
-  BIG_GAP, // Barcelona → Sardinia
-  NORMAL_GAP, // Sardinia → Santorini
-  BIG_GAP, // Santorini → Reykjavik
-  NORMAL_GAP, // Reykjavik → Amsterdam
-  BIG_GAP, // Amsterdam → Lisbon
-  NORMAL_GAP, // Lisbon → Provence
-  BIG_GAP, // Provence → Dubrovnik
-  NORMAL_GAP, // Dubrovnik → Marrakech
+  NORMAL_GAP, // Tenerife → Iceland
+  BIG_GAP, // Iceland → Italy
+  NORMAL_GAP, // Italy → Sardinia
+  BIG_GAP, // Sardinia → Prague
+  NORMAL_GAP, // Prague → Reykjavik
+  BIG_GAP, // Reykjavik → Amsterdam
+  NORMAL_GAP, // Amsterdam → Lisbon
+  BIG_GAP, // Lisbon → Provence
+  NORMAL_GAP, // Provence → Dubrovnik
+  BIG_GAP, // Dubrovnik → Marrakech
 ];
 
 export default function TravelGallery() {
@@ -324,7 +340,7 @@ export default function TravelGallery() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay }}
             >
-              <Photo item={block.item} className='w-full aspect-[16/9]' />
+              <Photo item={block.item} className={`w-full ${block.aspect ?? 'aspect-[16/9]'}`} />
               <DestinationCaption item={block.item} caption={block.caption} />
             </motion.div>
           );
