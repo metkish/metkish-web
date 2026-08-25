@@ -11,7 +11,10 @@ interface GalleryItem {
 }
 
 interface Caption {
-  location: string;
+  // Country/region eyebrow shown above the title. Omit it when the title
+  // already IS the country or region (e.g. a single-word destination like
+  // "Iceland" or "Vietnam") so the two lines don't just repeat each other.
+  location?: string;
   title: string;
   description: string;
 }
@@ -152,7 +155,7 @@ const BLOCKS: Block[] = [
     item: reykjavikPhoto1,
     width: 'w-full',
     caption: {
-      location: 'Iceland',
+      location: 'Reykjavik',
       title: 'Iceland',
       description:
         "Freezing winds, dark mornings and landscapes so unreal I could have stared at them forever. Iceland was unlike anywhere we'd been before.",
@@ -163,7 +166,7 @@ const BLOCKS: Block[] = [
     item: sardinia,
     width: 'w-full md:w-[85%]',
     caption: {
-      location: 'Italy · Sardinia',
+      location: 'Italy',
       title: 'Sardinia',
       description:
         'Crystal-clear water and crowded beaches — but the places we loved most were the quieter ones we discovered from the sea.',
@@ -176,7 +179,7 @@ const BLOCKS: Block[] = [
     marginLeft: 'md:ml-[27%]',
     aspect: 'aspect-[3/4]',
     caption: {
-      location: 'Czech Republic · Prague',
+      location: 'Czech Republic',
       title: 'Prague',
       description:
         "Cobblestone streets, an old stone gate and long afternoon shadows — Prague felt like walking straight into a postcard.",
@@ -188,7 +191,6 @@ const BLOCKS: Block[] = [
     width: 'w-full md:w-[46%]',
     aspect: 'aspect-[3/4]',
     caption: {
-      location: 'Vietnam',
       title: 'Vietnam',
       description:
         'Motorbikes, street food at every corner and a pace of life that completely rewired how I think about travel.',
@@ -212,7 +214,7 @@ const BLOCKS: Block[] = [
     width: 'w-full',
     aspect: 'aspect-[2/1]',
     caption: {
-      location: 'Italy · Rome',
+      location: 'Italy',
       title: 'Rome',
       description:
         "Two thousand years of history stacked on every corner — I don't think I've ever walked that much and minded that little.",
@@ -224,7 +226,7 @@ const BLOCKS: Block[] = [
     width: 'w-full md:w-[85%]',
     marginLeft: 'md:ml-[15%]',
     caption: {
-      location: 'Turkey · Belek',
+      location: 'Turkey',
       title: 'Belek',
       description:
         'Warm October sun, long walks along the coast and the kind of slow week that resets everything.',
@@ -237,7 +239,7 @@ const BLOCKS: Block[] = [
     marginLeft: 'md:ml-[31%]',
     aspect: 'aspect-[9/16]',
     caption: {
-      location: 'France · Paris',
+      location: 'France',
       title: 'Paris',
       description:
         'Golden evening light, quiet side streets and coffee that turned into hours — Paris in late summer, exactly as it should be.',
@@ -249,7 +251,7 @@ const BLOCKS: Block[] = [
     width: 'w-full',
     aspect: 'aspect-[21/9]',
     caption: {
-      location: 'Greece · Lefkada',
+      location: 'Greece',
       title: 'Lefkada',
       description:
         'Cliffside beaches and water so blue it barely looked real — one of those islands you leave already planning to return to.',
@@ -262,7 +264,7 @@ const BLOCKS: Block[] = [
     marginLeft: 'md:ml-[40%]',
     aspect: 'aspect-[4/3]',
     caption: {
-      location: 'Hungary · Budapest',
+      location: 'Hungary',
       title: 'Budapest',
       description:
         'Thermal baths, grand architecture and a river that splits the city in two — Budapest was equal parts elegant and easygoing.',
@@ -274,7 +276,7 @@ const BLOCKS: Block[] = [
     width: 'w-full md:w-[80%]',
     aspect: 'aspect-[4/3]',
     caption: {
-      location: 'Maldives · Kuramathi',
+      location: 'Kuramathi',
       title: 'Maldives',
       description:
         'Overwater villas, endless turquoise and absolutely nothing on the agenda — the trip that taught me how to properly switch off.',
@@ -299,9 +301,11 @@ function Photo({ item, className }: { item: GalleryItem; className: string }) {
 function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Caption }) {
   return (
     <div className='mt-6'>
-      <span className='text-xs uppercase tracking-wide font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50'>
-        {caption.location}
-      </span>
+      {caption.location && (
+        <span className='text-xs uppercase tracking-wide font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50'>
+          {caption.location}
+        </span>
+      )}
       <h3 className='mt-1 text-2xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
         {caption.title}
       </h3>
