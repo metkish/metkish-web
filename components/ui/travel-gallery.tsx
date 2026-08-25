@@ -233,9 +233,9 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: paris,
-    width: 'w-full md:w-[62%]',
-    marginLeft: 'md:ml-[19%]',
-    aspect: 'aspect-[16/9]',
+    width: 'w-full md:w-[38%]',
+    marginLeft: 'md:ml-[31%]',
+    aspect: 'aspect-[9/16]',
     caption: {
       location: 'France · Paris',
       title: 'Paris',
