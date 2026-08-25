@@ -384,27 +384,28 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
   );
 }
 
-// Two spacing rhythms rather than one fixed value: tight transitions keep
-// consecutive large/XL moments feeling connected, normal is the baseline used
-// everywhere else — so the rhythm follows the composition instead of
-// repeating a single margin everywhere.
-const TIGHT_GAP = 'mt-10 md:mt-[70px]';
-const NORMAL_GAP = 'mt-16 md:mt-[110px]';
+// Two spacing rhythms rather than one fixed value: tight transitions are the
+// desktop baseline that keeps the gallery reading as one continuous story,
+// normal is reserved for a handful of deliberate breathing beats — so the
+// rhythm still varies, just not by accident. Mobile spacing (the bare mt-*
+// values) is untouched; only the md: desktop values were retuned.
+const TIGHT_GAP = 'mt-10 md:mt-[56px]';
+const NORMAL_GAP = 'mt-16 md:mt-[80px]';
 const GAP_SEQUENCE = [
   TIGHT_GAP, // Tenerife → Italy: two big opening landscapes, kept close
-  NORMAL_GAP, // Italy → Iceland
-  TIGHT_GAP, // Iceland → Sardinia: still riding the strong opening quartet
-  NORMAL_GAP, // Sardinia → Prague: enough of a beat before Prague, not isolating
-  NORMAL_GAP, // Prague → Vietnam
-  NORMAL_GAP, // Vietnam → Germany (Euro 2024)
-  NORMAL_GAP, // Germany → Rome
+  NORMAL_GAP, // Italy → Iceland: one deliberate breathing beat after the opener
+  TIGHT_GAP, // Iceland → Sardinia: still riding the opening quartet
+  TIGHT_GAP, // Sardinia → Prague: was reading as a break, not a beat — tightened
+  TIGHT_GAP, // Prague → Vietnam: keeps the smaller editorial moments connected
+  TIGHT_GAP, // Vietnam → Germany: size contrast doesn't need a big gap too
+  NORMAL_GAP, // Germany → Rome: breathing beat before the architectural pair
   TIGHT_GAP, // Rome → Belek: two large architectural moments, kept close
-  NORMAL_GAP, // Belek → Paris
-  NORMAL_GAP, // Paris → Lefkada
+  TIGHT_GAP, // Belek → Paris: tightened, same continuous-story rhythm
+  TIGHT_GAP, // Paris → Lefkada: tightened
   TIGHT_GAP, // Lefkada → Budapest: keeps Budapest feeling placed, not isolated
   TIGHT_GAP, // Budapest → Maldives
-  NORMAL_GAP, // Maldives → Florida & Bahamas
-  NORMAL_GAP, // Florida & Bahamas → Marseille & Provence
+  NORMAL_GAP, // Maldives → Florida & Bahamas: breathing beat before the final trio
+  TIGHT_GAP, // Florida & Bahamas → Marseille & Provence: tightened
   TIGHT_GAP, // Marseille & Provence → Seychelles: build straight into the finale
 ];
 
