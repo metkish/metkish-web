@@ -38,13 +38,13 @@ const tenerife: GalleryItem = {
 // Real Iceland photos.
 const reykjavikPhoto1: GalleryItem = {
   id: 'reykjavik-1',
-  src: '/Iceland/Iceland_metkish%20page/Iceland_landing%20page.jpeg',
+  src: '/Iceland_metkish%20page/Iceland_landing%20page.jpeg',
   alt: 'Reykjavik',
   href: '#',
 };
 const reykjavikPhoto2: GalleryItem = {
   id: 'reykjavik-2',
-  src: '/Iceland/Iceland_metkish%20page/Iceland_landing%20page2.jpeg',
+  src: '/Iceland_metkish%20page/Iceland_landing%20page2.jpeg',
   alt: 'Reykjavik',
   href: '#',
 };
