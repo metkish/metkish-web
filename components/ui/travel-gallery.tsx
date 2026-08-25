@@ -185,7 +185,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: vietnam,
-    width: 'w-full',
+    width: 'w-full md:w-[46%]',
+    aspect: 'aspect-[3/4]',
     caption: {
       location: 'Vietnam',
       title: 'Vietnam',
@@ -257,9 +258,9 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: budapest,
-    width: 'w-full md:w-[62%]',
-    marginLeft: 'md:ml-[38%]',
-    aspect: 'aspect-[3/4]',
+    width: 'w-full md:w-[46%]',
+    marginLeft: 'md:ml-[54%]',
+    aspect: 'aspect-[4/3]',
     caption: {
       location: 'Hungary · Budapest',
       title: 'Budapest',
