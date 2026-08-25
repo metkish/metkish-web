@@ -145,6 +145,18 @@ const BLOCKS: Block[] = [
     },
   },
   {
+    kind: 'solo',
+    item: italy,
+    width: 'w-full md:w-[85%]',
+    marginLeft: 'md:ml-[15%]',
+    caption: {
+      location: 'Italy · Road Trip',
+      title: 'Italy',
+      description:
+        "From Milan to Cinque Terre and Pisa — and back to Lake Garda, because we simply couldn't resist.",
+    },
+  },
+  {
     kind: 'pair',
     big: reykjavikPhoto1,
     bigSide: 'left',
@@ -156,18 +168,6 @@ const BLOCKS: Block[] = [
       title: 'Iceland',
       description:
         "Freezing winds, dark mornings and landscapes so unreal I could have stared at them forever. Iceland was unlike anywhere we'd been before.",
-    },
-  },
-  {
-    kind: 'solo',
-    item: italy,
-    width: 'w-full md:w-[85%]',
-    marginLeft: 'md:ml-[15%]',
-    caption: {
-      location: 'Italy · Road Trip',
-      title: 'Italy',
-      description:
-        "From Milan to Cinque Terre and Pisa — and back to Lake Garda, because we simply couldn't resist.",
     },
   },
   {
@@ -311,9 +311,9 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
 const NORMAL_GAP = 'mt-16 md:mt-[110px]';
 const BIG_GAP = 'mt-24 md:mt-[165px]';
 const GAP_SEQUENCE = [
-  NORMAL_GAP, // Tenerife → Iceland
-  BIG_GAP, // Iceland → Italy
-  NORMAL_GAP, // Italy → Sardinia
+  NORMAL_GAP, // Tenerife → Italy
+  BIG_GAP, // Italy → Iceland
+  NORMAL_GAP, // Iceland → Sardinia
   BIG_GAP, // Sardinia → Prague
   NORMAL_GAP, // Prague → Reykjavik
   BIG_GAP, // Reykjavik → Amsterdam
