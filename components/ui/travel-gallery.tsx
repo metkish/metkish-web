@@ -118,8 +118,30 @@ const euro2024: GalleryItem = {
 // Real Vietnam photo.
 const vietnam: GalleryItem = {
   id: 'vietnam',
-  src: '/2024-12%20-%20Vietnam/Vietnam_landing%20page.jpg',
+  src: '/2024-12%20-%20Vietnam/Vietnam_landing%20page.jpeg',
   alt: 'Vietnam',
+  href: '#',
+};
+
+// Real USA / Florida & Bahamas photo.
+const floridaBahamas: GalleryItem = {
+  id: 'florida-bahamas',
+  src: '/2019-11%20-%20USA%20Florida%20%26%20Bahamas/Landing%20page.jpeg',
+  alt: 'Florida & Bahamas',
+  href: '#',
+};
+// Real France / Marseille & Provence photo.
+const marseilleProvence: GalleryItem = {
+  id: 'marseille-provence',
+  src: '/2018-09%20-%20France%20Marseille%20%26%20Provence/Landing%20page.jpeg',
+  alt: 'Marseille & Provence',
+  href: '#',
+};
+// Real Seychelles photo.
+const seychelles: GalleryItem = {
+  id: 'seychelles',
+  src: '/2018-04%20-%20Seychelles/Seychelles_landing%20page.jpg',
+  alt: 'Seychelles',
   href: '#',
 };
 
@@ -282,6 +304,42 @@ const BLOCKS: Block[] = [
         'Overwater villas, endless turquoise and absolutely nothing on the agenda — the trip that taught me how to properly switch off.',
     },
   },
+  {
+    kind: 'solo',
+    item: floridaBahamas,
+    width: 'w-full md:w-[42%]',
+    aspect: 'aspect-[3/4]',
+    caption: {
+      title: 'Florida & Bahamas',
+      description:
+        'Theme parks, palm trees and island-hopping into water so clear it barely looked real — a trip that felt like two very different holidays in one.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: marseilleProvence,
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[30%]',
+    aspect: 'aspect-[4/3]',
+    caption: {
+      location: 'France',
+      title: 'Marseille & Provence',
+      description:
+        'Lavender fields, harbour towns and long lunches in the sun — the south of France at its most relaxed.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: seychelles,
+    width: 'w-full md:w-[85%]',
+    marginLeft: 'md:ml-[15%]',
+    aspect: 'aspect-[4/3]',
+    caption: {
+      title: 'Seychelles',
+      description:
+        'Powder-white beaches, giant granite boulders and turquoise water — the kind of postcard scenery that barely felt real.',
+    },
+  },
 ];
 
 function Photo({ item, className }: { item: GalleryItem; className: string }) {
@@ -341,6 +399,9 @@ const GAP_SEQUENCE = [
   BIG_GAP, // Paris → Lefkada
   NORMAL_GAP, // Lefkada → Budapest
   BIG_GAP, // Budapest → Maldives
+  NORMAL_GAP, // Maldives → Florida & Bahamas
+  BIG_GAP, // Florida & Bahamas → Marseille & Provence
+  NORMAL_GAP, // Marseille & Provence → Seychelles
 ];
 
 export default function TravelGallery() {
