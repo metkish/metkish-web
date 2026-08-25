@@ -193,39 +193,49 @@ const BLOCKS: Block[] = [
   },
   {
     kind: 'solo',
-    item: maldives,
-    width: 'w-full md:w-[80%]',
-    aspect: 'aspect-[4/3]',
-    caption: {
-      location: 'Maldives · Kuramathi',
-      title: 'Maldives',
-      description:
-        'Overwater villas, endless turquoise and absolutely nothing on the agenda — the trip that taught me how to properly switch off.',
-    },
-  },
-  {
-    kind: 'solo',
-    item: budapest,
-    width: 'w-full md:w-[62%]',
-    marginLeft: 'md:ml-[38%]',
-    aspect: 'aspect-[3/4]',
-    caption: {
-      location: 'Hungary · Budapest',
-      title: 'Budapest',
-      description:
-        'Thermal baths, grand architecture and a river that splits the city in two — Budapest was equal parts elegant and easygoing.',
-    },
-  },
-  {
-    kind: 'solo',
-    item: lefkada,
+    item: vietnam,
     width: 'w-full',
-    aspect: 'aspect-[21/9]',
     caption: {
-      location: 'Greece · Lefkada',
-      title: 'Lefkada',
+      location: 'Vietnam',
+      title: 'Vietnam',
       description:
-        'Cliffside beaches and water so blue it barely looked real — one of those islands you leave already planning to return to.',
+        'Motorbikes, street food at every corner and a pace of life that completely rewired how I think about travel.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: euro2024,
+    width: 'w-full md:w-[68%]',
+    aspect: 'aspect-square',
+    caption: {
+      location: 'Germany · Euro 2024',
+      title: 'Germany',
+      description:
+        'Stadiums, city squares full of strangers singing the same songs and a summer built entirely around football.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: rome,
+    width: 'w-full',
+    aspect: 'aspect-[2/1]',
+    caption: {
+      location: 'Italy · Rome',
+      title: 'Rome',
+      description:
+        "Two thousand years of history stacked on every corner — I don't think I've ever walked that much and minded that little.",
+    },
+  },
+  {
+    kind: 'solo',
+    item: belek,
+    width: 'w-full md:w-[85%]',
+    marginLeft: 'md:ml-[15%]',
+    caption: {
+      location: 'Turkey · Belek',
+      title: 'Belek',
+      description:
+        'Warm October sun, long walks along the coast and the kind of slow week that resets everything.',
     },
   },
   {
@@ -243,49 +253,39 @@ const BLOCKS: Block[] = [
   },
   {
     kind: 'solo',
-    item: belek,
-    width: 'w-full md:w-[85%]',
-    marginLeft: 'md:ml-[15%]',
-    caption: {
-      location: 'Turkey · Belek',
-      title: 'Belek',
-      description:
-        'Warm October sun, long walks along the coast and the kind of slow week that resets everything.',
-    },
-  },
-  {
-    kind: 'solo',
-    item: rome,
+    item: lefkada,
     width: 'w-full',
-    aspect: 'aspect-[2/1]',
+    aspect: 'aspect-[21/9]',
     caption: {
-      location: 'Italy · Rome',
-      title: 'Rome',
+      location: 'Greece · Lefkada',
+      title: 'Lefkada',
       description:
-        "Two thousand years of history stacked on every corner — I don't think I've ever walked that much and minded that little.",
+        'Cliffside beaches and water so blue it barely looked real — one of those islands you leave already planning to return to.',
     },
   },
   {
     kind: 'solo',
-    item: euro2024,
-    width: 'w-full md:w-[68%]',
-    aspect: 'aspect-square',
+    item: budapest,
+    width: 'w-full md:w-[62%]',
+    marginLeft: 'md:ml-[38%]',
+    aspect: 'aspect-[3/4]',
     caption: {
-      location: 'Germany · Euro 2024',
-      title: 'Germany',
+      location: 'Hungary · Budapest',
+      title: 'Budapest',
       description:
-        'Stadiums, city squares full of strangers singing the same songs and a summer built entirely around football.',
+        'Thermal baths, grand architecture and a river that splits the city in two — Budapest was equal parts elegant and easygoing.',
     },
   },
   {
     kind: 'solo',
-    item: vietnam,
-    width: 'w-full',
+    item: maldives,
+    width: 'w-full md:w-[80%]',
+    aspect: 'aspect-[4/3]',
     caption: {
-      location: 'Vietnam',
-      title: 'Vietnam',
+      location: 'Maldives · Kuramathi',
+      title: 'Maldives',
       description:
-        'Motorbikes, street food at every corner and a pace of life that completely rewired how I think about travel.',
+        'Overwater villas, endless turquoise and absolutely nothing on the agenda — the trip that taught me how to properly switch off.',
     },
   },
 ];
@@ -337,14 +337,14 @@ const GAP_SEQUENCE = [
   BIG_GAP, // Italy → Iceland
   NORMAL_GAP, // Iceland → Sardinia
   BIG_GAP, // Sardinia → Prague
-  NORMAL_GAP, // Prague → Maldives
-  BIG_GAP, // Maldives → Budapest
-  NORMAL_GAP, // Budapest → Lefkada
-  BIG_GAP, // Lefkada → Paris
-  NORMAL_GAP, // Paris → Belek
-  BIG_GAP, // Belek → Rome
-  NORMAL_GAP, // Rome → Germany (Euro 2024)
-  BIG_GAP, // Germany → Vietnam
+  NORMAL_GAP, // Prague → Vietnam
+  BIG_GAP, // Vietnam → Germany (Euro 2024)
+  NORMAL_GAP, // Germany → Rome
+  BIG_GAP, // Rome → Belek
+  NORMAL_GAP, // Belek → Paris
+  BIG_GAP, // Paris → Lefkada
+  NORMAL_GAP, // Lefkada → Budapest
+  BIG_GAP, // Budapest → Maldives
 ];
 
 export default function TravelGallery() {
