@@ -152,7 +152,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: tenerife,
-    width: 'w-full',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[15%]',
     caption: {
       location: 'Spain · Canary Islands',
       title: 'Tenerife',
@@ -163,8 +164,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: italy,
-    width: 'w-full md:w-[85%]',
-    marginLeft: 'md:ml-[15%]',
+    width: 'w-full md:w-[57%]',
+    marginLeft: 'md:ml-[43%]',
     caption: {
       location: 'Italy · Road Trip',
       title: 'Italy',
@@ -175,7 +176,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: reykjavikPhoto1,
-    width: 'w-full md:w-[90%]',
+    width: 'w-full md:w-[68%]',
     caption: {
       location: 'Reykjavik',
       title: 'Iceland',
@@ -186,8 +187,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: sardinia,
-    width: 'w-full md:w-[76%]',
-    marginLeft: 'md:ml-[6%]',
+    width: 'w-full md:w-[52%]',
+    marginLeft: 'md:ml-[8%]',
     caption: {
       location: 'Italy',
       title: 'Sardinia',
@@ -198,8 +199,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: prague,
-    width: 'w-full md:w-[37%]',
-    marginLeft: 'md:ml-[63%]',
+    width: 'w-full md:w-[43%]',
+    marginLeft: 'md:ml-[57%]',
     aspect: 'aspect-[3314/5708]',
     caption: {
       location: 'Czech Republic',
@@ -211,7 +212,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: vietnam,
-    width: 'w-full md:w-[40%]',
+    width: 'w-full md:w-[41%]',
     aspect: 'aspect-[3/4]',
     caption: {
       title: 'Vietnam',
@@ -222,8 +223,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: euro2024,
-    width: 'w-full md:w-[55%]',
-    marginLeft: 'md:ml-[45%]',
+    width: 'w-full md:w-[56%]',
+    marginLeft: 'md:ml-[44%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Germany · Euro 2024',
@@ -235,7 +236,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: rome,
-    width: 'w-full md:w-[90%]',
+    width: 'w-full md:w-[72%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Italy',
@@ -247,8 +248,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: belek,
-    width: 'w-full md:w-[70%]',
-    marginLeft: 'md:ml-[30%]',
+    width: 'w-full md:w-[51%]',
+    marginLeft: 'md:ml-[49%]',
     caption: {
       location: 'Turkey',
       title: 'Belek',
@@ -259,7 +260,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: paris,
-    width: 'w-full md:w-[34%]',
+    width: 'w-full md:w-[39%]',
     aspect: 'aspect-[9/16]',
     caption: {
       location: 'France',
@@ -271,7 +272,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: lefkada,
-    width: 'w-full md:w-[58%]',
+    width: 'w-full md:w-[65%]',
     aspect: 'aspect-[3/4]',
     caption: {
       location: 'Greece',
@@ -283,8 +284,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: budapest,
-    width: 'w-full md:w-[42%]',
-    marginLeft: 'md:ml-[58%]',
+    width: 'w-full md:w-[44%]',
+    marginLeft: 'md:ml-[56%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Hungary',
@@ -296,7 +297,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: maldives,
-    width: 'w-full md:w-[88%]',
+    width: 'w-full md:w-[70%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Maldives',
@@ -308,8 +309,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: floridaBahamas,
-    width: 'w-full md:w-[33%]',
-    marginLeft: 'md:ml-[67%]',
+    width: 'w-full md:w-[40%]',
+    marginLeft: 'md:ml-[60%]',
     aspect: 'aspect-[3/4]',
     caption: {
       title: 'Florida & Bahamas',
@@ -320,7 +321,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: marseilleProvence,
-    width: 'w-full md:w-[68%]',
+    width: 'w-full md:w-[56%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'France',
@@ -332,8 +333,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: seychelles,
-    width: 'w-full md:w-[92%]',
-    marginLeft: 'md:ml-[4%]',
+    width: 'w-full md:w-[68%]',
+    marginLeft: 'md:ml-[16%]',
     aspect: 'aspect-[4/3]',
     caption: {
       title: 'Seychelles',
