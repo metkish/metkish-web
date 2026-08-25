@@ -87,7 +87,7 @@ const lefkada: GalleryItem = {
 // Real Paris photo.
 const paris: GalleryItem = {
   id: 'paris',
-  src: '/2023-08%20-%20France%20Paris/Paris%20landing%20page.jpg',
+  src: '/2023-08%20-%20France%20Paris/Paris_landing%20page.JPG',
   alt: 'Paris',
   href: '#',
 };
@@ -233,9 +233,9 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: paris,
-    width: 'w-full md:w-[50%]',
-    marginLeft: 'md:ml-[25%]',
-    aspect: 'aspect-[4/5]',
+    width: 'w-full md:w-[62%]',
+    marginLeft: 'md:ml-[19%]',
+    aspect: 'aspect-[16/9]',
     caption: {
       location: 'France · Paris',
       title: 'Paris',
