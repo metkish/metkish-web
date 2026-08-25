@@ -175,7 +175,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: reykjavikPhoto1,
-    width: 'w-full',
+    width: 'w-full md:w-[90%]',
     caption: {
       location: 'Reykjavik',
       title: 'Iceland',
@@ -186,7 +186,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: sardinia,
-    width: 'w-full md:w-[85%]',
+    width: 'w-full md:w-[76%]',
+    marginLeft: 'md:ml-[6%]',
     caption: {
       location: 'Italy',
       title: 'Sardinia',
@@ -197,8 +198,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: prague,
-    width: 'w-full md:w-[38%]',
-    marginLeft: 'md:ml-[31%]',
+    width: 'w-full md:w-[26%]',
+    marginLeft: 'md:ml-[74%]',
     aspect: 'aspect-[3314/5708]',
     caption: {
       location: 'Czech Republic',
@@ -210,7 +211,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: vietnam,
-    width: 'w-full md:w-[58%]',
+    width: 'w-full md:w-[40%]',
     aspect: 'aspect-[3/4]',
     caption: {
       title: 'Vietnam',
@@ -221,8 +222,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: euro2024,
-    width: 'w-full md:w-[48%]',
-    marginLeft: 'md:ml-[52%]',
+    width: 'w-full md:w-[55%]',
+    marginLeft: 'md:ml-[45%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Germany · Euro 2024',
@@ -234,7 +235,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: rome,
-    width: 'w-full',
+    width: 'w-full md:w-[90%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Italy',
@@ -246,8 +247,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: belek,
-    width: 'w-full md:w-[85%]',
-    marginLeft: 'md:ml-[15%]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[30%]',
     caption: {
       location: 'Turkey',
       title: 'Belek',
@@ -258,8 +259,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: paris,
-    width: 'w-full md:w-[44%]',
-    marginLeft: 'md:ml-[28%]',
+    width: 'w-full md:w-[28%]',
     aspect: 'aspect-[9/16]',
     caption: {
       location: 'France',
@@ -271,8 +271,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: lefkada,
-    width: 'w-full md:w-[54%]',
-    marginLeft: 'md:ml-[23%]',
+    width: 'w-full md:w-[58%]',
     aspect: 'aspect-[3/4]',
     caption: {
       location: 'Greece',
@@ -284,7 +283,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: budapest,
-    width: 'w-full md:w-[48%]',
+    width: 'w-full md:w-[42%]',
+    marginLeft: 'md:ml-[58%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Hungary',
@@ -296,7 +296,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: maldives,
-    width: 'w-full md:w-[90%]',
+    width: 'w-full md:w-[88%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'Maldives',
@@ -308,7 +308,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: floridaBahamas,
-    width: 'w-full md:w-[42%]',
+    width: 'w-full md:w-[30%]',
+    marginLeft: 'md:ml-[70%]',
     aspect: 'aspect-[3/4]',
     caption: {
       title: 'Florida & Bahamas',
@@ -319,8 +320,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: marseilleProvence,
-    width: 'w-full md:w-[50%]',
-    marginLeft: 'md:ml-[50%]',
+    width: 'w-full md:w-[68%]',
     aspect: 'aspect-[4/3]',
     caption: {
       location: 'France',
@@ -332,7 +332,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: seychelles,
-    width: 'w-full',
+    width: 'w-full md:w-[92%]',
+    marginLeft: 'md:ml-[4%]',
     aspect: 'aspect-[4/3]',
     caption: {
       title: 'Seychelles',
@@ -382,26 +383,30 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
   );
 }
 
-// Two spacing rhythms, alternated between blocks rather than one fixed value —
-// a uniform gap everywhere reads mechanical; varying it (subtly) reads editorial.
+// Three spacing rhythms rather than one fixed value: tight transitions keep
+// consecutive large/XL moments feeling connected, normal is the baseline, and
+// airy gaps give the small editorial images (Prague, Paris, Florida & Bahamas)
+// room to breathe on both sides — so the rhythm follows the composition
+// instead of repeating a single margin everywhere.
+const TIGHT_GAP = 'mt-10 md:mt-[70px]';
 const NORMAL_GAP = 'mt-16 md:mt-[110px]';
-const BIG_GAP = 'mt-24 md:mt-[165px]';
+const AIRY_GAP = 'mt-28 md:mt-[190px]';
 const GAP_SEQUENCE = [
-  NORMAL_GAP, // Tenerife → Italy
-  BIG_GAP, // Italy → Iceland
-  NORMAL_GAP, // Iceland → Sardinia
-  BIG_GAP, // Sardinia → Prague
-  NORMAL_GAP, // Prague → Vietnam
-  BIG_GAP, // Vietnam → Germany (Euro 2024)
+  TIGHT_GAP, // Tenerife → Italy: two big opening landscapes, kept close
+  NORMAL_GAP, // Italy → Iceland
+  TIGHT_GAP, // Iceland → Sardinia: still riding the strong opening quartet
+  AIRY_GAP, // Sardinia → Prague: settling into the first small, quiet moment
+  AIRY_GAP, // Prague → Vietnam: room around the small Prague photo on both sides
+  NORMAL_GAP, // Vietnam → Germany (Euro 2024)
   NORMAL_GAP, // Germany → Rome
-  BIG_GAP, // Rome → Belek
-  NORMAL_GAP, // Belek → Paris
-  BIG_GAP, // Paris → Lefkada
+  TIGHT_GAP, // Rome → Belek: two large architectural moments, kept close
+  AIRY_GAP, // Belek → Paris: settling into the small Paris moment
+  AIRY_GAP, // Paris → Lefkada: room around the small Paris photo on both sides
   NORMAL_GAP, // Lefkada → Budapest
-  BIG_GAP, // Budapest → Maldives
-  NORMAL_GAP, // Maldives → Florida & Bahamas
-  BIG_GAP, // Florida & Bahamas → Marseille & Provence
-  NORMAL_GAP, // Marseille & Provence → Seychelles
+  NORMAL_GAP, // Budapest → Maldives
+  AIRY_GAP, // Maldives → Florida & Bahamas: from the grand postcard to a small snapshot
+  AIRY_GAP, // Florida & Bahamas → Marseille & Provence: room around that snapshot
+  TIGHT_GAP, // Marseille & Provence → Seychelles: build straight into the finale
 ];
 
 export default function TravelGallery() {
