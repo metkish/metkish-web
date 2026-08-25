@@ -31,95 +31,98 @@ type Block =
 // Real Tenerife photo.
 const tenerife: GalleryItem = {
   id: 'tenerife',
-  src: '/Tenerife/Tenerife_landing%20page.jpeg',
+  src: '/2026-07%20-%20Tenerife/Tenerife_landing%20page.jpeg',
   alt: 'Tenerife',
   href: '#',
 };
 // Real Iceland photos.
 const reykjavikPhoto1: GalleryItem = {
   id: 'reykjavik-1',
-  src: '/Iceland_metkish%20page/Iceland_landing%20page.jpeg',
+  src: '/2025-10%20-%20Iceland_metkish%20page/Iceland_landing%20page.jpeg',
   alt: 'Reykjavik',
   href: '#',
 };
 const reykjavikPhoto2: GalleryItem = {
   id: 'reykjavik-2',
-  src: '/Iceland_metkish%20page/Iceland_landing%20page2.jpeg',
+  src: '/2025-10%20-%20Iceland_metkish%20page/Iceland_landing%20page2.jpeg',
   alt: 'Reykjavik',
   href: '#',
 };
 // Real Prague photo.
 const prague: GalleryItem = {
   id: 'prague',
-  src: '/Czechia/Prague_landing%20page.jpeg',
+  src: '/2025-06%20-%20Czechia%20roadtrip/Prague_landing%20page.jpeg',
   alt: 'Prague',
   href: '#',
 };
-// Placeholder photos/captions — swap `src`, `href` and caption text once real content is ready.
+// Real Italy road trip photo.
 const italy: GalleryItem = {
   id: 'italy',
-  src: '/Italy/Milan%20Cinque%20Terre%20Pisa/Italy_landing%20page.jpeg',
+  src: '/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Italy_landing%20page.jpeg',
   alt: 'Italy',
   href: '#',
 };
+// Real Sardinia photo.
 const sardinia: GalleryItem = {
   id: 'sardinia',
-  src: '/Sardinia/Sardinia_landing%20page.jpeg',
+  src: '/2025-07%20-%20Sardinia/Sardinia_landing%20page.jpeg',
   alt: 'Sardinia',
   href: '#',
 };
-const reykjavik: GalleryItem = {
-  id: 'reykjavik',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Maldives photo.
+const maldives: GalleryItem = {
+  id: 'maldives',
+  src: '/2023-01%20-%20Maldives%20Kuramathi/IMG_9738.jpeg',
+  alt: 'Maldives',
   href: '#',
 };
-const amsterdam: GalleryItem = {
-  id: 'amsterdam',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Budapest photo.
+const budapest: GalleryItem = {
+  id: 'budapest',
+  src: '/2023-05%20-%20Budapest/IMG_1785.jpeg',
+  alt: 'Budapest',
   href: '#',
 };
-const amsterdamMemory: GalleryItem = {
-  id: 'amsterdam-memory',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Greece / Lefkada photo.
+const lefkada: GalleryItem = {
+  id: 'lefkada',
+  src: '/2023-07-%20Greece%20Lefkada/IMG_2193.jpeg',
+  alt: 'Lefkada',
   href: '#',
 };
-const lisbon: GalleryItem = {
-  id: 'lisbon',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Paris photo.
+const paris: GalleryItem = {
+  id: 'paris',
+  src: '/2023-08%20-%20France%20Paris/IMG_2953.jpeg',
+  alt: 'Paris',
   href: '#',
 };
-const provenceMemory: GalleryItem = {
-  id: 'provence-memory',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Turkey / Belek photo.
+const belek: GalleryItem = {
+  id: 'belek',
+  src: '/2023-10%20-Turkey%20Belek/IMG_4015.jpeg',
+  alt: 'Belek',
   href: '#',
 };
-const provence: GalleryItem = {
-  id: 'provence',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Italy / Rome photo.
+const rome: GalleryItem = {
+  id: 'rome',
+  src: '/2023-11%20-%20Italy_Rome/IMG_4072.jpeg',
+  alt: 'Rome',
   href: '#',
 };
-const dubrovnik: GalleryItem = {
-  id: 'dubrovnik',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Germany / Euro 2024 photo.
+const euro2024: GalleryItem = {
+  id: 'euro-2024',
+  src: '/2024-06%20-%20Germany%20euro%202024/Euro%202024%20trip.jpeg',
+  alt: 'Germany, Euro 2024',
   href: '#',
 };
-const marrakech: GalleryItem = {
-  id: 'marrakech',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
-  href: '#',
-};
-const marrakechMemory: GalleryItem = {
-  id: 'marrakech-memory',
-  src: '/placeholder_picture.jpg',
-  alt: 'Unknown',
+// Real Vietnam photo.
+const vietnam: GalleryItem = {
+  id: 'vietnam',
+  src: '/2024-12%20-%20Vietnam/Vietnam_landing%20page.jpeg',
+  alt: 'Vietnam',
   href: '#',
 };
 
@@ -190,71 +193,99 @@ const BLOCKS: Block[] = [
   },
   {
     kind: 'solo',
-    item: reykjavik,
-    width: 'w-full',
+    item: maldives,
+    width: 'w-full md:w-[80%]',
+    aspect: 'aspect-[4/3]',
     caption: {
-      location: 'Unknown',
-      title: 'Unknown',
-      description: 'Coming soon.',
-    },
-  },
-  {
-    kind: 'pair',
-    big: amsterdam,
-    bigSide: 'right',
-    bigWidth: 'w-full md:w-[54%]',
-    small: amsterdamMemory,
-    smallWidth: 'w-full md:w-[38%]',
-    bigCaption: {
-      location: 'Unknown',
-      title: 'Unknown',
-      description: 'Coming soon.',
+      location: 'Maldives · Kuramathi',
+      title: 'Maldives',
+      description:
+        'Overwater villas, endless turquoise and absolutely nothing on the agenda — the trip that taught me how to properly switch off.',
     },
   },
   {
     kind: 'solo',
-    item: lisbon,
-    width: 'w-full md:w-[84%]',
+    item: budapest,
+    width: 'w-full md:w-[62%]',
+    marginLeft: 'md:ml-[38%]',
+    aspect: 'aspect-[3/4]',
     caption: {
-      location: 'Unknown',
-      title: 'Unknown',
-      description: 'Coming soon.',
-    },
-  },
-  {
-    kind: 'pair',
-    big: provence,
-    bigSide: 'right',
-    bigWidth: 'w-full md:w-[60%]',
-    small: provenceMemory,
-    smallWidth: 'w-full md:w-[32%]',
-    bigCaption: {
-      location: 'Unknown',
-      title: 'Unknown',
-      description: 'Coming soon.',
+      location: 'Hungary · Budapest',
+      title: 'Budapest',
+      description:
+        'Thermal baths, grand architecture and a river that splits the city in two — Budapest was equal parts elegant and easygoing.',
     },
   },
   {
     kind: 'solo',
-    item: dubrovnik,
+    item: lefkada,
     width: 'w-full',
+    aspect: 'aspect-[21/9]',
     caption: {
-      location: 'Unknown',
-      title: 'Unknown',
-      description: 'Coming soon.',
+      location: 'Greece · Lefkada',
+      title: 'Lefkada',
+      description:
+        'Cliffside beaches and water so blue it barely looked real — one of those islands you leave already planning to return to.',
     },
   },
   {
-    kind: 'pair',
-    big: marrakech,
-    bigSide: 'left',
-    bigWidth: 'w-full md:w-[56%]',
-    small: marrakechMemory,
-    smallWidth: 'w-full md:w-[36%]',
-    bigCaption: {
-      location: 'Unknown',
-      title: 'Unknown',
-      description: 'Coming soon.',
+    kind: 'solo',
+    item: paris,
+    width: 'w-full md:w-[50%]',
+    marginLeft: 'md:ml-[25%]',
+    aspect: 'aspect-[4/5]',
+    caption: {
+      location: 'France · Paris',
+      title: 'Paris',
+      description:
+        'Golden evening light, quiet side streets and coffee that turned into hours — Paris in late summer, exactly as it should be.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: belek,
+    width: 'w-full md:w-[85%]',
+    marginLeft: 'md:ml-[15%]',
+    caption: {
+      location: 'Turkey · Belek',
+      title: 'Belek',
+      description:
+        'Warm October sun, long walks along the coast and the kind of slow week that resets everything.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: rome,
+    width: 'w-full',
+    aspect: 'aspect-[2/1]',
+    caption: {
+      location: 'Italy · Rome',
+      title: 'Rome',
+      description:
+        "Two thousand years of history stacked on every corner — I don't think I've ever walked that much and minded that little.",
+    },
+  },
+  {
+    kind: 'solo',
+    item: euro2024,
+    width: 'w-full md:w-[68%]',
+    aspect: 'aspect-square',
+    caption: {
+      location: 'Germany · Euro 2024',
+      title: 'Germany',
+      description:
+        'Stadiums, city squares full of strangers singing the same songs and a summer built entirely around football.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: vietnam,
+    width: 'w-full',
+    caption: {
+      location: 'Vietnam',
+      title: 'Vietnam',
+      description:
+        'Motorbikes, street food at every corner and a pace of life that completely rewired how I think about travel.',
     },
   },
 ];
@@ -306,12 +337,14 @@ const GAP_SEQUENCE = [
   BIG_GAP, // Italy → Iceland
   NORMAL_GAP, // Iceland → Sardinia
   BIG_GAP, // Sardinia → Prague
-  NORMAL_GAP, // Prague → Reykjavik
-  BIG_GAP, // Reykjavik → Amsterdam
-  NORMAL_GAP, // Amsterdam → Lisbon
-  BIG_GAP, // Lisbon → Provence
-  NORMAL_GAP, // Provence → Dubrovnik
-  BIG_GAP, // Dubrovnik → Marrakech
+  NORMAL_GAP, // Prague → Maldives
+  BIG_GAP, // Maldives → Budapest
+  NORMAL_GAP, // Budapest → Lefkada
+  BIG_GAP, // Lefkada → Paris
+  NORMAL_GAP, // Paris → Belek
+  BIG_GAP, // Belek → Rome
+  NORMAL_GAP, // Rome → Germany (Euro 2024)
+  BIG_GAP, // Germany → Vietnam
 ];
 
 export default function TravelGallery() {
