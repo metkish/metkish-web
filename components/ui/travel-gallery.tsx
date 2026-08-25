@@ -140,7 +140,7 @@ const marseilleProvence: GalleryItem = {
 // Real Seychelles photo.
 const seychelles: GalleryItem = {
   id: 'seychelles',
-  src: '/2018-04%20-%20Seychelles/Seychelles_landing%20page.jpg',
+  src: '/2018-04%20-%20Seychelles/Seyschelles_landing%20page.jpg',
   alt: 'Seychelles',
   href: '#',
 };
