@@ -35,16 +35,10 @@ const tenerife: GalleryItem = {
   alt: 'Tenerife',
   href: '#',
 };
-// Real Iceland photos.
+// Real Iceland photo.
 const reykjavikPhoto1: GalleryItem = {
   id: 'reykjavik-1',
   src: '/2025-10%20-%20Iceland_metkish%20page/Iceland_landing%20page.jpeg',
-  alt: 'Reykjavik',
-  href: '#',
-};
-const reykjavikPhoto2: GalleryItem = {
-  id: 'reykjavik-2',
-  src: '/2025-10%20-%20Iceland_metkish%20page/Iceland_landing%20page2.jpeg',
   alt: 'Reykjavik',
   href: '#',
 };
@@ -154,13 +148,10 @@ const BLOCKS: Block[] = [
     },
   },
   {
-    kind: 'pair',
-    big: reykjavikPhoto1,
-    bigSide: 'left',
-    bigWidth: 'w-full md:w-[58%]',
-    small: reykjavikPhoto2,
-    smallWidth: 'w-full md:w-[34%]',
-    bigCaption: {
+    kind: 'solo',
+    item: reykjavikPhoto1,
+    width: 'w-full',
+    caption: {
       location: 'Iceland',
       title: 'Iceland',
       description:
