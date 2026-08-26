@@ -153,7 +153,7 @@ export default function AboutPage() {
       </section>
 
       {/* It started with a missed flight */}
-      <section className='px-6 md:px-12 py-16 md:py-20'>
+      <section className='px-6 md:px-12 pt-16 pb-[51px] md:pt-20 md:pb-16'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>It started with a missed flight</Eyebrow>
           <div className='mt-6'>
@@ -175,7 +175,7 @@ export default function AboutPage() {
       </section>
 
       {/* Somewhere along the way, I became the planner */}
-      <section className='px-6 md:px-12 py-16 md:py-20'>
+      <section className='px-6 md:px-12 pt-[51px] pb-16 md:pt-16 md:pb-20'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>Somewhere along the way, I became the planner</Eyebrow>
           <div className='mt-6'>
@@ -209,7 +209,7 @@ export default function AboutPage() {
       </section>
 
       {/* Comfort, not luxury — the most important idea on the page */}
-      <section className='px-6 md:px-12 py-20 md:py-28'>
+      <section className='px-6 md:px-12 pt-20 pb-16 md:pt-28 md:pb-[90px]'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>Comfort, not luxury</Eyebrow>
           <div className='mt-6'>
@@ -232,7 +232,7 @@ export default function AboutPage() {
       </section>
 
       {/* We don't try to see everything anymore */}
-      <section className='px-6 md:px-12 py-16 md:py-20'>
+      <section className='px-6 md:px-12 pt-[51px] pb-[51px] md:pt-16 md:pb-16'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>We don&apos;t try to see everything anymore</Eyebrow>
           <div className='mt-6'>
@@ -256,7 +256,7 @@ export default function AboutPage() {
       </section>
 
       {/* What looks easy online isn't always easy in real life */}
-      <section className='px-6 md:px-12 py-16 md:py-20'>
+      <section className='px-6 md:px-12 pt-[51px] pb-[51px] md:pt-16 md:pb-16'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>
             What looks easy online isn&apos;t always easy in real life
@@ -285,7 +285,7 @@ export default function AboutPage() {
           the stadium photograph as a side-by-side editorial composition on
           desktop; stacks naturally on mobile. No card, no border, no
           football graphics — just the photo and the text. */}
-      <section className='px-6 md:px-12 py-12 md:py-16'>
+      <section className='px-6 md:px-12 pt-[38px] pb-12 md:pt-[51px] md:pb-16'>
         <Reveal className='max-w-3xl mx-auto'>
           <div className='flex flex-col md:flex-row md:items-center gap-8 md:gap-12'>
             <div className='w-full md:w-[42%] md:shrink-0'>
@@ -318,7 +318,7 @@ export default function AboutPage() {
       {/* These aren't travel photographs. They're travel memories. — now on
           the same main text axis as every other section; no photo added
           here, the photographs already seen make the point. */}
-      <section className='px-6 md:px-12 py-16 md:py-20'>
+      <section className='px-6 md:px-12 pt-16 pb-[51px] md:pt-20 md:pb-16'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>
             These aren&apos;t travel photographs. They&apos;re travel
@@ -343,7 +343,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why this site exists — closing section */}
-      <section className='px-6 md:px-12 py-20 md:py-28'>
+      <section className='px-6 md:px-12 pt-16 pb-20 md:pt-[90px] md:pb-28'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>Why this site exists</Eyebrow>
           <div className='mt-6'>
