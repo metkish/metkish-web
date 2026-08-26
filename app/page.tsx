@@ -101,10 +101,11 @@ export default function Home() {
           the story behind the journeys
         </p>
         <p className='max-w-2xl text-center text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-          I&apos;m Metka, and I plan our family travels. I love new places,
-          beautiful landscapes and being close to nature — and with every
-          trip, I&apos;ve learned a little more about what works, what
-          doesn&apos;t, and how to plan the next one better.
+          I&apos;m Metka, the planner behind our family travels. I love
+          figuring out where to go, where to stay and how to make a trip
+          work for us — then leaving enough room to simply enjoy it. Here I
+          share what worked, what didn&apos;t, and what I&apos;d do
+          differently next time.
         </p>
         <a
           href='/about'
