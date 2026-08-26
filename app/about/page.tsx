@@ -224,7 +224,7 @@ export default function AboutPage() {
           </div>
         </Reveal>
         <Reveal delay={0.1} className='mt-16 md:mt-24'>
-          <Statement className='text-3xl md:text-4xl max-w-2xl mx-auto'>
+          <Statement className='text-2xl md:text-3xl max-w-2xl mx-auto'>
             For us, comfort isn&apos;t about luxury. It&apos;s about removing
             unnecessary stress.
           </Statement>
@@ -274,7 +274,7 @@ export default function AboutPage() {
           </div>
         </Reveal>
         <Reveal delay={0.1} className='mt-14 md:mt-16'>
-          <Statement className='text-xl md:text-2xl max-w-2xl mx-auto'>
+          <Statement className='text-2xl md:text-3xl max-w-2xl mx-auto'>
             Knowing that something can be done isn&apos;t quite the same as
             knowing whether I&apos;d actually recommend doing it.
           </Statement>
@@ -359,7 +359,7 @@ export default function AboutPage() {
           </div>
         </Reveal>
         <Reveal delay={0.1} className='mt-16 md:mt-24'>
-          <Statement className='text-[1.65rem] md:text-[2.6rem] max-w-2xl mx-auto'>
+          <Statement className='text-2xl md:text-3xl max-w-2xl mx-auto'>
             This is simply how we found our way of travelling.
           </Statement>
         </Reveal>
