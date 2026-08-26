@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 
 const LOGO_SRC = '/metkish-logo.png';
 const SUITCASES_SRC = '/About/Four%20suitcases.jpg';
+const AIRPORT_SRC = '/About/At%20the%20airport.jpeg';
+const STADIUM_SRC = '/About/Football%20stadium.jpeg';
 
 // Same fade-up-on-scroll rhythm used throughout the site (see TravelGallery):
 // once-only, generous viewport threshold, no bounce or flashiness.
@@ -34,10 +36,12 @@ function Reveal({
 
 // The small uppercase kicker already used above each destination's title in
 // TravelGallery — reused here as the section marker instead of introducing a
-// new heading style or a blog-style bold headline per section.
+// new heading style or a blog-style bold headline per section. Kept subtle
+// on purpose (small, not bold, not black) but with slightly higher contrast
+// than a first pass so it reads clearly against the page background.
 function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <span className='block text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+    <span className='block text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
       {children}
     </span>
   );
@@ -115,7 +119,7 @@ export default function AboutPage() {
         />
       </Link>
 
-      {/* Hero */}
+      {/* Hero — unchanged: this opening works, so it stays exactly as it was */}
       <section className='px-6 md:px-12 pt-36 md:pt-44 pb-20 md:pb-28 flex flex-col items-center text-center'>
         <Reveal className='max-w-2xl mx-auto flex flex-col items-center'>
           <Eyebrow>About</Eyebrow>
@@ -157,7 +161,7 @@ export default function AboutPage() {
               items={[
                 'In 2013, I surprised my husband with tickets to an FC Barcelona match. We were flying from Venice and, thinking we had plenty of time, decided to visit the city before our flight.',
                 'Roadworks, a confused GPS and some very poor time management later, we missed it.',
-                "Luckily, there was another flight that day. We bought new tickets and eventually made it to Barcelona — running into the stadium just as the match was starting.",
+                'Luckily, there was another flight that day. We bought new tickets and made it to Barcelona — running into the stadium just as the match was starting.',
                 "We've been at the airport at least two hours early ever since.",
               ]}
             />
@@ -177,19 +181,34 @@ export default function AboutPage() {
           <div className='mt-6'>
             <Paragraphs
               items={[
-                'Later that year, we booked an organised trip to Paris and London. When it was cancelled because too few people had signed up, I decided to organise everything myself.',
-                'It worked — mostly.',
-                'Our London accommodation turned out to be a basement apartment that felt more like a bunker, and I barely slept.',
-                "Years later, I can probably call myself a Booking.com veteran. I spend far too much time checking locations, rooms, reviews and photos — and every now and then, a place still manages to surprise me. Usually not in the way I hoped.",
-                'When our children were two and three and a half, I planned our trip to the Seychelles entirely on our own. That was the first bigger family journey I organised.',
-                'And somewhere along the way I realised that I genuinely enjoy the part many people would rather skip: researching destinations, comparing flights, finding accommodation and figuring out how everything fits together.',
+                "Later that year, an organised trip we'd booked to Paris and London was cancelled because too few people had signed up. So I decided to organise everything myself.",
+                'It worked — mostly. Our London accommodation turned out to be a basement apartment that felt more like a bunker, and I barely slept.',
+                'A few years later, when our children were two and three and a half, I planned our first bigger family journey to the Seychelles entirely on my own.',
+                'Somewhere along the way, I realised I genuinely enjoy the part many people would rather skip: researching destinations, comparing flights, finding the right accommodation and figuring out how everything fits together.',
               ]}
             />
           </div>
         </Reveal>
       </section>
 
-      {/* Comfort, not luxury */}
+      {/* Airport photograph — an old, spontaneous family snapshot, not a
+          polished shot. Landscape frame, modest width so it doesn't compete
+          with the hero photo; no caption, no text over the image. */}
+      <section className='px-6 md:px-12 py-10 md:py-14'>
+        <Reveal className='w-full max-w-xl mx-auto'>
+          <div className='relative w-full aspect-[16/9] overflow-hidden rounded-[2px]'>
+            <Image
+              src={AIRPORT_SRC}
+              alt='Two children sitting on suitcases at an airport, photographed from behind'
+              fill
+              sizes='(max-width: 768px) 90vw, 576px'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Comfort, not luxury — the most important idea on the page */}
       <section className='px-6 md:px-12 py-20 md:py-28'>
         <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>Comfort, not luxury</Eyebrow>
@@ -198,9 +217,8 @@ export default function AboutPage() {
               items={[
                 "We don't travel as cheaply as possible, and we don't travel luxuriously either.",
                 "We look for comfortable, clean places in good locations. I'd rather postpone a trip than travel at any cost and spend it somewhere we don't feel comfortable.",
-                'The same goes for getting there.',
-                "We don't choose an exhausting flight with a long layover simply because it's cheaper. After once waiting for more than an hour with two tired little children for a shuttle to a remote airport car park, we started parking within easy reach of the terminal.",
-                'After another late-night arrival left us waiting more than an hour for a taxi, I started arranging transfers in advance whenever we arrive late.',
+                'Over the years, small experiences changed the way I plan: waiting with two tired little children for a shuttle to a remote airport car park, spending more than an hour waiting for a taxi after a late-night arrival, or discovering that a transport option that sounded easy online wasn’t nearly as practical with children and luggage.',
+                'Now I prefer to spend a little more where it genuinely makes travelling easier — not for luxury, but to avoid unnecessary stress.',
               ]}
             />
           </div>
@@ -222,9 +240,8 @@ export default function AboutPage() {
               items={[
                 'We used to plan almost every day of a trip because we wanted to make the most of our time.',
                 'Eventually, we realised we were sometimes making ourselves tired and grumpy instead.',
-                'So I still plan. A lot.',
-                'But the plan is now a framework, not a schedule.',
-                "When we arrived at our hotel in Tenerife at four in the morning, our only plan for that first day was the hotel pool and perhaps a walk nearby. We didn't even pick up our rental car until the following day.",
+                'So I still plan. A lot. But the plan is now a framework, not a schedule.',
+                "We leave room for slow mornings, tired days, spontaneous changes and simply deciding that we'd rather stay by the pool.",
                 "I research before we leave so that once we're there, we can decide what we actually feel like doing.",
               ]}
             />
@@ -247,13 +264,11 @@ export default function AboutPage() {
           <div className='mt-6'>
             <Paragraphs
               items={[
-                'When we landed in the Seychelles with two small children and our luggage, our plan sounded simple: take the local bus to the port and continue by boat.',
-                'We had read that it was an easy option.',
-                'Then the bus arrived.',
-                'It was so crowded that fitting ourselves inside would have been difficult enough, never mind two small children and all our luggage.',
-                "Technically, the information we'd found online was correct. Practically, it wasn't right for us.",
-                'Today there is more information available than ever, and AI has made planning even easier. I use it too — including while creating this website.',
-                "But AI is a tool, not the entire process. I still check current information, compare options and do my own research. A restaurant recommendation isn't very useful if the restaurant has closed, and a transport option that technically exists isn't necessarily the one that makes sense for our family.",
+                'When we landed in the Seychelles with two small children and our luggage, we planned to take the local bus from the airport to the port. Online, it sounded simple.',
+                'In reality, the bus was so crowded that getting ourselves inside would have been difficult enough, never mind the children and our luggage.',
+                "Technically, the information we'd found was correct. Practically, it wasn't right for us.",
+                'Today, AI makes finding ideas and planning easier than ever, and I use it too — including while creating this website. But I still check current information, compare options and do my own research.',
+                'Information can be correct and still not be practical for our family.',
               ]}
             />
           </div>
@@ -266,29 +281,45 @@ export default function AboutPage() {
         </Reveal>
       </section>
 
-      {/* Football often comes with us — kept short, on purpose */}
+      {/* Football often comes with us — kept short on purpose, paired with
+          the stadium photograph as a side-by-side editorial composition on
+          desktop; stacks naturally on mobile. No card, no border, no
+          football graphics — just the photo and the text. */}
       <section className='px-6 md:px-12 py-12 md:py-16'>
-        <Reveal className='max-w-xl mx-auto'>
-          <Eyebrow>Football often comes with us</Eyebrow>
-          <div className='mt-6'>
-            <Paragraphs
-              items={[
-                'We are a football-loving family, so matches and stadiums have a habit of finding their way into our travels.',
-                "Sometimes football is part of the trip. Sometimes it's the reason for the trip in the first place.",
-                "Either way, our journeys aren't only about seeing famous places. They're about the things we enjoy experiencing together.",
-              ]}
-            />
+        <Reveal className='max-w-3xl mx-auto'>
+          <div className='flex flex-col md:flex-row md:items-center gap-8 md:gap-12'>
+            <div className='w-full md:w-[42%] md:shrink-0'>
+              <div className='relative w-full aspect-[3/4] overflow-hidden rounded-[2px]'>
+                <Image
+                  src={STADIUM_SRC}
+                  alt='Watching a football match from the stands, photographed from behind'
+                  fill
+                  sizes='(max-width: 768px) 90vw, 320px'
+                  className='object-cover'
+                />
+              </div>
+            </div>
+            <div className='w-full md:flex-1'>
+              <Eyebrow>Football often comes with us</Eyebrow>
+              <div className='mt-6'>
+                <Paragraphs
+                  items={[
+                    'We are a football-loving family, so matches and stadiums have a habit of finding their way into our travels.',
+                    "Sometimes football is part of the trip. Sometimes it's the reason for the trip in the first place.",
+                    "Either way, our journeys aren't only about seeing famous places. They're about the things we enjoy experiencing together.",
+                  ]}
+                />
+              </div>
+            </div>
           </div>
-          {/* Future photo slot: a small stadium/match detail (a scarf, seats,
-              a shot from behind the crowd) would sit naturally here once
-              available — no restructuring needed, just add an image below
-              the paragraphs. */}
         </Reveal>
       </section>
 
-      {/* These aren't travel photographs. They're travel memories. */}
+      {/* These aren't travel photographs. They're travel memories. — now on
+          the same main text axis as every other section; no photo added
+          here, the photographs already seen make the point. */}
       <section className='px-6 md:px-12 py-16 md:py-20'>
-        <Reveal className='max-w-xl md:ml-[8%] md:mr-auto'>
+        <Reveal className='max-w-2xl mx-auto'>
           <Eyebrow>
             These aren&apos;t travel photographs. They&apos;re travel
             memories.
@@ -296,19 +327,12 @@ export default function AboutPage() {
           <div className='mt-6'>
             <Paragraphs
               items={[
-                "I'm not a photographer, and I don't travel with the intention of documenting everything.",
-                "Most of the photographs here were simply taken with my phone because it's always with me. I photograph little pieces of our journeys — a place, a view, a shadow, something I want to remember.",
-                "Sometimes the photographs turn out beautifully. Sometimes they don't.",
-                "And many of the best things that happen while we're travelling never make it into a photograph at all.",
-                "That's fine with me.",
+                "I'm not a photographer, and I don't travel to document everything.",
+                "Most of the photographs here were taken with my phone simply because it's always with me — little pieces of our journeys I wanted to remember.",
+                "Some turn out beautifully. Some don't. And many of our best moments were never photographed at all.",
               ]}
             />
           </div>
-          {/* Future photo slot: a handful of small, imperfect phone photos —
-              a shadow, hands, feet, a detail from a trip — could sit beside
-              or beneath this text as a loose, uncurated row rather than a
-              polished gallery, reinforcing the point rather than
-              contradicting it. */}
         </Reveal>
         <Reveal delay={0.1} className='mt-14 md:mt-16'>
           <Statement className='text-2xl md:text-3xl max-w-xl mx-auto'>
@@ -335,7 +359,7 @@ export default function AboutPage() {
           </div>
         </Reveal>
         <Reveal delay={0.1} className='mt-16 md:mt-24'>
-          <Statement className='text-3xl md:text-5xl max-w-2xl mx-auto'>
+          <Statement className='text-[1.65rem] md:text-[2.6rem] max-w-2xl mx-auto'>
             This is simply how we found our way of travelling.
           </Statement>
         </Reveal>
