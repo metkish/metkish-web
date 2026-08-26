@@ -206,7 +206,7 @@ const BLOCKS: Block[] = [
       location: 'Czech Republic',
       title: 'Prague',
       description:
-        "Cobblestone streets, an old stone gate and long afternoon shadows — Prague felt like walking straight into a postcard.",
+        'Our second time in Prague — this time with the kids, beautiful architecture and an unforgettable AC/DC concert.',
     },
   },
   {
@@ -217,7 +217,7 @@ const BLOCKS: Block[] = [
     caption: {
       title: 'Vietnam',
       description:
-        'Motorbikes, street food at every corner and a pace of life that completely rewired how I think about travel.',
+        'Our biggest culture shock yet. Vietnam was fascinating, confronting and completely different from what we knew — but ultimately, not for us.',
     },
   },
   {
@@ -230,7 +230,7 @@ const BLOCKS: Block[] = [
       location: 'Germany · Euro 2024',
       title: 'Germany',
       description:
-        'Stadiums, city squares full of strangers singing the same songs and a summer built entirely around football.',
+        'Germany through football and family travel — three Euro 2024 matches, beautiful places and great memories along the way.',
     },
   },
   {
@@ -242,7 +242,7 @@ const BLOCKS: Block[] = [
       location: 'Italy',
       title: 'Rome',
       description:
-        "Two thousand years of history stacked on every corner — I don't think I've ever walked that much and minded that little.",
+        'Incredible history, iconic sights — but somehow, Rome just wasn’t our city. We saw it, experienced it, but never really fell for it.',
     },
   },
   {
@@ -254,7 +254,7 @@ const BLOCKS: Block[] = [
       location: 'Turkey',
       title: 'Belek',
       description:
-        'Warm October sun, long walks along the coast and the kind of slow week that resets everything.',
+        'Belek is made for switching off — beautiful resorts, endless food and everything taken care of. But after a few days, we were ready for more than resort life. Picture-perfect at first glance, a little less exciting in reality.',
     },
   },
   {
@@ -266,7 +266,7 @@ const BLOCKS: Block[] = [
       location: 'France',
       title: 'Paris',
       description:
-        'Golden evening light, quiet side streets and coffee that turned into hours — Paris in late summer, exactly as it should be.',
+        'We fell in love with Paris on our first visit. Years later, returning with our children, the magic was still there in the sights — but not quite in the feeling of the city.',
     },
   },
   {
@@ -278,7 +278,7 @@ const BLOCKS: Block[] = [
       location: 'Greece',
       title: 'Lefkada',
       description:
-        'Cliffside beaches and water so blue it barely looked real — one of those islands you leave already planning to return to.',
+        'Lefkada’s beaches aren’t always easy — long stairs, steep climbs, strong waves and almost no shade. But the colour of the sea is something else. Even with all the effort, we’d say they’re absolutely worth it.',
     },
   },
   {
@@ -291,7 +291,7 @@ const BLOCKS: Block[] = [
       location: 'Hungary',
       title: 'Budapest',
       description:
-        'Thermal baths, grand architecture and a river that splits the city in two — Budapest was equal parts elegant and easygoing.',
+        'Some cities you visit once. Others make you want to come back. Budapest is definitely the second kind for us — beautiful, well organised and a great choice for a weekend getaway. Next time, we’re taking the kids.',
     },
   },
   {
@@ -303,7 +303,7 @@ const BLOCKS: Block[] = [
       location: 'Maldives',
       title: 'Kuramathi',
       description:
-        'Overwater villas, endless turquoise and absolutely nothing on the agenda — the trip that taught me how to properly switch off.',
+        'Some resorts get boring. The Maldives never did. Kuramathi was beautiful, luxurious and a place we didn’t want to leave.',
     },
   },
   {
@@ -315,7 +315,7 @@ const BLOCKS: Block[] = [
     caption: {
       title: 'Florida & Bahamas',
       description:
-        'Theme parks, palm trees and island-hopping into water so clear it barely looked real — a trip that felt like two very different holidays in one.',
+        'Florida was an adventure, the cruise was an experience, but the Bahamas were unforgettable. That white, powder-soft sand is still the best we’ve ever seen. One day, we’ll be back.',
     },
   },
   {
@@ -327,7 +327,7 @@ const BLOCKS: Block[] = [
       location: 'France',
       title: 'Provence & Marseille',
       description:
-        'Lavender fields, harbour towns and long lunches in the sun — the south of France at its most relaxed.',
+        'From beautiful Marseille to the roads of Provence, this trip proved that traveling with small children can still be a wonderful adventure — even when the lavender isn’t in bloom.',
     },
   },
   {
@@ -339,7 +339,7 @@ const BLOCKS: Block[] = [
     caption: {
       title: 'Seychelles',
       description:
-        'Powder-white beaches, giant granite boulders and turquoise water — the kind of postcard scenery that barely felt real.',
+        'The beaches are beautiful, but it was the giant granite rocks that impressed us most. La Digue, explored by bike with two toddlers, remains our favorite Seychelles memory.',
     },
   },
 ];
