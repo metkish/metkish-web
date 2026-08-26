@@ -118,7 +118,7 @@ const euro2024: GalleryItem = {
 // Real Vietnam photo.
 const vietnam: GalleryItem = {
   id: 'vietnam',
-  src: '/2024-12%20-%20Vietnam/Vietnam_landing%20page.jpeg',
+  src: '/2024-12%20-%20Vietnam/Vietna_landing_page.jpeg',
   alt: 'Vietnam',
   href: '#',
 };
