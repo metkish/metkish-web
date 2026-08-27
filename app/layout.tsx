@@ -28,8 +28,28 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://metkish.com"),
   title: "Metkish",
-  description: "Metkish portfolio",
+  description: "Metkish website",
+  openGraph: {
+    title: "Metkish",
+    description: "Metkish website",
+    url: "https://metkish.com",
+    siteName: "Metkish",
+    images: [
+      {
+        url: "/metkish-logo.png",
+        width: 2201,
+        height: 2201,
+        alt: "Metkish logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  icons: {
+    icon: "/metkish-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
