@@ -56,6 +56,32 @@ const ScrollExpandMedia = ({
     setMediaFullyExpanded(false);
   }
 
+  // If this page was opened via a link straight to a section further down
+  // (e.g. a "Back to destinations" link using "/#travels" from a
+  // destination page), skip the scroll-driven hero intro entirely and show
+  // the expanded state immediately, then jump to that section. Without
+  // this, the scroll-hijacking below would repeatedly reset the page back
+  // to the top instead of landing on the linked section. A normal visit to
+  // "/" with no hash is completely unaffected: this effect is a no-op then.
+  //
+  // These three updates are one atomic "skip the intro" transition (React
+  // batches them into a single re-render) driven by window.location, which
+  // isn't available at render time without risking a hydration mismatch —
+  // so it has to live in an effect rather than as derived render state.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.location.hash) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional one-time bootstrap from window.location.hash on mount; see comment above
+    setScrollProgress(1);
+    setMediaFullyExpanded(true);
+    setShowContent(true);
+    const id = window.location.hash.slice(1);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({ block: 'start' });
+      });
+    });
+  }, []);
+
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (mediaFullyExpanded && e.deltaY < 0 && window.scrollY <= 5) {

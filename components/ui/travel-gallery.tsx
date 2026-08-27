@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 interface GalleryItem {
@@ -36,91 +37,91 @@ const tenerife: GalleryItem = {
   id: 'tenerife',
   src: '/2026-07%20-%20Tenerife/Tenerife_landing%20page.jpeg',
   alt: 'Tenerife',
-  href: '#',
+  href: '/tenerife',
 };
 // Real Iceland photo.
 const reykjavikPhoto1: GalleryItem = {
   id: 'reykjavik-1',
   src: '/2025-10%20-%20Iceland_metkish%20page/Iceland_landing%20page.jpeg',
   alt: 'Reykjavik',
-  href: '#',
+  href: '/iceland',
 };
 // Real Prague photo.
 const prague: GalleryItem = {
   id: 'prague',
   src: '/2025-06%20-%20Czechia%20roadtrip/Prague_landing%20page.jpeg',
   alt: 'Prague',
-  href: '#',
+  href: '/prague',
 };
 // Real Italy road trip photo.
 const italy: GalleryItem = {
   id: 'italy',
   src: '/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Italy_landing%20page.jpeg',
   alt: 'Italy',
-  href: '#',
+  href: '/italy',
 };
 // Real Sardinia photo.
 const sardinia: GalleryItem = {
   id: 'sardinia',
   src: '/2025-07%20-%20Sardinia/Sardinia_landing%20page.jpeg',
   alt: 'Sardinia',
-  href: '#',
+  href: '/sardinia',
 };
 // Real Maldives photo.
 const maldives: GalleryItem = {
   id: 'maldives',
   src: '/2023-01%20-%20Maldives%20Kuramathi/IMG_9738.jpeg',
   alt: 'Maldives',
-  href: '#',
+  href: '/maldives',
 };
 // Real Budapest photo.
 const budapest: GalleryItem = {
   id: 'budapest',
   src: '/2023-05%20-%20Budapest/Budapest_landing%20page.jpeg',
   alt: 'Budapest',
-  href: '#',
+  href: '/budapest',
 };
 // Real Greece / Lefkada photo.
 const lefkada: GalleryItem = {
   id: 'lefkada',
   src: '/2023-07-%20Greece%20Lefkada/IMG_2193.jpeg',
   alt: 'Lefkada',
-  href: '#',
+  href: '/lefkada',
 };
 // Real Paris photo.
 const paris: GalleryItem = {
   id: 'paris',
   src: '/2023-08%20-%20France%20Paris/Paris_landing%20page.JPG',
   alt: 'Paris',
-  href: '#',
+  href: '/paris',
 };
 // Real Turkey / Belek photo.
 const belek: GalleryItem = {
   id: 'belek',
   src: '/2023-10%20-Turkey%20Belek/IMG_4015.jpeg',
   alt: 'Belek',
-  href: '#',
+  href: '/belek',
 };
 // Real Italy / Rome photo.
 const rome: GalleryItem = {
   id: 'rome',
   src: '/2023-11%20-%20Italy_Rome/Rome_landing%20page.jpeg',
   alt: 'Rome',
-  href: '#',
+  href: '/rome',
 };
 // Real Germany / Euro 2024 photo.
 const euro2024: GalleryItem = {
   id: 'euro-2024',
   src: '/2024-06%20-%20Germany%20euro%202024/Euro%202024%20trip.jpeg',
   alt: 'Germany, Euro 2024',
-  href: '#',
+  href: '/germany',
 };
 // Real Vietnam photo.
 const vietnam: GalleryItem = {
   id: 'vietnam',
   src: '/2024-12%20-%20Vietnam/Vietna_landing_page.jpeg',
   alt: 'Vietnam',
-  href: '#',
+  href: '/vietnam',
 };
 
 // Real USA / Florida & Bahamas photo.
@@ -128,21 +129,21 @@ const floridaBahamas: GalleryItem = {
   id: 'florida-bahamas',
   src: '/2019-11%20-%20USA%20Florida%20%26%20Bahamas/Landing%20page.jpeg',
   alt: 'Florida & Bahamas',
-  href: '#',
+  href: '/florida-bahamas',
 };
 // Real France / Marseille & Provence photo.
 const marseilleProvence: GalleryItem = {
   id: 'provence-marseille',
   src: '/2018-09%20-%20France%20Marseille%20%26%20Provence/Landing%20page.jpeg',
   alt: 'Provence & Marseille',
-  href: '#',
+  href: '/provence-marseille',
 };
 // Real Seychelles photo.
 const seychelles: GalleryItem = {
   id: 'seychelles',
   src: '/2018-04%20-%20Seychelles/Seyschelles_landing%20page.jpg',
   alt: 'Seychelles',
-  href: '#',
+  href: '/seychelles',
 };
 
 // Every destination gets its own, hand-set position — not a repeating left/right
@@ -372,14 +373,12 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
       <p className='mt-1 italic text-sm font-[family-name:var(--font-poppins)] text-black/70 dark:text-white/70'>
         {caption.description}
       </p>
-      <a
+      <Link
         href={item.href}
-        target='_blank'
-        rel='noopener noreferrer'
         className='mt-2 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
       >
         Explore {caption.title} →
-      </a>
+      </Link>
     </div>
   );
 }
