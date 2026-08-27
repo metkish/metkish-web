@@ -56,6 +56,20 @@ const ScrollExpandMedia = ({
     setMediaFullyExpanded(false);
   }
 
+  // The browser's own scroll-position memory (native "scroll
+  // restoration") can restore a deep scroll position from a previous visit
+  // to this page — independently of, and sometimes after, the logic below
+  // — leaving the hero's expand state and the actual scroll position out
+  // of sync (the page can land mid-gallery instead of on the hero image).
+  // Taking manual control here makes this component's own effects (the
+  // hash jump below, or simply starting at the top) the only source of
+  // truth for where the page opens.
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
   // If this page was opened via a link straight to a section further down
   // (e.g. a "Back to destinations" link using "/#travels" from a
   // destination page), skip the scroll-driven hero intro entirely and show
