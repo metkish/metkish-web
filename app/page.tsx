@@ -61,7 +61,7 @@ export default function Home() {
             <span className='text-pink-400 text-2xl leading-none'>♥</span>
             <span className='h-px w-10 bg-pink-300 dark:bg-pink-400/60' />
           </div>
-          <p className='mt-4 mb-16 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
+          <p className='mt-4 mb-10 md:mb-16 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
             places I&apos;ve been · memories I&apos;ve kept
           </p>
           <TravelGallery />
