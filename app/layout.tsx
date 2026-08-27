@@ -30,10 +30,10 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://metkish.com"),
   title: "Metkish",
-  description: "Family travel, honestly told.",
+  description: "Travel · memories · places worth remembering",
   openGraph: {
     title: "Metkish",
-    description: "Family travel, honestly told.",
+    description: "Travel · memories · places worth remembering",
     url: "https://metkish.com",
     siteName: "Metkish",
     images: [
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Metkish",
-    description: "Family travel, honestly told.",
+    description: "Travel · memories · places worth remembering",
     images: ["/og-image.png"],
   },
   icons: {
