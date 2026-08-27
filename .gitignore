@@ -45,6 +45,3 @@ dev.log
 install.log
 page.html
 _to_delete/
-
-# full-resolution originals kept locally before web-sized recompression
-/originals-full-res/
