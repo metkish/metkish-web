@@ -30,22 +30,33 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://metkish.com"),
   title: "Metkish",
-  description: "Metkish website",
+  description: "Family travel, honestly told.",
   openGraph: {
     title: "Metkish",
-    description: "Metkish website",
+    description: "Family travel, honestly told.",
     url: "https://metkish.com",
     siteName: "Metkish",
     images: [
       {
-        url: "/metkish-logo.png",
-        width: 2201,
-        height: 2201,
-        alt: "Metkish logo",
+        // Composed specifically for social sharing: the logo centred on
+        // a clean canvas at the standard OG size (1200x630), not the raw
+        // logo file — that file is a large near-square image, which is
+        // why it previously filled almost the whole WhatsApp/Facebook
+        // preview instead of sitting small and centred.
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Metkish",
       },
     ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metkish",
+    description: "Family travel, honestly told.",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: "/metkish-logo.png",
