@@ -56,3 +56,21 @@ Vse besedilo, naslov in URL-je medijev najdeš na vrhu `app/page.tsx` (konstanti
 ## Responsivnost
 
 Komponenta že vsebuje mobilno obnašanje (drugačna občutljivost na touch scroll, ožji razpon širine/višine medija pod 768px) — prilagajanje ni potrebno, deluje "iz škatle".
+
+## Git delovni tok (produkcija vs. razvoj)
+
+Repozitorij od zdaj naprej uporablja dve glavni veji:
+
+- **`main`** — produkcijska veja. Iz nje se avtomatsko objavlja živa stran (metkish.com). Vanjo se združujejo samo dokončane in odobrene spremembe.
+- **`development`** — delovna veja. Vse sprotno delo (nove Behind the Trip objave, spremembe postavitve, besedilni popravki, poskusi, nedokončane strani) gre najprej sem.
+
+Postopek:
+
+1. Delo poteka na `development`.
+2. Spremembe se sproti commitajo in pushajo na `development`.
+3. Spremembe se pregledajo lokalno ali prek preview objave.
+4. Šele ko je izrecno potrjeno, da so spremembe pripravljene za objavo, se `development` združi (merge) v `main`.
+5. `main` se pushne.
+6. Iz `main` se nato objavi odobrena različica na živi strani.
+
+V `main` se ne združuje, dokler ni izrecno rečeno, naj se sprememba objavi.
