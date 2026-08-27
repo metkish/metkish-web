@@ -183,7 +183,7 @@ export default function AboutPage() {
               items={[
                 "Later that year, an organised trip we'd booked to Paris and London was cancelled because too few people had signed up. So I decided to organise everything myself.",
                 'It worked — mostly. Our London accommodation turned out to be a basement apartment that felt more like a bunker, and I barely slept.',
-                'A few years later, when our children were two and three and a half, I planned our first bigger family journey to the Seychelles entirely on my own.',
+                'A few years later I planned our first bigger family journey to the Seychelles entirely on my own.',
                 'Somewhere along the way, I realised I genuinely enjoy the part many people would rather skip: researching destinations, comparing flights, finding the right accommodation and figuring out how everything fits together.',
               ]}
             />
@@ -216,7 +216,7 @@ export default function AboutPage() {
             <Paragraphs
               items={[
                 "We don't travel as cheaply as possible, and we don't travel luxuriously either.",
-                "We look for comfortable, clean places in good locations. I'd rather postpone a trip than travel at any cost and spend it somewhere we don't feel comfortable.",
+                'We look for comfortable, clean places in good locations.',
                 'Over the years, small experiences changed the way I plan: waiting with two tired little children for a shuttle to a remote airport car park, spending more than an hour waiting for a taxi after a late-night arrival, or discovering that a transport option that sounded easy online wasn’t nearly as practical with children and luggage.',
                 'Now I prefer to spend a little more where it genuinely makes travelling easier — not for luxury, but to avoid unnecessary stress.',
               ]}
