@@ -121,7 +121,7 @@ export default function Home() {
           alt='Metkish logo'
           width={240}
           height={240}
-          className='w-[92px] md:w-[120px] h-auto -my-3 md:-my-4'
+          className='w-[92px] md:w-[120px] h-auto -mt-8 mb-2 md:-mt-9 md:mb-1'
         />
         <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
           travel · memories · places worth remembering
