@@ -70,7 +70,7 @@ export default function Home() {
 
       <section
         id='guides'
-        className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#faf9f6] dark:bg-black'
+        className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#eae9e6] dark:bg-black'
       >
         <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
           Guides
@@ -92,7 +92,7 @@ export default function Home() {
 
       <section
         id='about'
-        className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#e1e0dd] dark:bg-black'
+        className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#f3f2ef] dark:bg-black'
       >
         <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
           About
