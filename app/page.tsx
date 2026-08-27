@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
 import TravelGallery from '@/components/ui/travel-gallery';
+import { BEHIND_THE_TRIP_TOPICS } from '@/lib/behind-the-trip';
 
 const BG_IMAGE_SRC = '/metkish-provansa.jpg';
 const LOGO_SRC = '/metkish-logo.png';
@@ -83,49 +85,45 @@ export default function Home() {
           ever leave.
         </p>
 
-        <div className='mt-16 pt-10 border-t border-black/10 dark:border-white/10 w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 divide-y divide-black/10 md:divide-y-0 md:divide-x dark:divide-white/10'>
-          <article className='flex flex-col items-center text-center py-10 md:py-0 md:pr-10'>
-            <span className='text-xs tracking-[0.15em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
-              01
-            </span>
-            <h3 className='mt-3 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
-              Hotels
-            </h3>
-            <p className='mt-2 text-sm italic font-[family-name:var(--font-poppins)] font-medium text-black/60 dark:text-white/60'>
-              How I choose where we stay
-            </p>
-            <p className='mt-4 max-w-xs text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-              What I look for, what I compare and what actually matters to
-              me when choosing a hotel.
-            </p>
-            <a
-              href='#'
-              className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
-            >
-              Read →
-            </a>
-          </article>
-          <article className='flex flex-col items-center text-center py-10 md:py-0 md:pl-10'>
-            <span className='text-xs tracking-[0.15em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
-              02
-            </span>
-            <h3 className='mt-3 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
-              Flights
-            </h3>
-            <p className='mt-2 text-sm italic font-[family-name:var(--font-poppins)] font-medium text-black/60 dark:text-white/60'>
-              How I search for flights
-            </p>
-            <p className='mt-4 max-w-xs text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-              How I compare routes, times and prices — and why the
-              cheapest flight isn&apos;t always my choice.
-            </p>
-            <a
-              href='#'
-              className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
-            >
-              Read →
-            </a>
-          </article>
+        <div className='mt-16 pt-12 border-t border-black/10 dark:border-white/10 w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2'>
+          {BEHIND_THE_TRIP_TOPICS.map((topic, index) => {
+            const number = String(index + 1).padStart(2, '0');
+            const isRightColumn = index % 2 === 1;
+            // Row separator: never on the first entry; on mobile every
+            // entry stacks in one column, so entry 2 also needs a top
+            // border there (removed again at md, where it sits beside
+            // entry 1 instead of below it). From entry 3 on, the border
+            // marks a genuine new row at every breakpoint.
+            const rowBorder =
+              index === 0 ? '' : index === 1 ? 'border-t md:border-t-0' : 'border-t';
+            const columnBorder = isRightColumn ? 'md:border-l md:pl-10' : 'md:pr-10';
+
+            return (
+              <article
+                key={topic.slug}
+                className={`flex flex-col items-center text-center py-10 border-black/10 dark:border-white/10 ${rowBorder} ${columnBorder}`}
+              >
+                <span className='text-xs tracking-[0.15em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
+                  {number}
+                </span>
+                <h3 className='mt-3 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
+                  {topic.heading}
+                </h3>
+                <p className='mt-2 text-sm italic font-[family-name:var(--font-poppins)] font-medium text-black/60 dark:text-white/60'>
+                  {topic.kicker}
+                </p>
+                <p className='mt-4 max-w-xs text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
+                  {topic.body}
+                </p>
+                <Link
+                  href={`/behind-the-trip/${topic.slug}`}
+                  className='mt-6 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+                >
+                  Read →
+                </Link>
+              </article>
+            );
+          })}
         </div>
       </section>
 

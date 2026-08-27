@@ -26,6 +26,12 @@ function Reveal({ children, className }: { children: ReactNode; className?: stri
 export interface ComingSoonDestinationProps {
   name: string;
   location?: string;
+  // Overrides for reusing this exact design outside of a destination page
+  // (e.g. Behind the Trip topics). Default to the original destination
+  // copy/links so existing destination pages render unchanged.
+  description?: string;
+  backHref?: string;
+  backLabel?: string;
 }
 
 // Temporary "coming soon" state for a destination page. Every destination
@@ -38,7 +44,13 @@ export interface ComingSoonDestinationProps {
 // never has to change. Eventually each page will grow: photographs, our
 // personal experience, places we visited, accommodation, things worth
 // doing, things we'd do differently, and practical information.
-export default function ComingSoonDestination({ name, location }: ComingSoonDestinationProps) {
+export default function ComingSoonDestination({
+  name,
+  location,
+  description = 'The full travel story is on its way.',
+  backHref = '/#travels',
+  backLabel = '← Back to destinations',
+}: ComingSoonDestinationProps) {
   const [pastHero, setPastHero] = useState(false);
 
   useEffect(() => {
@@ -92,14 +104,14 @@ export default function ComingSoonDestination({ name, location }: ComingSoonDest
             Coming soon.
           </p>
           <p className='mt-4 text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/70 dark:text-white/70'>
-            The full travel story is on its way.
+            {description}
           </p>
 
           <Link
-            href='/#travels'
+            href={backHref}
             className='mt-16 md:mt-20 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white hover:underline underline-offset-4'
           >
-            ← Back to destinations
+            {backLabel}
           </Link>
         </Reveal>
       </main>
