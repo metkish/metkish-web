@@ -387,7 +387,7 @@ export default function AboutPage() {
             href='/#guides'
             className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
-            Guides
+            Behind the Trip
           </Link>
           <Link
             href='/about'

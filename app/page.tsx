@@ -73,21 +73,60 @@ export default function Home() {
         className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#eae9e6] dark:bg-black'
       >
         <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
-          Guides
+          Behind the Trip
         </h2>
         <p className='mt-6 mb-6 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
-          tips · itineraries · travel notes
+          planning · searching · booking
         </p>
         <p className='max-w-xl text-center text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-          What was worth it, what wasn&apos;t, and everything I learned along
-          the way.
+          The choices, comparisons and little decisions that happen before we
+          ever leave.
         </p>
-        <a
-          href='#'
-          className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
-        >
-          Explore the guides →
-        </a>
+
+        <div className='mt-16 pt-10 border-t border-black/10 dark:border-white/10 w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 divide-y divide-black/10 md:divide-y-0 md:divide-x dark:divide-white/10'>
+          <article className='flex flex-col items-center text-center py-10 md:py-0 md:pr-10'>
+            <span className='text-xs tracking-[0.15em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
+              01
+            </span>
+            <h3 className='mt-3 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
+              Hotels
+            </h3>
+            <p className='mt-2 text-sm italic font-[family-name:var(--font-poppins)] font-medium text-black/60 dark:text-white/60'>
+              How I choose where we stay
+            </p>
+            <p className='mt-4 max-w-xs text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
+              What I look for, what I compare and what actually matters to
+              me when choosing a hotel.
+            </p>
+            <a
+              href='#'
+              className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+            >
+              Read →
+            </a>
+          </article>
+          <article className='flex flex-col items-center text-center py-10 md:py-0 md:pl-10'>
+            <span className='text-xs tracking-[0.15em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
+              02
+            </span>
+            <h3 className='mt-3 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
+              Flights
+            </h3>
+            <p className='mt-2 text-sm italic font-[family-name:var(--font-poppins)] font-medium text-black/60 dark:text-white/60'>
+              How I search for flights
+            </p>
+            <p className='mt-4 max-w-xs text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
+              How I compare routes, times and prices — and why the
+              cheapest flight isn&apos;t always my choice.
+            </p>
+            <a
+              href='#'
+              className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+            >
+              Read →
+            </a>
+          </article>
+        </div>
       </section>
 
       <section
@@ -137,7 +176,7 @@ export default function Home() {
             href='#guides'
             className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
-            Guides
+            Behind the Trip
           </a>
           <a
             href='/about'
