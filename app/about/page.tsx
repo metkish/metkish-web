@@ -366,9 +366,13 @@ export default function AboutPage() {
       </section>
 
       <footer className='flex flex-col items-center gap-3 px-8 py-12 bg-[#2a2a2a] text-white text-center'>
-        <span className='text-2xl font-[family-name:var(--font-playfair)] font-bold'>
-          The World Through My Eyes
-        </span>
+        <Image
+          src={LOGO_SRC}
+          alt='Metkish logo'
+          width={240}
+          height={240}
+          className='w-[92px] md:w-[120px] h-auto -my-3 md:-my-4'
+        />
         <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
           travel · memories · places worth remembering
         </p>
