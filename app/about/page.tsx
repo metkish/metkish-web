@@ -365,7 +365,7 @@ export default function AboutPage() {
         </Reveal>
       </section>
 
-      <footer className='flex flex-col items-center gap-3 px-8 py-12 bg-[#2a2a2a] text-white text-center'>
+      <footer className='flex flex-col items-center gap-2 px-8 py-9 bg-[#2a2a2a] text-white text-center'>
         <Image
           src={LOGO_SRC}
           alt='Metkish logo'
@@ -403,7 +403,7 @@ export default function AboutPage() {
         >
           info@metkish.com ↗
         </a>
-        <p className='mt-4 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
+        <p className='mt-3 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
           © {new Date().getFullYear()} Metkish. All rights reserved.
         </p>
       </footer>
