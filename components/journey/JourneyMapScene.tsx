@@ -4,14 +4,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Journey, JourneyLeg, JourneyMode, JourneyPoint } from '@/lib/journeys/types';
-import { bezierPoint, project, projectSpan, screenAngle, smoothClosedPath } from './geo';
-import {
-  CANARY_NEIGHBOURS,
-  CENTRAL_EUROPE_LAND,
-  NW_AFRICA_LAND,
-  TENERIFE_ISLAND,
-  WEST_EUROPE_LAND,
-} from './map-geography';
+import { bezierPoint, project, projectSpan, screenAngle } from './geo';
+import { CANARY_PATHS, FOCUS_PATHS, NEIGHBOUR_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
 import { JourneyProgressContext } from './journey-context';
 
 if (typeof window !== 'undefined') {
@@ -44,9 +38,9 @@ const MAX_HEIGHT_MULTIPLIER = 2.2;
 // the clamp matters most on a narrow phone screen, where "a fraction of
 // container width" alone would shrink both to an unreadable sliver rather
 // than the same steady size a wider screen gets.
-const ICON_RATIO = 0.028;
-const ICON_MIN_PX = 26;
-const ICON_MAX_PX = 42;
+const ICON_RATIO = 0.02;
+const ICON_MIN_PX = 17;
+const ICON_MAX_PX = 28;
 const ROUTE_LINE_RATIO = 0.0024;
 const ROUTE_LINE_MIN_PX = 1.6;
 const ROUTE_LINE_MAX_PX = 3;
@@ -101,12 +95,23 @@ function clamp01(x: number): number {
   return Math.min(1, Math.max(0, x));
 }
 
-function findLabelPoint(legs: JourneyLeg[]): JourneyPoint | null {
+// A journey can have several points worth marking at once (e.g. the home
+// area and Vienna Airport both visible in the same close-up stage), so this
+// collects every showMapLabel point across all legs, in first-seen order,
+// deduped by id since the same point often appears as both a leg's `to`
+// and the next leg's `from`.
+function findLabelPoints(legs: JourneyLeg[]): JourneyPoint[] {
+  const seen = new Set<string>();
+  const points: JourneyPoint[] = [];
   for (const leg of legs) {
-    if (leg.from.showMapLabel) return leg.from;
-    if (leg.to.showMapLabel) return leg.to;
+    for (const p of [leg.from, leg.to]) {
+      if (p.showMapLabel && !seen.has(p.id)) {
+        seen.add(p.id);
+        points.push(p);
+      }
+    }
   }
-  return null;
+  return points;
 }
 
 // Global scroll-smooth lock ----------------------------------------------
@@ -178,28 +183,14 @@ export default function JourneyMapScene({
   const routeGlowRef = useRef<SVGPathElement | null>(null);
   const routeLineRef = useRef<SVGPathElement | null>(null);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
-  const labelRef = useRef<HTMLDivElement | null>(null);
+  const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [progress, setProgress] = useState(0);
   const [vehicleMode, setVehicleMode] = useState<JourneyMode>(journey.legs[0]?.mode ?? 'car');
 
   const legRanges = useMemo(() => computeLegRanges(journey.legs), [journey]);
-  const labelPoint = useMemo(() => findLabelPoint(journey.legs), [journey]);
-  const labelWorld = useMemo(() => (labelPoint ? project(labelPoint.coords) : null), [labelPoint]);
-
-  // Static illustrative land shapes — computed once, never touched again
-  // by the scroll/zoom animation, since they live in the same world
-  // coordinate space the viewBox pans and zooms over.
-  const landPaths = useMemo(
-    () => ({
-      centralEurope: smoothClosedPath(CENTRAL_EUROPE_LAND.map(project)),
-      westEurope: smoothClosedPath(WEST_EUROPE_LAND.map(project)),
-      nwAfrica: smoothClosedPath(NW_AFRICA_LAND.map(project)),
-      tenerife: smoothClosedPath(TENERIFE_ISLAND.map(project)),
-      canaryNeighbours: CANARY_NEIGHBOURS.map((ring) => smoothClosedPath(ring.map(project))),
-    }),
-    []
-  );
+  const labelPoints = useMemo(() => findLabelPoints(journey.legs), [journey]);
+  const labelWorlds = useMemo(() => labelPoints.map((p) => project(p.coords)), [labelPoints]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -224,7 +215,7 @@ export default function JourneyMapScene({
       journey.legs[0]?.from.coords ?? journey.initialCamera.center
     );
     let vehicleAngle = 0;
-    let labelRevealed = false;
+    const labelRevealed = labelPoints.map(() => false);
     let cameraTween: gsap.core.Tween | null = null;
 
     const syncViewBoxAttribute = () => {
@@ -255,17 +246,28 @@ export default function JourneyMapScene({
       routeGlowRef.current?.setAttribute('stroke-width', String((glowPx * currentFrame.width) / containerSize.width));
     };
 
+    // Labels default to sitting right of their point; but a point that
+    // lands near the right edge of a narrow (mobile) frame would push its
+    // text off-screen, so close to that edge the label flips to grow
+    // leftward instead, keeping the dot anchored on the point either way.
+    const LABEL_FLIP_MARGIN_PX = 160;
+
     const updateLabelScreenPos = () => {
-      const label = labelRef.current;
-      if (!label || !labelWorld) return;
-      const aspect = containerSize.width / containerSize.height;
       const vbX = project([viewBoxProxy.lng, viewBoxProxy.lat])[0] - currentFrame.width / 2;
       const vbY = project([viewBoxProxy.lng, viewBoxProxy.lat])[1] - currentFrame.height / 2;
-      const left = ((labelWorld[0] - vbX) / currentFrame.width) * containerSize.width;
-      const top = ((labelWorld[1] - vbY) / currentFrame.height) * containerSize.height;
-      label.style.transform = `translate(${left.toFixed(1)}px, ${top.toFixed(1)}px) translate(14px, -50%)`;
-      if (labelRevealed) label.style.opacity = '1';
-      void aspect;
+      labelWorlds.forEach((world, i) => {
+        const label = labelRefs.current[i];
+        if (!label) return;
+        const left = ((world[0] - vbX) / currentFrame.width) * containerSize.width;
+        const top = ((world[1] - vbY) / currentFrame.height) * containerSize.height;
+        const flip = containerSize.width - left < LABEL_FLIP_MARGIN_PX;
+        label.style.flexDirection = flip ? 'row-reverse' : 'row';
+        label.style.textAlign = flip ? 'right' : 'left';
+        label.style.transform = flip
+          ? `translate(${left.toFixed(1)}px, ${top.toFixed(1)}px) translate(-14px, -50%) translateX(-100%)`
+          : `translate(${left.toFixed(1)}px, ${top.toFixed(1)}px) translate(14px, -50%)`;
+        if (labelRevealed[i]) label.style.opacity = '1';
+      });
     };
 
     const onCameraTweenUpdate = () => {
@@ -299,9 +301,11 @@ export default function JourneyMapScene({
           activeMode = leg.mode;
           setVehicleMode(leg.mode);
         }
-        if (!labelRevealed && (leg.from.showMapLabel || leg.to.showMapLabel)) {
-          labelRevealed = true;
-        }
+        labelPoints.forEach((p, i) => {
+          if (!labelRevealed[i] && (leg.from.id === p.id || leg.to.id === p.id)) {
+            labelRevealed[i] = true;
+          }
+        });
       }
 
       if (leg.showRoute !== false) {
@@ -388,7 +392,7 @@ export default function JourneyMapScene({
       resizeObserver.disconnect();
       unlockSmoothScroll();
     };
-  }, [journey, legRanges, labelWorld]);
+  }, [journey, legRanges, labelPoints, labelWorlds]);
 
   return (
     <div ref={wrapperRef} style={{ height: `${heightVh}vh` }} className={`relative ${className}`}>
@@ -400,40 +404,50 @@ export default function JourneyMapScene({
             preserveAspectRatio='xMidYMid slice'
           >
             <rect x={-500} y={-300} width={1000} height={600} fill={MUTED_BACKGROUND} />
-            <path d={landPaths.westEurope} fill={MUTED_LAND} opacity={0.45} />
-            <path d={landPaths.nwAfrica} fill={MUTED_LAND} opacity={0.42} />
-            <path d={landPaths.centralEurope} fill={MUTED_LAND} opacity={0.6} />
-            {landPaths.canaryNeighbours.map((d, i) => (
-              <path key={i} d={d} fill={MUTED_LAND} opacity={0.5} />
+            {/* Real coastline/border data, baked at build time from OpenStreetMap
+                land geometry (see scripts/build-geo.mjs) — layered coarse-to-fine
+                so the same shapes read at both the pulled-back Europe view and
+                the close-up stages, editorial-atlas style: warm, flat, almost no
+                stroke. */}
+            {WIDE_EUROPE_PATHS.map((d, i) => (
+              <path key={`wide-${i}`} d={d} fill={MUTED_LAND} opacity={0.4} />
             ))}
-            <path
-              d={landPaths.tenerife}
-              fill={MUTED_LAND}
-              stroke={MUTED_LINE}
-              strokeWidth={1.1}
-              vectorEffect='non-scaling-stroke'
-              opacity={0.85}
-            />
+            {NEIGHBOUR_PATHS.map((d, i) => (
+              <path key={`neighbour-${i}`} d={d} fill={MUTED_LAND} opacity={0.55} />
+            ))}
+            {FOCUS_PATHS.map((d, i) => (
+              <path
+                key={`focus-${i}`}
+                d={d}
+                fill={MUTED_LAND}
+                stroke={MUTED_LINE}
+                strokeWidth={1}
+                vectorEffect='non-scaling-stroke'
+                opacity={0.8}
+              />
+            ))}
+            {CANARY_PATHS.map((d, i) => (
+              <path
+                key={`canary-${i}`}
+                d={d}
+                fill={MUTED_LAND}
+                stroke={MUTED_LINE}
+                strokeWidth={1}
+                vectorEffect='non-scaling-stroke'
+                opacity={0.85}
+              />
+            ))}
 
             <path ref={routeGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
             <path ref={routeLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
 
             <g ref={vehicleGroupRef}>
-              <circle
-                cx={12}
-                cy={12}
-                r={11}
-                fill='#faf9f6'
-                stroke={ROUTE_PINK}
-                strokeWidth={1.3}
-                vectorEffect='non-scaling-stroke'
-              />
               {vehicleMode === 'plane' ? (
                 <path
                   d={PLANE_PATH}
                   fill='none'
                   stroke={VEHICLE_STROKE}
-                  strokeWidth={1.5}
+                  strokeWidth={1.3}
                   strokeLinecap='round'
                   strokeLinejoin='round'
                   vectorEffect='non-scaling-stroke'
@@ -446,14 +460,14 @@ export default function JourneyMapScene({
                       d={d}
                       fill='none'
                       stroke={VEHICLE_STROKE}
-                      strokeWidth={1.5}
+                      strokeWidth={1.3}
                       strokeLinecap='round'
                       strokeLinejoin='round'
                       vectorEffect='non-scaling-stroke'
                     />
                   ))}
                   {TRANSFER_WHEELS.map(([cx, cy], i) => (
-                    <circle key={i} cx={cx} cy={cy} r={1.2} fill='none' stroke={VEHICLE_STROKE} strokeWidth={1.5} vectorEffect='non-scaling-stroke' />
+                    <circle key={i} cx={cx} cy={cy} r={1.2} fill='none' stroke={VEHICLE_STROKE} strokeWidth={1.3} vectorEffect='non-scaling-stroke' />
                   ))}
                 </>
               ) : (
@@ -464,36 +478,37 @@ export default function JourneyMapScene({
                       d={d}
                       fill='none'
                       stroke={VEHICLE_STROKE}
-                      strokeWidth={1.5}
+                      strokeWidth={1.3}
                       strokeLinecap='round'
                       strokeLinejoin='round'
                       vectorEffect='non-scaling-stroke'
                     />
                   ))}
                   {CAR_WHEELS.map(([cx, cy], i) => (
-                    <circle key={i} cx={cx} cy={cy} r={1.3} fill='none' stroke={VEHICLE_STROKE} strokeWidth={1.5} vectorEffect='non-scaling-stroke' />
+                    <circle key={i} cx={cx} cy={cy} r={1.3} fill='none' stroke={VEHICLE_STROKE} strokeWidth={1.3} vectorEffect='non-scaling-stroke' />
                   ))}
                 </>
               )}
             </g>
           </svg>
 
-          {labelPoint && (
+          {labelPoints.map((p, i) => (
             <div
-              ref={labelRef}
+              key={p.id}
+              ref={(el) => {
+                labelRefs.current[i] = el;
+              }}
               className='absolute left-0 top-0 flex items-center gap-2 pointer-events-none opacity-0 transition-opacity duration-700 ease-out'
             >
               <span className='block w-2 h-2 rounded-full bg-[#e8639f] ring-2 ring-[#f6f1e6]' />
               <span className='flex flex-col leading-tight font-[family-name:var(--font-poppins)]'>
                 <span className='text-[0.65rem] uppercase tracking-[0.16em] font-semibold text-black/70'>
-                  {labelPoint.name}
+                  {p.name}
                 </span>
-                {labelPoint.sublabel && (
-                  <span className='text-[0.6rem] text-black/45'>{labelPoint.sublabel}</span>
-                )}
+                {p.sublabel && <span className='text-[0.6rem] text-black/45'>{p.sublabel}</span>}
               </span>
             </div>
-          )}
+          ))}
         </div>
 
         <div className='absolute inset-0'>

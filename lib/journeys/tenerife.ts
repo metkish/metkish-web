@@ -4,20 +4,24 @@ import type { Journey, JourneyPoint } from './types';
 // exact address.
 const HOME: JourneyPoint = {
   id: 'home',
-  name: 'Goricko, Slovenia',
+  name: 'Grad / Vidonci',
+  sublabel: 'Goricko, Slovenia',
   coords: [16.2, 46.88],
+  showMapLabel: true,
 };
 
 const VIENNA: JourneyPoint = {
   id: 'vienna',
-  name: 'Vienna',
+  name: 'Vienna Airport',
   coords: [16.5697, 48.1103],
+  showMapLabel: true,
 };
 
 const TENERIFE_SOUTH: JourneyPoint = {
   id: 'tenerife-south',
-  name: 'Tenerife South',
+  name: 'Tenerife South Airport',
   coords: [-16.5725, 28.0445],
+  showMapLabel: true,
 };
 
 const ROCA_NIVARIA: JourneyPoint = {
@@ -32,14 +36,14 @@ const ROCA_NIVARIA: JourneyPoint = {
 // cinematic zoom from the wide Europe/Atlantic view into the island.
 export const TENERIFE_ARRIVAL_JOURNEY: Journey = {
   id: 'tenerife-arrival',
-  initialCamera: { center: [16.32, 47.55], spanDeg: 7 },
+  initialCamera: { center: [16.3, 47.4], spanDeg: 9 },
   legs: [
     {
       id: 'home-to-vienna',
       mode: 'car',
       from: HOME,
       to: VIENNA,
-      camera: { center: [16.38, 47.49], spanDeg: 5.6 },
+      camera: { center: [16.35, 47.45], spanDeg: 9 },
       curve: 0.14,
       weight: 0.4,
       transition: 'ease',
