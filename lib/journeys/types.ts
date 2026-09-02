@@ -21,10 +21,14 @@ export interface JourneyPoint {
 }
 
 export interface JourneyCamera {
+  /** [longitude, latitude] the view is centered on. */
   center: [number, number];
-  zoom: number;
-  pitch?: number;
-  bearing?: number;
+  /** Width of the view, in degrees of longitude — smaller is more zoomed
+   * in (a close regional view), larger is more zoomed out (a continental
+   * pull-back). Height is derived from the map's on-screen aspect ratio at
+   * render time, so the same camera reframes intelligently on a narrow
+   * mobile screen rather than just shrinking. */
+  spanDeg: number;
 }
 
 export interface JourneyLeg {

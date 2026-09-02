@@ -1,81 +1,83 @@
 'use client';
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import type { Journey, JourneyLeg, JourneyMode } from '@/lib/journeys/types';
-import { bezierPoint, bearing } from './geo';
-import { CarIcon, PlaneIcon, TransferIcon } from './icons';
+import type { Journey, JourneyLeg, JourneyMode, JourneyPoint } from '@/lib/journeys/types';
+import { bezierPoint, project, projectSpan, screenAngle, smoothClosedPath } from './geo';
+import {
+  CANARY_NEIGHBOURS,
+  CENTRAL_EUROPE_LAND,
+  NW_AFRICA_LAND,
+  TENERIFE_ISLAND,
+  WEST_EUROPE_LAND,
+} from './map-geography';
 import { JourneyProgressContext } from './journey-context';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const ROUTE_SOURCE_ID = 'journey-route';
-const ROUTE_SAMPLES = 48;
-const MUTED_WATER = '#e4ddcf';
-const MUTED_LAND = '#f4efe4';
+// A hand-drawn, editorial-atlas palette — the same warm neutrals used
+// across the rest of the site, kept deliberately muted so the map reads as
+// illustration rather than a navigation tool.
 const MUTED_BACKGROUND = '#f6f1e6';
-const MUTED_LINE = '#ddd3bd';
+const MUTED_LAND = '#efe8d8';
+const MUTED_LINE = '#ddd0b8';
 const ROUTE_PINK = '#e8639f';
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+const VEHICLE_STROKE = '#7a3348';
 
-type LineData = {
-  type: 'Feature';
-  properties: Record<string, never>;
-  geometry: { type: 'LineString'; coordinates: [number, number][] };
-};
+const ROUTE_SAMPLES = 48;
 
-function lineData(coordinates: [number, number][]): LineData {
-  return { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates } };
+// How the on-screen "camera" frames the world. spanDeg is authored per
+// leg (degrees of longitude wide, at a reference aspect ratio); the actual
+// frame is derived at render time from the real container aspect, so a
+// narrow mobile screen gets a genuinely tighter crop rather than a taller
+// version of the same wide shot.
+const REFERENCE_ASPECT = 1.7;
+const MAX_HEIGHT_MULTIPLIER = 2.2;
+
+// The vehicle icon and route line are drawn at a constant screen-pixel
+// size no matter how far the camera has zoomed in or out (world-space
+// stroke widths/scales are derived from this each frame). Each is a
+// fraction of the container's own width, clamped to a legible min/max —
+// the clamp matters most on a narrow phone screen, where "a fraction of
+// container width" alone would shrink both to an unreadable sliver rather
+// than the same steady size a wider screen gets.
+const ICON_RATIO = 0.028;
+const ICON_MIN_PX = 26;
+const ICON_MAX_PX = 42;
+const ROUTE_LINE_RATIO = 0.0024;
+const ROUTE_LINE_MIN_PX = 1.6;
+const ROUTE_LINE_MAX_PX = 3;
+const ROUTE_GLOW_RATIO = 0.009;
+const ROUTE_GLOW_MIN_PX = 5;
+const ROUTE_GLOW_MAX_PX = 9;
+
+function targetPx(ratio: number, containerWidth: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, ratio * containerWidth));
 }
 
-// The light-v11 style is muted further here (warm beige/grey, labels
-// hidden) rather than reaching for a bespoke Mapbox Studio style — this
-// keeps the map self-contained in code, with no external style asset to
-// keep in sync. Every layer is wrapped individually: paint properties vary
-// by layer type across style versions, so a rejected property on one
-// layer should never take the rest of the pass down with it.
-function muteStyle(map: mapboxgl.Map) {
-  const style = map.getStyle();
-  if (!style?.layers) return;
-  for (const layer of style.layers) {
-    try {
-      if (layer.type === 'symbol') {
-        map.setLayoutProperty(layer.id, 'visibility', 'none');
-        continue;
-      }
-      if (layer.id === 'background') {
-        map.setPaintProperty(layer.id, 'background-color', MUTED_BACKGROUND);
-      } else if (layer.id.includes('water')) {
-        map.setPaintProperty(layer.id, 'fill-color', MUTED_WATER);
-      } else if (
-        layer.type === 'fill' &&
-        (layer.id.includes('landuse') || layer.id.includes('landcover') || layer.id.includes('land'))
-      ) {
-        map.setPaintProperty(layer.id, 'fill-color', MUTED_LAND);
-      } else if (layer.type === 'line') {
-        if (layer.id.includes('road') || layer.id.includes('bridge') || layer.id.includes('tunnel')) {
-          map.setPaintProperty(layer.id, 'line-color', MUTED_LINE);
-          map.setPaintProperty(layer.id, 'line-opacity', 0.5);
-        } else if (layer.id.includes('admin') || layer.id.includes('boundary')) {
-          map.setPaintProperty(layer.id, 'line-color', MUTED_LINE);
-          map.setPaintProperty(layer.id, 'line-opacity', 0.4);
-        }
-      }
-    } catch {
-      // Property not supported on this layer/style version — skip it.
-    }
+interface Frame {
+  width: number;
+  height: number;
+}
+
+function computeFrame(spanDeg: number, aspect: number): Frame {
+  const w0 = projectSpan(spanDeg);
+  const h0 = w0 / REFERENCE_ASPECT;
+  if (!isFinite(aspect) || aspect <= 0) return { width: w0, height: h0 };
+  if (aspect >= REFERENCE_ASPECT) {
+    return { width: h0 * aspect, height: h0 };
   }
+  let width = w0;
+  let height = w0 / aspect;
+  const maxHeight = h0 * MAX_HEIGHT_MULTIPLIER;
+  if (height > maxHeight) {
+    height = maxHeight;
+    width = height * aspect;
+  }
+  return { width, height };
 }
 
 interface LegRange {
@@ -95,13 +97,66 @@ function computeLegRanges(legs: JourneyLeg[]): LegRange[] {
   });
 }
 
-function sampleLeg(leg: JourneyLeg, samples: number): [number, number][] {
-  const points: [number, number][] = [];
-  for (let s = 0; s <= samples; s++) {
-    points.push(bezierPoint(leg.from.coords, leg.to.coords, leg.curve ?? 0, s / samples));
-  }
-  return points;
+function clamp01(x: number): number {
+  return Math.min(1, Math.max(0, x));
 }
+
+function findLabelPoint(legs: JourneyLeg[]): JourneyPoint | null {
+  for (const leg of legs) {
+    if (leg.from.showMapLabel) return leg.from;
+    if (leg.to.showMapLabel) return leg.to;
+  }
+  return null;
+}
+
+// Global scroll-smooth lock ----------------------------------------------
+// The site applies Tailwind's `scroll-smooth` globally, which fights with
+// GSAP ScrollTrigger's own scrub-driven scroll math. Rather than touching
+// the global layout, every mounted journey scene takes a reference-counted
+// lock that forces `scroll-behavior: auto` for as long as any scene is on
+// screen, restoring the previous value once the last one unmounts.
+let smoothScrollLockCount = 0;
+let previousScrollBehavior = '';
+function lockSmoothScroll() {
+  if (typeof document === 'undefined') return;
+  if (smoothScrollLockCount === 0) {
+    previousScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+  }
+  smoothScrollLockCount++;
+}
+function unlockSmoothScroll() {
+  if (typeof document === 'undefined') return;
+  smoothScrollLockCount = Math.max(0, smoothScrollLockCount - 1);
+  if (smoothScrollLockCount === 0) {
+    document.documentElement.style.scrollBehavior = previousScrollBehavior;
+  }
+}
+
+// Vehicle icon path data (24x24 box, centered ~12,12) — mirrors the
+// minimal line-art already used for CarIcon / PlaneIcon / TransferIcon
+// elsewhere on the site, inlined here so it can live directly inside the
+// map's own <svg> and be positioned/rotated/scaled with a single
+// transform rather than an HTML overlay.
+const CAR_PATHS = [
+  'M4 15.5 5.4 10a2 2 0 0 1 1.9-1.4h9.4A2 2 0 0 1 18.6 10L20 15.5',
+  'M3.5 15.5h17v2.2a1 1 0 0 1-1 1h-1.2a1 1 0 0 1-1-1V17H6.7v.7a1 1 0 0 1-1 1H4.5a1 1 0 0 1-1-1z',
+];
+const CAR_WHEELS: [number, number][] = [
+  [7.5, 15.5],
+  [16.5, 15.5],
+];
+const PLANE_PATH =
+  'M11.2 3.2 12 2.4l.8.8v6.1l6.3 4v1.6l-6.3-2v4.6l1.9 1.5v1.4L12 19.6l-2.7.8v-1.4l1.9-1.5v-4.6l-6.3 2v-1.6l6.3-4z';
+const TRANSFER_PATHS = [
+  'M4 16 5 10.6a2 2 0 0 1 2-1.6h7.6a2 2 0 0 1 1.9 1.3l1.5 4.2',
+  'M3.5 16h17v2.6h-2v-.4a1 1 0 0 0-1-1h-.4a1 1 0 0 0-1 1v.4H7.9v-.4a1 1 0 0 0-1-1h-.4a1 1 0 0 0-1 1v.4h-2z',
+  'M9.2 9.4V6.8h5.6v2.6',
+];
+const TRANSFER_WHEELS: [number, number][] = [
+  [7, 16.2],
+  [16.5, 16.2],
+];
 
 export interface JourneyMapSceneProps {
   journey: Journey;
@@ -118,148 +173,134 @@ export default function JourneyMapScene({
   children,
 }: JourneyMapSceneProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
-  const vehicleOuterRef = useRef<HTMLDivElement | null>(null);
-  const vehicleInnerRef = useRef<HTMLDivElement | null>(null);
-  const vehicleMarkerRef = useRef<mapboxgl.Marker | null>(null);
-  const labelMarkerRef = useRef<mapboxgl.Marker | null>(null);
+  const mapBoxRef = useRef<HTMLDivElement | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const routeGlowRef = useRef<SVGPathElement | null>(null);
+  const routeLineRef = useRef<SVGPathElement | null>(null);
+  const vehicleGroupRef = useRef<SVGGElement | null>(null);
+  const labelRef = useRef<HTMLDivElement | null>(null);
 
   const [progress, setProgress] = useState(0);
-  const [vehicleMode, setVehicleMode] = useState<JourneyMode>(
-    journey.legs[0]?.mode ?? 'car'
+  const [vehicleMode, setVehicleMode] = useState<JourneyMode>(journey.legs[0]?.mode ?? 'car');
+
+  const legRanges = useMemo(() => computeLegRanges(journey.legs), [journey]);
+  const labelPoint = useMemo(() => findLabelPoint(journey.legs), [journey]);
+  const labelWorld = useMemo(() => (labelPoint ? project(labelPoint.coords) : null), [labelPoint]);
+
+  // Static illustrative land shapes — computed once, never touched again
+  // by the scroll/zoom animation, since they live in the same world
+  // coordinate space the viewBox pans and zooms over.
+  const landPaths = useMemo(
+    () => ({
+      centralEurope: smoothClosedPath(CENTRAL_EUROPE_LAND.map(project)),
+      westEurope: smoothClosedPath(WEST_EUROPE_LAND.map(project)),
+      nwAfrica: smoothClosedPath(NW_AFRICA_LAND.map(project)),
+      tenerife: smoothClosedPath(TENERIFE_ISLAND.map(project)),
+      canaryNeighbours: CANARY_NEIGHBOURS.map((ring) => smoothClosedPath(ring.map(project))),
+    }),
+    []
   );
 
-  const tokenMissing = !MAPBOX_TOKEN;
-  const legRanges = useMemo(() => computeLegRanges(journey.legs), [journey]);
-
-  // Map init — once per journey.
   useEffect(() => {
-    if (!MAPBOX_TOKEN) return;
-    if (!mapContainerRef.current) return;
+    const wrapper = wrapperRef.current;
+    const mapBox = mapBoxRef.current;
+    const svg = svgRef.current;
+    if (!wrapper || !mapBox || !svg) return;
 
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-    const map = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/light-v11',
-      center: journey.initialCamera.center,
-      zoom: journey.initialCamera.zoom,
-      pitch: journey.initialCamera.pitch ?? 0,
-      bearing: journey.initialCamera.bearing ?? 0,
-      interactive: false,
-      attributionControl: false,
-      logoPosition: 'bottom-right',
-    });
-    mapRef.current = map;
+    lockSmoothScroll();
 
-    map.on('load', () => {
-      muteStyle(map);
-      map.addSource(ROUTE_SOURCE_ID, { type: 'geojson', data: lineData([]) });
-      map.addLayer({
-        id: 'journey-route-glow',
-        type: 'line',
-        source: ROUTE_SOURCE_ID,
-        layout: { 'line-cap': 'round', 'line-join': 'round' },
-        paint: { 'line-color': ROUTE_PINK, 'line-width': 7, 'line-opacity': 0.16, 'line-blur': 1.5 },
-      });
-      map.addLayer({
-        id: 'journey-route-line',
-        type: 'line',
-        source: ROUTE_SOURCE_ID,
-        layout: { 'line-cap': 'round', 'line-join': 'round' },
-        paint: { 'line-color': ROUTE_PINK, 'line-width': 2.2, 'line-opacity': 0.9 },
-      });
-
-      if (vehicleOuterRef.current) {
-        vehicleMarkerRef.current = new mapboxgl.Marker({
-          element: vehicleOuterRef.current,
-          anchor: 'center',
-        })
-          .setLngLat(journey.legs[0]?.from.coords ?? journey.initialCamera.center)
-          .addTo(map);
-      }
-
-      // Only points explicitly flagged for it get a visible map label — the
-      // map itself should carry almost no text; place names are told
-      // through the scroll narrative instead.
-      outer: for (const leg of journey.legs) {
-        for (const point of [leg.from, leg.to]) {
-          if (point.showMapLabel) {
-            const el = document.createElement('div');
-            el.className =
-              'flex items-center gap-2 opacity-0 transition-opacity duration-700 ease-out';
-            el.innerHTML = `
-              <span class="block w-2 h-2 rounded-full bg-[#e8639f] ring-2 ring-[#f6f1e6]"></span>
-              <span class="flex flex-col leading-tight font-[family-name:var(--font-poppins)]">
-                <span class="text-[0.65rem] uppercase tracking-[0.16em] font-semibold text-black/70">${point.name}</span>
-                ${point.sublabel ? `<span class="text-[0.6rem] text-black/45">${point.sublabel}</span>` : ''}
-              </span>
-            `;
-            labelMarkerRef.current = new mapboxgl.Marker({
-              element: el,
-              anchor: 'left',
-              offset: [10, 0] as [number, number],
-            })
-              .setLngLat(point.coords)
-              .addTo(map);
-            break outer;
-          }
-        }
-      }
-    });
-
-    return () => {
-      map.remove();
-      mapRef.current = null;
-      vehicleMarkerRef.current = null;
-      labelMarkerRef.current = null;
+    const viewBoxProxy = {
+      lng: journey.initialCamera.center[0],
+      lat: journey.initialCamera.center[1],
+      spanDeg: journey.initialCamera.spanDeg,
     };
-  }, [journey]);
-
-  // Scroll-driven progress. CSS `sticky` (below, in the JSX) handles the
-  // visual pin; GSAP ScrollTrigger just measures how far through the tall
-  // wrapper the page has scrolled and drives the map + annotations from
-  // that single number.
-  useEffect(() => {
-    const el = wrapperRef.current;
-    if (!el) return;
+    const containerSize = { width: 1200, height: 700 };
+    let currentFrame: Frame = computeFrame(viewBoxProxy.spanDeg, containerSize.width / containerSize.height);
 
     let activeLegIndex = -1;
-    let activeMode: JourneyMode | null = null;
-    let lastApplied = -1;
+    let activeMode: JourneyMode = journey.legs[0]?.mode ?? 'car';
+    let lastAppliedProgress = -1;
+    let vehicleWorld: [number, number] = project(
+      journey.legs[0]?.from.coords ?? journey.initialCamera.center
+    );
+    let vehicleAngle = 0;
+    let labelRevealed = false;
+    let cameraTween: gsap.core.Tween | null = null;
 
-    const applyProgress = (raw: number) => {
-      const clamped = Math.min(1, Math.max(0, raw));
+    const syncViewBoxAttribute = () => {
+      const aspect = containerSize.width / containerSize.height;
+      currentFrame = computeFrame(viewBoxProxy.spanDeg, aspect);
+      const [cx, cy] = project([viewBoxProxy.lng, viewBoxProxy.lat]);
+      svg.setAttribute(
+        'viewBox',
+        `${cx - currentFrame.width / 2} ${cy - currentFrame.height / 2} ${currentFrame.width} ${currentFrame.height}`
+      );
+    };
+
+    const updateVehicleTransform = () => {
+      const g = vehicleGroupRef.current;
+      if (!g) return;
+      const px = targetPx(ICON_RATIO, containerSize.width, ICON_MIN_PX, ICON_MAX_PX);
+      const scale = (px * currentFrame.width) / (24 * containerSize.width);
+      g.setAttribute(
+        'transform',
+        `translate(${vehicleWorld[0]} ${vehicleWorld[1]}) rotate(${vehicleAngle}) scale(${scale}) translate(-12 -12)`
+      );
+    };
+
+    const applyRouteStrokeWidth = () => {
+      const linePx = targetPx(ROUTE_LINE_RATIO, containerSize.width, ROUTE_LINE_MIN_PX, ROUTE_LINE_MAX_PX);
+      const glowPx = targetPx(ROUTE_GLOW_RATIO, containerSize.width, ROUTE_GLOW_MIN_PX, ROUTE_GLOW_MAX_PX);
+      routeLineRef.current?.setAttribute('stroke-width', String((linePx * currentFrame.width) / containerSize.width));
+      routeGlowRef.current?.setAttribute('stroke-width', String((glowPx * currentFrame.width) / containerSize.width));
+    };
+
+    const updateLabelScreenPos = () => {
+      const label = labelRef.current;
+      if (!label || !labelWorld) return;
+      const aspect = containerSize.width / containerSize.height;
+      const vbX = project([viewBoxProxy.lng, viewBoxProxy.lat])[0] - currentFrame.width / 2;
+      const vbY = project([viewBoxProxy.lng, viewBoxProxy.lat])[1] - currentFrame.height / 2;
+      const left = ((labelWorld[0] - vbX) / currentFrame.width) * containerSize.width;
+      const top = ((labelWorld[1] - vbY) / currentFrame.height) * containerSize.height;
+      label.style.transform = `translate(${left.toFixed(1)}px, ${top.toFixed(1)}px) translate(14px, -50%)`;
+      if (labelRevealed) label.style.opacity = '1';
+      void aspect;
+    };
+
+    const onCameraTweenUpdate = () => {
+      syncViewBoxAttribute();
+      updateVehicleTransform();
+      applyRouteStrokeWidth();
+      updateLabelScreenPos();
+    };
+
+    const render = (raw: number) => {
+      const clamped = clamp01(raw);
       let legIndex = legRanges.findIndex((r) => clamped >= r.start && clamped <= r.end);
       if (legIndex === -1) legIndex = legRanges.length - 1;
       const range = legRanges[legIndex];
       const leg = range.leg;
       const span = range.end - range.start || 1;
-      const localProgress = Math.min(1, Math.max(0, (clamped - range.start) / span));
+      const localProgress = clamp01((clamped - range.start) / span);
 
-      const map = mapRef.current;
       if (legIndex !== activeLegIndex) {
         activeLegIndex = legIndex;
-        if (map) {
-          const fly = leg.transition === 'fly';
-          const camOpts = {
-            center: leg.camera.center,
-            zoom: leg.camera.zoom,
-            pitch: leg.camera.pitch ?? 0,
-            bearing: leg.camera.bearing ?? 0,
-            duration: fly ? 1900 : 1300,
-            essential: true,
-          };
-          if (fly) map.flyTo(camOpts);
-          else map.easeTo(camOpts);
-        }
-        if (labelMarkerRef.current) {
-          const involvesLabel = leg.from.showMapLabel || leg.to.showMapLabel;
-          if (involvesLabel) labelMarkerRef.current.getElement().style.opacity = '1';
-        }
+        cameraTween?.kill();
+        cameraTween = gsap.to(viewBoxProxy, {
+          lng: leg.camera.center[0],
+          lat: leg.camera.center[1],
+          spanDeg: leg.camera.spanDeg,
+          duration: leg.transition === 'fly' ? 1.9 : 1.3,
+          ease: 'power2.inOut',
+          onUpdate: onCameraTweenUpdate,
+        });
         if (leg.mode !== activeMode) {
           activeMode = leg.mode;
           setVehicleMode(leg.mode);
+        }
+        if (!labelRevealed && (leg.from.showMapLabel || leg.to.showMapLabel)) {
+          labelRevealed = true;
         }
       }
 
@@ -268,97 +309,195 @@ export default function JourneyMapScene({
         legRanges.forEach((r, i) => {
           if (r.leg.showRoute === false) return;
           if (i < legIndex) {
-            coordinates.push(...sampleLeg(r.leg, ROUTE_SAMPLES));
+            for (let s = 0; s <= ROUTE_SAMPLES; s++) {
+              coordinates.push(project(bezierPoint(r.leg.from.coords, r.leg.to.coords, r.leg.curve ?? 0, s / ROUTE_SAMPLES)));
+            }
           } else if (i === legIndex) {
             const steps = Math.max(1, Math.round(ROUTE_SAMPLES * localProgress));
             for (let s = 0; s <= steps; s++) {
-              coordinates.push(bezierPoint(r.leg.from.coords, r.leg.to.coords, r.leg.curve ?? 0, s / ROUTE_SAMPLES));
+              coordinates.push(project(bezierPoint(r.leg.from.coords, r.leg.to.coords, r.leg.curve ?? 0, s / ROUTE_SAMPLES)));
             }
           }
         });
-        const source = map?.getSource(ROUTE_SOURCE_ID) as mapboxgl.GeoJSONSource | undefined;
-        source?.setData(lineData(coordinates));
+        const d = coordinates.length
+          ? coordinates.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(3)},${p[1].toFixed(3)}`).join(' ')
+          : '';
+        routeGlowRef.current?.setAttribute('d', d);
+        routeLineRef.current?.setAttribute('d', d);
       }
 
-      if (vehicleMarkerRef.current) {
-        if (leg.showRoute === false) {
-          vehicleMarkerRef.current.setLngLat(leg.from.coords);
-        } else {
-          const point = bezierPoint(leg.from.coords, leg.to.coords, leg.curve ?? 0, localProgress);
-          const lookAhead = bezierPoint(
-            leg.from.coords,
-            leg.to.coords,
-            leg.curve ?? 0,
-            Math.min(1, localProgress + 0.02)
-          );
-          vehicleMarkerRef.current.setLngLat(point);
-          if (vehicleInnerRef.current && localProgress < 0.999) {
-            const angle = bearing(point, lookAhead);
-            vehicleInnerRef.current.style.transform = `rotate(${angle}deg)`;
-          }
+      if (leg.showRoute === false) {
+        vehicleWorld = project(leg.from.coords);
+      } else {
+        const point = bezierPoint(leg.from.coords, leg.to.coords, leg.curve ?? 0, localProgress);
+        const lookAhead = bezierPoint(
+          leg.from.coords,
+          leg.to.coords,
+          leg.curve ?? 0,
+          Math.min(1, localProgress + 0.02)
+        );
+        vehicleWorld = project(point);
+        if (localProgress < 0.999) {
+          vehicleAngle = screenAngle(vehicleWorld, project(lookAhead));
         }
       }
 
-      if (Math.abs(clamped - lastApplied) > 0.0015) {
-        lastApplied = clamped;
+      updateVehicleTransform();
+      applyRouteStrokeWidth();
+      updateLabelScreenPos();
+
+      if (Math.abs(clamped - lastAppliedProgress) > 0.0015) {
+        lastAppliedProgress = clamped;
         setProgress(clamped);
       }
     };
 
+    const measure = () => {
+      const rect = mapBox.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        containerSize.width = rect.width;
+        containerSize.height = rect.height;
+      }
+      syncViewBoxAttribute();
+      updateVehicleTransform();
+      applyRouteStrokeWidth();
+      updateLabelScreenPos();
+    };
+
+    measure();
+
+    const resizeObserver = new ResizeObserver(() => measure());
+    resizeObserver.observe(mapBox);
+
     const trigger = ScrollTrigger.create({
-      trigger: el,
+      trigger: wrapper,
       start: 'top top',
       end: 'bottom bottom',
       scrub: 0.4,
-      onUpdate: (self) => applyProgress(self.progress),
-      onRefresh: (self) => applyProgress(self.progress),
+      onUpdate: (self) => render(self.progress),
+      onRefresh: (self) => render(self.progress),
     });
+    render(trigger.progress);
+
+    const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
 
     return () => {
+      cancelAnimationFrame(raf);
       trigger.kill();
+      cameraTween?.kill();
+      resizeObserver.disconnect();
+      unlockSmoothScroll();
     };
-  }, [journey, legRanges]);
+  }, [journey, legRanges, labelWorld]);
 
   return (
     <div ref={wrapperRef} style={{ height: `${heightVh}vh` }} className={`relative ${className}`}>
       <div className='sticky top-0 h-[100svh] md:h-screen w-full overflow-hidden bg-[#f6f1e6] dark:bg-[#161310]'>
-        <div ref={mapContainerRef} className='absolute inset-0' />
+        <div ref={mapBoxRef} className='absolute inset-0'>
+          <svg
+            ref={svgRef}
+            className='absolute inset-0 w-full h-full'
+            preserveAspectRatio='xMidYMid slice'
+          >
+            <rect x={-500} y={-300} width={1000} height={600} fill={MUTED_BACKGROUND} />
+            <path d={landPaths.westEurope} fill={MUTED_LAND} opacity={0.45} />
+            <path d={landPaths.nwAfrica} fill={MUTED_LAND} opacity={0.42} />
+            <path d={landPaths.centralEurope} fill={MUTED_LAND} opacity={0.6} />
+            {landPaths.canaryNeighbours.map((d, i) => (
+              <path key={i} d={d} fill={MUTED_LAND} opacity={0.5} />
+            ))}
+            <path
+              d={landPaths.tenerife}
+              fill={MUTED_LAND}
+              stroke={MUTED_LINE}
+              strokeWidth={1.1}
+              vectorEffect='non-scaling-stroke'
+              opacity={0.85}
+            />
 
-        {tokenMissing && (
-          <>
-            <div className='absolute inset-0 bg-gradient-to-br from-[#f4efe4] to-[#e9e2d2] dark:from-[#1a1815] dark:to-[#141210]' />
-            <div className='absolute bottom-5 right-5 sm:bottom-8 sm:right-8 max-w-[11rem] text-right pointer-events-none'>
-              <span className='block text-[0.65rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/25 dark:text-white/30'>
-                Journey map
-              </span>
-              <span className='mt-1 block text-[0.62rem] leading-snug font-[family-name:var(--font-poppins)] text-black/20 dark:text-white/25'>
-                Add a Mapbox access token to enable the interactive route.
-              </span>
-            </div>
-          </>
-        )}
+            <path ref={routeGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
+            <path ref={routeLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
 
-        {!tokenMissing && (
-          <div ref={vehicleOuterRef} className='flex items-center justify-center w-8 h-8 pointer-events-none'>
-            <div
-              ref={vehicleInnerRef}
-              className='w-7 h-7 rounded-full bg-[#faf9f6] border border-[#e8639f]/70 shadow-[0_1px_8px_rgba(0,0,0,0.18)] flex items-center justify-center text-[#7a3348]'
-            >
+            <g ref={vehicleGroupRef}>
+              <circle
+                cx={12}
+                cy={12}
+                r={11}
+                fill='#faf9f6'
+                stroke={ROUTE_PINK}
+                strokeWidth={1.3}
+                vectorEffect='non-scaling-stroke'
+              />
               {vehicleMode === 'plane' ? (
-                <PlaneIcon className='w-3.5 h-3.5' />
+                <path
+                  d={PLANE_PATH}
+                  fill='none'
+                  stroke={VEHICLE_STROKE}
+                  strokeWidth={1.5}
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  vectorEffect='non-scaling-stroke'
+                />
               ) : vehicleMode === 'transfer' || vehicleMode === 'train' ? (
-                <TransferIcon className='w-3.5 h-3.5' />
+                <>
+                  {TRANSFER_PATHS.map((d, i) => (
+                    <path
+                      key={i}
+                      d={d}
+                      fill='none'
+                      stroke={VEHICLE_STROKE}
+                      strokeWidth={1.5}
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      vectorEffect='non-scaling-stroke'
+                    />
+                  ))}
+                  {TRANSFER_WHEELS.map(([cx, cy], i) => (
+                    <circle key={i} cx={cx} cy={cy} r={1.2} fill='none' stroke={VEHICLE_STROKE} strokeWidth={1.5} vectorEffect='non-scaling-stroke' />
+                  ))}
+                </>
               ) : (
-                <CarIcon className='w-3.5 h-3.5' />
+                <>
+                  {CAR_PATHS.map((d, i) => (
+                    <path
+                      key={i}
+                      d={d}
+                      fill='none'
+                      stroke={VEHICLE_STROKE}
+                      strokeWidth={1.5}
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      vectorEffect='non-scaling-stroke'
+                    />
+                  ))}
+                  {CAR_WHEELS.map(([cx, cy], i) => (
+                    <circle key={i} cx={cx} cy={cy} r={1.3} fill='none' stroke={VEHICLE_STROKE} strokeWidth={1.5} vectorEffect='non-scaling-stroke' />
+                  ))}
+                </>
               )}
+            </g>
+          </svg>
+
+          {labelPoint && (
+            <div
+              ref={labelRef}
+              className='absolute left-0 top-0 flex items-center gap-2 pointer-events-none opacity-0 transition-opacity duration-700 ease-out'
+            >
+              <span className='block w-2 h-2 rounded-full bg-[#e8639f] ring-2 ring-[#f6f1e6]' />
+              <span className='flex flex-col leading-tight font-[family-name:var(--font-poppins)]'>
+                <span className='text-[0.65rem] uppercase tracking-[0.16em] font-semibold text-black/70'>
+                  {labelPoint.name}
+                </span>
+                {labelPoint.sublabel && (
+                  <span className='text-[0.6rem] text-black/45'>{labelPoint.sublabel}</span>
+                )}
+              </span>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className='absolute inset-0'>
-          <JourneyProgressContext.Provider value={progress}>
-            {children}
-          </JourneyProgressContext.Provider>
+          <JourneyProgressContext.Provider value={progress}>{children}</JourneyProgressContext.Provider>
         </div>
       </div>
     </div>

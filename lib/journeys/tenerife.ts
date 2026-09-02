@@ -32,14 +32,14 @@ const ROCA_NIVARIA: JourneyPoint = {
 // cinematic zoom from the wide Europe/Atlantic view into the island.
 export const TENERIFE_ARRIVAL_JOURNEY: Journey = {
   id: 'tenerife-arrival',
-  initialCamera: { center: [16.32, 47.55], zoom: 6.4 },
+  initialCamera: { center: [16.32, 47.55], spanDeg: 7 },
   legs: [
     {
       id: 'home-to-vienna',
       mode: 'car',
       from: HOME,
       to: VIENNA,
-      camera: { center: [16.38, 47.49], zoom: 6.7 },
+      camera: { center: [16.38, 47.49], spanDeg: 5.6 },
       curve: 0.14,
       weight: 0.4,
       transition: 'ease',
@@ -49,8 +49,8 @@ export const TENERIFE_ARRIVAL_JOURNEY: Journey = {
       mode: 'plane',
       from: VIENNA,
       to: TENERIFE_SOUTH,
-      camera: { center: [-2.5, 38.6], zoom: 3.1 },
-      curve: -0.16,
+      camera: { center: [-2.5, 38.6], spanDeg: 58 },
+      curve: -0.045,
       weight: 0.5,
       transition: 'fly',
     },
@@ -59,7 +59,7 @@ export const TENERIFE_ARRIVAL_JOURNEY: Journey = {
       mode: 'plane',
       from: TENERIFE_SOUTH,
       to: TENERIFE_SOUTH,
-      camera: { center: [-16.55, 28.22], zoom: 9.1 },
+      camera: { center: [-16.55, 28.22], spanDeg: 3.4 },
       weight: 0.1,
       transition: 'fly',
       showRoute: false,
@@ -72,14 +72,14 @@ export const TENERIFE_ARRIVAL_JOURNEY: Journey = {
 // also start and end from.
 export const TENERIFE_TRANSFER_JOURNEY: Journey = {
   id: 'tenerife-transfer',
-  initialCamera: { center: [-16.55, 28.22], zoom: 9.1 },
+  initialCamera: { center: [-16.55, 28.22], spanDeg: 3.4 },
   legs: [
     {
       id: 'airport-to-hotel',
       mode: 'transfer',
       from: TENERIFE_SOUTH,
       to: ROCA_NIVARIA,
-      camera: { center: [-16.665, 28.083], zoom: 10.9 },
+      camera: { center: [-16.665, 28.083], spanDeg: 1.5 },
       curve: 0.2,
       weight: 1,
       transition: 'ease',
