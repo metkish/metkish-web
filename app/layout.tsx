@@ -61,6 +61,9 @@ export const metadata: Metadata = {
   icons: {
     icon: "/metkish-logo.png",
   },
+  other: {
+    "p:domain_verify": "ff6b4d9f872ed1181a6a09e692cda13f",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
