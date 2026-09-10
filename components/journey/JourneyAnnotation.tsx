@@ -48,7 +48,14 @@ export default function JourneyAnnotation({
   const progress = useJourneyProgress();
   const [start, end] = range;
   const span = Math.max(end - start, 0.0001);
-  const fade = Math.min(0.18, span * 0.35);
+  // A note's required rhythm is enter -> hold (read) -> exit: the majority
+  // of its own [start, end] scroll segment must be stable, fully-visible
+  // reading time, not fade animation. At a fixed 35% each-side fade this
+  // used to invert that (70% of every span was spent fading, only 30%
+  // stable, regardless of how long the span was) — this constant caps each
+  // fade edge at 12% of the span, leaving roughly three-quarters of it
+  // stable for a comfortable read at normal scrolling speed.
+  const fade = Math.min(0.03, span * 0.12);
   const fadeIn = smoothstep(start, start + fade, progress);
   const fadeOut = 1 - smoothstep(end - fade, end, progress);
   const visible = progress >= start && progress <= end;

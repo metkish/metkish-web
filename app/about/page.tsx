@@ -154,9 +154,9 @@ export default function AboutPage() {
 
       {/* It started with a missed flight */}
       <section className='px-6 md:px-12 pt-16 pb-[51px] md:pt-20 md:pb-16'>
-        <Reveal className='max-w-2xl mx-auto'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
           <Eyebrow>It started with a missed flight</Eyebrow>
-          <div className='mt-6'>
+          <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 'In 2013, I surprised my husband with tickets to an FC Barcelona match. We were flying from Venice and, thinking we had plenty of time, decided to visit the city before our flight.',
@@ -176,9 +176,9 @@ export default function AboutPage() {
 
       {/* Somewhere along the way, I became the planner */}
       <section className='px-6 md:px-12 pt-[51px] pb-16 md:pt-16 md:pb-20'>
-        <Reveal className='max-w-2xl mx-auto'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
           <Eyebrow>Somewhere along the way, I became the planner</Eyebrow>
-          <div className='mt-6'>
+          <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 "Later that year, an organised trip we'd booked to Paris and London was cancelled because too few people had signed up. So I decided to organise everything myself.",
@@ -210,9 +210,9 @@ export default function AboutPage() {
 
       {/* Comfort, not luxury — the most important idea on the page */}
       <section className='px-6 md:px-12 pt-20 pb-16 md:pt-28 md:pb-[90px]'>
-        <Reveal className='max-w-2xl mx-auto'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
           <Eyebrow>Comfort, not luxury</Eyebrow>
-          <div className='mt-6'>
+          <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 "We don't travel as cheaply as possible, and we don't travel luxuriously either.",
@@ -233,9 +233,9 @@ export default function AboutPage() {
 
       {/* We don't try to see everything anymore */}
       <section className='px-6 md:px-12 pt-[51px] pb-[51px] md:pt-16 md:pb-16'>
-        <Reveal className='max-w-2xl mx-auto'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
           <Eyebrow>We don&apos;t try to see everything anymore</Eyebrow>
-          <div className='mt-6'>
+          <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 'We used to plan almost every day of a trip because we wanted to make the most of our time.',
@@ -257,11 +257,11 @@ export default function AboutPage() {
 
       {/* What looks easy online isn't always easy in real life */}
       <section className='px-6 md:px-12 pt-[51px] pb-[51px] md:pt-16 md:pb-16'>
-        <Reveal className='max-w-2xl mx-auto'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
           <Eyebrow>
             What looks easy online isn&apos;t always easy in real life
           </Eyebrow>
-          <div className='mt-6'>
+          <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 'When we landed in the Seychelles with two small children and our luggage, we planned to take the local bus from the airport to the port. Online, it sounded simple.',
@@ -319,12 +319,12 @@ export default function AboutPage() {
           the same main text axis as every other section; no photo added
           here, the photographs already seen make the point. */}
       <section className='px-6 md:px-12 pt-16 pb-[51px] md:pt-20 md:pb-16'>
-        <Reveal className='max-w-2xl mx-auto'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
           <Eyebrow>
             These aren&apos;t travel photographs. They&apos;re travel
             memories.
           </Eyebrow>
-          <div className='mt-6'>
+          <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 "I'm not a photographer, and I don't travel to document everything.",
@@ -344,9 +344,9 @@ export default function AboutPage() {
 
       {/* Why this site exists — closing section */}
       <section className='px-6 md:px-12 pt-16 pb-20 md:pt-[90px] md:pb-28'>
-        <Reveal className='max-w-2xl mx-auto'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
           <Eyebrow>Why this site exists</Eyebrow>
-          <div className='mt-6'>
+          <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 "This isn't a collection of perfect trips.",

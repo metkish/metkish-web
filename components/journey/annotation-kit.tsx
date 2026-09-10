@@ -14,7 +14,7 @@ export function RouteLabel({
 }) {
   return (
     <div className='flex flex-col items-center gap-2'>
-      <span className='h-px w-8 bg-pink-300 dark:bg-pink-400/60' />
+      <span className='h-0.5 w-8 bg-pink-300 dark:bg-pink-400/60' />
       <p
         className={`${
           small ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'
@@ -74,7 +74,7 @@ export function SideNote({
   children: ReactNode;
 }) {
   return (
-    <div className='max-w-[13rem] sm:max-w-xs text-center md:text-right'>
+    <div className='max-w-[13rem] sm:max-w-xs text-center'>
       <p className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
         {heading}
       </p>
