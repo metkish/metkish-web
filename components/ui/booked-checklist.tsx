@@ -58,10 +58,19 @@ export default function BookedChecklist({
           longer item wraps to two lines at narrow widths (e.g. "Siam Park +
           Loro Parque tickets") — the mt-[3px] on CheckMark nudges it down
           to match a single-line item's optical centre instead of sitting
-          flush with the very top of the text. */}
+          flush with the very top of the text. Each <li> stretches to the
+          full width of the (centred) block, and deliberately has NO
+          justify-center: that would centre each row's check+text group
+          independently, so a short item ("Hotel") and a long one ("Siam
+          Park + Loro Parque tickets") would land their checkmarks at
+          different x-positions. Left-aligning the row content instead
+          (the default justify-start) makes every checkmark start at the
+          same horizontal position, one directly under the other, while
+          mx-auto on the outer div still keeps the whole block centred on
+          the page. */}
       <ul className='mt-7 md:mt-8 flex flex-col items-stretch gap-2.5 md:gap-3'>
         {items.map((item) => (
-          <li key={item} className='flex items-start justify-center gap-2 text-left'>
+          <li key={item} className='flex items-start gap-2 text-left'>
             <CheckMark />
             <span className='text-[0.95rem] md:text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
               {item}
