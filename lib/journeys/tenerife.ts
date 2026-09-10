@@ -41,6 +41,17 @@ const TENERIFE_SOUTH: JourneyPoint = {
   name: 'Tenerife South Airport',
   coords: [-16.575398, 28.048772],
   showMapLabel: true,
+  // Mobile QA fix: this point sits close enough to the right edge of the
+  // frame on the flight-arrival map and the airport-transfer map (both
+  // island/local-scale views) that the default right-growing label text —
+  // "Tenerife South Airport", the longest label on the page — cleared the
+  // existing LABEL_FLIP_MARGIN_PX edge-flip threshold in JourneyMapScene by
+  // a small margin but still ran past the viewport's right edge and got
+  // clipped on real phone widths (320-414px), same underlying class of bug
+  // already fixed the same way for PLAYA_DE_LAS_AMERICAS and
+  // TENERIFE_SOUTH_CAR_RETURN. 'above' sidesteps the edge-flip math
+  // entirely rather than nudging the margin threshold for one long label.
+  labelPlacement: 'above',
 };
 
 const ROCA_NIVARIA: JourneyPoint = {
@@ -49,6 +60,30 @@ const ROCA_NIVARIA: JourneyPoint = {
   sublabel: 'Playa Paraiso',
   coords: [-16.77648, 28.12059],
   showMapLabel: true,
+};
+
+// Same real point as ROCA_NIVARIA above (identical coordinates — this is
+// not a different location, only a different label treatment), used only
+// where TENERIFE_TRANSFER_JOURNEY arrives AT the hotel (`to: ROCA_NIVARIA`,
+// the one journey where this point is the destination rather than the
+// departure). Mobile QA fix: at that leg's tight arrival camera, the route
+// curves up into the marker from below and the default right-growing label
+// text sat close enough to that incoming curve to visibly cross through the
+// "R" of "ROCA NIVARIA" on phone widths — same class of bug already fixed
+// elsewhere on this page via 'above' (PLAYA_DE_LAS_AMERICAS,
+// TENERIFE_SOUTH_CAR_RETURN). A dedicated point variant (rather than
+// setting labelPlacement on the shared ROCA_NIVARIA const) keeps this fix
+// scoped to that one arrival label — ROCA_NIVARIA is reused as `from:` in
+// eight other journeys' departure maps, none of which showed this
+// collision, and none of which should have their label placement changed
+// as a side effect.
+const ROCA_NIVARIA_ARRIVAL: JourneyPoint = {
+  id: 'roca-nivaria-arrival',
+  name: 'Roca Nivaria',
+  sublabel: 'Playa Paraiso',
+  coords: [-16.77648, 28.12059],
+  showMapLabel: true,
+  labelPlacement: 'above',
 };
 
 // RE-VERIFIED per the actual car journey: the car destination was never
@@ -1229,7 +1264,7 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
       // the ride itself (a pre-booked transfer).
       mode: 'car',
       from: TENERIFE_SOUTH,
-      to: ROCA_NIVARIA,
+      to: ROCA_NIVARIA_ARRIVAL,
       // Tightened from the original 1.5, then again from 0.65: same
       // wide-short-container effect as tenerife-arrival-zoom above (the
       // real shown width is spanDeg * (aspect/1.7), well past the
