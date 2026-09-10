@@ -18,7 +18,7 @@ export function RouteLabel({
       <p
         className={`${
           small ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'
-        } uppercase tracking-[0.22em] font-[family-name:var(--font-poppins)] font-semibold text-black/70 dark:text-white/85`}
+        } text-center uppercase tracking-[0.22em] font-[family-name:var(--font-poppins)] font-semibold text-black/70 dark:text-white/85`}
       >
         {children}
       </p>

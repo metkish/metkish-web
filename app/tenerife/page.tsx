@@ -212,10 +212,30 @@ export default function TenerifePage() {
           open sky it holds; that negative space is part of the
           composition, so the crop below only ever trims width (never the
           sky) and re-anchors per breakpoint rather than defaulting to a
-          blind centered crop. */}
+          blind centered crop.
+          Mobile QA fix, sitewide: this photo and nine others on this page
+          (Ryanair, Hotel, Rent_a car, Playa del Duque, Siam park_trash, Las
+          teresitas, Sailboat, Los Gigantes, El Teide_calima — every "_web"
+          src added in this pass) were reported broken on a real mobile
+          device (a broken-image icon in place of the photo) even though
+          they rendered fine in dev/desktop testing. All ten turned out to
+          be MPO (Multi Picture Object) files despite their .jpg/.jpeg
+          extension — the multi-frame container some phone cameras write —
+          which Next's image optimizer handled inconsistently, working
+          almost everywhere except, apparently, some real mobile
+          pipelines/devices. Same root cause as the EXIF-orientation
+          slowness already fixed this way for El Taide_peak, El
+          Teide_landscape, the Loro Parque gorilla and Palm_tree; those four
+          just happened to also carry a rotation tag that made the problem
+          visible earlier. Re-saved via the same pipeline every time:
+          PIL.ImageOps.exif_transpose() to bake in the correct upright
+          rotation, converted to a plain single-frame RGB JPEG (no MPO
+          container), EXIF stripped. Same photo, identical crop/content/
+          composition — no retouch, no re-crop — just a format every device
+          can reliably decode. */}
       <section className='relative h-[100svh] md:h-[100dvh] w-full overflow-hidden'>
         <Image
-          src='/2026-07%20-%20Tenerife/Tenerife_hero.jpeg'
+          src='/2026-07%20-%20Tenerife/Tenerife_hero_web.jpeg'
           alt='The volcanic highlands of Teide National Park, Tenerife, under a wide open sky.'
           fill
           priority
@@ -275,7 +295,7 @@ export default function TenerifePage() {
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
             <ChapterHeading italic>Why Vienna?</ChapterHeading>
             <Paragraphs
-              className='mt-5 text-left md:text-center'
+              className='mt-5 text-center'
               items={[
                 'Close enough to drive, large enough to give us plenty of choice. And this time, the deciding factor: a direct flight to Tenerife.',
               ]}
@@ -300,7 +320,7 @@ export default function TenerifePage() {
 
           <Reveal className='mt-6 md:mt-7 max-w-xl mx-auto'>
             <Paragraphs
-              className='text-left md:text-center'
+              className='text-center'
               items={[
                 "Not the cheapest parking option, but it's right at the terminal, covered and incredibly convenient with luggage — especially in bad weather. We book online in advance because it's cheaper, with a few extra hours on either side for delays.",
               ]}
@@ -404,7 +424,7 @@ export default function TenerifePage() {
               What I hadn&apos;t thought about
             </ChapterHeading>
             <Paragraphs
-              className='mt-5 text-left md:text-center'
+              className='mt-5 text-center'
               items={[
                 "This was our first time flying Ryanair, and there was one thing I hadn't thought about: the seats don't recline.",
                 "On a daytime flight, I wouldn't care. On a 5 h 20 min overnight flight when all you want to do is sleep, it matters.",
@@ -413,7 +433,7 @@ export default function TenerifePage() {
             {/* Only the reflective opening line is italic, as a small
                 editorial beat — the reasoning that follows it reads as
                 normal body copy, not as one long italic aside. */}
-            <p className='mt-6 text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed text-left md:text-center'>
+            <p className='mt-6 text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed text-center'>
               <span className='italic'>
                 Would I choose Ryanair again? Yes.
               </span>{' '}
@@ -449,7 +469,7 @@ export default function TenerifePage() {
         <Reveal className='mt-14 md:mt-16 max-w-5xl md:max-w-3xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3] md:aspect-[16/9]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Ryanair.jpg'
+              src='/2026-07%20-%20Tenerife/Ryanair_web.jpeg'
               alt='Looking out over the Ryanair wing, winglet branding visible, with Mount Teide and the Tenerife coastline in the distance.'
               fill
               sizes='(min-width: 1024px) 1024px, 100vw'
@@ -492,7 +512,7 @@ export default function TenerifePage() {
             The airport wasn&apos;t asleep.
           </ChapterHeading>
           <Paragraphs
-            className='mt-8 text-left md:text-center'
+            className='mt-8 text-center'
             items={[
               'The airport was still surprisingly active — rental-car desks were open and taxis were waiting outside.',
               "We could have picked up our car then. We chose not to. After an overnight flight, navigating unfamiliar roads and finding the hotel was one stress we simply didn't need.",
@@ -523,7 +543,7 @@ export default function TenerifePage() {
             The transfer we probably didn&apos;t need.
           </ChapterHeading>
           <Paragraphs
-            className='mt-8 text-left md:text-center'
+            className='mt-8 text-center'
             items={[
               'A bad experience on a previous trip made me want certainty this time. So I pre-booked our transfer through Booking.com.',
             ]}
@@ -544,7 +564,7 @@ export default function TenerifePage() {
 
         <Reveal delay={0.15} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
           <Paragraphs
-            className='text-left md:text-center'
+            className='text-center'
             items={[
               'The meeting-point instructions came too late to be useful. By then, we were already on our way. So we went straight to the taxis and only then discovered that we had to go back inside first.',
               'It worked. At almost 3 AM, it just felt unnecessarily complicated.',
@@ -581,7 +601,7 @@ export default function TenerifePage() {
             Not there.
           </p>
           <Paragraphs
-            className='mt-8 text-left md:text-center'
+            className='mt-8 text-center'
             items={[
               'There were plenty of taxis waiting outside, and they were cheaper. Somewhere else, especially after a late arrival? Possibly. Sometimes peace of mind is worth paying for.',
             ]}
@@ -615,11 +635,30 @@ export default function TenerifePage() {
             whole home-to-hotel journey. Generous and wide, minimal text
             over it, on purpose: the story has already been told, this is
             just where it lands. The daytime Roca Nivaria photo belongs to
-            a later section, not here. */}
+            a later section, not here.
+            Mobile QA fix: the original file was broken on real phones (a
+            broken-image icon in place of the photo, reported directly from
+            a mobile device) even though it rendered fine here in dev/desktop
+            testing. The original wasn't a plain JPEG despite its .jpeg
+            extension — it was an MPO (Multi Picture Object) container, the
+            multi-frame format some phone cameras write for portrait/depth
+            shots, plus the same EXIF orientation-6 tag that made Next's
+            on-demand image transcode pathologically slow/fragile for other
+            photos on this page (El Taide_peak, El Teide_landscape, the Loro
+            Parque gorilla, Palm_tree) — all already fixed the same way. This
+            one hadn't been given that treatment yet because it happened to
+            still render in every environment tested at the time; the real
+            mobile device is what finally surfaced it. Re-saved via the same
+            established pipeline: PIL.ImageOps.exif_transpose() to bake the
+            correct upright rotation into the actual pixels, converted to a
+            plain single-frame RGB JPEG (no more MPO container), EXIF
+            stripped. Same photo, identical crop/content/composition — no
+            retouch — just a format Next's image optimizer (and mobile
+            browsers) can reliably handle. */}
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-5xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/2] md:aspect-[16/9]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Hotel%20at%20night.jpeg'
+              src='/2026-07%20-%20Tenerife/Hotel%20at%20night_web.jpeg'
               alt='Roca Nivaria at night — the illuminated pool, palm trees and hotel grounds in Playa Paraiso.'
               fill
               sizes='(min-width: 768px) 1024px, 100vw'
@@ -653,7 +692,7 @@ export default function TenerifePage() {
             Why this one?
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Great reviews, a family suite and a price that made sense compared with the alternatives.',
             ]}
@@ -695,7 +734,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-5xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3] md:aspect-[16/9]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Hotel.jpg'
+              src='/2026-07%20-%20Tenerife/Hotel_web.jpeg'
               alt='Roca Nivaria in daylight — the hotel exterior and grounds at Playa Paraiso.'
               fill
               sizes='(min-width: 768px) 1024px, 100vw'
@@ -716,7 +755,7 @@ export default function TenerifePage() {
             Overall, a very good hotel.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Beautifully maintained, with great pools, plenty for the kids and everything we needed for a comfortable stay.',
             ]}
@@ -756,7 +795,7 @@ export default function TenerifePage() {
             The location? I&apos;m not so sure.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Peaceful, with a lovely coastal path — but limited choice nearby and a beach we never really fell for.',
             ]}
@@ -780,7 +819,7 @@ export default function TenerifePage() {
             No prepayment?
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'We booked directly with CICAR. No prepayment, no deposit — just a confirmation and a car delivered to our hotel.',
             ]}
@@ -825,7 +864,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[520px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Rent_a%20car.jpeg'
+              src='/2026-07%20-%20Tenerife/Rent_a%20car_web.jpeg'
               alt='Our CICAR rental car, a Fiat 600, delivered to the hotel.'
               fill
               sizes='(min-width: 768px) 520px, 100vw'
@@ -847,7 +886,7 @@ export default function TenerifePage() {
             So far, just a confirmation.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'At 10:40, there was still no sign of anyone. Then, just before 11, a CICAR representative arrived at the hotel with the paperwork.',
             ]}
@@ -856,7 +895,7 @@ export default function TenerifePage() {
             And that was it.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'One signature, a few instructions, and the Fiat was ours for the week.',
             ]}
@@ -891,7 +930,7 @@ export default function TenerifePage() {
             So, which beach first?
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               "We looked for recommendations and Playa del Duque kept coming up. So that's where we went.",
             ]}
@@ -906,7 +945,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-5xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Playa%20del%20Duque.jpeg'
+              src='/2026-07%20-%20Tenerife/Playa%20del%20Duque_web.jpeg'
               alt='Playa del Duque, Costa Adeje — the beach, sea and coastline.'
               fill
               sizes='(min-width: 768px) 1024px, 100vw'
@@ -927,7 +966,7 @@ export default function TenerifePage() {
             We&apos;re not all-day beach people.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               "We never really are. A few hours, a swim, something to eat and we're usually ready to move on.",
               'It was incredibly hot, and shade meant renting an umbrella. The sea, though — clear, cool and full of waves.',
@@ -964,7 +1003,7 @@ export default function TenerifePage() {
             €20. Ten minutes. Why not?
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'A completely unplanned beach massage — and surprisingly, a really good one.',
             ]}
@@ -1015,7 +1054,7 @@ export default function TenerifePage() {
             Hot day. Cold water. We were freezing.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'It was incredibly hot outside. Somehow, we spent the morning shivering.',
               'Cold water, wet swimsuits, long queues and plenty of natural shade turned out to be a surprisingly chilly combination.',
@@ -1062,7 +1101,7 @@ export default function TenerifePage() {
             We had to choose both visit dates when booking.
           </p>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'That meant those two days of the trip were fixed in advance rather than decided spontaneously.',
             ]}
@@ -1075,7 +1114,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto text-center'>
           <Eyebrow>On the way in</Eyebrow>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'The car park was packed, so we parked at the nearby shopping centre instead.',
               'Walking from there to the entrance, this caught my eye.',
@@ -1094,7 +1133,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-[220px] sm:max-w-xs md:max-w-sm mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Siam%20park_trash.jpg'
+              src='/2026-07%20-%20Tenerife/Siam%20park_trash_web.jpeg'
               alt='A stone roadside planter filled with discarded bottles and cans, on the walk from the car park to Siam Park.'
               fill
               sizes='(min-width: 768px) 384px, 60vw'
@@ -1133,7 +1172,7 @@ export default function TenerifePage() {
             And then, back to the fun.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Many of the rides use rafts for four, so we could ride together.',
               'The kids absolutely loved it.',
@@ -1151,7 +1190,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
           <Eyebrow>Would I consider Fast Pass next time?</Eyebrow>
           <Paragraphs
-            className='mt-3 text-left md:text-center'
+            className='mt-3 text-center'
             items={[
               "Yes — some queues were long enough that I'd at least look into it before going again.",
             ]}
@@ -1191,7 +1230,7 @@ export default function TenerifePage() {
             The beach? Nice. The day? So much better.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'We arrived around 11:00 to complete parking chaos.',
               'We eventually found a space — free, but definitely limited.',
@@ -1207,7 +1246,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
           <Eyebrow>The beach?</Eyebrow>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Calm, easy to swim in and perfectly nice.',
               "The sand was incredibly hot, but for us, it simply wasn't a wow beach.",
@@ -1222,7 +1261,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto text-center'>
           <ChapterHeading italic>Somehow, we stayed all afternoon.</ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'We had arranged to meet friends there and ended up having such a good time that we stayed far longer than we normally would at a beach.',
             ]}
@@ -1251,7 +1290,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-5xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Las%20teresitas.jpeg'
+              src='/2026-07%20-%20Tenerife/Las%20teresitas_web.jpeg'
               alt='View from the Mirador de Las Teresitas over the full curve of the beach, the bay, the public parking and the hazy Santa Cruz coastline beyond.'
               fill
               sizes='(min-width: 768px) 1024px, 100vw'
@@ -1312,7 +1351,7 @@ export default function TenerifePage() {
             Three hours very well spent.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'I booked the trip through GetYourGuide, originally for 13:00.',
               'Later, I moved it to 09:45 after reading that the sea tends to be calmer in the morning.',
@@ -1328,7 +1367,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-[220px] sm:max-w-xs md:max-w-sm mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Sailboat.jpeg'
+              src='/2026-07%20-%20Tenerife/Sailboat_web.jpeg'
               alt='Our sailboat, Third Element, moored at Los Gigantes marina.'
               fill
               sizes='(min-width: 768px) 384px, 60vw'
@@ -1368,7 +1407,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
           <Eyebrow>Parking at the marina</Eyebrow>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'We parked at the marina before our sailing trip.',
               'There was still plenty of space when we arrived in the morning, but it filled up surprisingly quickly.',
@@ -1388,7 +1427,7 @@ export default function TenerifePage() {
             We found them.
           </p>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Short-finned pilot whales appeared alongside us — exactly what we had hoped to see.',
             ]}
@@ -1426,7 +1465,7 @@ export default function TenerifePage() {
             Now I understood the name.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'We sailed beneath Los Gigantes and stopped for a swim.',
             ]}
@@ -1473,7 +1512,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-2xl md:max-w-3xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
-              src='/2026-07%20-%20Tenerife/Los%20Gigantes.jpeg'
+              src='/2026-07%20-%20Tenerife/Los%20Gigantes_web.jpeg'
               alt='Looking straight up at the sheer cliff face of Los Gigantes rising from the sea.'
               fill
               sizes='(min-width: 768px) 768px, 100vw'
@@ -1493,7 +1532,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>Worth it</Eyebrow>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Whales, a swim beneath the cliffs and, unexpectedly, a really good sandwich.',
             ]}
@@ -1556,7 +1595,7 @@ export default function TenerifePage() {
             This landscape got me.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'I booked our cable car tickets more than three months in advance so I could choose the day and time we wanted.',
               'We knew the cable car could close in strong winds, so there was always a little luck involved.',
@@ -1595,7 +1634,7 @@ export default function TenerifePage() {
             The cable car isn&apos;t the summit.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'To reach the actual peak of Teide, you need a separate permit — something that has to be arranged well in advance.',
               "We didn't have one.",
@@ -1611,7 +1650,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto text-center'>
           <Eyebrow>Parking</Eyebrow>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'There was still plenty of space when we arrived in the morning.',
               'It became much busier later, although spaces kept opening up as people left.',
@@ -1642,7 +1681,7 @@ export default function TenerifePage() {
             We got lucky.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               "I'd read so much about how cold it could be up there that we came prepared with extra layers.",
               "We didn't need them. Short sleeves were perfectly fine.",
@@ -1693,7 +1732,7 @@ export default function TenerifePage() {
             Were the kids? Not really.
           </p>
           <Paragraphs
-            className='mt-6 text-left md:text-center'
+            className='mt-6 text-center'
             items={['I think actual flowing lava might have helped.']}
           />
         </Reveal>
@@ -1725,7 +1764,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-2xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
             <Image
-              src='/2026-07%20-%20Tenerife/El%20Teide_calima.jpeg'
+              src='/2026-07%20-%20Tenerife/El%20Teide_calima_web.jpeg'
               alt='A hazy caldera view from Teide, the distant mountains obscured by calima.'
               fill
               sizes='(min-width: 768px) 672px, 100vw'
@@ -1737,7 +1776,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
           <Eyebrow>The view</Eyebrow>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               "The weather was on our side. The visibility wasn't.",
               'Calima had followed us throughout our stay, and even up here it blurred the distant views.',
@@ -1779,7 +1818,7 @@ export default function TenerifePage() {
             I wasn&apos;t ready to leave.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'The cable car was an experience, but it was the landscape that stayed with me.',
               'I could have driven through Teide National Park, stopped, looked around and done it all over again.',
@@ -1851,7 +1890,7 @@ export default function TenerifePage() {
             A very different day in Tenerife.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Even the drive there showed us another side of the island — small villages that felt worlds away from the polished resort areas along the coast.',
             ]}
@@ -1868,7 +1907,7 @@ export default function TenerifePage() {
             Polished. Organised. Easy to explore.
           </p>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               "It didn't take long to find our way around.",
             ]}
@@ -1887,7 +1926,7 @@ export default function TenerifePage() {
             Check the times before you start.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'Orcas, dolphins, sea lions and more — if you want to see several shows, it helps to plan the order around their schedules.',
               'We left the orcas until later in the day and found it much quieter than we expected.',
@@ -1932,7 +1971,7 @@ export default function TenerifePage() {
             This is where I&apos;m still a little torn.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'I know the park is involved in rescue and conservation work, and the animals appear incredibly well cared for.',
               'Still, I have mixed feelings about trained-animal shows.',
@@ -1984,7 +2023,7 @@ export default function TenerifePage() {
             I&apos;m glad we went.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'It was a lovely day and the park is beautifully kept.',
               "It just wasn't one of my personal highlights of Tenerife.",
@@ -2038,7 +2077,7 @@ export default function TenerifePage() {
             Playa de las Américas.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               'We stopped here on our way to the airport and quickly understood the appeal.',
               'Everything felt easy and close at hand — restaurants, shops, beaches.',
@@ -2060,7 +2099,7 @@ export default function TenerifePage() {
             Much easier than we&apos;d expected.
           </ChapterHeading>
           <Paragraphs
-            className='mt-5 text-left md:text-center'
+            className='mt-5 text-center'
             items={[
               "We weren't quite sure where to return the car, but we needn't have worried. Everything was clearly signposted from the road and the return itself was simple.",
               'The airport was bigger than I expected, but just as easy to navigate.',
