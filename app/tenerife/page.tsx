@@ -106,7 +106,7 @@ function Fact({
   support?: string[];
 }) {
   return (
-    <div className='flex flex-col items-center gap-2'>
+    <div className='flex flex-col items-center gap-2 text-center'>
       <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
         {label}
       </span>
@@ -371,7 +371,7 @@ export default function TenerifePage() {
               chrome), holding just the booking facts. €1,927.84 stays the
               strongest thing in it — same TimeStamp scale used for every
               other fact on the page. */}
-          <Reveal className='mt-8 md:mt-10 mx-auto max-w-[520px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-9 md:px-10 md:py-10 flex flex-col items-center gap-1'>
+          <Reveal className='mt-8 md:mt-10 mx-auto max-w-[520px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-9 md:px-10 md:py-10 flex flex-col items-center gap-1 text-center'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Ryanair · direct
             </span>
@@ -574,7 +574,7 @@ export default function TenerifePage() {
 
         <Reveal
           delay={0.1}
-          className='mt-14 md:mt-16 flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-16'
+          className='mt-14 md:mt-16 flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-16 text-center'
         >
           <div className='flex flex-col items-center gap-2'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
@@ -711,7 +711,7 @@ export default function TenerifePage() {
             no border/shadow, same uppercase label styling) — the price
             stays the dominant value, same TimeStamp scale as every other
             fact on the page. */}
-        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1'>
+        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Roca Nivaria · 9 Nights
           </span>
@@ -829,7 +829,7 @@ export default function TenerifePage() {
         {/* Same quiet practical-information panel language as the flight
             and hotel panels above — one dominant price, everything else a
             supporting label/line underneath it. */}
-        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1'>
+        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             CICAR · Fiat 600
           </span>
@@ -1067,7 +1067,7 @@ export default function TenerifePage() {
             2026 (verified against our own ticket confirmations, which
             aren't shown on the site — only used to check these numbers):
             2 adults x €78 + 2 children x €57 = €270. */}
-        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1'>
+        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Siam Park + Loro Parque
           </span>
@@ -1380,7 +1380,7 @@ export default function TenerifePage() {
             price panel on this page — duration given the same visual
             weight the price usually gets, since duration is the number
             that mattered most for this booking. */}
-        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1'>
+        <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             The Sailing Trip
           </span>
@@ -1606,7 +1606,7 @@ export default function TenerifePage() {
         {/* Cable Car practical panel — same restrained cream-box language
             as "The Sailing Trip" above: one label, one prominent value,
             supporting lines underneath at the same quiet weight. */}
-        <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1'>
+        <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Cable Car
           </span>
