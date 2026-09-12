@@ -2092,9 +2092,9 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'We stopped here on our way to the airport and both really liked the feel of the area.',
+              'We stopped here on our way to the airport and immediately liked the feel of the area.',
               'Everything felt easy and close at hand — restaurants, shops, beaches.',
-              "If we ever came back to Tenerife, this is probably where I'd look for a place to stay.",
+              "If I were choosing where to stay on Tenerife again, this is probably the area I'd look at first.",
             ]}
           />
         </Reveal>
