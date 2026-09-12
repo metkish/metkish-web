@@ -4,6 +4,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
+import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 
 const LOGO_SRC = '/metkish-logo.png';
 const SUITCASES_SRC = '/About/Four%20suitcases.jpg';
@@ -365,46 +367,71 @@ export default function AboutPage() {
         </Reveal>
       </section>
 
-      <footer className='flex flex-col items-center gap-3 px-8 py-12 bg-[#2a2a2a] text-white text-center'>
+      <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
+        {/* Logo, tagline and nav read as one tight unit — no gap between
+            them (each row carries its own margin, never the parent, and
+            none of them gets padding/min-height that would look like
+            extra space). A clearly larger, separate gap then sets off the
+            email address, the social icons, and the copyright line. */}
         <Image
           src={LOGO_SRC}
           alt='Metkish logo'
           width={240}
           height={240}
-          className='w-[92px] md:w-[120px] h-auto -mt-8 mb-2 md:-mt-9 md:mb-1'
+          className='w-[92px] md:w-[120px] h-auto -mt-8 md:-mt-9'
         />
         <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
           travel · memories · places worth remembering
         </p>
-        <nav className='flex items-center gap-2 sm:gap-6 mt-1'>
+        <nav className='flex items-center gap-2 sm:gap-6'>
           <Link
             href='/#travels'
-            className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
             Travels
           </Link>
           <Link
             href='/#guides'
-            className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
             Behind the Trip
           </Link>
           <Link
             href='/about'
             aria-current='page'
-            className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white'
           >
             About
           </Link>
         </nav>
         <a
           href='mailto:info@metkish.com'
-          className='inline-flex items-center min-h-11 px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+          className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
         >
           info@metkish.com ↗
         </a>
-        <p className='mt-4 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
-          © {new Date().getFullYear()} Metkish. All rights reserved.
+        <div className='mt-3 flex items-center gap-5'>
+          <a
+            href={INSTAGRAM_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Instagram'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <InstagramIcon className='h-5 w-5' />
+          </a>
+          <a
+            href={PINTEREST_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Pinterest'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <PinterestIcon className='h-5 w-5' />
+          </a>
+        </div>
+        <p className='mt-8 md:mt-9 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
+          © {new Date().getFullYear()} Metkish
         </p>
       </footer>
     </div>
