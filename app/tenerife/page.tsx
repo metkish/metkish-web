@@ -1535,7 +1535,7 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'Whales, a swim beneath the cliffs and, unexpectedly, a really good sandwich.',
+              'Whales, a swim beneath the cliffs and a simple sandwich they served us on board that somehow tasted just right.',
             ]}
           />
         </Reveal>
