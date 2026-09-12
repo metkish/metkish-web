@@ -2121,6 +2121,26 @@ export default function TenerifePage() {
           />
         </Reveal>
 
+        {/* Looking Back — the trip's quiet closing thought, same full
+            Eyebrow + ChapterHeading + Paragraphs weight as Mixed Feelings
+            and Final Verdict above, sitting between the Tenerife South beat
+            and the closing palm-tree photograph. No card, no photo of its
+            own — just the page's established centred text system giving
+            the story a conclusion before the practical checklist. */}
+        <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
+          <Eyebrow>Looking Back</Eyebrow>
+          <ChapterHeading italic className='mt-3'>
+            Now I understand why people come all year round.
+          </ChapterHeading>
+          <Paragraphs
+            className='mt-5 text-center'
+            items={[
+              'Tenerife is an easy island to enjoy — varied, relaxed and with something different never very far away.',
+              'And you can tell tourism is part of its DNA. Everything just works for visitors.',
+            ]}
+          />
+        </Reveal>
+
         {/* Closing photograph — the trip's last visual beat, one final look
             at the island before the practical checklist. No heading, no
             caption, no text of any kind, unlike every other large photo on
