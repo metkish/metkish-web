@@ -888,7 +888,8 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'At 10:40, there was still no sign of anyone. Then, just before 11, a CICAR representative arrived at the hotel with the paperwork.',
+              'With no prepayment, no deposit and no further contact, I did wonder whether someone would actually turn up at the hotel as arranged.',
+              'Just before 11, a CICAR representative walked into reception with the paperwork.',
             ]}
           />
           <ChapterHeading italic className='mt-6 md:mt-7'>
