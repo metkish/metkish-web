@@ -566,8 +566,8 @@ export default function TenerifePage() {
           <Paragraphs
             className='text-center'
             items={[
-              'The meeting-point instructions came too late to be useful. By then, we were already on our way. So we went straight to the taxis and only then discovered that we had to go back inside first.',
-              'It worked. At almost 3 AM, it just felt unnecessarily complicated.',
+              "We left the airport and went straight to the taxi area — only to realize once we got there that we actually had to go back inside first, to find the meeting point. Booking.com's instructions for that arrived too late to help.",
+              'It worked out. At almost 3 AM, it still felt unnecessarily complicated.',
             ]}
           />
         </Reveal>
@@ -888,7 +888,8 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'At 10:40, there was still no sign of anyone. Then, just before 11, a CICAR representative arrived at the hotel with the paperwork.',
+              'With no prepayment, no deposit and no further contact, I did wonder whether someone would actually turn up at the hotel as arranged.',
+              'Just before 11, a CICAR representative walked into reception with the paperwork.',
             ]}
           />
           <ChapterHeading italic className='mt-6 md:mt-7'>
@@ -1312,6 +1313,18 @@ export default function TenerifePage() {
             ]}
           />
         </Reveal>
+
+        {/* Small explanatory note on what calima actually is — same quiet
+            small italic informational-note treatment as the Fiat
+            600/Sardinia price aside and the Seychelles flight-cost aside,
+            kept as its own separate note rather than folded into the main
+            paragraph above. */}
+        <Reveal delay={0.15} className='mt-6 md:mt-7 max-w-xs mx-auto text-center'>
+          <p className='text-sm italic font-[family-name:var(--font-playfair)] text-black/60 dark:text-white/60 leading-snug'>
+            Calima is fine Saharan dust carried across the Canary Islands,
+            often creating hazy skies and reduced visibility.
+          </p>
+        </Reveal>
       </section>
 
       {/* 22. MAP — Roca Nivaria -> Los Gigantes Marina. The next day's real
@@ -1534,7 +1547,7 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'Whales, a swim beneath the cliffs and, unexpectedly, a really good sandwich.',
+              'Whales, a swim beneath the cliffs and a simple sandwich they served us on board that somehow tasted just right.',
             ]}
           />
         </Reveal>
@@ -1779,7 +1792,7 @@ export default function TenerifePage() {
             className='mt-5 text-center'
             items={[
               "The weather was on our side. The visibility wasn't.",
-              'Calima had followed us throughout our stay, and even up here it blurred the distant views.',
+              'Calima blurred the distant views even up here.',
             ]}
           />
         </Reveal>
@@ -2079,8 +2092,9 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'We stopped here on our way to the airport and quickly understood the appeal.',
+              'We stopped here on our way to the airport and immediately liked the feel of the area.',
               'Everything felt easy and close at hand — restaurants, shops, beaches.',
+              "If I were choosing where to stay on Tenerife again, this is probably the area I'd look at first.",
             ]}
           />
         </Reveal>
@@ -2103,6 +2117,26 @@ export default function TenerifePage() {
             items={[
               "We weren't quite sure where to return the car, but we needn't have worried. Everything was clearly signposted from the road and the return itself was simple.",
               'The airport was bigger than I expected, but just as easy to navigate.',
+            ]}
+          />
+        </Reveal>
+
+        {/* Looking Back — the trip's quiet closing thought, same full
+            Eyebrow + ChapterHeading + Paragraphs weight as Mixed Feelings
+            and Final Verdict above, sitting between the Tenerife South beat
+            and the closing palm-tree photograph. No card, no photo of its
+            own — just the page's established centred text system giving
+            the story a conclusion before the practical checklist. */}
+        <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
+          <Eyebrow>Looking Back</Eyebrow>
+          <ChapterHeading italic className='mt-3'>
+            Now I understand why people come all year round.
+          </ChapterHeading>
+          <Paragraphs
+            className='mt-5 text-center'
+            items={[
+              'Tenerife is an easy island to enjoy — varied, relaxed and with something different never very far away.',
+              'And you can tell tourism is part of its DNA. Everything just works for visitors.',
             ]}
           />
         </Reveal>
