@@ -1313,6 +1313,18 @@ export default function TenerifePage() {
             ]}
           />
         </Reveal>
+
+        {/* Small explanatory note on what calima actually is — same quiet
+            small italic informational-note treatment as the Fiat
+            600/Sardinia price aside and the Seychelles flight-cost aside,
+            kept as its own separate note rather than folded into the main
+            paragraph above. */}
+        <Reveal delay={0.15} className='mt-6 md:mt-7 max-w-xs mx-auto text-center'>
+          <p className='text-sm italic font-[family-name:var(--font-playfair)] text-black/60 dark:text-white/60 leading-snug'>
+            Calima is fine Saharan dust carried across the Canary Islands,
+            often creating hazy skies and reduced visibility.
+          </p>
+        </Reveal>
       </section>
 
       {/* 22. MAP — Roca Nivaria -> Los Gigantes Marina. The next day's real
@@ -1780,7 +1792,7 @@ export default function TenerifePage() {
             className='mt-5 text-center'
             items={[
               "The weather was on our side. The visibility wasn't.",
-              'Calima had followed us throughout our stay, and even up here it blurred the distant views.',
+              'Calima blurred the distant views even up here.',
             ]}
           />
         </Reveal>
