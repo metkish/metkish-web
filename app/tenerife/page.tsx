@@ -566,8 +566,8 @@ export default function TenerifePage() {
           <Paragraphs
             className='text-center'
             items={[
-              'The meeting-point instructions came too late to be useful. By then, we were already on our way. So we went straight to the taxis and only then discovered that we had to go back inside first.',
-              'It worked. At almost 3 AM, it just felt unnecessarily complicated.',
+              "We left the airport and went straight to the taxi area — only to realize once we got there that we actually had to go back inside first, to find the meeting point. Booking.com's instructions for that arrived too late to help.",
+              'It worked out. At almost 3 AM, it still felt unnecessarily complicated.',
             ]}
           />
         </Reveal>
