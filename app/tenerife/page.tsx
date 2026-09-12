@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import BookedChecklist from '@/components/ui/booked-checklist';
+import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
+import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 import {
   TENERIFE_HOME_TO_VIENNA_JOURNEY,
   TENERIFE_VIENNA_TO_TENERIFE_JOURNEY,
@@ -2212,6 +2214,11 @@ export default function TenerifePage() {
       </section>
 
       <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
+        {/* Logo, tagline and nav read as one tight unit — no gap between
+            them (each row carries its own margin, never a shared wrapper,
+            and none of them gets padding/min-height that would look like
+            extra space). A clearly larger, separate gap then sets off the
+            email address, the social icons, and the copyright line. */}
         <Image
           src={LOGO_SRC}
           alt='Metkish logo'
@@ -2219,43 +2226,53 @@ export default function TenerifePage() {
           height={240}
           className='w-[92px] md:w-[120px] h-auto -mt-8 md:-mt-9'
         />
-        {/* One compact information block: three rows meant to read as a
-            single unit, so nothing inside it may carry its own vertical
-            margin/padding/min-height — the wrapper's gap is the only
-            spacing between them. (min-h-11 touch-target sizing on the nav
-            and email links previously padded each row well past its
-            visible text, which is what made this block look loose even
-            with a small flex gap.) Then a distinctly larger, still
-            restrained gap before the copyright line. */}
-        <div className='mt-3 md:mt-4 flex flex-col items-center gap-2.5'>
-          <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
-            travel · memories · places worth remembering
-          </p>
-          <nav className='flex items-center gap-2 sm:gap-6'>
-            <Link
-              href='/#travels'
-              className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
-            >
-              Travels
-            </Link>
-            <Link
-              href='/#guides'
-              className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
-            >
-              Behind the Trip
-            </Link>
-            <Link
-              href='/about'
-              className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
-            >
-              About
-            </Link>
-          </nav>
-          <a
-            href='mailto:info@metkish.com'
-            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+        <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
+          travel · memories · places worth remembering
+        </p>
+        <nav className='flex items-center gap-2 sm:gap-6'>
+          <Link
+            href='/#travels'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
           >
-            info@metkish.com ↗
+            Travels
+          </Link>
+          <Link
+            href='/#guides'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            Behind the Trip
+          </Link>
+          <Link
+            href='/about'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            About
+          </Link>
+        </nav>
+        <a
+          href='mailto:info@metkish.com'
+          className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+        >
+          info@metkish.com ↗
+        </a>
+        <div className='mt-3 flex items-center gap-5'>
+          <a
+            href={INSTAGRAM_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Instagram'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <InstagramIcon className='h-5 w-5' />
+          </a>
+          <a
+            href={PINTEREST_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Pinterest'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <PinterestIcon className='h-5 w-5' />
           </a>
         </div>
         <p className='mt-8 md:mt-9 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
