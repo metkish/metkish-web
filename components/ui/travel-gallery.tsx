@@ -408,6 +408,18 @@ const GAP_SEQUENCE = [
   TIGHT_GAP, // Marseille & Provence → Seychelles: build straight into the finale
 ];
 
+// The anchor a destination's "← Back to destinations" link jumps back to
+// (see app/[destination]/page.tsx and app/tenerife/page.tsx) — the
+// destination's own slug, taken from its card's href ("/iceland" ->
+// "iceland"), not the card's internal `id` field (which doesn't always
+// match the slug, e.g. the Iceland card's id is "reykjavik-1" and the
+// Germany card's is "euro-2024"). scroll-mt-24 matches the offset already
+// used for the page's other anchored sections (#travels, #guides, #about)
+// so a jump here isn't hidden under the fixed header either.
+function anchorId(href: string): string {
+  return href.replace(/^\//, '');
+}
+
 export default function TravelGallery() {
   return (
     <div className='flex flex-col w-full'>
@@ -419,7 +431,8 @@ export default function TravelGallery() {
           return (
             <motion.div
               key={block.item.id}
-              className={`${spacing} ${block.width} ${block.marginLeft ?? ''}`}
+              id={anchorId(block.item.href)}
+              className={`${spacing} ${block.width} ${block.marginLeft ?? ''} scroll-mt-24`}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -446,7 +459,8 @@ export default function TravelGallery() {
         return (
           <motion.div
             key={block.big.id}
-            className={`${spacing} flex flex-col md:flex-row md:justify-between md:items-start`}
+            id={anchorId(block.big.href)}
+            className={`${spacing} flex flex-col md:flex-row md:justify-between md:items-start scroll-mt-24`}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
