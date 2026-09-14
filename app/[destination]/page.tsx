@@ -72,5 +72,11 @@ export default async function DestinationPage({
     notFound();
   }
 
-  return <ComingSoonDestination name={dest.name} location={dest.location} />;
+  return (
+    <ComingSoonDestination
+      name={dest.name}
+      location={dest.location}
+      backHref={`/#${dest.slug}`}
+    />
+  );
 }
