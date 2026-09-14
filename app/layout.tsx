@@ -28,25 +28,29 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://metkish.com"),
+  metadataBase: new URL("https://www.metkish.com"),
   title: "Metkish",
   description: "Travel · memories · places worth remembering",
+  alternates: {
+    canonical: "https://www.metkish.com/",
+  },
   openGraph: {
     title: "Metkish",
     description: "Travel · memories · places worth remembering",
-    url: "https://metkish.com",
+    url: "https://www.metkish.com/",
     siteName: "Metkish",
     images: [
       {
-        // Composed specifically for social sharing: the logo centred on
-        // a clean canvas at the standard OG size (1200x630), not the raw
-        // logo file — that file is a large near-square image, which is
-        // why it previously filled almost the whole WhatsApp/Facebook
-        // preview instead of sitting small and centred.
-        url: "/og-image.png",
+        // A real hero photo (the homepage's own scroll-hero background),
+        // cropped to the standard OG size (1200x630) — not the small
+        // Metkish logo, which used to fill almost the whole
+        // WhatsApp/Facebook preview instead of giving a real sense of the
+        // site. This is the site-wide default; individual pages (e.g. each
+        // destination) override it with their own image below.
+        url: "/og/og-home.jpg",
         width: 1200,
         height: 630,
-        alt: "Metkish",
+        alt: "Metkish — travel, memories, places worth remembering",
       },
     ],
     locale: "en_US",
@@ -56,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Metkish",
     description: "Travel · memories · places worth remembering",
-    images: ["/og-image.png"],
+    images: ["/og/og-home.jpg"],
   },
   icons: {
     icon: "/metkish-logo.png",
