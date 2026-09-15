@@ -98,49 +98,48 @@ export default function ItalyPage() {
         />
       </Link>
 
-      {/* 1. OPENING — no photo, no subtitle, no destination name: just the
-          title, as the whole visual statement. Full viewport height like
-          every other destination page's opening beat, but centred on the
-          site's plain off-white rather than a photograph, since a photo
-          hero always implies "here's what this place looks like" and this
-          page opens before that — with the drive itself, not the
-          destination. Sized above Tenerife's own hero h1 (which shares
-          its frame with a photograph and needs room for a location line
-          and a caption underneath); here the words are the entire scene,
-          so they're allowed to fill more of it. */}
-      <section className='relative h-[100svh] md:h-[100dvh] w-full flex items-center justify-center overflow-hidden'>
+      {/* 1. OPENING — title and map now read as one opening composition:
+          ROAD TRIP up top, the Home -> Milano map directly beneath it, so
+          the page opens with the drive itself (the word, then the actual
+          journey) rather than a large empty title screen followed by a
+          separate map section further down. Shorter than the old
+          full-viewport hero — still a generous, editorial top gap (this
+          is the page's very first beat, under the fixed logo), but the
+          emptiness now stops at the title's own edges instead of
+          stretching for a full screen. */}
+      <section className='pt-28 sm:pt-36 md:pt-44 lg:pt-52 pb-16 sm:pb-20 md:pb-24 px-6 text-center'>
         <Reveal>
-          <h1 className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-[family-name:var(--font-playfair)] font-medium uppercase tracking-wide sm:tracking-[0.04em] text-black dark:text-white text-center px-6'>
+          <h1 className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-[family-name:var(--font-playfair)] font-medium uppercase tracking-wide sm:tracking-[0.04em] text-black dark:text-white'>
             Road Trip
           </h1>
         </Reveal>
       </section>
 
-      {/* 2. FIRST CHAPTER — deliberately generous top gap (more than the
-          site's usual chapter-to-chapter rhythm) since this follows a
-          full-height, otherwise-empty opening rather than another
-          chapter's ending content; it needs to read as a clear new
-          beginning on its own, not a continuation. Nothing else here yet
-          — no eyebrow/RouteLabel, no body copy — only the one line the
-          brief asked for. */}
-      <section className='px-6 md:px-12 pt-20 sm:pt-28 md:pt-36 pb-10 md:pb-14 bg-[#faf9f6] dark:bg-black'>
-        <Reveal className='max-w-2xl mx-auto text-center'>
-          <ChapterHeading italic>First stop? Milano!</ChapterHeading>
-        </Reveal>
-      </section>
-
-      {/* 3. MAP — Home -> Milano, the same JourneyMapScene engine every
+      {/* 2. MAP — Home -> Milano, the same JourneyMapScene engine every
           other map on the site uses (real lng/lat route, self-running
           reveal-on-scroll, pink route line, "Home"/"Milano" dot labels) —
           not a bespoke map for Italy. See lib/journeys/italy.ts for the
           route data and why it's built the way it is. Edge to edge, no
           side padding or rounded corners, exactly like every Journey Map
-          section on the Tenerife page; it's the last thing on the page
-          for now per this step's scope. */}
+          section on the Tenerife page. Now sits directly under the ROAD
+          TRIP title as part of the same opening beat, with the car
+          animating from Home toward Milano as it scrolls into view. */}
       <JourneyMapScene
         journey={ITALY_HOME_TO_MILANO_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
+
+      {/* 3. FIRST CHAPTER — "First stop? Milano!" now lands right after
+          the journey itself, closing the ROAD TRIP -> map -> chapter
+          opening arc. Uses the same map->content gap every other
+          map->content transition on the Tenerife page uses
+          (MAP_TRANSITION_PT: pt-8 md:pt-10), then the page's own closing
+          gap below it before whatever comes next. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black'>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <ChapterHeading italic>First stop? Milano!</ChapterHeading>
+        </Reveal>
+      </section>
     </div>
   );
 }
