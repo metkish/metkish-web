@@ -183,25 +183,29 @@ export default function ItalyPage() {
             map into the real Milano story: the last thing the map showed
             was the route itself, and this photo (through the windscreen,
             Italy/Villesse road signs visible) is that same drive, now as
-            a photograph. Same aspect-[3/4]/rounded-[2px]/object-cover
-            treatment and the same mt-12 md:mt-16 gap token as before —
-            only the container WIDTH was scaled down (w-[85%] mobile,
-            fixed 282px from md up, ~42% of this chapter's max-w-2xl text
-            column) so the photo reads as an editorial beat rather than a
-            hero image, matching Tenerife's smaller portrait-photo widths
-            (e.g. its max-w-[220px] sm:max-w-xs md:max-w-sm treatments)
-            rather than its large max-w-2xl/3xl ones. Still a native
-            portrait "_web" photo (EXIF-rotated pixels baked in,
-            orientation cleared), and aspect-[3/4] still matches the
-            source photo's own ratio exactly, so nothing is cropped — it's
-            simply rendered smaller. No caption, per this step's scope. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[282px] mx-auto'>
-          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            a photograph. The source file itself was re-cropped (still the
+            same shot, not a different photo) to trim empty sky off the
+            top and dashboard off the bottom while keeping the full road
+            and both the ITALIA and MILANO·VENEZIA signs uncropped — at
+            the previous smaller width the signs had become unreadable,
+            and a tighter frame reads better at a small size than the
+            original mostly-sky composition did. That changed the image's
+            own ratio from 3:4 to 6:5, so the aspect box below follows the
+            crop (aspect-[6/5], still object-cover/rounded-[2px], nothing
+            trimmed beyond the source file's own crop). WIDTH is back up
+            slightly to keep the signs legible — w-[85%] mobile (unchanged),
+            fixed 340px from md up (~50.6% of this chapter's max-w-2xl
+            text column, within the requested 50–55%, and still a touch
+            narrower than Milano_streets' 350px so it stays the slightly
+            smaller of the chapter's two photos). Gap token (mt-12
+            md:mt-16) unchanged. No caption, per this step's scope. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[340px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[6/5]'>
             <Image
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_on%20the%20road_web.jpeg'
               alt='View through the windscreen approaching Italy on the motorway, road signs for Milano, Venezia and Trieste visible.'
               fill
-              sizes='(min-width: 768px) 282px, 85vw'
+              sizes='(min-width: 768px) 340px, 85vw'
               className='object-cover'
             />
           </div>
