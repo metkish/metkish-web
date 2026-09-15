@@ -192,24 +192,25 @@ export default function ItalyPage() {
             original mostly-sky composition did. That changed the image's
             own ratio from 3:4 to 6:5, so the aspect box below follows the
             crop (aspect-[6/5], still object-cover/rounded-[2px], nothing
-            trimmed beyond the source file's own crop — the crop itself is
-            unchanged from the previous pass). WIDTH on desktop is bumped
-            up again — 340px still wasn't enough for the signs to read at
-            a glance, so it's now a fixed 450px from md up (~67% of this
-            chapter's max-w-2xl text column, within the requested 65–70%).
-            Deliberately larger than Milano_streets' 350px now: this photo
-            is the first real photographic beat right after the animated
-            map, so it's allowed to lead. Mobile width (w-[85%]) is
-            unchanged — only the desktop size needed the increase. Gap
-            token (mt-12 md:mt-16) unchanged. No caption, per this step's
-            scope. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[450px] mx-auto'>
+            trimmed beyond the source file's own crop — the crop itself,
+            aspect-[6/5], and centering are all unchanged from the
+            previous pass). WIDTH on desktop is bumped up once more —
+            450px still left the signs less than clearly noticeable at a
+            normal viewing size, so it's now a fixed 470px from md up
+            (~70% of this chapter's max-w-2xl text column, the top of the
+            requested range). Still larger than Milano_streets' 350px:
+            this photo is the first real photographic beat right after
+            the animated map, so it's allowed to lead. Mobile width
+            (w-[85%]) is unchanged — only the desktop size needed the
+            increase. Gap token (mt-12 md:mt-16) unchanged. No caption,
+            per this step's scope. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[470px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[6/5]'>
             <Image
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_on%20the%20road_web.jpeg'
               alt='View through the windscreen approaching Italy on the motorway, road signs for Milano, Venezia and Trieste visible.'
               fill
-              sizes='(min-width: 768px) 450px, 85vw'
+              sizes='(min-width: 768px) 470px, 85vw'
               className='object-cover'
             />
           </div>
