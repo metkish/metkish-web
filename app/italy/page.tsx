@@ -183,21 +183,25 @@ export default function ItalyPage() {
             map into the real Milano story: the last thing the map showed
             was the route itself, and this photo (through the windscreen,
             Italy/Villesse road signs visible) is that same drive, now as
-            a photograph. Same treatment and gap as the chapter's other
-            first photo below (max-w-2xl md:max-w-3xl mx-auto,
-            aspect-[3/4], rounded-[2px], object-cover, mt-12 md:mt-16 —
-            the established "opening text -> first photo" token Playa del
-            Duque's section uses), since it's a native portrait "_web"
-            photo prepared the same way (EXIF-rotated pixels baked in,
-            orientation cleared) so the road signs at the top of the frame
-            aren't cropped away. No caption, per this step's scope. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-2xl md:max-w-3xl mx-auto'>
+            a photograph. Same aspect-[3/4]/rounded-[2px]/object-cover
+            treatment and the same mt-12 md:mt-16 gap token as before —
+            only the container WIDTH was scaled down (w-[85%] mobile,
+            fixed 282px from md up, ~42% of this chapter's max-w-2xl text
+            column) so the photo reads as an editorial beat rather than a
+            hero image, matching Tenerife's smaller portrait-photo widths
+            (e.g. its max-w-[220px] sm:max-w-xs md:max-w-sm treatments)
+            rather than its large max-w-2xl/3xl ones. Still a native
+            portrait "_web" photo (EXIF-rotated pixels baked in,
+            orientation cleared), and aspect-[3/4] still matches the
+            source photo's own ratio exactly, so nothing is cropped — it's
+            simply rendered smaller. No caption, per this step's scope. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[282px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_on%20the%20road_web.jpeg'
               alt='View through the windscreen approaching Italy on the motorway, road signs for Milano, Venezia and Trieste visible.'
               fill
-              sizes='(min-width: 768px) 768px, 100vw'
+              sizes='(min-width: 768px) 282px, 85vw'
               className='object-cover'
             />
           </div>
@@ -226,29 +230,28 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* The story's second photograph — same treatment as Tenerife's
-            portrait photos (El Teide_landscape_web: max-w-2xl
-            md:max-w-3xl mx-auto, aspect-[3/4], rounded-[2px],
-            object-cover, no border/shadow), since Milano_streets is
-            itself a native portrait photo (a "_web" copy was made the
-            same way Tenerife's own iPhone photos were: EXIF-rotated
-            pixels baked in, orientation tag cleared, so it renders
-            correctly and isn't cropped to force a different ratio — the
-            balcony, flowers and street all stay in frame). Gap above it
-            (mt-12 md:mt-16) matches the same "text -> photo" token used
-            above for the road photo. Caption below uses the exact
-            established photo-caption treatment ("Playa del Duque · Costa
-            Adeje", "Roca Nivaria · Playa Paraíso": mt-3, text-xs
-            uppercase tracking-[0.18em], Poppins semibold, black/40) —
-            the same small, quiet credit line style, just holding a
-            sentence instead of a place name here. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-2xl md:max-w-3xl mx-auto'>
+        {/* The story's second photograph — same aspect-[3/4]/
+            rounded-[2px]/object-cover/no-border treatment as before,
+            since Milano_streets is itself a native portrait "_web" photo
+            (EXIF-rotated pixels baked in, orientation cleared, so it
+            isn't cropped to force a different ratio — the balcony,
+            flowers and street all stay in frame). Only the container
+            WIDTH was scaled down, same as the road photo above but a
+            touch larger (w-[88%] mobile, fixed 350px from md up, ~52% of
+            the max-w-2xl text column vs the road photo's ~42%), so it
+            still reads as the slightly bigger of this chapter's two
+            photos without either feeling like a hero image. Gap above it
+            (mt-12 md:mt-16) still matches the "text -> photo" token used
+            above. Caption below is untouched — same mt-3, text-xs
+            uppercase tracking-[0.18em], Poppins semibold, black/40 credit
+            line, just now the width of the smaller photo container. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[350px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_streets_web.jpeg'
               alt='A quiet Milano street with a flower-covered balcony.'
               fill
-              sizes='(min-width: 768px) 768px, 100vw'
+              sizes='(min-width: 768px) 350px, 88vw'
               className='object-cover'
             />
           </div>
