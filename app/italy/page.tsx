@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
+import { RouteLabel } from '@/components/journey/annotation-kit';
 import { ITALY_HOME_TO_MILANO_JOURNEY } from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
@@ -131,14 +132,27 @@ export default function ItalyPage() {
 
       {/* 3. FIRST CHAPTER — "First stop? Milano!" now lands right after
           the journey itself, closing the ROAD TRIP -> map -> chapter
-          opening arc. Uses the same map->content gap every other
-          map->content transition on the Tenerife page uses
-          (MAP_TRANSITION_PT: pt-8 md:pt-10), then the page's own closing
-          gap below it before whatever comes next. */}
-      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black'>
-        <Reveal className='max-w-2xl mx-auto text-center'>
-          <ChapterHeading italic>First stop? Milano!</ChapterHeading>
-        </Reveal>
+          opening arc. This is a direct reuse of Tenerife's own map->chapter
+          pattern (see app/tenerife/page.tsx, "3. VIENNA CONTENT": the
+          "Slovenia → Vienna" / "Why Vienna?" section) — same section
+          classes (px-6 md:px-12, MAP_TRANSITION_PT's pt-8 md:pt-10,
+          pb-16 md:pb-24), same max-w-2xl mx-auto text-center wrapper, a
+          bare RouteLabel (the shared component from
+          components/journey/annotation-kit, not a local copy — same pink
+          tick, letter-spacing, font, size and weight Tenerife's chapter
+          openers use) in its own Reveal, then ChapterHeading in a second
+          Reveal at mt-8 md:mt-10, exactly like "Why Vienna?". No paragraph
+          underneath yet, per this step's scope. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Slovenia → Milano</RouteLabel>
+          </Reveal>
+
+          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>First stop? Milano!</ChapterHeading>
+          </Reveal>
+        </div>
       </section>
     </div>
   );
