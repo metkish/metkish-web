@@ -177,7 +177,33 @@ export default function ItalyPage() {
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
             <ChapterHeading italic>First stop? Milano!</ChapterHeading>
           </Reveal>
+        </div>
 
+        {/* MILANO ON THE ROAD — the visual transition from the animated
+            map into the real Milano story: the last thing the map showed
+            was the route itself, and this photo (through the windscreen,
+            Italy/Villesse road signs visible) is that same drive, now as
+            a photograph. Same treatment and gap as the chapter's other
+            first photo below (max-w-2xl md:max-w-3xl mx-auto,
+            aspect-[3/4], rounded-[2px], object-cover, mt-12 md:mt-16 —
+            the established "opening text -> first photo" token Playa del
+            Duque's section uses), since it's a native portrait "_web"
+            photo prepared the same way (EXIF-rotated pixels baked in,
+            orientation cleared) so the road signs at the top of the frame
+            aren't cropped away. No caption, per this step's scope. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-2xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_on%20the%20road_web.jpeg'
+              alt='View through the windscreen approaching Italy on the motorway, road signs for Milano, Venezia and Trieste visible.'
+              fill
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
           {/* MILANO STORY 1 — "Lesson learned: check the holidays." A
               sub-beat within this same chapter rather than a new one (no
               new RouteLabel), reusing the exact heading + Paragraphs
@@ -185,13 +211,9 @@ export default function ItalyPage() {
               first?", "The transfer we probably didn't need."), gap
               (mt-10 md:mt-12, the same "next beat within a chapter" token
               Tenerife's own Playa del Duque section uses between its photo
-              and its next heading). The closing line ("Next time? Check
-              the calendar first.") uses the one-step-up-from-body-copy
-              italic Playfair treatment Mount Teide's closing line uses
-              (text-xl md:text-2xl, not full ChapterHeading scale) for
-              emphasis without becoming a second heading. No icons, no
-              date/practical panel, no further Liberation Day detail —
-              exactly the text the brief gave. */}
+              and its next heading). No further Liberation Day detail —
+              exactly the text the brief gave, and no separate closing
+              line: the heading already carries that message. */}
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
             <ChapterHeading italic>Lesson learned: check the holidays.</ChapterHeading>
             <Paragraphs
@@ -201,27 +223,25 @@ export default function ItalyPage() {
                 'After endless detours and a little luck, we somehow made it.',
               ]}
             />
-            <p className='mt-6 text-xl md:text-2xl font-[family-name:var(--font-playfair)] italic font-medium text-black dark:text-white'>
-              Next time? Check the calendar first.
-            </p>
           </Reveal>
         </div>
 
-        {/* The story's photograph — same treatment as Tenerife's portrait
-            photos (El Teide_landscape_web: max-w-2xl md:max-w-3xl mx-auto,
-            aspect-[3/4], rounded-[2px], object-cover, no border/shadow),
-            since Milano_streets is itself a native portrait photo (a
-            "_web" copy was made the same way Tenerife's own iPhone photos
-            were: EXIF-rotated pixels baked in, orientation tag cleared, so
-            it renders correctly and isn't cropped to force a different
-            ratio — the balcony, flowers and street all stay in frame).
-            Gap above it (mt-12 md:mt-16) matches Playa del Duque's own
-            gap between its opening text and its first photo. Caption
-            below uses the exact established photo-caption treatment
-            ("Playa del Duque · Costa Adeje", "Roca Nivaria · Playa
-            Paraíso": mt-3, text-xs uppercase tracking-[0.18em], Poppins
-            semibold, black/40) — the same small, quiet credit line
-            style, just holding a sentence instead of a place name here. */}
+        {/* The story's second photograph — same treatment as Tenerife's
+            portrait photos (El Teide_landscape_web: max-w-2xl
+            md:max-w-3xl mx-auto, aspect-[3/4], rounded-[2px],
+            object-cover, no border/shadow), since Milano_streets is
+            itself a native portrait photo (a "_web" copy was made the
+            same way Tenerife's own iPhone photos were: EXIF-rotated
+            pixels baked in, orientation tag cleared, so it renders
+            correctly and isn't cropped to force a different ratio — the
+            balcony, flowers and street all stay in frame). Gap above it
+            (mt-12 md:mt-16) matches the same "text -> photo" token used
+            above for the road photo. Caption below uses the exact
+            established photo-caption treatment ("Playa del Duque · Costa
+            Adeje", "Roca Nivaria · Playa Paraíso": mt-3, text-xs
+            uppercase tracking-[0.18em], Poppins semibold, black/40) —
+            the same small, quiet credit line style, just holding a
+            sentence instead of a place name here. */}
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-2xl md:max-w-3xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
