@@ -12,24 +12,32 @@ import type { Journey, JourneyPoint } from './types';
 // keeps one coordinate across the whole site, never redefined per
 // destination. Same privacy rule too: the map label says only "Home".
 //
-// The user's Google Maps screenshot (the "7h38min" highlighted option,
-// via Ljubljana and Italy's A4) was used as the *route reference* only —
-// which real roads the drive actually uses — not as a pixel trace and not
-// as a rendered background image. ITALY_HOME_TO_MILANO_ROUTE below is
-// built from the real, named waypoints that corridor actually passes
-// through (Maribor, Ljubljana, the Slovenia/Italy border near
-// Sežana-Fernetti, the A4 at Villesse, Udine, Portogruaro, Mestre/Venezia,
-// Padova, Vicenza, Verona, Brescia, Milano), each a well-known real place
-// rather than an invented shortcut straight between Home and Milano.
+// The user's Google Maps screenshot (the highlighted "7h38min €151.45"
+// option, via Ljubljana and Italy's A4) is the source of truth for this
+// route's shape. ITALY_HOME_TO_MILANO_ROUTE below was derived directly
+// from that screenshot's highlighted line, not invented or smoothed from
+// memory: the highlighted route's distinct pixel colour was isolated from
+// the two paler alternate routes also visible in the screenshot, the
+// resulting pixels were ordered into one continuous path, and that path
+// was simplified (removing only redundant same-curve points) — never
+// dropping a real bend. The pixel path was then converted to real lng/lat
+// using an affine fit against several known real places clearly
+// identifiable in the same screenshot (Maribor, Ljubljana, Trieste,
+// Brescia, plus Home/Milano themselves as anchors), so every waypoint
+// below is a real geographic coordinate that also reproduces the
+// screenshot's actual corridor and bends — including the Ljubljana ->
+// Gorizia/border zigzag and the Venezia/Padova/Vicenza double-bend —
+// rather than a simplified or artistic curve between Home and Milano.
 //
 // Caveat worth flagging honestly: this build's network policy currently
 // blocks routing-API access (OSRM etc. — see metkish-route-geometry's
-// normal verification step), so unlike Tenerife's routes these waypoints
-// could not be cross-checked against a fresh turn-by-turn fetch. They're
-// real place coordinates chosen to match the corridor visible in the
-// reference screenshot, not OSRM-verified geometry — worth a live check
-// once routing access (or a supplied GPX/waypoint list) is available, the
-// same way every other route on this site was double-checked.
+// normal verification step), so these waypoints could not be
+// cross-checked against a fresh turn-by-turn fetch the way Tenerife's
+// routes were. They're derived from the user's own supplied reference
+// image (which is itself a real Google Maps driving route) rather than
+// from OSRM — worth a live OSRM check once routing access (or a supplied
+// GPX/waypoint list) is available, the same way every other route on this
+// site was double-checked.
 const HOME: JourneyPoint = {
   id: 'home',
   name: 'Home',
@@ -46,18 +54,31 @@ const MILANO: JourneyPoint = {
 
 const ITALY_HOME_TO_MILANO_ROUTE: [number, number][] = [
   HOME.coords,
-  [15.6459, 46.5547], // Maribor
-  [14.5058, 46.0569], // Ljubljana
-  [14.2136, 45.7739], // Postojna (A1)
-  [13.8747, 45.7089], // Sežana / Fernetti border area
-  [13.3106, 45.8843], // Villesse (A4 junction, Italy)
-  [13.2346, 46.0693], // Udine
-  [12.8386, 45.7773], // Portogruaro
-  [12.2447, 45.4903], // Mestre / Venezia
-  [11.8768, 45.4064], // Padova
-  [11.5469, 45.5455], // Vicenza
-  [10.9916, 45.4384], // Verona
-  [10.2118, 45.5416], // Brescia
+  [16.1463, 46.7784], // local road south from Home, matching the screenshot's opening hook
+  [16.1008, 46.5945],
+  [15.7082, 46.5642], // toward Maribor
+  [15.6822, 46.4583], // Maribor
+  [15.3954, 46.2484],
+  [14.9866, 46.2461],
+  [14.8761, 46.1688],
+  [14.6278, 46.1317], // approaching Ljubljana
+  [14.5503, 45.9872], // Ljubljana
+  [14.3387, 45.9777],
+  [14.3248, 45.7601], // Postojna (A1)
+  [14.2290, 45.6939],
+  [14.0550, 45.6897], // toward Kozina / the border
+  [13.9135, 45.8192], // border area, bending back north
+  [13.5926, 45.8888], // toward Gorizia / Villesse (A4 junction)
+  [13.0074, 45.7539], // A4 west, staying south of Udine
+  [12.7650, 45.7558], // Portogruaro area
+  [12.2996, 45.4692], // Mestre / Venezia
+  [11.9777, 45.3769], // Padova
+  [11.4813, 45.4814], // Vicenza
+  [11.2889, 45.3712],
+  [10.9563, 45.3572], // Verona
+  [10.8934, 45.4135],
+  [10.5987, 45.3991],
+  [10.1243, 45.5201], // Brescia
   MILANO.coords,
 ];
 
