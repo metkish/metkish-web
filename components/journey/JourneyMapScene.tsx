@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import type { Journey, JourneyLeg, JourneyMode, JourneyPoint } from '@/lib/journeys/types';
 import { bezierPoint, project, projectSpan, screenAngle, routeCurvePoint, routeCurveAngleAt } from './geo';
@@ -199,6 +199,11 @@ export default function JourneyMapScene({
   className = '',
   heightClassName = DEFAULT_HEIGHT_CLASSNAME,
 }: JourneyMapSceneProps) {
+  // Unique per mount (this page puts several JourneyMapScene instances on
+  // one page) so each instance's <mask> id below can't collide with
+  // another's — an id collision would leave a later map's car referencing
+  // the wrong (or a since-unmounted) mask.
+  const carMaskId = useId();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -705,18 +710,41 @@ export default function JourneyMapScene({
               </>
             ) : (
               <>
-                <path d={CAR_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' />
-                <rect
-                  x={CAR_ROOF.x}
-                  y={CAR_ROOF.y}
-                  width={CAR_ROOF.width}
-                  height={CAR_ROOF.height}
-                  rx={CAR_ROOF.rx}
-                  fill={MUTED_BACKGROUND}
-                />
-                {CAR_WHEEL_HINTS.map(([cx, cy], i) => (
-                  <ellipse key={i} cx={cx} cy={cy} rx={0.6} ry={0.32} fill={MUTED_BACKGROUND} />
-                ))}
+                {/* The roof and wheel hints are real holes in the car body
+                    (via this mask), not an opaque MUTED_BACKGROUND-colored
+                    patch drawn on top. A flat fill only happened to match
+                    what was underneath while the car sat on the plain map
+                    background — anywhere else (the pink route line/glow, or
+                    a destination's pink marker dot, which every leg ends on)
+                    it showed up as a mismatched light square/dot riding
+                    along with the car, worst right where the vehicle comes
+                    to rest on a marker. A mask instead reveals whatever is
+                    actually beneath the vehicle overlay at that pixel —
+                    correct regardless of what that is. */}
+                {/* Explicit mask region (rather than the SVG default of
+                    -10%/120% of the current viewport) because maskUnits is
+                    userSpaceOnUse and this <g>'s enclosing viewBox is set
+                    imperatively in JS and changes every frame during the
+                    camera pan — a percentage of a viewBox that size can
+                    resolve to a region nowhere near the car's own 24x24
+                    local space, which clipped the whole car invisible.
+                    -4..28 comfortably covers the 24x24 icon in its own,
+                    untransformed coordinate system regardless of viewBox. */}
+                <mask id={carMaskId} maskUnits='userSpaceOnUse' x={-4} y={-4} width={32} height={32}>
+                  <path d={CAR_BODY_PATH} fill='white' />
+                  <rect
+                    x={CAR_ROOF.x}
+                    y={CAR_ROOF.y}
+                    width={CAR_ROOF.width}
+                    height={CAR_ROOF.height}
+                    rx={CAR_ROOF.rx}
+                    fill='black'
+                  />
+                  {CAR_WHEEL_HINTS.map(([cx, cy], i) => (
+                    <ellipse key={i} cx={cx} cy={cy} rx={0.6} ry={0.32} fill='black' />
+                  ))}
+                </mask>
+                <path d={CAR_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' mask={`url(#${carMaskId})`} />
               </>
             )}
           </g>
