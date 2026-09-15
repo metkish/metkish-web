@@ -62,6 +62,31 @@ function ChapterHeading({
   );
 }
 
+// LEVEL 3 body copy — byte-identical to Tenerife's own Paragraphs
+// component (same font, size, weight, line-height, and the mt-5 spacing
+// convention used everywhere it appears), so Milano's first story reads
+// at the same voice as every Tenerife story beat.
+function Paragraphs({
+  items,
+  className = '',
+}: {
+  items: string[];
+  className?: string;
+}) {
+  return (
+    <div className={`space-y-5 ${className}`}>
+      {items.map((text, i) => (
+        <p
+          key={i}
+          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
+        >
+          {text}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 export default function ItalyPage() {
   const [pastHero, setPastHero] = useState(false);
 
@@ -152,7 +177,65 @@ export default function ItalyPage() {
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
             <ChapterHeading italic>First stop? Milano!</ChapterHeading>
           </Reveal>
+
+          {/* MILANO STORY 1 — "Lesson learned: check the holidays." A
+              sub-beat within this same chapter rather than a new one (no
+              new RouteLabel), reusing the exact heading + Paragraphs
+              pairing Tenerife uses throughout (e.g. "So, which beach
+              first?", "The transfer we probably didn't need."), gap
+              (mt-10 md:mt-12, the same "next beat within a chapter" token
+              Tenerife's own Playa del Duque section uses between its photo
+              and its next heading). The closing line ("Next time? Check
+              the calendar first.") uses the one-step-up-from-body-copy
+              italic Playfair treatment Mount Teide's closing line uses
+              (text-xl md:text-2xl, not full ChapterHeading scale) for
+              emphasis without becoming a second heading. No icons, no
+              date/practical panel, no further Liberation Day detail —
+              exactly the text the brief gave. */}
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <ChapterHeading italic>Lesson learned: check the holidays.</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'We arrived in Milano on April 25th — Liberation Day. Around 100,000 people filled the city centre, streets were closed, and reaching our parking garage felt almost impossible.',
+                'After endless detours and a little luck, we somehow made it.',
+              ]}
+            />
+            <p className='mt-6 text-xl md:text-2xl font-[family-name:var(--font-playfair)] italic font-medium text-black dark:text-white'>
+              Next time? Check the calendar first.
+            </p>
+          </Reveal>
         </div>
+
+        {/* The story's photograph — same treatment as Tenerife's portrait
+            photos (El Teide_landscape_web: max-w-2xl md:max-w-3xl mx-auto,
+            aspect-[3/4], rounded-[2px], object-cover, no border/shadow),
+            since Milano_streets is itself a native portrait photo (a
+            "_web" copy was made the same way Tenerife's own iPhone photos
+            were: EXIF-rotated pixels baked in, orientation tag cleared, so
+            it renders correctly and isn't cropped to force a different
+            ratio — the balcony, flowers and street all stay in frame).
+            Gap above it (mt-12 md:mt-16) matches Playa del Duque's own
+            gap between its opening text and its first photo. Caption
+            below uses the exact established photo-caption treatment
+            ("Playa del Duque · Costa Adeje", "Roca Nivaria · Playa
+            Paraíso": mt-3, text-xs uppercase tracking-[0.18em], Poppins
+            semibold, black/40) — the same small, quiet credit line
+            style, just holding a sentence instead of a place name here. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-2xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_streets_web.jpeg'
+              alt='A quiet Milano street with a flower-covered balcony.'
+              fill
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            The calm after the chaos.
+          </p>
+        </Reveal>
       </section>
     </div>
   );
