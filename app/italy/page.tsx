@@ -4,13 +4,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import TracedRouteMap from '@/components/journey/TracedRouteMap';
-import {
-  HOME_TO_MILANO_ROUTE_IMAGE,
-  HOME_TO_MILANO_ROUTE_IMAGE_WIDTH,
-  HOME_TO_MILANO_ROUTE_IMAGE_HEIGHT,
-  HOME_TO_MILANO_TRACED_PATH,
-} from '@/lib/journeys/italy';
+import JourneyMapScene from '@/components/journey/JourneyMapScene';
+import { ITALY_HOME_TO_MILANO_JOURNEY } from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
 
@@ -134,26 +129,18 @@ export default function ItalyPage() {
         </Reveal>
       </section>
 
-      {/* 3. MAP — Home -> Milano, traced directly from the reference map
-          supplied for this step (see components/journey/TracedRouteMap
-          and lib/journeys/italy.ts for how and why). Sits in its own
-          cream band, edge to edge, matching every other Journey Map
-          section on the site, and is the last thing on the page for now
-          per this step's scope. */}
-      <section className='pb-20 md:pb-28'>
-        <Reveal className='px-4 sm:px-6 md:px-12'>
-          <TracedRouteMap
-            imageSrc={HOME_TO_MILANO_ROUTE_IMAGE}
-            imageAlt='Reference driving route from Home to Milano'
-            naturalWidth={HOME_TO_MILANO_ROUTE_IMAGE_WIDTH}
-            naturalHeight={HOME_TO_MILANO_ROUTE_IMAGE_HEIGHT}
-            path={HOME_TO_MILANO_TRACED_PATH}
-            startLabel='Home'
-            endLabel='Milano'
-            className='max-w-5xl mx-auto rounded-sm'
-          />
-        </Reveal>
-      </section>
+      {/* 3. MAP — Home -> Milano, the same JourneyMapScene engine every
+          other map on the site uses (real lng/lat route, self-running
+          reveal-on-scroll, pink route line, "Home"/"Milano" dot labels) —
+          not a bespoke map for Italy. See lib/journeys/italy.ts for the
+          route data and why it's built the way it is. Edge to edge, no
+          side padding or rounded corners, exactly like every Journey Map
+          section on the Tenerife page; it's the last thing on the page
+          for now per this step's scope. */}
+      <JourneyMapScene
+        journey={ITALY_HOME_TO_MILANO_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
     </div>
   );
 }
