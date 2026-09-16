@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Poppins, Fredoka, Playfair_Display, Caveat } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -77,10 +76,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       lang="en"
       className={`h-full antialiased scroll-smooth ${poppins.variable} ${fredoka.variable} ${playfair.variable} ${caveat.variable}`}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
-        <Analytics />
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
