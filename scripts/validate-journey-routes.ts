@@ -22,7 +22,7 @@ import {
 } from '../lib/journeys/routeValidation';
 import type { Journey } from '../lib/journeys/types';
 
-const DESTINATION_MODULES = ['../lib/journeys/tenerife'];
+const DESTINATION_MODULES = ['../lib/journeys/tenerife', '../lib/journeys/italy'];
 
 async function main() {
   let sawFailure = false;
