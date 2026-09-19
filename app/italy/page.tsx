@@ -87,6 +87,20 @@ function Paragraphs({
   );
 }
 
+// A small in-chapter marker — one notch below the chapter-opening
+// RouteLabel: no pink tick, used for a beat *within* a chapter. Byte-
+// identical to Tenerife's own Eyebrow component (see tenerife-editorial-
+// system: reuse the existing typography rather than inventing a new
+// scale), duplicated locally rather than imported for the same reason
+// Reveal/ChapterHeading/Paragraphs above are local copies.
+function Eyebrow({ children }: { children: ReactNode }) {
+  return (
+    <span className='block text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
+      {children}
+    </span>
+  );
+}
+
 export default function ItalyPage() {
   const [pastHero, setPastHero] = useState(false);
 
@@ -194,23 +208,24 @@ export default function ItalyPage() {
             crop (aspect-[6/5], still object-cover/rounded-[2px], nothing
             trimmed beyond the source file's own crop — the crop itself,
             aspect-[6/5], and centering are all unchanged from the
-            previous pass). WIDTH on desktop is bumped up once more —
-            450px still left the signs less than clearly noticeable at a
-            normal viewing size, so it's now a fixed 470px from md up
-            (~70% of this chapter's max-w-2xl text column, the top of the
-            requested range). Still larger than Milano_streets' 350px:
-            this photo is the first real photographic beat right after
-            the animated map, so it's allowed to lead. Mobile width
-            (w-[85%]) is unchanged — only the desktop size needed the
-            increase. Gap token (mt-12 md:mt-16) unchanged. No caption,
-            per this step's scope. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[470px] mx-auto'>
+            previous pass, and stay that way here too: this pass only
+            touches the container WIDTH, nothing about the crop or
+            positioning). 470px still left the ITALIA sign on the right
+            edge less than clearly noticeable at a normal viewing size,
+            so desktop width is now a fixed 538px from md up (~80% of
+            this chapter's max-w-2xl text column). Still larger than
+            Milano_streets' 350px: this photo is the first real
+            photographic beat right after the animated map, so it's
+            allowed to lead. Mobile width (w-[85%]) is unchanged — only
+            the desktop size needed the increase. Gap token (mt-12
+            md:mt-16) unchanged. No caption, per this step's scope. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[538px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[6/5]'>
             <Image
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_on%20the%20road_web.jpeg'
               alt='View through the windscreen approaching Italy on the motorway, road signs for Milano, Venezia and Trieste visible.'
               fill
-              sizes='(min-width: 768px) 470px, 85vw'
+              sizes='(min-width: 768px) 538px, 85vw'
               className='object-cover'
             />
           </div>
@@ -268,6 +283,54 @@ export default function ItalyPage() {
             The calm after the chaos.
           </p>
         </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          {/* WHERE WE STAYED — a short, understated accommodation aside
+              right after the story's closing photo, reusing Tenerife's own
+              Eyebrow -> ChapterHeading -> quiet-practical-line -> Paragraphs
+              language rather than the cream "practical-info panel"
+              treatment (that reads as a booking card, which this
+              deliberately avoids — see the Tenerife hotel review-score
+              line, "9.1 · 1,656 reviews · 5 stars", for the same "quiet
+              line, no widget" precedent this reuses). Gap above matches a
+              photo-caption -> new-topic transition (mt-14/16), a touch more
+              than the in-chapter mt-10/12 token since this opens a new beat
+              rather than continuing the photo's own story. No property
+              name, no photo — per this step's scope. */}
+          <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Eyebrow>Where We Stayed</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              A centrally located room in Milano
+            </ChapterHeading>
+            <p className='mt-4 text-sm md:text-base tracking-[0.06em] font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+              2 nights · €949 · family of four
+            </p>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "The location was exceptional, and our host was incredibly helpful — even before we arrived, she helped us figure out Milan's Area C and where to park.",
+                'For the four of us, though, the room felt quite cramped, with a shared kitchen outside the room. At €949 for two nights, I expected a little more.',
+              ]}
+            />
+          </Reveal>
+
+          {/* GOOD TO KNOW — reuses Tenerife's exact Eyebrow-only,
+              straight-into-paragraph treatment (see "Parking" on the
+              Tenerife page, right after the cable-car permit note): no
+              card, no box, just the same quiet marker and body copy as the
+              rest of the story, so this stays visually secondary to the
+              accommodation beat above it. */}
+          <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto'>
+            <Eyebrow>Good to Know</Eyebrow>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Driving into central Milano? Check the restricted traffic zones before you go. Milano has Area B and Area C, with different access rules depending on your vehicle.',
+                "We travelled with an electric car, so Area C was free for us — but it's worth checking the current rules before your trip.",
+              ]}
+            />
+          </Reveal>
+        </div>
       </section>
     </div>
   );
