@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
-import { RouteLabel } from '@/components/journey/annotation-kit';
+import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import { ITALY_HOME_TO_MILANO_JOURNEY } from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
@@ -285,48 +285,59 @@ export default function ItalyPage() {
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
-          {/* WHERE WE STAYED — a short, understated accommodation aside
-              right after the story's closing photo, reusing Tenerife's own
-              Eyebrow -> ChapterHeading -> quiet-practical-line -> Paragraphs
-              language rather than the cream "practical-info panel"
-              treatment (that reads as a booking card, which this
-              deliberately avoids — see the Tenerife hotel review-score
-              line, "9.1 · 1,656 reviews · 5 stars", for the same "quiet
-              line, no widget" precedent this reuses). Gap above matches a
-              photo-caption -> new-topic transition (mt-14/16), a touch more
-              than the in-chapter mt-10/12 token since this opens a new beat
-              rather than continuing the photo's own story. No property
-              name, no photo — per this step's scope. */}
+          {/* WHERE WE STAYED — simplified per revision request: one short
+              editorial line instead of two paragraphs, no inline price/
+              nights mention (that detail now lives once, in the card
+              below). Eyebrow -> ChapterHeading -> Paragraphs, same as
+              before. Gap above still matches the photo-caption -> new-topic
+              transition (mt-14/16). No property name, no photo. */}
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <Eyebrow>Where We Stayed</Eyebrow>
             <ChapterHeading italic className='mt-3'>
-              A centrally located room in Milano
+              Right in the heart of Milano
             </ChapterHeading>
-            <p className='mt-4 text-sm md:text-base tracking-[0.06em] font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              2 nights · €949 · family of four
-            </p>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "The location was exceptional, and our host was incredibly helpful — even before we arrived, she helped us figure out Milan's Area C and where to park.",
-                'For the four of us, though, the room felt quite cramped, with a shared kitchen outside the room. At €949 for two nights, I expected a little more.',
+                'Exceptional location and an incredibly helpful host. A little cramped for four, though.',
               ]}
             />
           </Reveal>
 
-          {/* GOOD TO KNOW — reuses Tenerife's exact Eyebrow-only,
-              straight-into-paragraph treatment (see "Parking" on the
-              Tenerife page, right after the cable-car permit note): no
-              card, no box, just the same quiet marker and body copy as the
-              rest of the story, so this stays visually secondary to the
-              accommodation beat above it. */}
+          {/* Booking-information card — the exact same quiet practical-info
+              panel language as the Tenerife hotel card (Roca Nivaria · 9
+              Nights / price via TimeStamp / date range / room type / extra
+              line): identical background, corner radius, padding, gap,
+              label styling and TimeStamp scale, just this stay's own
+              values. €949.32 appears only here, once, replacing the earlier
+              inline "€949" mention that used to sit in the paragraph
+              above. */}
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Central Milano · 2 Nights
+            </span>
+            <TimeStamp size='md'>€949.32</TimeStamp>
+            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              25 Apr → 27 Apr 2026
+            </span>
+            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Family of four
+            </span>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Room · shared kitchen
+            </span>
+          </Reveal>
+
+          {/* GOOD TO KNOW — simplified to one sentence. Same Eyebrow-only,
+              straight-into-paragraph treatment as before (and as Tenerife's
+              "Parking" note): no card, no box, so it stays visually
+              secondary to the booking card above it. */}
           <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto'>
             <Eyebrow>Good to Know</Eyebrow>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Driving into central Milano? Check the restricted traffic zones before you go. Milano has Area B and Area C, with different access rules depending on your vehicle.',
-                "We travelled with an electric car, so Area C was free for us — but it's worth checking the current rules before your trip.",
+                'Driving to Milano? Check Area B and Area C before you go — access rules depend on your vehicle. We travelled by electric car, so Area C was free for us.',
               ]}
             />
           </Reveal>
