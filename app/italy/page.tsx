@@ -424,6 +424,183 @@ export default function ItalyPage() {
             />
           </div>
         </Reveal>
+
+        {/* GALLERIA — deliberately the lightest possible treatment on this
+            page: no Eyebrow, no ChapterHeading, no photo, just one quiet
+            paragraph continuing the same beat as the Duomo video above it
+            (same "photo/video -> connected text" token, mt-10/12, as the
+            Duomo punchline). This is a one-line transition, not a new
+            attraction — per this step's explicit instruction not to give
+            the Galleria its own section or any media. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "Right next to the Duomo, we walked through the famous Galleria Vittorio Emanuele II. Beautiful, yes — but high fashion isn't really our thing, so we simply kept walking.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* SLOW SUNDAY — a new beat (Eyebrow-only marker, same tier as
+            "Sunday Morning" above), opening the "walking through Milano"
+            atmosphere stretch of the day. Gap above reuses the file's
+            "closing one beat -> opening a different one" token (mt-14/16),
+            since this moves from the Duomo/Galleria sightseeing into open,
+            unplanned wandering. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Eyebrow>Slow Sunday</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              Walking, gelato &amp; no rush
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'After the Duomo, we grabbed a gelato and simply wandered through Milano. Trams, beautiful streets and no real plan — the city felt easy to explore.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Milano_street_web.jpeg — a tram junction in central Milano,
+            "atmosphere" tier per this chapter's hierarchy: more presence
+            than the Galleria mention, less than the Duomo, since it's this
+            beat's only image rather than its main highlight. Native
+            landscape ratio (already 4:3 at full resolution, no EXIF
+            rotation needed unlike the two portrait photos above), so
+            aspect-[4/3] crops nothing. 560px sits a little wider than this
+            chapter's portrait photos since a landscape street scene reads
+            better with more horizontal room, while staying well short of a
+            full-width hero. Web-sized copy (1800px long edge, same
+            treatment as Milano_on the road_web.jpeg / Milano_streets_web
+            .jpeg) rather than the 4.9MB source file. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[560px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_street_web.jpeg'
+              alt='A tram junction and historic buildings in central Milano on a sunny Sunday afternoon.'
+              fill
+              sizes='(min-width: 768px) 560px, 85vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* The lunch beat — connected to the walking photo above rather
+            than a new chapter (same photo -> connected text token, mt-10/
+            12). Kept to the experience itself, not a review — no
+            restaurant name, no recommendation, per this step's explicit
+            instruction. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'We eventually found a place for lunch and joined the queue outside. Once inside, we quickly learned something about Italians — lunch is not something to rush.',
+                'Coming from people who are always in a hurry, we could probably learn a thing or two.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* GETTING AROUND — a small practical tip, same Eyebrow +
+            ChapterHeading + Paragraphs, no-photo tier as Tenerife's "One
+            thing I didn't know" / "Parking" notes (this page's established
+            "useful aside, not a major section" pattern). Gap above matches
+            that same tier's own token (mt-12/14). */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto'>
+            <Eyebrow>Getting Around</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              Getting around was surprisingly easy
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "Milano's metro was incredibly simple to use — no tickets to buy, we just tapped our cards at the gates. Our kids already had their own Revolut cards, which made travelling as a family effortless.",
+                'One card per traveller, though — the gates need a tap from everyone.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* A DIFFERENT MILANO — this chapter's second strong visual
+            moment (per the requested hierarchy), so it gets the same
+            weight as Sunday Morning/Slow Sunday: Eyebrow, ChapterHeading,
+            Paragraphs, then its own media. Gap above is this file's
+            biggest "new topic" token (mt-14/16) again, since this is a
+            deliberate shift away from the historic centre. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Eyebrow>A Different Milano</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              Then Milano turned green
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'We headed to the modern part of the city, expecting skyscrapers and glass. Instead, my favourite thing was a wildflower meadow — with the incredible Bosco Verticale rising behind it.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Milano_green.mp4 — the wildflower meadow with Bosco Verticale,
+            as an editorial "moving photograph", byte-identical treatment
+            to the Duoma_video / Tenerife Hotel_beach.mp4 insert (autoPlay/
+            muted/loop/playsInline, aspect-[9/16], contained by width). The
+            only media for this beat, per this step's scope. Re-encoded
+            from the original Milano_green.MOV (already H.264, but a raw
+            1080x1920/28MB phone export in a .MOV container) down to
+            640x1138/~6.5MB — same resolution and codec convention as
+            every other video already on the site. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[240px] sm:max-w-xs md:max-w-md mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_green.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* The reflection line — connected to the video above (same
+            photo/video -> connected text token, mt-10/12), closing the
+            "Modern Milano" beat the same way the Duomo punchline closes
+            its own beat. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'Skyscrapers, wildflowers and a building covered in trees. I loved this side of Milano.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* The football transition — closes this whole daytime arc with
+            one short, bare ChapterHeading line (no Eyebrow, no
+            Paragraphs), the same "single reflective line" weight Tenerife
+            uses to close a story before moving on. Gap above is this
+            file's biggest token (mt-14/16) again, marking the end of the
+            day rather than another beat within it. The football match
+            itself is deliberately not built yet — content and media for
+            it are coming separately. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>
+              And then it was time for the one thing we had actually planned.
+            </ChapterHeading>
+          </Reveal>
+        </div>
       </section>
     </div>
   );
