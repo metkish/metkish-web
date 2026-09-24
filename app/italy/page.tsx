@@ -543,7 +543,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "We quickly learned one thing — Italians don't rush lunch. Maybe we could learn something from that.",
+                "We stopped for lunch and quickly learned one thing — Italians don't rush it. Coming from a family that's always in a hurry, maybe we could learn something from that.",
               ]}
             />
           </Reveal>
@@ -578,7 +578,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'I expected skyscrapers and glass. Instead, my favourite part was the wildflower meadow beneath Bosco Verticale.',
+                'We headed to the newer side of Milano, expecting skyscrapers and glass. Instead, my favourite part was the wildflower meadow beneath Bosco Verticale.',
               ]}
             />
           </Reveal>
@@ -607,21 +607,6 @@ export default function ItalyPage() {
             />
           </div>
         </Reveal>
-
-        {/* The reflection line — connected to the video above (same
-            photo/video -> connected text token, mt-10/12), closing the
-            "Modern Milano" beat the same way the Duomo punchline closes
-            its own beat. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <Paragraphs
-              className='text-center'
-              items={[
-                'Skyscrapers, wildflowers and a building covered in trees. I loved this side of Milano.',
-              ]}
-            />
-          </Reveal>
-        </div>
 
         {/* The football transition — closes this whole daytime arc with
             one short, bare ChapterHeading line (no Eyebrow, no
@@ -687,8 +672,11 @@ export default function ItalyPage() {
         {/* The personal observation — connected to the video above rather
             than a new beat, same "photo/video -> connected text" token
             (mt-10/12) and bare-Paragraphs, no-Eyebrow weight this file
-            already uses for every reflection line following a video (e.g.
-            "Skyscrapers, wildflowers..." after Milano_green.mp4). */}
+            uses for a reflection line following a video. (The Milano_green
+            video's own reflection line was removed as repetitive with the
+            intro text above it -- that video now flows straight into the
+            football transition using this file's own "new topic" token,
+            mt-14/16, unchanged.) */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
             <Paragraphs
@@ -902,14 +890,14 @@ export default function ItalyPage() {
             />
           </Reveal>
 
-          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='min-h-[2rem] flex items-center justify-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] min-h-[172px] md:min-h-[184px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 md:px-9 flex flex-col items-center justify-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Cinque Terre Train Pass
             </span>
-            <div className='mt-4'>
+            <div className='mt-2'>
               <TimeStamp size='md'>€56.50</TimeStamp>
             </div>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Family of Four
             </span>
           </Reveal>
@@ -1009,14 +997,14 @@ export default function ItalyPage() {
             />
           </Reveal>
 
-          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='min-h-[2rem] flex items-center justify-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] min-h-[172px] md:min-h-[184px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 md:px-9 flex flex-col items-center justify-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Ferry · Vernazza → Porto Venere
             </span>
-            <div className='mt-4'>
+            <div className='mt-2'>
               <TimeStamp size='md'>€64</TimeStamp>
             </div>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Family of Four
             </span>
           </Reveal>
@@ -1050,6 +1038,9 @@ export default function ItalyPage() {
               className='absolute inset-0 h-full w-full object-cover'
             />
           </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            Cinque Terre, from the sea.
+          </p>
         </Reveal>
 
         {/* PORTO VENERE -- bare ChapterHeading, matching Vernazza's and
@@ -1068,7 +1059,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "I'd read that Porto Venere was just as beautiful as Portofino, but less touristy. That was enough to put it on my list.",
+                "I'd read that Porto Venere was just as beautiful as Portofino, but less touristy. That was enough to put it on my list — and I'm glad it did. We loved the quieter feel of it.",
               ]}
             />
           </Reveal>
