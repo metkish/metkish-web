@@ -420,10 +420,20 @@ function anchorId(href: string): string {
   return href.replace(/^\//, '');
 }
 
+// TEMPORARY (per explicit request): only show the first N destination
+// cards on the homepage while the rest of the gallery is still being
+// finished/updated. BLOCKS itself is untouched -- every destination
+// (data, photos, captions, and its own /[destination] page via
+// lib/destinations.ts) still exists exactly as before; this just slices
+// which ones render here. To bring a destination back, raise this number
+// -- nothing else needs to change. Currently 4: Tenerife, Italy, Iceland,
+// Sardinia (BLOCKS' own first four entries, already in this order).
+const VISIBLE_COUNT = 4;
+
 export default function TravelGallery() {
   return (
     <div className='flex flex-col w-full'>
-      {BLOCKS.map((block, i) => {
+      {BLOCKS.slice(0, VISIBLE_COUNT).map((block, i) => {
         const delay = (i % 5) * 0.05;
         const spacing = i === 0 ? '' : GAP_SEQUENCE[i - 1];
 
