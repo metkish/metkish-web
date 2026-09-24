@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
-import { ITALY_HOME_TO_MILANO_JOURNEY } from '@/lib/journeys/italy';
+import { ITALY_HOME_TO_MILANO_JOURNEY, ITALY_MILANO_TO_LASPEZIA_JOURNEY } from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
 
@@ -701,6 +701,39 @@ export default function ItalyPage() {
             Good to know: expect very crowded metro stations after the match.
           </p>
         </Reveal>
+      </section>
+
+      {/* MAP -- Milano -> La Spezia, the second road-trip leg. Same
+          JourneyMapScene engine, same height, same edge-to-edge/no-
+          padding placement as the Home -> Milano map above (see
+          lib/journeys/italy.ts for the route data, the real-coordinate
+          sourcing, and the fine Liguria coastline patch this leg needed).
+          Sits directly after the Milano chapter's own closing section, so
+          this reads as the same journey continuing rather than a new
+          page starting. */}
+      <JourneyMapScene
+        journey={ITALY_MILANO_TO_LASPEZIA_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+
+      {/* LA SPEZIA CHAPTER OPENING -- the exact same map -> chapter
+          pattern as "Slovenia -> Milano" / "First stop? Milano!" above
+          (see that section's own comment): a bare RouteLabel with the
+          leg's From -> To, then a single ChapterHeading in its own
+          Reveal, mt-8 md:mt-10 below it. No paragraph, no photo, no story
+          yet -- this step is only the chapter's opening beat, per its
+          explicit scope; the actual La Spezia content comes in a later
+          step. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Milano → La Spezia</RouteLabel>
+          </Reveal>
+
+          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>Next stop: La Spezia</ChapterHeading>
+          </Reveal>
+        </div>
       </section>
     </div>
   );
