@@ -617,7 +617,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "We're not Milan or Juventus fans — we just enjoy a good football match. This one ended 0–0, so it wasn't exactly a thriller. But experiencing San Siro on a match night was still worth it.",
+                "We're not Milan or Juventus fans — we just enjoy a good football match. This one ended 0–0, but experiencing San Siro on a match night was still worth it.",
               ]}
             />
           </Reveal>
@@ -647,6 +647,22 @@ export default function ItalyPage() {
           </div>
         </Reveal>
 
+        {/* The personal observation — connected to the video above rather
+            than a new beat, same "photo/video -> connected text" token
+            (mt-10/12) and bare-Paragraphs, no-Eyebrow weight this file
+            already uses for every reflection line following a video (e.g.
+            "Skyscrapers, wildflowers..." after Milano_green.mp4). */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "We've been to quite a few stadiums, and San Siro definitely shows its age. But walking up those huge spiral towers to reach the upper stands? That was something different.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
         {/* Match-ticket information card — the exact same practical-info
             panel language as the accommodation card above (identical
             background, radius, padding, gap, label styling and TimeStamp
@@ -670,6 +686,20 @@ export default function ItalyPage() {
           <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
             San Siro · Milano
           </span>
+        </Reveal>
+
+        {/* A very small, quiet practical note directly under the ticket
+            card — deliberately lighter than the Eyebrow+Paragraphs "Good
+            to Know" tier used earlier on this page (that would duplicate
+            the same label the note's own text already carries), and
+            lighter than the card itself: small, muted, single line, no
+            uppercase treatment since it's a plain sentence rather than a
+            label. Small gap above (mt-5/6) keeps it read as an addendum
+            to the card rather than a new beat. */}
+        <Reveal delay={0.15} className='mt-5 md:mt-6 mx-auto max-w-[460px] text-center'>
+          <p className='text-sm font-[family-name:var(--font-poppins)] font-light text-black/50 dark:text-white/50'>
+            Good to know: expect very crowded metro stations after the match.
+          </p>
         </Reveal>
       </section>
     </div>
