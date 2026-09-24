@@ -773,40 +773,75 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* LA SPEZIA / OUR BASE -- date-label Eyebrow removed (see note
-            above); bare ChapterHeading directly below the chapter
-            opening, same treatment as Vernazza/the ferry beat/"A detail
-            I loved" elsewhere in this section. Text shortened per this
-            revision -- the date is no longer repeated here since the
-            journey itself already establishes La Spezia as the stop
-            right after Milano. Still only the facts actually provided:
-            an apartment (no name/price), the host arranging private
-            parking (no price), meeting us and walking us there, then
-            the evening at L'Altra Luna with the actual price paid. */}
+        {/* LA SPEZIA / OUR BASE -- revised per this pass: the
+            accommodation text now names Casa Esmeralda and describes the
+            actual stay (host, parking, walk to the apartment, and an
+            honest note on the location -- close to the station and a
+            grocery store, but near the railway line and a little outside
+            the centre). Still bare ChapterHeading, no date-label Eyebrow,
+            matching the rest of this section. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
             <ChapterHeading italic>Our base for Cinque Terre.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "We chose La Spezia as our base for exploring Cinque Terre. Our host arranged private parking for us, met us when we arrived and walked us to the apartment herself.",
-                "That evening we walked to L'Altra Luna, a small pizzeria nearby. It felt a little like stepping back in time — including the prices: €10.60 for two pizzas.",
+                "We stayed at Casa Esmeralda, a beautifully designed apartment with an exceptionally kind host. She arranged private parking for us, met us at the garage and walked us to the apartment.",
+                "The Cinque Terre train station is within easy walking distance, with a small grocery store almost next door. The railway line runs nearby, though, and the apartment sits a little outside the centre — so I'd call the location practical rather than perfect.",
+              ]}
+            />
+          </Reveal>
+
+          {/* Casa Esmeralda price card -- same quiet cream practical-info
+              panel language as every other price card on this page
+              (identical background, radius, padding, gap, label styling
+              and TimeStamp scale). Placed directly after the
+              accommodation text, before the pizzeria moment, per this
+              revision's explicit instruction that this card must not be
+              omitted. */}
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Casa Esmeralda · 2 Nights
+            </span>
+            <TimeStamp size='md'>€382.16</TimeStamp>
+            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              27 Apr → 29 Apr 2026
+            </span>
+            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Suite with Terrace · Family of Four
+            </span>
+          </Reveal>
+
+          {/* L'Altra Luna -- deliberately downgraded to a small, secondary
+              moment per this revision: one short sentence instead of a
+              paragraph, no heading of its own, and a tighter lead-in gap
+              (mt-9/11, the same paragraph -> card rhythm used above)
+              rather than the larger new-topic gap, so it reads as a quick
+              aside rather than a new chapter. */}
+          <Reveal delay={0.1} className='mt-9 md:mt-11 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "Dinner at L'Altra Luna felt a little like stepping back in time — good pizza, simple atmosphere, and just €10.60 for two.",
               ]}
             />
           </Reveal>
         </div>
 
-        {/* LaSpezia_pizzeria_web.jpeg -- unchanged from the previous
-            build: the evening beat's own supporting photo (not a hero),
-            EXIF-rotated/baked into the _web file, aspect-[3/4], same
-            caption. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[70%] md:w-[340px] mx-auto'>
+        {/* LaSpezia_pizzeria_web.jpeg -- kept, but shrunk and pulled in
+            tighter beneath its one-line text (mt-6/8, the same tight
+            paragraph -> image gap used for the trolley photo) so the
+            whole pizzeria beat reads as one small secondary moment
+            rather than a large section. Same file, same aspect-[3/4],
+            same caption -- only the display size and surrounding gaps
+            changed. */}
+        <Reveal delay={0.1} className='mt-6 md:mt-8 w-[50%] md:w-[220px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/LaSpezia_pizzeria_web.jpeg'
               alt="L'Altra Luna, the pizzeria we visited on our first evening in La Spezia."
               fill
-              sizes='(min-width: 768px) 340px, 70vw'
+              sizes='(min-width: 768px) 220px, 50vw'
               className='object-cover'
             />
           </div>
