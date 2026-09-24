@@ -342,6 +342,88 @@ export default function ItalyPage() {
             />
           </Reveal>
         </div>
+
+        {/* SUNDAY MORNING — a new beat within the same Milano chapter
+            (Eyebrow-only marker, same as "Where We Stayed" and "Good to
+            Know" above, not a new RouteLabel/section — this page only has
+            one geographic leg so far). Gap above reuses this file's own
+            "closing one beat -> opening a different one" token (mt-14/16,
+            same value "Where We Stayed" used after the street-photo
+            caption), since this moves the story from practical trip info
+            to a new day. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Eyebrow>Sunday Morning</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              One ticket we didn&apos;t plan to buy
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'With nothing planned until the football match that evening, we headed to the Duomo. There was almost no queue, so we spontaneously bought tickets and went up.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Duoma.jpeg — the cathedral facade from the piazza. Native
+            portrait ratio preserved via aspect-[3/4] (source pixels are
+            already 3:4 once EXIF-rotated, same as Milano_streets), so
+            nothing is cropped. Width sits between this chapter's two
+            existing photos (Milano_on the road's 538px and Milano_streets'
+            350px) — a touch more presence than the street photo since it's
+            this beat's main image, still well short of a full-width hero.
+            Gap above matches the text -> photo token already used for
+            Milano_streets (mt-12 md:mt-16). No caption, matching the
+            "keep this short" instruction for this section. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[400px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Duoma.jpeg'
+              alt="Milano's Duomo cathedral, seen from Piazza del Duomo on a Sunday morning."
+              fill
+              sizes='(min-width: 768px) 400px, 85vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* The punchline — connected to the photo above rather than a new
+            chapter, same "photo -> short connected text" token Tenerife
+            uses (mt-10 md:mt-12, e.g. the Ryanair photo -> "A first with
+            Ryanair"). */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "We're not usually the ones buying tickets for churches or museums. This one was absolutely worth it.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Duoma_video.mp4 — the rooftop, as an editorial "moving
+            photograph": no controls, no sound, no frame, byte-identical
+            treatment to Tenerife's own hotel-beach clip (autoPlay/muted/
+            loop/playsInline, aspect-[9/16] wrapper since the source is a
+            1080x1920 vertical phone recording, contained by width rather
+            than stretched). This is the only other media item in this
+            section, per this step's scope. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-[240px] sm:max-w-xs md:max-w-md mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Duoma_video.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
       </section>
     </div>
   );
