@@ -992,7 +992,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "We already had train passes, but I'd read that Cinque Terre is best seen from the sea. So we paid extra for the ferry \u2014 and it was absolutely worth it.",
+                "We already had train passes, but some of the best views of Cinque Terre are from the sea. So we paid extra for the ferry \u2014 and it was absolutely worth it.",
               ]}
             />
           </Reveal>
