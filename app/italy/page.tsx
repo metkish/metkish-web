@@ -1093,14 +1093,34 @@ export default function ItalyPage() {
         </Reveal>
 
         {/* BUS BACK TO LA SPEZIA -- one short closing line, no heading,
-            no separate section -- exactly as asked. This is now also
-            the section's true final beat: nothing else follows it. */}
+            no separate section -- exactly as asked. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
             <Paragraphs
               className='text-center'
               items={[
                 'From Porto Venere, we took the bus back to La Spezia, completing our loop by train, ferry and bus.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* MORE TO COME -- added when publishing the page with the Italy
+            trip still in progress. Deliberately minimal, per explicit
+            instruction: no future destinations, no placeholder sections,
+            no dates. Reuses the same RouteLabel eyebrow treatment used at
+            every chapter opening above (pink line + small uppercase
+            label) paired with the page's standard Paragraphs body text --
+            nothing new invented -- so it reads as a quiet pause at the
+            end of what's finished, not a new chapter. This is now the
+            section's true final beat. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <RouteLabel>More to come</RouteLabel>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "This road trip isn't over yet. More from Italy is coming soon.",
               ]}
             />
           </Reveal>
