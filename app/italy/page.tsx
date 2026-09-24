@@ -900,7 +900,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'We left the car in La Spezia and used a day train pass, which let us hop on and off between the villages.',
+                "For exploring Cinque Terre, the train is by far the easiest option. Driving between the villages simply isn't practical — access is limited and parking is difficult. A day train pass let us hop on and off between the villages whenever we wanted.",
               ]}
             />
           </Reveal>
@@ -915,12 +915,6 @@ export default function ItalyPage() {
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Family of Four
             </span>
-          </Reveal>
-
-          <Reveal delay={0.15} className='mt-5 md:mt-6 mx-auto max-w-[460px] text-center'>
-            <p className='text-sm font-[family-name:var(--font-poppins)] font-light text-black/50 dark:text-white/50'>
-              What we paid in April 2026 — not current official prices.
-            </p>
           </Reveal>
         </div>
 
