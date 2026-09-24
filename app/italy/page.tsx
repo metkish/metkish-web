@@ -757,11 +757,11 @@ export default function ItalyPage() {
       {/* LA SPEZIA CHAPTER OPENING -- unchanged: bare RouteLabel with
           the leg's From -> To, then a single ChapterHeading, mt-8
           md:mt-10 below it, matching "Slovenia -> Milano" / "First
-          stop? Milano!" above. Everything after this opening is a full
-          restructure of the previous build: a 27 April arrival/evening
-          beat now comes first, THEN the 28 April Cinque Terre day --
-          correcting the previous chronology, which jumped straight from
-          this heading into "28 April" with no arrival day at all. */}
+          stop? Milano!" above. Everything below this is corrected per
+          this revision pass: no more small date-label Eyebrows anywhere
+          in this section (Tenerife doesn't use them, and the Italy page
+          should feel consistent with it) -- the day-by-day order is now
+          carried by the storytelling alone. */}
       <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -773,42 +773,33 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* LA SPEZIA ARRIVAL -- 27 April 2026 (corrected from 28 April;
-            this was the actual day of the Milano -> La Spezia drive, and
-            the day before the Cinque Terre day itself -- without this
-            beat the chronology jumped straight from Milano to Cinque
-            Terre with no arrival day in between). Same grouping/gap as
-            the old Cinque Terre opener this replaces (Eyebrow ->
-            ChapterHeading -> Paragraphs in one Reveal, mt-10 md:mt-12
-            below the chapter heading above). Only the facts actually
-            provided: an apartment (deliberately no name or price -- not
-            asked for), the host arranging private parking (no price --
-            explicitly asked not to state one), meeting us and walking us
-            there, then the evening at L'Altra Luna with the actual price
-            paid. Nothing invented beyond this. */}
+        {/* LA SPEZIA / OUR BASE -- date-label Eyebrow removed (see note
+            above); bare ChapterHeading directly below the chapter
+            opening, same treatment as Vernazza/the ferry beat/"A detail
+            I loved" elsewhere in this section. Text shortened per this
+            revision -- the date is no longer repeated here since the
+            journey itself already establishes La Spezia as the stop
+            right after Milano. Still only the facts actually provided:
+            an apartment (no name/price), the host arranging private
+            parking (no price), meeting us and walking us there, then
+            the evening at L'Altra Luna with the actual price paid. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <Eyebrow>La Spezia · 27 April 2026</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              Our base for Cinque Terre.
-            </ChapterHeading>
+            <ChapterHeading italic>Our base for Cinque Terre.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "We left Milano on 27 April and drove down to La Spezia, which we'd chosen as our base for exploring Cinque Terre. We stayed in an apartment there, and our host was incredibly kind — she arranged private parking for us, met us when we arrived, and walked us to the apartment herself.",
-                "That evening we walked to L'Altra Luna, a small pizzeria nearby. It felt a little like stepping back in time — including the prices: we paid €10.60 for two pizzas.",
+                "We chose La Spezia as our base for exploring Cinque Terre. Our host arranged private parking for us, met us when we arrived and walked us to the apartment herself.",
+                "That evening we walked to L'Altra Luna, a small pizzeria nearby. It felt a little like stepping back in time — including the prices: €10.60 for two pizzas.",
               ]}
             />
           </Reveal>
         </div>
 
-        {/* LaSpezia_pizzeria_web.jpeg -- the evening beat's own image,
-            sized as a supporting photo rather than a hero -- this is a
-            short arrival-day chapter, not the emotional centre of the
-            page. EXIF-rotated/baked into the _web file (source
-            5712x4284 at orientation 6 -> displayed 3:4 portrait,
-            aspect-[3/4]), same convention as every other _web photo on
-            this page. */}
+        {/* LaSpezia_pizzeria_web.jpeg -- unchanged from the previous
+            build: the evening beat's own supporting photo (not a hero),
+            EXIF-rotated/baked into the _web file, aspect-[3/4], same
+            caption. */}
         <Reveal delay={0.1} className='mt-12 md:mt-16 w-[70%] md:w-[340px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
@@ -824,22 +815,13 @@ export default function ItalyPage() {
           </p>
         </Reveal>
 
-        {/* CINQUE TERRE DAY OPENING -- 28 April 2026. Same
-            Eyebrow -> ChapterHeading -> Paragraphs grouping as the
-            arrival beat above, mt-14 md:mt-16 below it (the "new topic"
-            token -- this is a new day, not a continuation of the evening
-            beat). Heading and opening paragraph now state the actual
-            route chosen (three villages by train, then ferry + bus) up
-            front, replacing the old "explore all five villages" framing,
-            which was wrong -- we deliberately did not try to see every
-            village. Second half of the paragraph is close to verbatim
-            the copy given for this beat. */}
+        {/* THREE VILLAGES. TWO WAYS TO SEE THEM. -- date-label Eyebrow
+            removed (see note at the top of this section); otherwise
+            unchanged from the previous build. Bare ChapterHeading, same
+            opening paragraph explaining the route actually chosen. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <Eyebrow>Cinque Terre · 28 April 2026</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              Three villages. Two ways to see them.
-            </ChapterHeading>
+            <ChapterHeading italic>Three villages. Two ways to see them.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -849,16 +831,10 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* ROUTE DIAGRAM -- the small, elegant, editorial route sequence
-            itself: La Spezia -> train -> Manarola -> train -> Monterosso
-            -> train -> Vernazza -> ferry -> Porto Venere -> bus -> La
-            Spezia. Deliberately not a coloured tourist-map infographic --
-            see the RouteSequence component definition above for why it
-            reuses the journey map's own pink-dot/uppercase-label
-            language instead of inventing a new visual style. This is one
-            of the useful, concrete pieces of information the page wants
-            a reader to take away, so it gets its own visual beat rather
-            than staying buried in the paragraph above. */}
+        {/* ROUTE DIAGRAM -- unchanged from the previous build: the
+            small, elegant, editorial route sequence (RouteSequence
+            component, defined near the top of this file), reusing the
+            journey map's own pink-dot/uppercase-label language. */}
         <Reveal delay={0.1} className='mt-12 md:mt-16 mx-auto'>
           <RouteSequence
             stops={[
@@ -872,254 +848,37 @@ export default function ItalyPage() {
           />
         </Reveal>
 
-        {/* GETTING AROUND -- unchanged in spirit from the previous build
-            (Eyebrow + Paragraphs only, no separate ChapterHeading, the
-            same lighter "practical beat" weight as Milano's "Good to
-            Know"), now grouped with only the train-pass cost mentioned
-            in prose -- the ferry cost is saved for its own story later,
-            and the combined total card moves to the end of the day's
-            story rather than sitting here. No "watching the clock"
-            phrasing or any other detail not actually provided. */}
+        {/* TRAIN PASS -- compact this revision: the old "Getting
+            Around" Eyebrow + full paragraph is replaced with a single
+            plain sentence (no label above it), immediately followed by
+            its own dedicated price card. The old combined €120.50
+            transport card is gone entirely (see the note by the ferry
+            card below) -- this card carries only the train-pass cost,
+            in the context where that cost is actually relevant, rather
+            than as a line item in a bill presented at the end of the
+            day. The separate Manarola/Monterosso mini-sections from the
+            previous build are also removed here -- both villages are
+            already named in the paragraph above and shown in the route
+            diagram, so a dedicated paragraph for each added nothing. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <Eyebrow>Getting Around</Eyebrow>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                'We left the car in La Spezia and used public transport for the day. We bought train passes that let us hop on and off freely, which made it easy to move between villages without buying individual tickets each time. Train passes for the four of us came to €56.50.',
-              ]}
-            />
-          </Reveal>
-        </div>
-
-        {/* MANAROLA + MONTEROSSO -- deliberately light, Eyebrow-only
-            waypoint beats (no ChapterHeading, no photos -- no image in
-            the folder is identifiable as either village, and the brief
-            is explicit that an image needs a narrative reason to be
-            there). Their purpose is only to show the progression of the
-            day by train before reaching Vernazza, per the brief -- not
-            to describe every village. Kept to one short sentence each,
-            with a smaller gap between them (mt-8 md:mt-10) than the
-            usual "new topic" token, since they're two halves of the same
-            "first, then second stop" beat rather than fully separate
-            topics. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <Eyebrow>Manarola</Eyebrow>
-            <Paragraphs
-              className='mt-3 text-center'
-              items={[
-                'Manarola was our first stop — a quick stop before the train carried us on to Monterosso.',
-              ]}
-            />
-          </Reveal>
-          <Reveal delay={0.15} className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <Eyebrow>Monterosso</Eyebrow>
-            <Paragraphs
-              className='mt-3 text-center'
-              items={[
-                'Monterosso came next, our second stop before continuing on to Vernazza.',
-              ]}
-            />
-          </Reveal>
-        </div>
-
-        {/* VERNAZZA -- OUR FAVOURITE. Still the emotional centre of the
-            section, still the one beat with a bare ChapterHeading and no
-            Eyebrow above it. Text corrected from "Of all five villages"
-            (wrong -- we only visited three) to reflect it was the last
-            of our three train stops, and the one that stayed with us
-            most. Otherwise unchanged from the previous build: lunch, the
-            castle/viewpoint climb, the small entrance fee ("a few
-            euros" -- not invented), the view itself. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>Vernazza — our favourite</ChapterHeading>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                'Vernazza was our last stop by train, and the one that stayed with us most. We stopped there for lunch, then walked up to the small castle and viewpoint above the village — a short climb, with a small entrance fee of just a few euros.',
-                'The view from up there, straight down over the harbour and the rooftops, was absolutely worth the climb.',
-              ]}
-            />
-          </Reveal>
-        </div>
-
-        {/* Cinque_Terre_view_web.jpeg -- unchanged from the previous
-            build: the main Vernazza image, still the largest single
-            photo on the page (w-[92%] md:w-[680px], aspect-[4/3]), still
-            captioned "Vernazza, from above." */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[92%] md:w-[680px] mx-auto'>
-          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
-            <Image
-              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_view_web.jpeg'
-              alt='Vernazza seen from the castle viewpoint above the village, looking down over the harbour and rooftops.'
-              fill
-              sizes='(min-width: 768px) 680px, 92vw'
-              className='object-cover'
-            />
-          </div>
-          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
-            Vernazza, from above.
-          </p>
-        </Reveal>
-
-        {/* Short connecting line -- unchanged from the previous build.
-            Now transitions into the ferry story rather than into a
-            second Vernazza video (that video is dropped this build --
-            see the note by the sea video below for why). */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
             <Paragraphs
               className='text-center'
               items={[
-                'We stayed up there for a while, in no hurry to climb back down.',
-              ]}
-            />
-          </Reveal>
-        </div>
-
-        {/* WHY WE PAID EXTRA FOR THE FERRY -- new this build, and one of
-            the important pieces of the story that was missing entirely.
-            Bare ChapterHeading (same weight as Vernazza's and "A detail
-            I loved"'s), copy close to verbatim what was given: personal,
-            not generic travel advice -- reading beforehand that the
-            villages are best seen from the water, choosing to pay extra
-            for the ferry despite already having train passes, and being
-            glad afterward. The ferry cost (€64) is not restated here as
-            a number -- it appears once, in the transport card at the end
-            of the day's story, so it reads as a choice first and a line
-            item second. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>
-              Why take the ferry when we already had train passes?
-            </ChapterHeading>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                "Because I'd read that some of the best views of Cinque Terre are from the sea. So even though our train passes already covered the day, we paid extra for the ferry. And I'm glad we did — watching the villages appear along the cliffs from the water was a completely different experience.",
-              ]}
-            />
-          </Reveal>
-        </div>
-
-        {/* Cinque_Terre_sea_video_web.mp4 -- repurposed this build from a
-            generic "opening atmosphere" clip into the specific visual
-            answer to the heading just above: this is Cinque Terre from
-            the sea. Sized deliberately larger/more prominent than any
-            video used previously on this page (max-w-[300px]
-            sm:max-w-[400px] md:max-w-[520px], vs. the old sea-video
-            opener's 260/sm/md) so it reads as a genuine visual moment,
-            not a decorative element -- the brief's own words. Aspect
-            ratio (9/16) is the source footage's real, unaltered shape (a
-            vertical phone clip, 640x1138 compressed from the original
-            2160x3840) -- "wide" is read here as prominent/large on the
-            page rather than literally landscape, since cropping or
-            faking a widescreen frame from vertical footage would distort
-            or lose real content, which nothing in the brief asked for.
-            Same video attributes as every other clip on this page
-            (autoPlay/muted/loop/playsInline/preload='auto'/aria-hidden).
-            The second Vernazza video from the previous build
-            (Cinque_Terre_view_video_web.mp4) is dropped entirely this
-            build -- it has no narrative reason to be here now that the
-            page tells a specific route story, and the brief's own
-            image/video priority list for this section does not include
-            it. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[300px] sm:max-w-[400px] md:max-w-[520px] mx-auto'>
-          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
-            <video
-              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_sea_video_web.mp4'
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload='auto'
-              aria-hidden='true'
-              className='absolute inset-0 h-full w-full object-cover'
-            />
-          </div>
-        </Reveal>
-
-        {/* PORTO VENERE -- new this build. Bare ChapterHeading, matching
-            Vernazza's and the ferry beat's weight. Careful, specifically
-            requested wording: this states only that *I* had read Porto
-            Venere described as a quieter alternative to Portofino, never
-            that it factually is one -- that distinction is deliberate
-            and must not be flattened in any future edit. This is also
-            why the ferry route went to Porto Venere rather than straight
-            back to La Spezia, tying the paragraph back to the ferry
-            story just above it. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>Porto Venere</ChapterHeading>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                "Before the trip, I'd read comments describing Porto Venere as a quieter alternative to Portofino — some travellers even said they preferred it. That was part of what made me curious to see it for myself, and it's why our ferry route home went by way of Porto Venere instead of straight back to La Spezia.",
-              ]}
-            />
-          </Reveal>
-        </div>
-
-        {/* Porto_Venere_web.jpeg -- new this build. Given real space
-            (w-[88%] md:w-[620px], close to the Vernazza hero's own
-            scale) per the explicit "give this image enough space"
-            instruction, though kept a notch below Vernazza's 680px so
-            the page's one clear emotional peak stays Vernazza. Source
-            was already right-side-up (orientation tag 1, no rotation
-            needed), 5712x4284 native -> aspect-[4/3], the photo taken
-            from the water approaching Porto Venere by ferry. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
-          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
-            <Image
-              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Porto_Venere_web.jpeg'
-              alt='Porto Venere seen from the water, approaching by ferry.'
-              fill
-              sizes='(min-width: 768px) 620px, 88vw'
-              className='object-cover'
-            />
-          </div>
-          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
-            Porto Venere, from the water.
-          </p>
-        </Reveal>
-
-        {/* BUS BACK TO LA SPEZIA + TRANSPORT RECAP -- closes the loop in
-            one short line (new this build -- the previous version
-            omitted the bus entirely), then the same elegant cost card as
-            before, moved here from earlier in the section so it reads
-            as a recap of the whole day's transport (train + ferry) once
-            the full story has been told, rather than a price box dropped
-            in before the reader knows why the ferry cost anything extra.
-            Values corrected to match exactly what was given: Train
-            Passes · Family of Four — €56.50, Ferry — €64, Total
-            €120.50. Disclaimer line unchanged. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <Paragraphs
-              className='text-center'
-              items={[
-                'From Porto Venere, a bus brought us back to La Spezia — completing the loop: train, ferry and bus, all in a single day.',
+                'We left the car in La Spezia and used a day train pass, which let us hop on and off between the villages.',
               ]}
             />
           </Reveal>
 
           <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Cinque Terre Transport
-            </span>
-            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Train Passes · Family of Four — €56.50
-            </span>
-            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Ferry — €64
+              Cinque Terre Train Pass
             </span>
             <div className='mt-4'>
-              <TimeStamp size='md'>€120.50</TimeStamp>
+              <TimeStamp size='md'>€56.50</TimeStamp>
             </div>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Total · Family of Four
+              Family of Four
             </span>
           </Reveal>
 
@@ -1130,23 +889,24 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* A DETAIL I LOVED -- unchanged from the previous build: bare
-            ChapterHeading, the tracked-trolley paragraph, the trolley
-            photo sized close beneath it (mt-6 md:mt-8, not the usual
-            text->photo token) so text and image read as one connected
-            moment, same caption ("Deliveries, Cinque Terre style.").
-            This is now also the section's true closing beat -- the
-            previous build's trailing Cinque_Terre_sea_web.jpeg after
-            this image is removed entirely, since it has no narrative
-            reason to be here and the brief is explicit that nothing
-            should follow this image just because a file was available. */}
+        {/* A DETAIL I LOVED -- moved much higher this revision (was
+            previously the section's closing beat, after Porto Venere
+            and the bus). It's a small thing we noticed while out
+            exploring the villages, not a large standalone chapter, so
+            it sits here, right after the practical train-pass info and
+            before Vernazza -- and the text is shortened to a single
+            sentence to match that lighter weight. Bare ChapterHeading
+            (same treatment as Vernazza/the ferry beat), trolley image
+            placed close beneath it (mt-6 md:mt-8, not the usual
+            text->photo token) so text and image still read as one
+            connected moment, same caption as before. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <ChapterHeading italic>A detail I loved</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "One thing that really caught my attention was how goods actually move through Cinque Terre. The stairways are too steep and narrow for any van, so small tracked trolleys run straight up and down them instead, hauling crates and supplies between houses. It's a tiny detail, but it says a lot about what everyday life here actually looks like.",
+                "One thing that caught my attention: these tiny tracked trolleys carry goods up Cinque Terre's steep stairways, where regular vehicles simply can't go.",
               ]}
             />
           </Reveal>
@@ -1166,6 +926,162 @@ export default function ItalyPage() {
             Deliveries, Cinque Terre style.
           </p>
         </Reveal>
+
+        {/* VERNAZZA -- OUR FAVOURITE. Text and image unchanged from the
+            previous build (last stop by train, the one that stayed with
+            us most, lunch, the castle/viewpoint climb, the small
+            entrance fee, the view). The short "We stayed up there for a
+            while..." line that used to sit under the image is removed
+            this revision -- the large photo now finishes the beat on
+            its own. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>Vernazza — our favourite</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Vernazza was our last stop by train, and the one that stayed with us most. We stopped there for lunch, then walked up to the small castle and viewpoint above the village — a short climb, with a small entrance fee of just a few euros.',
+                'The view from up there, straight down over the harbour and the rooftops, was absolutely worth the climb.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[92%] md:w-[680px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_view_web.jpeg'
+              alt='Vernazza seen from the castle viewpoint above the village, looking down over the harbour and rooftops.'
+              fill
+              sizes='(min-width: 768px) 680px, 92vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            Vernazza, from above.
+          </p>
+        </Reveal>
+
+        {/* WHY WE PAID EXTRA FOR THE FERRY -- heading and paragraph
+            unchanged from the previous build (explicitly approved as
+            is). New this revision: its own dedicated price card
+            (Ferry · Vernazza -> Porto Venere, €64, Family of Four),
+            replacing the old combined €120.50 "Cinque Terre Transport"
+            card, which is removed entirely -- the €56.50 train-pass
+            figure now lives with the train-pass beat above, and this
+            €64 figure lives here, so each cost appears once, in the
+            story that explains it, rather than as a final bill. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>
+              Why take the ferry when we already had train passes?
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "Because I'd read that some of the best views of Cinque Terre are from the sea. So even though our train passes already covered the day, we paid extra for the ferry. And I'm glad we did — watching the villages appear along the cliffs from the water was a completely different experience.",
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Ferry · Vernazza → Porto Venere
+            </span>
+            <div className='mt-4'>
+              <TimeStamp size='md'>€64</TimeStamp>
+            </div>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Family of Four
+            </span>
+          </Reveal>
+
+          <Reveal delay={0.15} className='mt-5 md:mt-6 mx-auto max-w-[460px] text-center'>
+            <p className='text-sm font-[family-name:var(--font-poppins)] font-light text-black/50 dark:text-white/50'>
+              What we paid in April 2026 — not current official prices.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* Cinque_Terre_sea_video_web.mp4 -- unchanged placement logic
+            from the previous build: this is Cinque Terre from the sea,
+            the visual answer to the heading above, sized prominently
+            (max-w-[300px] sm:max-w-[400px] md:max-w-[520px]) rather than
+            as a small decorative clip. Confirmed this revision (by
+            checking the actual footage, not just the filename) that
+            this clip shows Cinque Terre villages seen from the water
+            during the ferry crossing -- it stays here rather than in
+            the Porto Venere section below. The other Cinque Terre video
+            file (Cinque_Terre_view_video.mp4) was checked at the same
+            time and is confirmed to be Vernazza castle-viewpoint
+            footage, not Porto Venere -- it has no narrative home in
+            this rebuilt section and stays unused, as in the previous
+            build. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[300px] sm:max-w-[400px] md:max-w-[520px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_sea_video_web.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* PORTO VENERE -- bare ChapterHeading, matching Vernazza's and
+            the ferry beat's weight. Paragraph rewritten this revision:
+            still careful, attributed wording (what *I* had read before
+            the trip, not a claim that Porto Venere factually beats
+            Portofino), now framed around wanting to see it specifically
+            rather than it being a transport stop. No video here --
+            checked both available Cinque Terre video files against the
+            actual footage this revision and neither shows Porto Venere
+            (see the note by the sea video above), so only the photo is
+            used rather than mislabelling footage of somewhere else. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>Porto Venere</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "Porto Venere was another place I specifically wanted to see. I'd read that it had much of the charm people look for in Portofino, but with a less touristy feel — so arriving there by boat felt like the perfect end to our Cinque Terre route.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Porto_Venere_web.jpeg'
+              alt='Porto Venere seen from the water, approaching by ferry.'
+              fill
+              sizes='(min-width: 768px) 620px, 88vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            Porto Venere, from the water.
+          </p>
+        </Reveal>
+
+        {/* BUS BACK TO LA SPEZIA -- one short closing line, no heading,
+            no separate section -- exactly as asked. This is now also
+            the section's true final beat: nothing else follows it. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'From Porto Venere, we took the bus back to La Spezia, completing our loop by train, ferry and bus.',
+              ]}
+            />
+          </Reveal>
+        </div>
       </section>
     </div>
   );
