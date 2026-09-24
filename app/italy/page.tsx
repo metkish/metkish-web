@@ -398,7 +398,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'With nothing planned until the football match that evening, we headed to the Duomo. There was almost no queue, so we spontaneously bought tickets and went up.',
+                "The Duomo wasn't in our plans. With almost no queue, we decided to go up — and we're glad we did.",
               ]}
             />
           </Reveal>
@@ -428,16 +428,38 @@ export default function ItalyPage() {
 
         {/* The punchline — connected to the photo above rather than a new
             chapter, same "photo -> short connected text" token Tenerife
-            uses (mt-10 md:mt-12, e.g. the Ryanair photo -> "A first with
-            Ryanair"). */}
+            uses (mt-10 md:mt-12). Shortened this pass to the personal
+            observation only -- price, family size, cathedral/rooftop
+            inclusion and stairs-access now live once, in the card below,
+            instead of being repeated in prose. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
             <Paragraphs
               className='text-center'
               items={[
-                "We're not usually the ones buying tickets for churches or museums. This one was absolutely worth it \u2014 \u20ac66 for the four of us, cathedral interior and rooftop terraces included, access by stairs rather than elevator.",
+                "We're not usually the ones buying tickets for churches or museums. This one was absolutely worth it.",
               ]}
             />
+          </Reveal>
+
+          {/* Duomo price card -- new this pass: the exact same cream
+              practical-info panel language as every other price card on
+              this page (identical background, radius, padding, gap, label
+              styling and TimeStamp scale). Holds the facts the paragraph
+              above used to spell out. */}
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Duomo di Milano
+            </span>
+            <div className='mt-4'>
+              <TimeStamp size='md'>€66</TimeStamp>
+            </div>
+            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Family of Four
+            </span>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Cathedral &amp; rooftop · access by stairs
+            </span>
           </Reveal>
         </div>
 
@@ -475,7 +497,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "Right next to the Duomo, we walked through the famous Galleria Vittorio Emanuele II. Beautiful, yes — but high fashion isn't really our thing, so we simply kept walking.",
+                "We walked through Galleria Vittorio Emanuele II — beautiful, but high fashion isn't really our thing.",
               ]}
             />
           </Reveal>
@@ -496,7 +518,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'After the Duomo, we grabbed a gelato and simply wandered through Milano. Trams, beautiful streets and no real plan — the city felt easy to explore.',
+                'Gelato, a walk through Milano and no real plan. Exactly the kind of Sunday we needed.',
               ]}
             />
           </Reveal>
@@ -536,8 +558,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'We eventually found a place for lunch and joined the queue outside. Once inside, we quickly learned something about Italians — lunch is not something to rush.',
-                'Coming from people who are always in a hurry, we could probably learn a thing or two.',
+                "We quickly learned one thing — Italians don't rush lunch. Maybe we could learn something from that.",
               ]}
             />
           </Reveal>
@@ -550,15 +571,11 @@ export default function ItalyPage() {
             that same tier's own token (mt-12/14). */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto'>
-            <Eyebrow>Getting Around</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              Getting around was surprisingly easy
-            </ChapterHeading>
+            <ChapterHeading italic>Getting around was surprisingly easy</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Milano's metro was incredibly simple to use — no tickets to buy, we just tapped our cards at the gates. Our kids already had their own Revolut cards, which made travelling as a family effortless.",
-                'One card per traveller, though — the gates need a tap from everyone.',
+                "Milan's metro couldn't be easier — just tap your card at the gate. One card per traveller.",
               ]}
             />
           </Reveal>
@@ -572,14 +589,11 @@ export default function ItalyPage() {
             deliberate shift away from the historic centre. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <Eyebrow>A Different Milano</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              Then Milano turned green
-            </ChapterHeading>
+            <ChapterHeading italic>Then Milano turned green</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We headed to the modern part of the city, expecting skyscrapers and glass. Instead, my favourite thing was a wildflower meadow — with the incredible Bosco Verticale rising behind it.',
+                'I expected skyscrapers and glass. Instead, my favourite part was the wildflower meadow beneath Bosco Verticale.',
               ]}
             />
           </Reveal>
@@ -786,8 +800,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "We stayed at Casa Esmeralda, a beautifully designed apartment with an exceptionally kind host. She arranged private parking for us, met us at the garage and walked us to the apartment.",
-                "The Cinque Terre train station is within easy walking distance, with a small grocery store almost next door. The railway line runs nearby, though, and the apartment sits a little outside the centre — so I'd call the location practical rather than perfect.",
+                "We stayed at Casa Esmeralda. Our host was incredibly helpful \u2014 she arranged private parking, met us at the garage and walked us to the apartment. The train station was within easy walking distance, which was practical for Cinque Terre, even though the apartment itself sits a little outside the centre.",
               ]}
             />
           </Reveal>
@@ -823,7 +836,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "We stopped at a little pizzeria along the street to grab pizza to take back with us. Walking in felt like stepping back in time — and two really good pizzas cost us just €10.60.",
+                "We stopped at a little pizzeria on the street and took pizza back with us. It felt like stepping back in time — simple, good and incredibly cheap at €10.60 for two.",
               ]}
             />
           </Reveal>
@@ -859,7 +872,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "The next morning, we set out to explore Cinque Terre — not by trying to tick off every village, but by choosing our own route. We started by train from La Spezia, stopping in Manarola, Monterosso and Vernazza. From there, instead of taking the train back, we changed perspective completely — ferry to Porto Venere, then bus back to La Spezia.",
+                "We chose three Cinque Terre villages — Manarola, Monterosso and Vernazza. We travelled between them by train, then switched to the ferry for Porto Venere and returned to La Spezia by bus.",
               ]}
             />
           </Reveal>
@@ -899,13 +912,13 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "For exploring Cinque Terre, the train is by far the easiest option. Driving between the villages simply isn't practical — access is limited and parking is difficult. A day train pass let us hop on and off between the villages whenever we wanted.",
+                "The train is by far the easiest way to explore Cinque Terre \u2014 driving between the villages isn't practical, and parking is difficult. A day pass let us hop on and off whenever we wanted.",
               ]}
             />
           </Reveal>
 
           <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            <span className='min-h-[2rem] flex items-center justify-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Cinque Terre Train Pass
             </span>
             <div className='mt-4'>
@@ -934,7 +947,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "One thing that caught my attention: these tiny tracked trolleys carry goods up Cinque Terre's steep stairways, where regular vehicles simply can't go.",
+                "One detail I loved: with streets this steep and narrow, even deliveries work differently \u2014 small tracked trolleys carry supplies up the steps.",
               ]}
             />
           </Reveal>
@@ -968,8 +981,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Vernazza was our last stop by train, and the one that stayed with us most. We stopped there for lunch, then walked up to the small castle and viewpoint above the village — a short climb, with a small entrance fee of just a few euros.',
-                'The view from up there, straight down over the harbour and the rooftops, was absolutely worth the climb.',
+                'Vernazza was our favourite of the three. We stopped for lunch, then climbed to the small castle and viewpoint above the village. The entrance cost just a few euros — and the view was absolutely worth it.',
               ]}
             />
           </Reveal>
@@ -1007,13 +1019,13 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Because I'd read that some of the best views of Cinque Terre are from the sea. So even though our train passes already covered the day, we paid extra for the ferry. And I'm glad we did — watching the villages appear along the cliffs from the water was a completely different experience.",
+                "We already had train passes, but I'd read that Cinque Terre is best seen from the sea. So we paid extra for the ferry \u2014 and it was absolutely worth it.",
               ]}
             />
           </Reveal>
 
           <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            <span className='min-h-[2rem] flex items-center justify-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Ferry · Vernazza → Porto Venere
             </span>
             <div className='mt-4'>
@@ -1071,7 +1083,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Porto Venere was another place I specifically wanted to see. I'd read that it had much of the charm people look for in Portofino, but with a less touristy feel — so arriving there by boat felt like the perfect end to our Cinque Terre route.",
+                "I'd read that Porto Venere was just as beautiful as Portofino, but less touristy. That was enough to put it on my list.",
               ]}
             />
           </Reveal>
@@ -1099,7 +1111,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'From Porto Venere, we took the bus back to La Spezia, completing our loop by train, ferry and bus.',
+                'From Porto Venere, we took the bus back to La Spezia.',
               ]}
             />
           </Reveal>
