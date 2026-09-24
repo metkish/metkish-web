@@ -601,6 +601,76 @@ export default function ItalyPage() {
             </ChapterHeading>
           </Reveal>
         </div>
+
+        {/* SUNDAY NIGHT / SAN SIRO — the closing beat of the whole Sunday
+            arc, same weight as Sunday Morning: Eyebrow -> ChapterHeading ->
+            Paragraphs. Gap above reuses the file's "closing one beat ->
+            opening a different one" token (mt-14/16), same as every other
+            new-day/new-topic opening in this file, since the transition
+            line above already closed the daytime story. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Eyebrow>Sunday Night</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              Football night at San Siro
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "We're not Milan or Juventus fans — we just enjoy a good football match. This one ended 0–0, so it wasn't exactly a thriller. But experiencing San Siro on a match night was still worth it.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* SanSiro.mp4 — the finished, already-delivered match-night clip.
+            Not re-encoded, cropped or otherwise touched per this step's
+            explicit instruction; it happens to already be a 1080x1920
+            vertical recording, so it drops into the same aspect-[9/16]
+            "moving photograph" wrapper used for Duoma_video.mp4 and
+            Milano_green.mp4 with zero changes to the treatment (contained
+            by width, not stretched, not enlarged beyond this chapter's
+            other video moments). Gap above matches this file's text ->
+            photo/video token (mt-12/16). */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[240px] sm:max-w-xs md:max-w-md mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/SanSiro.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* Match-ticket information card — the exact same practical-info
+            panel language as the accommodation card above (identical
+            background, radius, padding, gap, label styling and TimeStamp
+            scale): label / price via TimeStamp / date+time / label / line.
+            €476 is the total for the family of four and appears only
+            here, once. No seat/sector/row detail, per this step's explicit
+            instruction. Gap above matches the photo/video -> connected-
+            content token (mt-10/12), same as this file uses for text
+            directly following a photo or video. */}
+        <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+          <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            AC Milan vs Juventus
+          </span>
+          <TimeStamp size='md'>€476</TimeStamp>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            26 Apr 2026 · 20:45
+          </span>
+          <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            4 Tickets · €119 pp
+          </span>
+          <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            San Siro · Milano
+          </span>
+        </Reveal>
       </section>
     </div>
   );
