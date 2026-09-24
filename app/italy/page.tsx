@@ -101,6 +101,41 @@ function Eyebrow({ children }: { children: ReactNode }) {
   );
 }
 
+// A stand-in for a photo or video slot whose real file hasn't been chosen
+// yet (Cinque Terre media is coming in a later step). Same footprint as a
+// real photo/video -- rounded-[2px], object box, sits inside the same
+// width/aspect wrapper a real <Image>/<video> would use -- so swapping in
+// the real file later is a drop-in change, nothing about the surrounding
+// layout needs to move. Deliberately NOT styled like the site's cream
+// practical-info cards (bg-[#f1ebdc]): a dashed border and a faint fill
+// reads as "placeholder", not as a second kind of content card.
+function MediaPlaceholder({
+  label,
+  note,
+  aspect,
+  className = '',
+}: {
+  label: string;
+  note?: string;
+  aspect: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`relative w-full flex flex-col items-center justify-center gap-2 overflow-hidden rounded-[2px] border border-dashed border-black/15 dark:border-white/20 bg-black/[0.025] dark:bg-white/[0.03] px-6 text-center ${aspect} ${className}`}
+    >
+      <span className='text-[0.65rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/40'>
+        {label}
+      </span>
+      {note && (
+        <span className='text-xs italic font-[family-name:var(--font-playfair)] text-black/40 dark:text-white/40 leading-snug'>
+          {note}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function ItalyPage() {
   const [pastHero, setPastHero] = useState(false);
 
@@ -397,7 +432,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "We're not usually the ones buying tickets for churches or museums. This one was absolutely worth it.",
+                "We're not usually the ones buying tickets for churches or museums. This one was absolutely worth it \u2014 \u20ac66 for the four of us, cathedral interior and rooftop terraces included, access by stairs rather than elevator.",
               ]}
             />
           </Reveal>
@@ -734,6 +769,95 @@ export default function ItalyPage() {
             <ChapterHeading italic>Next stop: La Spezia</ChapterHeading>
           </Reveal>
         </div>
+
+        {/* CINQUE TERRE -- HERO PLACEHOLDER. Same slot the "Milano on the
+            road" photo occupies right after Milano's own chapter heading
+            above (mt-12 md:mt-16 text->photo gap, w-[85%] md:w-[538px],
+            aspect-[6/5]): this is where that chapter's lead image will
+            go once real photos are provided. Structure/placeholder only,
+            per this step's explicit scope -- no file chosen yet. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[538px] mx-auto'>
+          <MediaPlaceholder
+            label='Photo placeholder'
+            note='Hero image -- Cinque Terre'
+            aspect='aspect-[6/5]'
+          />
+        </Reveal>
+
+        {/* CINQUE TERRE STORY -- 28 April 2026. Bare ChapterHeading +
+            Paragraphs, no Eyebrow, same weight as Milano's own first
+            sub-beat ("Lesson learned: check the holidays.") right after
+            its chapter's lead photo. Personal diary voice, not a guide:
+            what we actually did (left the car, used the train), the one
+            practical thing worth knowing (the family day card, freedom
+            to hop on/off), and the boat as the other half of the day,
+            not a separate attraction. No village-by-village list, per
+            this step's explicit "not a generic Cinque Terre guide"
+            instruction. Gap (mt-10 md:mt-12) matches "Lesson learned"'s
+            own token for a text beat straight after a lead photo. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <ChapterHeading italic>Trains, boats, and no car in sight.</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'We left Milano on 28 April and continued the road trip toward the coast, basing ourselves just outside Cinque Terre. From there, the car stayed parked -- we left it behind and used the train to get between the villages instead.',
+                'With a Cinque Terre Train Card for the whole family, we could hop on and off as we liked all day, no separate tickets, no watching the clock. In the afternoon we swapped the train for a boat, which turned out to be the better way to actually see the villages -- from the water, stacked into the cliffs, they looked like a completely different place. Our two kids, then 10 and 11, were just as happy on the boat as on the train.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* CINQUE TERRE -- SUPPORTING PHOTO PLACEHOLDER. Same slot/token
+            as Milano_streets above (mt-12 md:mt-16, w-[88%] md:w-[350px],
+            aspect-[3/4]) -- the chapter's second, smaller photo. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[350px] mx-auto'>
+          <MediaPlaceholder
+            label='Photo placeholder'
+            note='Supporting image'
+            aspect='aspect-[3/4]'
+          />
+        </Reveal>
+
+        {/* CINQUE TERRE TRANSPORT -- cost as a quiet practical-info card,
+            byte-identical container styling to the Milano hotel card
+            above (bg-[#f1ebdc], rounded-[3px], same padding/gap), just
+            this chapter's own values. Label -> two small breakdown lines
+            (train card, boat) -> TimeStamp total -> "Family of four"
+            caption, matching the order the brief itself gave. This is
+            the only place the per-item costs appear; deliberately not a
+            separate "price box" elsewhere on the page. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Cinque Terre Transport
+            </span>
+            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Train Card · Family (1 day) — €56.50
+            </span>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Boat — €64
+            </span>
+            <div className='mt-4'>
+              <TimeStamp size='md'>€120.50</TimeStamp>
+            </div>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Total · Family of Four
+            </span>
+          </Reveal>
+        </div>
+
+        {/* CINQUE TERRE -- VIDEO PLACEHOLDER. Same slot/token as the
+            Duomo rooftop clip above (mt-12 md:mt-14, max-w-[240px]
+            sm:max-w-xs md:max-w-md, aspect-[9/16]) -- reserved for a
+            boat-perspective video moment once real footage is chosen. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-[240px] sm:max-w-xs md:max-w-md mx-auto'>
+          <MediaPlaceholder
+            label='Video placeholder'
+            note='A moment from the boat'
+            aspect='aspect-[9/16]'
+          />
+        </Reveal>
       </section>
     </div>
   );
