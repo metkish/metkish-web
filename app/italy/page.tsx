@@ -101,41 +101,6 @@ function Eyebrow({ children }: { children: ReactNode }) {
   );
 }
 
-// A stand-in for a photo or video slot whose real file hasn't been chosen
-// yet (Cinque Terre media is coming in a later step). Same footprint as a
-// real photo/video -- rounded-[2px], object box, sits inside the same
-// width/aspect wrapper a real <Image>/<video> would use -- so swapping in
-// the real file later is a drop-in change, nothing about the surrounding
-// layout needs to move. Deliberately NOT styled like the site's cream
-// practical-info cards (bg-[#f1ebdc]): a dashed border and a faint fill
-// reads as "placeholder", not as a second kind of content card.
-function MediaPlaceholder({
-  label,
-  note,
-  aspect,
-  className = '',
-}: {
-  label: string;
-  note?: string;
-  aspect: string;
-  className?: string;
-}) {
-  return (
-    <div
-      className={`relative w-full flex flex-col items-center justify-center gap-2 overflow-hidden rounded-[2px] border border-dashed border-black/15 dark:border-white/20 bg-black/[0.025] dark:bg-white/[0.03] px-6 text-center ${aspect} ${className}`}
-    >
-      <span className='text-[0.65rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/40'>
-        {label}
-      </span>
-      {note && (
-        <span className='text-xs italic font-[family-name:var(--font-playfair)] text-black/40 dark:text-white/40 leading-snug'>
-          {note}
-        </span>
-      )}
-    </div>
-  );
-}
-
 export default function ItalyPage() {
   const [pastHero, setPastHero] = useState(false);
 
@@ -770,73 +735,104 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* CINQUE TERRE -- HERO PLACEHOLDER. Same slot the "Milano on the
-            road" photo occupies right after Milano's own chapter heading
-            above (mt-12 md:mt-16 text->photo gap, w-[85%] md:w-[538px],
-            aspect-[6/5]): this is where that chapter's lead image will
-            go once real photos are provided. Structure/placeholder only,
-            per this step's explicit scope -- no file chosen yet. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[85%] md:w-[538px] mx-auto'>
-          <MediaPlaceholder
-            label='Photo placeholder'
-            note='Hero image -- Cinque Terre'
-            aspect='aspect-[6/5]'
-          />
-        </Reveal>
-
-        {/* CINQUE TERRE STORY -- 28 April 2026. Bare ChapterHeading +
-            Paragraphs, no Eyebrow, same weight as Milano's own first
-            sub-beat ("Lesson learned: check the holidays.") right after
-            its chapter's lead photo. Personal diary voice, not a guide:
-            what we actually did (left the car, used the train), the one
-            practical thing worth knowing (the family day card, freedom
-            to hop on/off), and the boat as the other half of the day,
-            not a separate attraction. No village-by-village list, per
-            this step's explicit "not a generic Cinque Terre guide"
-            instruction. Gap (mt-10 md:mt-12) matches "Lesson learned"'s
-            own token for a text beat straight after a lead photo. */}
+        {/* CINQUE TERRE OPENING -- 28 April 2026. Eyebrow (place + date,
+            dot-separated like the Milano hotel card's "Central Milano ·
+            2 Nights") -> ChapterHeading -> Paragraphs, all in one Reveal,
+            byte-identical grouping to "Sunday Morning" -> "One ticket we
+            didn't plan to buy" above. Gap (mt-10 md:mt-12) matches that
+            same "first sub-beat of this chapter" token -- there is no
+            photo between the "Next stop: La Spezia" heading and this text
+            (the first visual is the video just below), so this reuses
+            the text->text-within-chapter value rather than the
+            text->photo one. Scope: only where we stayed/based ourselves
+            and that this was a full day out -- the train/day-pass detail
+            is saved for its own "Getting Around" beat below, per the
+            brief's own section split. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <ChapterHeading italic>Trains, boats, and no car in sight.</ChapterHeading>
+            <Eyebrow>Cinque Terre · 28 April 2026</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              The stop we&apos;d been looking forward to.
+            </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We left Milano on 28 April and continued the road trip toward the coast, basing ourselves just outside Cinque Terre. From there, the car stayed parked -- we left it behind and used the train to get between the villages instead.',
-                'With a Cinque Terre Train Card for the whole family, we could hop on and off as we liked all day, no separate tickets, no watching the clock. In the afternoon we swapped the train for a boat, which turned out to be the better way to actually see the villages -- from the water, stacked into the cliffs, they looked like a completely different place. Our two kids, then 10 and 11, were just as happy on the boat as on the train.',
+                'Cinque Terre was one of the places we were most looking forward to on this road trip. We stayed in La Spezia and gave ourselves a full day to explore all five villages.',
               ]}
             />
           </Reveal>
         </div>
 
-        {/* CINQUE TERRE -- SUPPORTING PHOTO PLACEHOLDER. Same slot/token
-            as Milano_streets above (mt-12 md:mt-16, w-[88%] md:w-[350px],
-            aspect-[3/4]) -- the chapter's second, smaller photo. */}
-        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[350px] mx-auto'>
-          <MediaPlaceholder
-            label='Photo placeholder'
-            note='Supporting image'
-            aspect='aspect-[3/4]'
-          />
+        {/* Cinque_Terre_sea_video_web.mp4 -- opening atmosphere. Compressed
+            from the original 2160x3840/~25Mbps phone file (both source
+            .MOV files in this section were: see the matching note below
+            the Vernazza video) down to 640x1138 h264/no-audio, the same
+            treatment already established by Duoma_video.mp4 elsewhere on
+            this page -- byte-identical video attributes (autoPlay/muted/
+            loop/playsInline/preload='auto'/aria-hidden, absolute inset-0
+            h-full w-full object-cover inside an aspect-[9/16] wrapper).
+            Sized a little more generously than the Duomo clip
+            (max-w-[260px] sm:max-w-sm md:max-w-md vs its
+            240/xs/md) since this is the section's scene-setting opener,
+            not a supporting beat -- per "do not make every media item the
+            same size." No caption, matching every other video on this
+            page. This is file 1 of the 5 selected for this section; used
+            once, here only. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[260px] sm:max-w-sm md:max-w-md mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_sea_video_web.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
         </Reveal>
 
-        {/* CINQUE TERRE TRANSPORT -- cost as a quiet practical-info card,
-            byte-identical container styling to the Milano hotel card
-            above (bg-[#f1ebdc], rounded-[3px], same padding/gap), just
-            this chapter's own values. Label -> two small breakdown lines
-            (train card, boat) -> TimeStamp total -> "Family of four"
-            caption, matching the order the brief itself gave. This is
-            the only place the per-item costs appear; deliberately not a
-            separate "price box" elsewhere on the page. */}
+        {/* GETTING AROUND -- Eyebrow + Paragraphs only, no separate
+            ChapterHeading, the same lighter "practical beat" weight
+            Milano's own "Good to Know" uses (vs. "Where We Stayed",
+            which did get its own heading) -- this is logistics, not a
+            story moment in itself, so it stays visually quieter than
+            Vernazza/the detail beat below. Gap above (mt-14 md:mt-16)
+            is the "new topic within the chapter" token (same value
+            "Where We Stayed" used after the street-photo caption).
+            Grouped in one div with its own cost card and the price
+            disclaimer below, exactly like Milano's stay-card div groups
+            "Where We Stayed" + the €949.32 card + "Good to Know"
+            together. */}
         <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Eyebrow>Getting Around</Eyebrow>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Instead of driving between the villages, we left the car behind and explored them by train. A day pass made it easy — we could get off wherever looked interesting, explore, and simply catch the next train when we were ready to move on.',
+              ]}
+            />
+          </Reveal>
+
+          {/* Cost card -- byte-identical container styling to the Milano
+              hotel card (bg-[#f1ebdc], rounded-[3px], same padding/gap),
+              just this beat's own label and values. Wording matches the
+              brief exactly ("Train passes", "Ferry", not the previous
+              placeholder's "Train Card"/"Boat"). Label -> two small
+              breakdown lines -> TimeStamp total -> "Family of four"
+              caption, same order as the Milano card and as the brief
+              itself gave it. */}
           <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Cinque Terre Transport
             </span>
             <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Train Card · Family (1 day) — €56.50
+              Train Passes · Family — €56.50
             </span>
             <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Boat — €64
+              Ferry — €64
             </span>
             <div className='mt-4'>
               <TimeStamp size='md'>€120.50</TimeStamp>
@@ -845,18 +841,183 @@ export default function ItalyPage() {
               Total · Family of Four
             </span>
           </Reveal>
+
+          {/* Small addendum below the card, same lighter-than-the-card
+              treatment as the San Siro "Good to know: expect very
+              crowded metro stations" line: single muted sentence, no
+              uppercase, small gap (mt-5/6) so it reads as belonging to
+              the card rather than opening a new beat. Explicitly flags
+              these as what we actually paid, not current official
+              prices, per the brief. */}
+          <Reveal delay={0.15} className='mt-5 md:mt-6 mx-auto max-w-[460px] text-center'>
+            <p className='text-sm font-[family-name:var(--font-poppins)] font-light text-black/50 dark:text-white/50'>
+              What we paid in April 2026 — not current official prices.
+            </p>
+          </Reveal>
         </div>
 
-        {/* CINQUE TERRE -- VIDEO PLACEHOLDER. Same slot/token as the
-            Duomo rooftop clip above (mt-12 md:mt-14, max-w-[240px]
-            sm:max-w-xs md:max-w-md, aspect-[9/16]) -- reserved for a
-            boat-perspective video moment once real footage is chosen. */}
+        {/* VERNAZZA -- OUR FAVOURITE. The emotional centre of this
+            section per the brief, so this is the one beat that gets a
+            bare ChapterHeading with no Eyebrow above it (same treatment
+            "First stop? Milano!" itself got) -- nothing to visually
+            outrank it within this section. Two short paragraphs: the
+            village/lunch/climb, then the view itself, ending on the
+            "worth it" beat that the hero image right below then pays
+            off. Gap (mt-14 md:mt-16) is the "new topic" token, since this
+            follows the Getting Around div rather than continuing it. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>Vernazza — our favourite</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Of all five villages, Vernazza was the one that stayed with us. We stopped there for lunch, then walked up to the small castle and viewpoint above the village — a short climb, with a small entrance fee of just a few euros.',
+                'The view from up there, straight down over the harbour and the rooftops, was absolutely worth the climb.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Cinque_Terre_view_web.jpeg -- the main Vernazza image, and
+            deliberately the largest single photo on this whole page
+            (w-[92%] md:w-[680px], vs. Milano's largest at 538px): the
+            brief calls this section's emotional centre and asks for the
+            image "prominently", so it's sized to actually lead here
+            rather than match Milano's supporting-photo scale. Native
+            orientation preserved (EXIF-rotated/baked into the _web file,
+            same convention as Milano_streets_web -- source was
+            4032x3024, aspect-[4/3], nothing cropped). Short caption,
+            same treatment as Milano_streets' "The calm after the chaos."
+            This is the large panoramic Vernazza shot the brief says is
+            already used elsewhere on the site -- note this crop/size is
+            specific to this section (not full-bleed/panoramic here), per
+            the explicit instruction not to repeat that treatment. File 3
+            of 5; used once, here only. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[92%] md:w-[680px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_view_web.jpeg'
+              alt='Vernazza seen from the castle viewpoint above the village, looking down over the harbour and rooftops.'
+              fill
+              sizes='(min-width: 768px) 680px, 92vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            Vernazza, from above.
+          </p>
+        </Reveal>
+
+        {/* Short connected line, same "photo -> short connected text"
+            token as the Duomo punchline (mt-10 md:mt-12). Exists mainly
+            to put real separation between the Vernazza photo and the
+            Vernazza video just below, per the brief's explicit
+            instruction not to place them back to back -- this is the
+            gap doing that work, not just a visual pause. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'We stayed up there for a while, in no hurry to climb back down.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Cinque_Terre_view_video_web.mp4 -- the Vernazza/viewpoint
+            video, same compression treatment as the sea video above
+            (source 2160x3840/~25Mbps -> 640x1138 h264/no-audio) and the
+            same video attributes/wrapper as every other clip on this
+            page. Placed here, separated from the still image by the
+            paragraph above rather than immediately after it, per the
+            brief. Sized like the Duomo clip (max-w-[240px] sm:max-w-xs
+            md:max-w-md) -- smaller than the sea-video opener, since this
+            is a supporting beat inside Vernazza's own story rather than
+            the section's scene-setter. File 4 of 5; used once, here
+            only. */}
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-[240px] sm:max-w-xs md:max-w-md mx-auto'>
-          <MediaPlaceholder
-            label='Video placeholder'
-            note='A moment from the boat'
-            aspect='aspect-[9/16]'
-          />
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_view_video_web.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* A DETAIL I LOVED -- bare ChapterHeading (matching Vernazza's
+            own no-Eyebrow treatment) + one paragraph explaining the
+            tracked-trolley detail. Gap (mt-14 md:mt-16) is the "new
+            topic" token, since this follows the Vernazza video rather
+            than continuing it. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>A detail I loved</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "One thing that really caught my attention was how goods actually move through Cinque Terre. The stairways are too steep and narrow for any van, so small tracked trolleys run straight up and down them instead, hauling crates and supplies between houses. It's a tiny detail, but it says a lot about what everyday life here actually looks like.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Cinque_Terre_trolley_web.jpeg -- deliberately the smallest
+            photo in this section (w-[60%] md:w-[280px], smaller than
+            even Milano_streets' 350px "supporting photo" scale) and
+            placed right under its own paragraph with a shorter gap
+            (mt-6 md:mt-8, not the usual mt-12 md:mt-16 text->photo
+            token) so text and image read as one connected editorial
+            moment, per the brief's explicit "text and image should feel
+            connected" / "next to or very close to" instruction. Native
+            orientation preserved (EXIF-rotated/baked into the _web file,
+            source 5712x4284 at orientation 6 -> displayed 3:4 portrait,
+            aspect-[3/4]). File 5 of 5; used once, here only. */}
+        <Reveal delay={0.1} className='mt-6 md:mt-8 w-[60%] md:w-[280px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_trolley_web.jpeg'
+              alt='A small tracked transport trolley used to move goods up and down the steep stairways of a Cinque Terre village.'
+              fill
+              sizes='(min-width: 768px) 280px, 60vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            Deliveries, Cinque Terre style.
+          </p>
+        </Reveal>
+
+        {/* Cinque_Terre_sea_web.jpeg -- the section's closing atmosphere,
+            completing the "atmosphere -> practical experience ->
+            Vernazza -> small local detail -> final atmosphere" rhythm
+            the brief itself laid out. This is file 2 of the 5 selected
+            files (the secondary coastal image) -- deliberately saved for
+            this closing beat rather than doubled up earlier in the
+            section, so all five files are each used exactly once and
+            nothing repeats. Sized between the trolley detail and the
+            Vernazza hero (w-[75%] md:w-[320px]) -- a proper closing
+            visual, not another small detail shot. No further text after
+            it: the section ends on the image itself, matching "finish
+            with one of the remaining atmospheric" media rather than a
+            closing line. Native orientation preserved, same as the
+            trolley photo (source 5712x4284, orientation 6, aspect-[3/4]). */}
+        <Reveal delay={0.1} className='mt-14 md:mt-16 w-[75%] md:w-[320px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Cinque_Terre_sea_web.jpeg'
+              alt='The Ligurian coast near Cinque Terre.'
+              fill
+              sizes='(min-width: 768px) 320px, 75vw'
+              className='object-cover'
+            />
+          </div>
         </Reveal>
       </section>
     </div>
