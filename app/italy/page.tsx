@@ -485,30 +485,15 @@ export default function ItalyPage() {
           </div>
         </Reveal>
 
-        {/* GALLERIA — deliberately the lightest possible treatment on this
-            page: no Eyebrow, no ChapterHeading, no photo, just one quiet
-            paragraph continuing the same beat as the Duomo video above it
-            (same "photo/video -> connected text" token, mt-10/12, as the
-            Duomo punchline). This is a one-line transition, not a new
-            attraction — per this step's explicit instruction not to give
-            the Galleria its own section or any media. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <Paragraphs
-              className='text-center'
-              items={[
-                "We walked through Galleria Vittorio Emanuele II — beautiful, but high fashion isn't really our thing.",
-              ]}
-            />
-          </Reveal>
-        </div>
-
         {/* SLOW SUNDAY — a new beat (Eyebrow-only marker, same tier as
             "Sunday Morning" above), opening the "walking through Milano"
-            atmosphere stretch of the day. Gap above reuses the file's
-            "closing one beat -> opening a different one" token (mt-14/16),
-            since this moves from the Duomo/Galleria sightseeing into open,
-            unplanned wandering. */}
+            atmosphere stretch of the day. Now follows the Duomo video
+            directly (the Galleria one-line aside was removed as it had no
+            accompanying photo, so it read as disconnected). Gap above
+            still reuses the file's "closing one beat -> opening a
+            different one" token (mt-14/16) -- this page's own convention
+            already applies that same weight after a photo/video beat, not
+            only after text, so no change was needed there. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <Eyebrow>Slow Sunday</Eyebrow>
