@@ -812,41 +812,40 @@ export default function ItalyPage() {
             </span>
           </Reveal>
 
-          {/* L'Altra Luna -- deliberately downgraded to a small, secondary
-              moment per this revision: one short sentence instead of a
-              paragraph, no heading of its own, and a tighter lead-in gap
+          {/* Pizzeria moment -- kept as a small, secondary aside (see
+              note below); text revised per this pass to drop the venue
+              name entirely and describe it as a takeaway pizza stop
+              rather than a sit-down dinner. Same tight lead-in gap
               (mt-9/11, the same paragraph -> card rhythm used above)
-              rather than the larger new-topic gap, so it reads as a quick
-              aside rather than a new chapter. */}
+              rather than the larger new-topic gap, so it still reads as
+              a quick aside rather than a new chapter. */}
           <Reveal delay={0.1} className='mt-9 md:mt-11 max-w-xl mx-auto'>
             <Paragraphs
               className='text-center'
               items={[
-                "Dinner at L'Altra Luna felt a little like stepping back in time — good pizza, simple atmosphere, and just €10.60 for two.",
+                "We stopped at a little pizzeria along the street to grab pizza to take back with us. Walking in felt like stepping back in time — and two really good pizzas cost us just €10.60.",
               ]}
             />
           </Reveal>
         </div>
 
-        {/* LaSpezia_pizzeria_web.jpeg -- kept, but shrunk and pulled in
-            tighter beneath its one-line text (mt-6/8, the same tight
-            paragraph -> image gap used for the trolley photo) so the
-            whole pizzeria beat reads as one small secondary moment
-            rather than a large section. Same file, same aspect-[3/4],
-            same caption -- only the display size and surrounding gaps
-            changed. */}
+        {/* LaSpezia_pizzeria_web.jpeg -- kept, same size and gaps as
+            before (mt-6/8, the same tight paragraph -> image gap used
+            for the trolley photo) so the whole pizzeria beat still reads
+            as one small secondary moment. Alt text and caption revised
+            per this pass to drop the venue name. */}
         <Reveal delay={0.1} className='mt-6 md:mt-8 w-[50%] md:w-[220px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
             <Image
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/LaSpezia_pizzeria_web.jpeg'
-              alt="L'Altra Luna, the pizzeria we visited on our first evening in La Spezia."
+              alt='The little pizzeria in La Spezia where we stopped for takeaway pizza.'
               fill
               sizes='(min-width: 768px) 220px, 50vw'
               className='object-cover'
             />
           </div>
           <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
-            L&apos;Altra Luna, La Spezia.
+            A Little Step Back In Time.
           </p>
         </Reveal>
 
@@ -1025,11 +1024,6 @@ export default function ItalyPage() {
             </span>
           </Reveal>
 
-          <Reveal delay={0.15} className='mt-5 md:mt-6 mx-auto max-w-[460px] text-center'>
-            <p className='text-sm font-[family-name:var(--font-poppins)] font-light text-black/50 dark:text-white/50'>
-              What we paid in April 2026 — not current official prices.
-            </p>
-          </Reveal>
         </div>
 
         {/* Cinque_Terre_sea_video_web.mp4 -- unchanged placement logic
