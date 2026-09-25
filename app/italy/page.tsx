@@ -101,6 +101,51 @@ function Eyebrow({ children }: { children: ReactNode }) {
   );
 }
 
+// LEVEL 4 -- the one practical-info-card treatment used for every price
+// card on this page (accommodation, Duomo, football, train pass, ferry):
+// a small uppercase label, a large serif value at the journey's own
+// moment-timestamp scale (TimeStamp size='md'), and optional supporting
+// lines underneath -- each one either a second uppercase label-style line
+// (variant='label', e.g. "Family of Four") or a quieter descriptive line
+// (the default, e.g. "Room · shared kitchen"). This is a byte-identical
+// port of Tenerife's own local Fact component (app/tenerife/page.tsx),
+// extended only with the label/plain support-line distinction Italy's
+// cards actually need. Every line sits in a single flex column with one
+// uniform gap-2 -- no per-line margin, no reserved/min-height slot on any
+// child -- so the label+value+support group is genuinely one visual unit,
+// centred inside the card by the card's own symmetric padding alone,
+// exactly like Tenerife's Vienna Airport · Car Park 3 card.
+function Fact({
+  label,
+  value,
+  support,
+}: {
+  label: string;
+  value: string;
+  support?: { text: string; variant?: 'label' | 'plain' }[];
+}) {
+  return (
+    <div className='flex flex-col items-center gap-2 text-center'>
+      <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+        {label}
+      </span>
+      <TimeStamp size='md'>{value}</TimeStamp>
+      {support?.map((line, i) => (
+        <span
+          key={i}
+          className={
+            line.variant === 'label'
+              ? 'text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'
+              : 'text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'
+          }
+        >
+          {line.text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 // A small, minimal editorial route diagram -- not a coloured tourist
 // infographic, and not a full geographic map (this is a same-day loop
 // between villages by train/ferry/bus, not a driving route governed by
@@ -350,20 +395,16 @@ export default function ItalyPage() {
               values. €949.32 appears only here, once, replacing the earlier
               inline "€949" mention that used to sit in the paragraph
               above. */}
-          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Central Milano · 2 Nights
-            </span>
-            <TimeStamp size='md'>€949.32</TimeStamp>
-            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              25 Apr → 27 Apr 2026
-            </span>
-            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Family of four
-            </span>
-            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Room · shared kitchen
-            </span>
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='Central Milano · 2 Nights'
+              value='€949.32'
+              support={[
+                { text: '25 Apr → 27 Apr 2026' },
+                { text: 'Family of four', variant: 'label' },
+                { text: 'Room · shared kitchen' },
+              ]}
+            />
           </Reveal>
 
           {/* GOOD TO KNOW — simplified to one sentence. Same Eyebrow-only,
@@ -447,19 +488,15 @@ export default function ItalyPage() {
               this page (identical background, radius, padding, gap, label
               styling and TimeStamp scale). Holds the facts the paragraph
               above used to spell out. */}
-          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Duomo di Milano
-            </span>
-            <div className='mt-4'>
-              <TimeStamp size='md'>€66</TimeStamp>
-            </div>
-            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Family of Four
-            </span>
-            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Cathedral &amp; rooftop · access by stairs
-            </span>
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='Duomo di Milano'
+              value='€66'
+              support={[
+                { text: 'Family of Four', variant: 'label' },
+                { text: 'Cathedral & rooftop · access by stairs' },
+              ]}
+            />
           </Reveal>
         </div>
 
@@ -560,7 +597,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Milan's metro couldn't be easier — just tap your card at the gate. One card per traveller.",
+                "Milan's metro couldn't be easier — just tap your payment card at the gate. One card per traveller, so having a prepaid card for each child comes in handy.",
               ]}
             />
           </Reveal>
@@ -697,20 +734,16 @@ export default function ItalyPage() {
             instruction. Gap above matches the photo/video -> connected-
             content token (mt-10/12), same as this file uses for text
             directly following a photo or video. */}
-        <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-          <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-            AC Milan vs Juventus
-          </span>
-          <TimeStamp size='md'>€476</TimeStamp>
-          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-            26 Apr 2026 · 20:45
-          </span>
-          <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-            4 Tickets · €119 pp
-          </span>
-          <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-            San Siro · Milano
-          </span>
+        <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+          <Fact
+            label='AC Milan vs Juventus'
+            value='€476'
+            support={[
+              { text: '26 Apr 2026 · 20:45' },
+              { text: '4 Tickets · €119 pp', variant: 'label' },
+              { text: 'San Siro · Milano' },
+            ]}
+          />
         </Reveal>
 
         {/* A very small, quiet practical note directly under the ticket
@@ -785,17 +818,15 @@ export default function ItalyPage() {
               accommodation text, before the pizzeria moment, per this
               revision's explicit instruction that this card must not be
               omitted. */}
-          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Casa Esmeralda · 2 Nights
-            </span>
-            <TimeStamp size='md'>€382.16</TimeStamp>
-            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              27 Apr → 29 Apr 2026
-            </span>
-            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Suite with Terrace · Family of Four
-            </span>
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='Casa Esmeralda · 2 Nights'
+              value='€382.16'
+              support={[
+                { text: '27 Apr → 29 Apr 2026' },
+                { text: 'Suite with Terrace · Family of Four', variant: 'label' },
+              ]}
+            />
           </Reveal>
 
           {/* Pizzeria moment -- kept as a small, secondary aside (see
@@ -809,7 +840,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "We stopped at a little pizzeria on the street and took pizza back with us. It felt like stepping back in time — simple, good and incredibly cheap at €10.60 for two.",
+                "Near our apartment, we spotted a little pizzeria and grabbed two pizzas to take back with us. It felt like stepping back in time — and €10.60 for two pizzas felt like it too.",
               ]}
             />
           </Reveal>
@@ -885,21 +916,17 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "The train is by far the easiest way to explore Cinque Terre \u2014 driving between the villages isn't practical, and parking is difficult. A day pass let us hop on and off whenever we wanted.",
+                "The train made exploring Cinque Terre incredibly easy. With a day pass, we could simply hop on and off between the villages whenever we wanted. Just be prepared \u2014 the trains can get very crowded.",
               ]}
             />
           </Reveal>
 
-          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] min-h-[172px] md:min-h-[184px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 md:px-9 flex flex-col items-center justify-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Cinque Terre Train Pass
-            </span>
-            <div className='mt-2'>
-              <TimeStamp size='md'>€56.50</TimeStamp>
-            </div>
-            <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Family of Four
-            </span>
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='Cinque Terre Train Pass'
+              value='€56.50'
+              support={[{ text: 'Family of Four', variant: 'label' }]}
+            />
           </Reveal>
         </div>
 
@@ -997,16 +1024,12 @@ export default function ItalyPage() {
             />
           </Reveal>
 
-          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] min-h-[172px] md:min-h-[184px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 md:px-9 flex flex-col items-center justify-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Ferry · Vernazza → Porto Venere
-            </span>
-            <div className='mt-2'>
-              <TimeStamp size='md'>€64</TimeStamp>
-            </div>
-            <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Family of Four
-            </span>
+          <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='Ferry · Vernazza → Porto Venere'
+              value='€64'
+              support={[{ text: 'Family of Four', variant: 'label' }]}
+            />
           </Reveal>
 
         </div>
@@ -1059,7 +1082,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "I'd read that Porto Venere was just as beautiful as Portofino, but less touristy. That was enough to put it on my list — and I'm glad it did. We loved the quieter feel of it.",
+                "While deciding which Cinque Terre villages to visit, Porto Venere kept coming up — even though it isn't actually one of the five. So we added it to our route. A lovely little village and definitely worth the stop.",
               ]}
             />
           </Reveal>
