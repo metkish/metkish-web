@@ -597,7 +597,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Milan's metro couldn't be easier — just tap your card at the gate. One card per traveller.",
+                "Milan's metro couldn't be easier — just tap your payment card at the gate. One card per traveller, so having a prepaid card for each child comes in handy.",
               ]}
             />
           </Reveal>
