@@ -916,7 +916,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "The train is by far the easiest way to explore Cinque Terre \u2014 driving between the villages isn't practical, and parking is difficult. A day pass let us hop on and off whenever we wanted.",
+                "The train made exploring Cinque Terre incredibly easy. With a day pass, we could simply hop on and off between the villages whenever we wanted. Just be prepared \u2014 the trains can get very crowded.",
               ]}
             />
           </Reveal>
