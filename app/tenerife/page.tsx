@@ -1392,16 +1392,16 @@ export default function TenerifePage() {
         </Reveal>
 
         {/* Same quiet practical-information panel language as every other
-            price panel on this page — duration given the same visual
-            weight the price usually gets, since duration is the number
-            that mattered most for this booking. */}
+            price panel on this page — the price gets the large, bold
+            value treatment (as on every other price card), with the
+            trip's duration demoted to a plain supporting line. */}
         <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             The Sailing Trip
           </span>
-          <TimeStamp size='md'>3 hours</TimeStamp>
+          <TimeStamp size='md'>€270 for four</TimeStamp>
           <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-            €270 for four
+            3 hours
           </span>
           <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Third Element
