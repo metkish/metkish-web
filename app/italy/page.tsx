@@ -1082,7 +1082,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "I'd read that Porto Venere was just as beautiful as Portofino, but less touristy. That was enough to put it on my list — and I'm glad it did. We loved the quieter feel of it.",
+                "While deciding which Cinque Terre villages to visit, Porto Venere kept coming up — even though it isn't actually one of the five. So we added it to our route. A lovely little village and definitely worth the stop.",
               ]}
             />
           </Reveal>
