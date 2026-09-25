@@ -840,7 +840,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "We stopped at a little pizzeria on the street and took pizza back with us. It felt like stepping back in time — simple, good and incredibly cheap at €10.60 for two.",
+                "Near our apartment, we spotted a little pizzeria and grabbed two pizzas to take back with us. It felt like stepping back in time — and €10.60 for two pizzas felt like it too.",
               ]}
             />
           </Reveal>
