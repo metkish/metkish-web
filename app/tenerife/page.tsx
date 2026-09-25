@@ -1626,16 +1626,17 @@ export default function TenerifePage() {
         {/* Cable Car practical panel — same restrained cream-box language
             as "The Sailing Trip" above: one label, one prominent value,
             supporting lines underneath at the same quiet weight. Price
-            line drops its "for four" suffix in favour of its own
-            "Family of Four" label line, same pattern as the Sailing
-            Trip card above. Tighter mt-2 rhythm between lines. */}
+            is the large, bold value (matching every other price card on
+            this page), with departure time demoted to a plain
+            supporting line, same treatment the Sailing Trip card
+            received for its own price/duration pairing. */}
         <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Cable Car
           </span>
-          <TimeStamp size='md'>09:50</TimeStamp>
+          <TimeStamp size='md'>€132</TimeStamp>
           <span className='mt-2 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-            €132
+            09:50
           </span>
           <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Family of Four
