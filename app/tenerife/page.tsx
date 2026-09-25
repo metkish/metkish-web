@@ -1392,24 +1392,29 @@ export default function TenerifePage() {
         </Reveal>
 
         {/* Same quiet practical-information panel language as every other
-            price panel on this page — the price gets the large, bold
-            value treatment (as on every other price card), with the
-            trip's duration demoted to a plain supporting line. */}
+            price panel on this page — the price alone (no "for four"
+            suffix) gets the large, bold value treatment, with duration
+            and a "Family of Four" label line underneath, matching the
+            Central Milano accommodation card's pattern on the Italy
+            page. Tighter mt-2 rhythm between lines, per this pass. */}
         <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             The Sailing Trip
           </span>
-          <TimeStamp size='md'>€270 for four</TimeStamp>
-          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+          <TimeStamp size='md'>€270</TimeStamp>
+          <span className='mt-2 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
             3 hours
           </span>
-          <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+          <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            Family of Four
+          </span>
+          <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Third Element
           </span>
-          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+          <span className='mt-2 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
             Booked through GetYourGuide
           </span>
-          <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+          <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             09:45 departure
           </span>
         </Reveal>
@@ -1620,19 +1625,25 @@ export default function TenerifePage() {
 
         {/* Cable Car practical panel — same restrained cream-box language
             as "The Sailing Trip" above: one label, one prominent value,
-            supporting lines underneath at the same quiet weight. */}
+            supporting lines underneath at the same quiet weight. Price
+            line drops its "for four" suffix in favour of its own
+            "Family of Four" label line, same pattern as the Sailing
+            Trip card above. Tighter mt-2 rhythm between lines. */}
         <Reveal delay={0.1} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
           <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Cable Car
           </span>
           <TimeStamp size='md'>09:50</TimeStamp>
-          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-            €132 for four
+          <span className='mt-2 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            €132
           </span>
-          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+          <span className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            Family of Four
+          </span>
+          <span className='mt-2 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
             2 adults · 2 children
           </span>
-          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+          <span className='mt-2 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
             Booked in advance
           </span>
         </Reveal>
