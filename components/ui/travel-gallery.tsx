@@ -203,7 +203,7 @@ const BLOCKS: Block[] = [
     kind: 'solo',
     item: sardinia,
     width: 'w-full md:w-[70%]',
-    marginLeft: 'md:ml-[12%]',
+    marginLeft: 'md:ml-[20%]',
     caption: {
       location: 'Italy',
       title: 'Sardinia',
