@@ -6,7 +6,11 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
-import { ITALY_HOME_TO_MILANO_JOURNEY, ITALY_MILANO_TO_LASPEZIA_JOURNEY } from '@/lib/journeys/italy';
+import {
+  ITALY_HOME_TO_MILANO_JOURNEY,
+  ITALY_MILANO_TO_LASPEZIA_JOURNEY,
+  ITALY_LASPEZIA_TO_PISA_JOURNEY,
+} from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
 
@@ -1134,6 +1138,39 @@ export default function ItalyPage() {
                 "This road trip isn't over yet. More from Italy is coming soon.",
               ]}
             />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* MAP -- La Spezia -> Pisa, the third road-trip leg. Same
+          JourneyMapScene engine, same height, same edge-to-edge/no-
+          padding placement as the two maps above (see
+          lib/journeys/italy.ts for the route data, the real-coordinate
+          sourcing, and the fine Tuscan-coast land patch this leg needed).
+          Placed directly after the finished La Spezia / Cinque Terre
+          chapter and its "More to come" note, per explicit instruction,
+          so this reads as the next leg of the same continuing journey
+          rather than a new page starting. */}
+      <JourneyMapScene
+        journey={ITALY_LASPEZIA_TO_PISA_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+
+      {/* PISA CHAPTER OPENING -- deliberately minimal, per explicit
+          instruction: only the route transition and this chapter's own
+          bare opening (RouteLabel + ChapterHeading), matching the exact
+          same pattern as "Milano -> La Spezia" / "Next stop: La Spezia"
+          above. No Pisa story, activities, prices, accommodation, dates
+          or other content yet -- that comes in a separate pass once the
+          actual content and photos are supplied. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>La Spezia → Pisa</RouteLabel>
+          </Reveal>
+
+          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>Next stop: Pisa</ChapterHeading>
           </Reveal>
         </div>
       </section>
