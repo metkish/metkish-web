@@ -6,7 +6,12 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
-import { ITALY_HOME_TO_MILANO_JOURNEY, ITALY_MILANO_TO_LASPEZIA_JOURNEY } from '@/lib/journeys/italy';
+import {
+  ITALY_HOME_TO_MILANO_JOURNEY,
+  ITALY_MILANO_TO_LASPEZIA_JOURNEY,
+  ITALY_LASPEZIA_TO_PISA_JOURNEY,
+  ITALY_PISA_TO_PESCHIERA_JOURNEY,
+} from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
 
@@ -401,8 +406,8 @@ export default function ItalyPage() {
               value='€949.32'
               support={[
                 { text: '25 Apr → 27 Apr 2026' },
-                { text: 'Family of four', variant: 'label' },
-                { text: 'Room · shared kitchen' },
+                { text: 'Room · Family of Four', variant: 'label' },
+                { text: 'Shared kitchen' },
               ]}
             />
           </Reveal>
@@ -656,7 +661,7 @@ export default function ItalyPage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <ChapterHeading italic>
-              And then it was time for the one thing we had actually planned.
+              The one thing we had actually planned.
             </ChapterHeading>
           </Reveal>
         </div>
@@ -1115,23 +1120,271 @@ export default function ItalyPage() {
             />
           </Reveal>
         </div>
+      </section>
 
-        {/* MORE TO COME -- added when publishing the page with the Italy
-            trip still in progress. Deliberately minimal, per explicit
-            instruction: no future destinations, no placeholder sections,
-            no dates. Reuses the same RouteLabel eyebrow treatment used at
-            every chapter opening above (pink line + small uppercase
-            label) paired with the page's standard Paragraphs body text --
-            nothing new invented -- so it reads as a quiet pause at the
-            end of what's finished, not a new chapter. This is now the
-            section's true final beat. */}
+      {/* MAP -- La Spezia -> Pisa, the third road-trip leg. Same
+          JourneyMapScene engine, same height, same edge-to-edge/no-
+          padding placement as the two maps above (see
+          lib/journeys/italy.ts for the route data, the real-coordinate
+          sourcing, and the fine Tuscan-coast land patch this leg needed).
+          Placed directly after the finished La Spezia / Cinque Terre
+          chapter and its "More to come" note, per explicit instruction,
+          so this reads as the next leg of the same continuing journey
+          rather than a new page starting. */}
+      <JourneyMapScene
+        journey={ITALY_LASPEZIA_TO_PISA_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+
+      {/* PISA CHAPTER OPENING -- deliberately minimal, per explicit
+          instruction: only the route transition and this chapter's own
+          bare opening (RouteLabel + ChapterHeading), matching the exact
+          same pattern as "Milano -> La Spezia" / "Next stop: La Spezia"
+          above. No Pisa story, activities, prices, accommodation, dates
+          or other content yet -- that comes in a separate pass once the
+          actual content and photos are supplied. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <RouteLabel>More to come</RouteLabel>
+          <Reveal>
+            <RouteLabel>La Spezia → Pisa</RouteLabel>
+          </Reveal>
+        </div>
+
+        {/* A QUICK STOP IN PISA -- deliberately short, personal and
+            image-led per explicit instruction: this is not a Pisa travel
+            guide. No history, cathedral or ticket information -- just the
+            Leaning Tower stop on the way south. The "Next stop: Pisa"
+            chapter marker was removed as redundant with the RouteLabel
+            above (which already says La Spezia -> Pisa) -- this heading
+            now sits directly under the RouteLabel at the same mt-8/10 gap
+            every other RouteLabel -> ChapterHeading opener on this page
+            uses (see "Slovenia -> Milano" / "First stop? Milano!" above),
+            rather than the larger mt-10/12 gap it had when a chapter
+            marker sat between them. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>A quick stop in Pisa</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "This road trip isn't over yet. More from Italy is coming soon.",
+                "Pisa was just a short stop on our way south. We wanted to see the Leaning Tower \u2014 and in person, it somehow wasn't quite what I'd imagined.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Pisa_tower.mp4 -- this beat's main visual, per explicit
+            instruction. Native 1080x1920 vertical recording, so it drops
+            into the same aspect-[9/16] "moving photograph" wrapper used
+            throughout this page (autoPlay/muted/loop/playsInline,
+            contained by width, not trimmed or re-cropped) -- the opening
+            seconds, which give the clearest sense of the tower's actual
+            scale and lean, stay intact. Sized prominently, matching the
+            Cinque Terre sea video's treatment above, since this is the
+            beat's main image rather than a small aside. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[300px] sm:max-w-[400px] md:max-w-[520px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Pisa_tower.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* Pisa_tower.jpeg -- native portrait 3:4 (2666x3555, EXIF-
+            rotated), same aspect-[3/4] treatment as the rest of the
+            page's portrait photos, so nothing is cropped. */}
+        <Reveal delay={0.1} className='mt-8 md:mt-10 w-[75%] md:w-[350px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Pisa_tower.jpeg'
+              alt='The Leaning Tower of Pisa.'
+              fill
+              sizes='(min-width: 768px) 350px, 75vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'Crowded? Very. Everyone was trying to get that photo with the tower. And yes, so were we.',
+                "There’s a large tourist car park a short walk from Piazza dei Miracoli. The square itself is free to visit, with the Leaning Tower, cathedral and baptistery all together. Outside, expect plenty of souvenir stalls — very touristy, very Pisa.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* A LITTLE TUSCANY DETOUR -- PECCIOLI -- a very small, spontaneous
+            beat, per explicit instruction: no new route map here (the
+            Lake Garda leg comes later), bare ChapterHeading matching
+            Porto Venere's weight above, kept deliberately brief. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>A little Tuscany detour</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Before heading north, we made a small detour to Peccioli for a glimpse of the Tuscan countryside \u2014 and hopefully a nice lunch along the way.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Peccioli.jpeg -- native landscape 4:3 (5712x4284), same
+            aspect-[4/3] treatment as this page's other landscape photos
+            (e.g. Porto_Venere_web.jpeg above). Only Peccioli photo used,
+            per explicit instruction. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Peccioli.jpeg'
+              alt='Peccioli, Tuscany.'
+              fill
+              sizes='(min-width: 768px) 620px, 88vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            The footbridge in Peccioli.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "The views were easy to find. Lunch wasn't.",
+                'Every restaurant we tried was closed. We eventually found a place serving simple lunch menus \u2014 not quite the Tuscan lunch we\'d imagined, but at that point, food was food.',
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* MAP -- Pisa -> Peschiera del Garda, the fourth road-trip leg.
+          Same JourneyMapScene engine, same height, same edge-to-edge/no-
+          padding placement as every map above (see lib/journeys/italy.ts
+          for the route data and real-coordinate sourcing). Placed
+          directly after the Pisa/Peccioli chapter, per explicit
+          instruction -- the Peccioli detour stays exactly as it was,
+          this just continues the same page from where that chapter
+          already ended. */}
+      <JourneyMapScene
+        journey={ITALY_PISA_TO_PESCHIERA_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+
+      {/* LAKE GARDA / PESCHIERA -- deliberately concise, per explicit
+          instruction: accommodation, one evening photo, done. Gardaland
+          is the real reason for this stop, so this chapter stays short
+          rather than over-documenting Lake Garda itself. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Pisa → Peschiera del Garda</RouteLabel>
+          </Reveal>
+        </div>
+
+        {/* SEI GARDA APARTMENTS -- accommodation text written in the same
+            personal, concise voice as Casa Esmeralda above (own
+            experience, not a listing description), plus the same
+            practical-info Fact card treatment used for every other stay
+            on this page. The "Next stop: Peschiera del Garda" chapter
+            marker was removed as redundant with the RouteLabel above --
+            this heading now sits directly under the RouteLabel at the
+            same mt-8/10 gap every other RouteLabel -> ChapterHeading
+            opener on this page uses, rather than the larger mt-10/12 gap
+            it had when a chapter marker sat between them. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>Our base by Lake Garda.</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'We stayed at SEI Garda Apartments \u2014 a lovely apartment, a short walk from the centre with a shop right next door. We chose it mainly for its location near Gardaland, and for that it was perfect.',
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='SEI Garda Apartments · 2 Nights'
+              value='€369.90'
+              support={[
+                { text: '29 Apr → 1 May 2026' },
+                { text: 'Apartment · Family of Four', variant: 'label' },
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-9 md:mt-11 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'One thing to know: when Gardaland closes, the road into Peschiera gets completely gridlocked. We probably could have walked faster.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Peschiera del Garda.jpeg -- the only Lake Garda/Peschiera photo
+            used, per explicit instruction: the landscape shot looking
+            over the water/bridge toward Peschiera's colourful buildings.
+            Native landscape 4:3 (5712x4284), same aspect-[4/3] treatment
+            as this page's other landscape photos. A simple visual ending
+            to this part of the journey -- no gallery. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Peschiera%20del%20Garda.jpeg'
+              alt='Looking over the water toward the colourful buildings of Peschiera del Garda.'
+              fill
+              sizes='(min-width: 768px) 620px, 88vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'We ended the day with a walk through Peschiera del Garda and along the lake \u2014 a lovely place to spend the evening before Gardaland the next morning.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* A DAY AT GARDALAND -- bare ChapterHeading, same "activity
+            within a base destination" treatment as "Three villages. Two
+            ways to see them." above (La Spezia -> Cinque Terre):
+            Gardaland is a day trip from this Peschiera del Garda base,
+            not a new road-trip stop, so no RouteLabel, no map, no
+            "Next stop" wording -- just continues within this same
+            chapter/section. This is currently where the finished Italy
+            content ends, so a single quiet line follows the heading --
+            the same Paragraphs body-text treatment used under every
+            other ChapterHeading on this page, nothing new invented --
+            to indicate the story continues rather than looking cut off. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>A day at Gardaland</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'More from our Italy road trip coming soon.',
               ]}
             />
           </Reveal>

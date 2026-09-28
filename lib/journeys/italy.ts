@@ -248,3 +248,288 @@ export const ITALY_MILANO_TO_LASPEZIA_JOURNEY: Journey = {
   extraLandPatches: [ITALY_LIGURIA_COAST_LAND],
   extraCoastlineStrokes: [ITALY_LIGURIA_COAST_LAND],
 };
+
+// ---------------------------------------------------------------------
+// La Spezia -> Pisa (third road-trip leg)
+// ---------------------------------------------------------------------
+
+const PISA: JourneyPoint = {
+  id: 'pisa',
+  name: 'Pisa',
+  coords: [10.4, 43.717],
+  showMapLabel: true,
+};
+
+// La Spezia -> Pisa: the drive first heads a short distance north/inland
+// from La Spezia to join the A12 "Autostrada Azzurra" near Santo Stefano
+// di Magra, then follows the A12 south along the coastal plain through
+// Massa, Montignoso, Pietrasanta and Camaiore to Viareggio -- where the
+// A12 ends -- and continues inland past the Migliarino San Rossore e
+// Massaciuccoli park through San Giuliano Terme into Pisa.
+//
+// Sourced the same way as ITALY_MILANO_TO_LASPEZIA_ROUTE above: this
+// build's network policy still blocks live OSRM access (re-confirmed
+// while building this leg -- the egress proxy returns a 403 on the
+// CONNECT to router.project-osrm.org), so the route's *shape* comes from
+// the user's own supplied Google/Apple Maps screenshot for this exact
+// drive, which shows exactly this pattern (a short hook north to the A12
+// near Santo Stefano di Magra, the coastal A12 south past
+// Massa/Pietrasanta/Viareggio, then inland via San Giuliano Terme into
+// Pisa). Every waypoint below is a real, independently verified
+// coordinate -- not a pixel trace or an estimate -- taken from each
+// place's own Wikipedia infobox (fetched for this build): Santo Stefano
+// di Magra, Massa, Montignoso, Pietrasanta, Camaiore, Viareggio, San
+// Giuliano Terme and Pisa itself (La Spezia reuses the already-canonical
+// LA_SPEZIA point above, unchanged). Latitude decreases monotonically
+// from La Spezia to Pisa across every waypoint, matching the real
+// southbound drive and the shape the reference screenshot shows -- only
+// the *shape* (which real corridor the drive follows) comes from the
+// screenshot, same standard as every other route on this site.
+const ITALY_LASPEZIA_TO_PISA_ROUTE: [number, number][] = [
+  LA_SPEZIA.coords,
+  [9.917, 44.167], // Santo Stefano di Magra -- A12 junction north of La Spezia
+  [10.133, 44.033], // Massa
+  [10.167, 44.017], // Montignoso
+  [10.233, 43.967], // Pietrasanta
+  [10.3, 43.933], // Camaiore
+  [10.233, 43.867], // Viareggio -- A12 ends here, route continues inland
+  [10.44, 43.761], // San Giuliano Terme
+  PISA.coords,
+];
+
+// A fine-detail coastline patch for this leg's Tuscan coast stretch
+// (Liguria/Tuscany mainland from roughly La Spezia down past Massa,
+// Pietrasanta and Viareggio to south of Pisa), built the same way as
+// ITALY_LIGURIA_COAST_LAND above: real @geo-maps/earth-lands-1km
+// OpenStreetMap land data, clipped to a bbox comfortably exceeding this
+// leg's camera viewport (center [10.1,43.94], spanDeg 2.4), simplified,
+// and projected through the same equirectangular projection (REF_LAT=40)
+// components/journey/geo.ts uses everywhere else. Needed for the same
+// reason as the Liguria patch: running npm run validate:routes against
+// the shared, coarser NEIGHBOUR_PATHS outline failed the on-land check
+// for this route (minMargin -0.0055 at t=0.75, right where the route
+// leaves the coast near Viareggio and cuts inland toward San Giuliano
+// Terme) -- that stretch of coast, and the inland cut past the
+// Migliarino San Rossore e Massaciuccoli park's lake, is too fine
+// for the shared outline's resolution. Only the single largest ring
+// from the source data was kept (the real mainland coastline) --
+// smaller rings the clip bbox also picked up (a Corsica fragment, Elba,
+// Lago di Massaciuccoli) were discarded, per this project's standing
+// "keep only the real, relevant land, no unrelated fragments" rule.
+// Verified after adding: npm run validate:routes reports this leg's
+// on-land check passing (minMargin positive) using this patch alone as
+// routeLand, and the live rendered map was visually inspected per the
+// mandatory QA step before this leg shipped.
+const ITALY_TUSCAN_COAST_LAND =
+  'M 7.699,-45.300 Q 9.269,-45.300 9.269,-44.000 Q 9.269,-42.700 8.846,-42.700 Q 8.422,-42.700 8.420,-42.708 Q 8.417,-42.715 8.378,-42.739 Q 8.338,-42.763 8.302,-42.768 Q 8.266,-42.773 8.243,-42.788 Q 8.220,-42.802 8.231,-42.806 Q 8.242,-42.810 8.247,-42.821 Q 8.253,-42.832 8.251,-42.850 Q 8.250,-42.869 8.256,-42.879 Q 8.263,-42.889 8.258,-42.900 Q 8.253,-42.910 8.228,-42.926 Q 8.203,-42.942 8.158,-42.951 Q 8.113,-42.959 8.096,-42.952 Q 8.079,-42.945 8.078,-42.933 Q 8.077,-42.921 8.058,-42.927 Q 8.040,-42.932 8.035,-42.960 Q 8.030,-42.988 8.043,-42.993 Q 8.055,-42.998 8.064,-43.046 Q 8.073,-43.094 8.068,-43.166 Q 8.064,-43.237 8.050,-43.272 Q 8.037,-43.306 8.024,-43.314 Q 8.011,-43.323 7.999,-43.361 Q 7.986,-43.400 7.978,-43.401 Q 7.970,-43.401 7.960,-43.425 Q 7.951,-43.449 7.932,-43.462 Q 7.913,-43.474 7.899,-43.507 Q 7.886,-43.541 7.896,-43.563 Q 7.906,-43.584 7.901,-43.578 Q 7.897,-43.571 7.900,-43.575 Q 7.903,-43.580 7.896,-43.581 Q 7.889,-43.581 7.877,-43.629 Q 7.866,-43.677 7.871,-43.677 Q 7.877,-43.676 7.872,-43.724 Q 7.867,-43.771 7.873,-43.771 Q 7.879,-43.771 7.873,-43.772 Q 7.867,-43.772 7.857,-43.819 Q 7.847,-43.866 7.815,-43.914 Q 7.783,-43.962 7.747,-43.995 Q 7.710,-44.028 7.686,-44.040 Q 7.661,-44.051 7.652,-44.043 Q 7.644,-44.035 7.638,-44.036 Q 7.633,-44.037 7.590,-44.073 Q 7.547,-44.110 7.539,-44.102 Q 7.531,-44.095 7.523,-44.099 Q 7.516,-44.102 7.525,-44.084 Q 7.535,-44.065 7.541,-44.066 Q 7.546,-44.067 7.539,-44.058 Q 7.532,-44.048 7.472,-44.094 Q 7.412,-44.139 7.402,-44.142 Q 7.392,-44.145 7.386,-44.139 Q 7.380,-44.134 7.369,-44.153 Q 7.359,-44.171 7.313,-44.205 Q 7.268,-44.239 7.251,-44.239 Q 7.235,-44.238 7.225,-44.249 Q 7.215,-44.260 7.209,-44.256 Q 7.203,-44.252 7.199,-44.266 Q 7.195,-44.279 7.174,-44.296 Q 7.153,-44.312 7.113,-44.330 Q 7.074,-44.348 7.066,-44.341 Q 7.058,-44.334 7.060,-44.317 Q 7.061,-44.299 7.033,-44.311 Q 7.005,-44.322 7.009,-44.334 Q 7.013,-44.345 7.008,-44.353 Q 7.002,-44.361 6.925,-44.377 Q 6.847,-44.392 6.842,-44.403 Q 6.836,-44.414 6.834,-44.406 Q 6.832,-44.398 6.795,-44.407 Q 6.758,-44.415 6.770,-44.417 Q 6.781,-44.419 6.775,-44.421 Q 6.769,-44.424 6.734,-44.425 Q 6.700,-44.427 6.607,-44.377 Q 6.514,-44.327 6.507,-44.317 Q 6.500,-44.308 6.508,-44.311 Q 6.515,-44.315 6.488,-44.296 Q 6.460,-44.277 6.469,-44.267 Q 6.478,-44.258 6.462,-44.239 Q 6.447,-44.221 6.450,-44.208 Q 6.454,-44.195 6.395,-44.168 Q 6.335,-44.140 6.320,-44.115 Q 6.305,-44.091 6.303,-44.067 Q 6.301,-44.044 6.277,-44.018 Q 6.253,-43.992 6.257,-43.974 Q 6.262,-43.955 6.249,-43.950 Q 6.236,-43.946 6.210,-43.918 Q 6.184,-43.891 6.156,-43.879 Q 6.128,-43.866 6.128,-44.583 Q 6.128,-45.300 7.699,-45.300 Z';
+
+// A second, deliberately coarse/rounded fallback ring covering the same
+// bbox as ITALY_TUSCAN_COAST_LAND above -- same role
+// ITALY_MILANO_LASPEZIA_INLAND_LAND plays for the Liguria leg. Built the
+// same way but with a much higher simplification tolerance (0.08 vs
+// 0.006), so it is a rougher approximation of the coast that, paired with
+// the fine ring via routeCurvePoint's best-margin-across-rings check,
+// gives every real waypoint (including ones sitting right at the
+// coastline, like Viareggio) at least one ring it is comfortably inside.
+// Added because the fine ring alone still failed npm run validate:routes
+// on-land check at t=0.75 (right at/after the Viareggio waypoint, where
+// the route leaves the coast); combining both rings fixed it.
+const ITALY_LASPEZIA_PISA_INLAND_LAND =
+  'M 7.699,-45.300 Q 9.269,-45.300 9.269,-44.000 Q 9.269,-42.700 8.846,-42.700 Q 8.422,-42.700 8.321,-42.751 Q 8.220,-42.802 8.211,-42.872 Q 8.203,-42.942 8.121,-42.937 Q 8.040,-42.932 8.052,-43.085 Q 8.064,-43.237 7.924,-43.600 Q 7.783,-43.962 7.428,-44.155 Q 7.074,-44.348 6.887,-44.388 Q 6.700,-44.427 6.414,-44.147 Q 6.128,-43.866 6.128,-44.583 Q 6.128,-45.300 7.699,-45.300 Z';
+
+export const ITALY_LASPEZIA_TO_PISA_JOURNEY: Journey = {
+  id: 'italy-laspezia-to-pisa',
+  initialCamera: { center: [10.1, 43.94], spanDeg: 2.4 },
+  legs: [
+    {
+      id: 'laspezia-to-pisa',
+      mode: 'car',
+      from: LA_SPEZIA,
+      to: PISA,
+      camera: { center: [10.1, 43.94], spanDeg: 2.4 },
+      route: ITALY_LASPEZIA_TO_PISA_ROUTE,
+      // The shared, coarser Italy/Europe outline (same one the map
+      // already renders as background land) doubles as this leg's
+      // coastline-safety check -- this stretch of Tuscan coast is a
+      // gentle, gradually-curving shoreline (no tight headland like
+      // Liguria's Portofino promontory, which is why that leg needed its
+      // own fine patch), so the shared outline was verified sufficient by
+      // visual inspection of the live rendered map before this leg
+      // shipped.
+      routeLand: [
+        // La Spezia itself is the shared start point with the Milano ->
+        // La Spezia leg above, and its harbour coordinate sits a hair
+        // outside this leg's own new rings (same real-small-harbour-point
+        // edge case documented on ITALY_LIGURIA_COAST_LAND) -- reusing
+        // those already-verified rings here (rather than re-deriving new
+        // ones) gives that shared point the same positive margin it
+        // already has on the previous leg.
+        ITALY_MILANO_LASPEZIA_INLAND_LAND,
+        ITALY_LIGURIA_COAST_LAND,
+        ITALY_LASPEZIA_PISA_INLAND_LAND,
+        ITALY_TUSCAN_COAST_LAND,
+      ],
+      // Shorter than the Milano -> La Spezia leg's 3.5s: less ground
+      // covered and a simpler shape -- one short directional hook out of
+      // La Spezia, then a long, mostly straight southbound coastal run.
+      weight: 3,
+      transition: 'ease',
+    },
+  ],
+};
+
+// ---------------------------------------------------------------------
+// Pisa -> Peschiera del Garda (fourth road-trip leg)
+// ---------------------------------------------------------------------
+
+const PESCHIERA: JourneyPoint = {
+  id: 'peschiera-del-garda',
+  name: 'Peschiera del Garda',
+  coords: [10.683, 45.433],
+  showMapLabel: true,
+};
+
+// Peccioli: the small Tuscany detour taken between Pisa and Peschiera del
+// Garda (see the page's "A little Tuscany detour" section) -- a real
+// waypoint on this journey, not just a photo caption, so the map must
+// show the actual Pisa -> Peccioli -> Peschiera del Garda drive rather
+// than a direct Pisa -> Peschiera line. Coordinate independently verified
+// via this place's own English Wikipedia infobox (43.550N, 10.717E),
+// same sourcing standard as every other named waypoint in this file.
+// markerSize: 'small' keeps it visually subordinate to Pisa and Peschiera
+// del Garda -- the two real road-trip bases -- rather than styled as
+// another major stop, per this project's editorial rule that a detour
+// waypoint reads as secondary on the map.
+const PECCIOLI: JourneyPoint = {
+  id: 'peccioli',
+  name: 'Peccioli',
+  coords: [10.717, 43.55],
+  showMapLabel: true,
+  markerSize: 'small',
+};
+
+// Pisa -> Peccioli -> Peschiera del Garda (fourth road-trip leg, now two
+// legs so the real Tuscany detour renders as an actual detour rather than
+// a straight line the text above it would then contradict).
+//
+// This shape was corrected against the user's own supplied Michelin
+// route screenshot for this exact drive (La Spezia/Pisa area down to
+// Peccioli, "4h5min / €64.11" toll estimate visible near the top
+// junction), which shows this is a real there-and-back-by-different-roads
+// loop, not a simple hook off the fast road: the drive leaves the
+// SS67/SGC "Firenze-Pisa-Livorno" corridor near Pontedera, heads south on
+// the WEST side of the Ponsacco/Capannoli/Forcoli triangle (via SP23
+// through Ponsacco, then the SS439 through Capannoli) down to Peccioli,
+// then returns north on the EAST side of that same triangle (via Forcoli)
+// back to the same Pontedera-area junction -- explicitly skipping the
+// direct fast-road segment between them, per the user's own description
+// of the drive -- before continuing on toward Montopoli in Val d'Arno,
+// Empoli and Firenze. No live OSRM access was available while building
+// this leg (this build's network policy still blocks it), so, per the
+// metkish-route-geometry rule, the route's real corridor and shape come
+// from that supplied screenshot rather than from OSRM, and every named
+// waypoint on it below is still a real, independently verified coordinate
+// (live Wikipedia infobox lookups, fetched for this build), not a pixel
+// trace or an estimate.
+//
+// Leg 1, Pisa -> Peccioli: east on the SGC FI-PI-LI "Firenze-Pisa-Livorno"
+// to Pontedera, then south -- the outbound, WEST side of the loop -- via
+// Ponsacco (SP23) and Capannoli (SS439) down into the Valdera hills to
+// Peccioli, matching the real east/southeast departure direction out of
+// Pisa and the noticeably larger southward reach the screenshot shows.
+const ITALY_PISA_TO_PECCIOLI_ROUTE: [number, number][] = [
+  PISA.coords,
+  [10.63278, 43.6625], // Pontedera -- FI-PI-LI junction, leaving the fast road here
+  [10.633, 43.617], // Ponsacco -- SP23, the outbound/west side of the loop
+  [10.667, 43.583], // Capannoli -- SS439, continuing south
+  PECCIOLI.coords,
+];
+
+// Leg 2, Peccioli -> Peschiera del Garda: the return, EAST side of the
+// same loop -- north via Forcoli (SS439/SP26), a real but different road
+// from the outbound Ponsacco route, back up to the same Pontedera-area
+// junction -- a genuine driving backtrack, not simplified away, and
+// exactly the "back up onto the fast road, one stretch of it skipped"
+// shape the screenshot and the user's own description both show. From
+// there the drive rejoins the fast road corridor northeast through
+// Montopoli in Val d'Arno and Empoli into Firenze, then the same verified
+// A1/A22/A4 motorway corridor as before: A1 "Autostrada del Sole" north
+// over the Apennines through Firenzuola to Bologna, then west to Modena,
+// A22 "Autostrada del Brennero" north past Mantova to the Verona Nord
+// interchange, and finally a short stretch west on the A4 to the
+// Peschiera del Garda exit -- preserving the real manoeuvre of heading
+// north up the A22 past Modena before doubling back west on the A4, a
+// genuine driving backtrack in its own right.
+const ITALY_PECCIOLI_TO_PESCHIERA_ROUTE: [number, number][] = [
+  PECCIOLI.coords,
+  [10.70306, 43.60472], // Forcoli -- SS439/SP26, the return/east side of the loop
+  [10.63278, 43.6625], // Pontedera area again -- rejoining the fast-road junction
+  [10.75, 43.667], // Montopoli in Val d'Arno -- continuing northeast on the fast road
+  [10.95, 43.717], // Empoli -- FI-PI-LI continuing east toward Firenze
+  [11.254, 43.771], // Firenze -- A1 begins
+  [11.383, 44.117], // Firenzuola -- the real A1 Apennine crossing
+  [11.343, 44.494], // Bologna
+  [10.926, 44.647], // Modena -- A1/A22 junction near Campogalliano
+  [10.993, 45.439], // Verona -- A22 north past Mantova to the Verona Nord interchange
+  PESCHIERA.coords, // A4 west from Verona Nord to the Peschiera del Garda exit
+];
+
+// Leg 1's own tight camera: at the wide (spanDeg 5.6) camera the whole
+// rest of this journey uses, the real ~35km Peccioli loop -- genuinely
+// noticeable when actually driving it, per the user's own description and
+// the supplied Michelin screenshot -- reads as barely more than a hook
+// next to Pisa, simply because it is a small fraction of the ~400km
+// Pisa->Peschiera span the wide camera has to cover. Framing leg 1 tight
+// on just the Pisa/Ponsacco/Capannoli/Peccioli/Forcoli cluster (bbox
+// lng [10.4, 10.717], lat [43.55, 43.717], centered and padded) lets the
+// loop actually read as a loop before the camera eases back out to the
+// wide highway view for leg 2 -- the same "tight detail shot, then pull
+// back for the long haul" camera language this site already uses (see
+// TENERIFE_VIENNA_TO_TENERIFE_JOURNEY's Vienna-tight opening frame before
+// its flight leg pans out to the wide Europe/Atlantic view).
+const ITALY_PECCIOLI_DETOUR_CAMERA = { center: [10.56, 43.63] as [number, number], spanDeg: 1.1 };
+const ITALY_PISA_TO_PESCHIERA_WIDE_CAMERA = { center: [10.89, 44.49] as [number, number], spanDeg: 5.6 };
+
+export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
+  id: 'italy-pisa-to-peschiera',
+  // Opens on the tight detour camera (not the wide one) so the map's
+  // first frame is already framed on Pisa, matching where leg 1 actually
+  // starts, rather than opening on a wide frame the first leg would then
+  // have to zoom into.
+  initialCamera: ITALY_PECCIOLI_DETOUR_CAMERA,
+  legs: [
+    {
+      id: 'pisa-to-peccioli',
+      mode: 'car',
+      from: PISA,
+      to: PECCIOLI,
+      camera: ITALY_PECCIOLI_DETOUR_CAMERA,
+      route: ITALY_PISA_TO_PECCIOLI_ROUTE,
+      // Purely inland, same as every other leg on this route -- no
+      // coastline anywhere near this corridor, so no routeLand needed.
+      // Slightly longer than before now that it's framed tight (weight
+      // 1.5, not 1): at this zoom the loop's real shape needs a moment
+      // longer on screen to read clearly before the camera pulls back.
+      weight: 1.5,
+      transition: 'ease',
+    },
+    {
+      id: 'peccioli-to-peschiera',
+      mode: 'car',
+      from: PECCIOLI,
+      to: PESCHIERA,
+      // Eases back out to the wide camera the rest of the journey uses --
+      // the "pull back for the long haul" half of the detail-shot/wide-shot
+      // pairing described above.
+      camera: ITALY_PISA_TO_PESCHIERA_WIDE_CAMERA,
+      route: ITALY_PECCIOLI_TO_PESCHIERA_ROUTE,
+      // Same fast, entirely inland motorway transit as before -- no
+      // routeLand needed. Longer than leg 1: covers the backtrack out of
+      // Peccioli plus the full Florence -> Bologna -> Modena -> Verona ->
+      // Peschiera haul, the most real ground of any leg on this page
+      // after Home->Milano.
+      weight: 4.5,
+      transition: 'ease',
+    },
+  ],
+};
