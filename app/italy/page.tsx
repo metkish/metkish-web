@@ -1257,7 +1257,7 @@ export default function ItalyPage() {
               className='text-center'
               items={[
                 "The views were easy to find. Lunch wasn't.",
-                'Every restaurant we tried was closed. We eventually ended up in a local canteen \u2014 not quite the Tuscan lunch we\'d imagined.',
+                'Every restaurant we tried was closed. We eventually found a place serving simple lunch menus \u2014 not quite the Tuscan lunch we\'d imagined, but at that point, food was food.',
               ]}
             />
           </Reveal>
