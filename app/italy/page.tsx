@@ -1148,18 +1148,21 @@ export default function ItalyPage() {
           <Reveal>
             <RouteLabel>La Spezia → Pisa</RouteLabel>
           </Reveal>
-
-          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Next stop: Pisa</ChapterHeading>
-          </Reveal>
         </div>
 
         {/* A QUICK STOP IN PISA -- deliberately short, personal and
             image-led per explicit instruction: this is not a Pisa travel
             guide. No history, cathedral or ticket information -- just the
-            Leaning Tower stop on the way south. */}
+            Leaning Tower stop on the way south. The "Next stop: Pisa"
+            chapter marker was removed as redundant with the RouteLabel
+            above (which already says La Spezia -> Pisa) -- this heading
+            now sits directly under the RouteLabel at the same mt-8/10 gap
+            every other RouteLabel -> ChapterHeading opener on this page
+            uses (see "Slovenia -> Milano" / "First stop? Milano!" above),
+            rather than the larger mt-10/12 gap it had when a chapter
+            marker sat between them. */}
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
             <ChapterHeading italic>A quick stop in Pisa</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
@@ -1291,19 +1294,20 @@ export default function ItalyPage() {
           <Reveal>
             <RouteLabel>Pisa → Peschiera del Garda</RouteLabel>
           </Reveal>
-
-          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Next stop: Peschiera del Garda</ChapterHeading>
-          </Reveal>
         </div>
 
         {/* SEI GARDA APARTMENTS -- accommodation text written in the same
             personal, concise voice as Casa Esmeralda above (own
             experience, not a listing description), plus the same
             practical-info Fact card treatment used for every other stay
-            on this page. */}
+            on this page. The "Next stop: Peschiera del Garda" chapter
+            marker was removed as redundant with the RouteLabel above --
+            this heading now sits directly under the RouteLabel at the
+            same mt-8/10 gap every other RouteLabel -> ChapterHeading
+            opener on this page uses, rather than the larger mt-10/12 gap
+            it had when a chapter marker sat between them. */}
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
             <ChapterHeading italic>Our base by Lake Garda.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
