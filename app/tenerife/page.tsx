@@ -699,13 +699,6 @@ export default function TenerifePage() {
               'Great reviews, a family suite and a price that made sense compared with the alternatives.',
             ]}
           />
-          {/* A restrained editorial mention of the review score — deliberately
-              not a Booking.com-style widget: no logo, no star icons, no
-              badge background, just a single quiet line at the same weight
-              as the page's other small supporting text. */}
-          <p className='mt-5 text-sm md:text-base tracking-[0.06em] font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-            9.1 · 1,656 reviews · 5 stars
-          </p>
         </Reveal>
 
         {/* Same quiet practical-information panel language as the flight
