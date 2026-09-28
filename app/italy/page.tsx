@@ -1218,7 +1218,7 @@ export default function ItalyPage() {
               className='text-center'
               items={[
                 'Crowded? Very. Everyone was trying to get that photo with the tower. And yes, so were we.',
-                "There is a large tourist parking area outside the main sights, followed by a short walk to Piazza dei Miracoli. The Leaning Tower is surrounded by the cathedral, baptistery and other sights, and you can walk around the square without paying an entrance fee. Outside the main area there are plenty of souvenir stalls \u2014 very touristy, but exactly what you'd expect in Pisa.",
+                "There’s a large tourist parking area a short walk from Piazza dei Miracoli. You can explore the square for free, with plenty of souvenir stalls just outside.",
               ]}
             />
           </Reveal>
