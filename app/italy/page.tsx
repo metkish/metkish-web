@@ -1251,6 +1251,9 @@ export default function ItalyPage() {
               className='object-cover'
             />
           </div>
+          <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+            Our first glimpse of Peccioli — across its colourful footbridge.
+          </p>
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
