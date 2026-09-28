@@ -656,7 +656,7 @@ export default function ItalyPage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <ChapterHeading italic>
-              And then it was time for the one thing we had actually planned.
+              The one thing we had actually planned.
             </ChapterHeading>
           </Reveal>
         </div>
