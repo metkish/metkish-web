@@ -1214,6 +1214,7 @@ export default function ItalyPage() {
               className='text-center'
               items={[
                 'Crowded? Very. Everyone was trying to get that photo with the tower. And yes, so were we.',
+                "There's a large tourist car park a short walk from the tower. The main sights are all together, with plenty of souvenir stalls around them.",
               ]}
             />
           </Reveal>
