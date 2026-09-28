@@ -654,18 +654,38 @@ export default function JourneyMapScene({
             className='absolute left-0 top-0 pointer-events-none opacity-0 transition-opacity duration-700 ease-out'
           >
             {/* The marker: centered exactly on the wrapper's own origin,
-                i.e. exactly on the projected coordinate — never offset. */}
-            <span className='absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 block w-2 h-2 rounded-full bg-[#e8639f] ring-2 ring-[#f6f1e6]' />
+                i.e. exactly on the projected coordinate — never offset.
+                A 'small' markerSize (a secondary/minor waypoint, e.g. a
+                detour stop between two main road-trip bases) renders a
+                visibly smaller dot than every other, unmarked point —
+                every existing point on every other map leaves this unset
+                and is completely unaffected. */}
+            <span
+              className={
+                p.markerSize === 'small'
+                  ? 'absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 block w-1 h-1 rounded-full bg-[#e8639f]/80 ring-1 ring-[#f6f1e6]'
+                  : 'absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 block w-2 h-2 rounded-full bg-[#e8639f] ring-2 ring-[#f6f1e6]'
+              }
+            />
             {/* The text: a separate element updateLabelScreenPos nudges
                 aside for legibility (and flips near a narrow frame's
-                edge) — moving this never moves the dot above. */}
+                edge) — moving this never moves the dot above. Same
+                'small' markerSize also steps the label down a size so a
+                minor waypoint reads as clearly secondary to the major
+                stops sharing the same map. */}
             <span
               ref={(el) => {
                 labelTextRefs.current[i] = el;
               }}
               className='absolute left-0 top-0 flex flex-col leading-tight whitespace-nowrap font-[family-name:var(--font-poppins)]'
             >
-              <span className='text-[0.65rem] uppercase tracking-[0.16em] font-semibold text-black/70'>
+              <span
+                className={
+                  p.markerSize === 'small'
+                    ? 'text-[0.55rem] uppercase tracking-[0.14em] font-medium text-black/55'
+                    : 'text-[0.65rem] uppercase tracking-[0.16em] font-semibold text-black/70'
+                }
+              >
                 {p.name}
               </span>
               {p.sublabel && <span className='text-[0.6rem] text-black/45'>{p.sublabel}</span>}

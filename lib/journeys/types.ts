@@ -31,6 +31,14 @@ export interface JourneyPoint {
    * line on every mobile width, 320-414px, while sitting clear on desktop's
    * wider frame). The dot's own position never changes either way. */
   labelPlacement?: 'right' | 'above';
+  /** Marks this point as a secondary/minor waypoint (e.g. a detour stop
+   * between two main road-trip bases) rather than a major stop. Unset on
+   * every existing point, which keeps the original default marker/label
+   * size unchanged everywhere; set to 'small' only for a point that should
+   * visually read as subordinate to the main stops on the same map — see
+   * Peccioli in lib/journeys/italy.ts for the worked case (a Tuscany
+   * detour between the Pisa and Peschiera del Garda road-trip bases). */
+  markerSize?: 'small';
 }
 
 export interface JourneyCamera {

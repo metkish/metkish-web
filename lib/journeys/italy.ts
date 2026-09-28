@@ -389,34 +389,67 @@ const PESCHIERA: JourneyPoint = {
   showMapLabel: true,
 };
 
-// Pisa -> Peschiera del Garda: a long, mostly-motorway transit leg (this
-// journey's fast "getting there" drive, the same role
-// ITALY_HOME_TO_MILANO_ROUTE plays at the start of the trip, rather than
-// a slow coastal drive like the Liguria/Tuscany legs above). No
-// screenshot was supplied for this leg, so -- per the metkish-route-
+// Peccioli: the small Tuscany detour taken between Pisa and Peschiera del
+// Garda (see the page's "A little Tuscany detour" section) -- a real
+// waypoint on this journey, not just a photo caption, so the map must
+// show the actual Pisa -> Peccioli -> Peschiera del Garda drive rather
+// than a direct Pisa -> Peschiera line. Coordinate independently verified
+// via this place's own English Wikipedia infobox (43.550N, 10.717E),
+// same sourcing standard as every other named waypoint in this file.
+// markerSize: 'small' keeps it visually subordinate to Pisa and Peschiera
+// del Garda -- the two real road-trip bases -- rather than styled as
+// another major stop, per this project's editorial rule that a detour
+// waypoint reads as secondary on the map.
+const PECCIOLI: JourneyPoint = {
+  id: 'peccioli',
+  name: 'Peccioli',
+  coords: [10.717, 43.55],
+  showMapLabel: true,
+  markerSize: 'small',
+};
+
+// Pisa -> Peccioli -> Peschiera del Garda (fourth road-trip leg, now two
+// legs so the real Tuscany detour renders as an actual detour rather than
+// a straight line the text above it would then contradict).
+//
+// No screenshot was supplied for either leg, so -- per the metkish-route-
 // geometry rule's normal order (verify real route -> identify real
 // manoeuvres -> simplify) -- this build's network policy still blocks
-// live OSRM access (re-confirmed while building this leg), so the route
-// instead follows Italy's real, unambiguous motorway corridor for this
-// drive: A11 "Firenze-Pisa-Livorno" from Pisa east to Firenze, A1
-// "Autostrada del Sole" north over the Apennines through Firenzuola to
-// Bologna, then west to Modena, A22 "Autostrada del Brennero" north past
-// Mantova to the Verona Nord interchange, and finally a short stretch
-// west on the A4 to the Peschiera del Garda exit -- exactly the corridor
-// the user's own route description named (Florence, then north via
-// Bologna/Modena/Verona). Every waypoint below is a real, independently
-// verified coordinate (live Wikipedia infobox lookups, fetched for this
-// build), not a pixel trace or an estimate: Lucca and Firenzuola capture
-// the A11/A1's real gentle bends (Lucca sits north of the direct
-// Pisa-Firenze line; Firenzuola sits on the real Apennine-crossing
-// section of the A1), and the Verona -> Peschiera del Garda leg preserves
-// the real manoeuvre of heading north up the A22 past Modena before
-// doubling back west on the A4 -- a genuine driving backtrack, not
-// simplified away.
-const ITALY_PISA_TO_PESCHIERA_ROUTE: [number, number][] = [
+// live OSRM access (re-confirmed while building this leg), so both routes
+// instead follow Italy's real, unambiguous road corridors for this drive.
+// Every waypoint below is a real, independently verified coordinate (live
+// Wikipedia infobox lookups, fetched for this build), not a pixel trace or
+// an estimate.
+//
+// Leg 1, Pisa -> Peccioli: east on the SGC FI-PI-LI "Firenze-Pisa-Livorno"
+// to Pontedera, then south on the SR439 "Sarzanese Valdera" into the
+// Valdera hills to Peccioli -- the real, only sensible corridor for this
+// drive (Pontedera is the road junction every route from Pisa into this
+// part of inland Tuscany passes through), matching the real east/
+// southeast departure direction out of Pisa.
+const ITALY_PISA_TO_PECCIOLI_ROUTE: [number, number][] = [
   PISA.coords,
-  [10.503, 43.842], // Lucca -- A11, the real gentle northward bow out of Pisa
-  [11.254, 43.771], // Firenze -- A11 ends / A1 begins
+  [10.63278, 43.6625], // Pontedera -- FI-PI-LI junction, then south on the SR439
+  PECCIOLI.coords,
+];
+
+// Leg 2, Peccioli -> Peschiera del Garda: the drive backtracks north on
+// the same SR439/FI-PI-LI corridor through Pontedera -- a genuine
+// real-world backtrack (there is no other road out of the Valdera hills
+// toward the Florence/A1 corridor), not simplified away -- continuing
+// east on the FI-PI-LI past Empoli into Firenze, then the same verified
+// A1/A22/A4 motorway corridor as before: A1 "Autostrada del Sole" north
+// over the Apennines through Firenzuola to Bologna, then west to Modena,
+// A22 "Autostrada del Brennero" north past Mantova to the Verona Nord
+// interchange, and finally a short stretch west on the A4 to the
+// Peschiera del Garda exit -- preserving the real manoeuvre of heading
+// north up the A22 past Modena before doubling back west on the A4, a
+// genuine driving backtrack in its own right.
+const ITALY_PECCIOLI_TO_PESCHIERA_ROUTE: [number, number][] = [
+  PECCIOLI.coords,
+  [10.63278, 43.6625], // Pontedera again -- the real backtrack out of the Valdera hills
+  [10.95, 43.717], // Empoli -- FI-PI-LI continuing east toward Firenze
+  [11.254, 43.771], // Firenze -- A1 begins
   [11.383, 44.117], // Firenzuola -- the real A1 Apennine crossing
   [11.343, 44.494], // Bologna
   [10.926, 44.647], // Modena -- A1/A22 junction near Campogalliano
@@ -426,23 +459,39 @@ const ITALY_PISA_TO_PESCHIERA_ROUTE: [number, number][] = [
 
 export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
   id: 'italy-pisa-to-peschiera',
-  initialCamera: { center: [10.89, 44.58], spanDeg: 5.5 },
+  // Widened/recentred slightly south from the original single-leg camera
+  // (center [10.89, 44.58], spanDeg 5.5) so Peccioli's real position
+  // (43.55N, well south of Pisa) sits comfortably inside frame on every
+  // leg, not just cropped in at the very edge.
+  initialCamera: { center: [10.89, 44.49], spanDeg: 5.6 },
   legs: [
     {
-      id: 'pisa-to-peschiera',
+      id: 'pisa-to-peccioli',
       mode: 'car',
       from: PISA,
+      to: PECCIOLI,
+      camera: { center: [10.89, 44.49], spanDeg: 5.6 },
+      route: ITALY_PISA_TO_PECCIOLI_ROUTE,
+      // Purely inland, same as every other leg on this route -- no
+      // coastline anywhere near this corridor, so no routeLand needed.
+      // Short leg (a small detour, not a main transit haul), so a
+      // correspondingly short share of the map's total autoplay duration.
+      weight: 1,
+      transition: 'ease',
+    },
+    {
+      id: 'peccioli-to-peschiera',
+      mode: 'car',
+      from: PECCIOLI,
       to: PESCHIERA,
-      camera: { center: [10.89, 44.58], spanDeg: 5.5 },
-      route: ITALY_PISA_TO_PESCHIERA_ROUTE,
-      // A fast, entirely inland motorway transit -- no coastline anywhere
-      // near this corridor, so (same as ITALY_HOME_TO_MILANO_JOURNEY
-      // above, the trip's other long transit leg) no routeLand is needed;
-      // there is no coastal-safety check to run for this leg.
-      // Noticeably longer than any leg since Home->Milano since it
-      // covers the most real ground of any leg on this page after that
-      // one.
-      weight: 4.5,
+      camera: { center: [10.89, 44.49], spanDeg: 5.6 },
+      route: ITALY_PECCIOLI_TO_PESCHIERA_ROUTE,
+      // Same fast, entirely inland motorway transit as before -- no
+      // routeLand needed. Longer than leg 1: covers the backtrack out of
+      // Peccioli plus the full Florence -> Bologna -> Modena -> Verona ->
+      // Peschiera haul, the most real ground of any leg on this page
+      // after Home->Milano.
+      weight: 4.3,
       transition: 'ease',
     },
   ],
