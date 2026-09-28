@@ -1373,10 +1373,20 @@ export default function ItalyPage() {
             Gardaland is a day trip from this Peschiera del Garda base,
             not a new road-trip stop, so no RouteLabel, no map, no
             "Next stop" wording -- just continues within this same
-            chapter/section. Content to follow in a separate pass. */}
+            chapter/section. This is currently where the finished Italy
+            content ends, so a single quiet line follows the heading --
+            the same Paragraphs body-text treatment used under every
+            other ChapterHeading on this page, nothing new invented --
+            to indicate the story continues rather than looking cut off. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <ChapterHeading italic>A day at Gardaland</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'More from our Italy road trip coming soon.',
+              ]}
+            />
           </Reveal>
         </div>
       </section>
