@@ -10,6 +10,7 @@ import {
   ITALY_HOME_TO_MILANO_JOURNEY,
   ITALY_MILANO_TO_LASPEZIA_JOURNEY,
   ITALY_LASPEZIA_TO_PISA_JOURNEY,
+  ITALY_PISA_TO_PESCHIERA_JOURNEY,
 } from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
@@ -1214,7 +1215,7 @@ export default function ItalyPage() {
               className='text-center'
               items={[
                 'Crowded? Very. Everyone was trying to get that photo with the tower. And yes, so were we.',
-                "There's a large tourist car park a short walk from the tower. The main sights are all together, with plenty of souvenir stalls around them.",
+                "There is a large tourist parking area outside the main sights, followed by a short walk to Piazza dei Miracoli. The Leaning Tower is surrounded by the cathedral, baptistery and other sights, and you can walk around the square without paying an entrance fee. Outside the main area there are plenty of souvenir stalls \u2014 very touristy, but exactly what you'd expect in Pisa.",
               ]}
             />
           </Reveal>
@@ -1261,6 +1262,111 @@ export default function ItalyPage() {
                 'Every restaurant we tried was closed. We eventually found a place serving simple lunch menus \u2014 not quite the Tuscan lunch we\'d imagined, but at that point, food was food.',
               ]}
             />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* MAP -- Pisa -> Peschiera del Garda, the fourth road-trip leg.
+          Same JourneyMapScene engine, same height, same edge-to-edge/no-
+          padding placement as every map above (see lib/journeys/italy.ts
+          for the route data and real-coordinate sourcing). Placed
+          directly after the Pisa/Peccioli chapter, per explicit
+          instruction -- the Peccioli detour stays exactly as it was,
+          this just continues the same page from where that chapter
+          already ended. */}
+      <JourneyMapScene
+        journey={ITALY_PISA_TO_PESCHIERA_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+
+      {/* LAKE GARDA / PESCHIERA -- deliberately concise, per explicit
+          instruction: accommodation, one evening photo, done. Gardaland
+          is the real reason for this stop, so this chapter stays short
+          rather than over-documenting Lake Garda itself. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Pisa → Peschiera del Garda</RouteLabel>
+          </Reveal>
+
+          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>Next stop: Peschiera del Garda</ChapterHeading>
+          </Reveal>
+        </div>
+
+        {/* SEI GARDA APARTMENTS -- accommodation text written in the same
+            personal, concise voice as Casa Esmeralda above (own
+            experience, not a listing description), plus the same
+            practical-info Fact card treatment used for every other stay
+            on this page. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <ChapterHeading italic>Our base by Lake Garda.</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'We stayed at SEI Garda Apartments, a short walk from the centre of Peschiera del Garda with a shop right next door \u2014 the apartment itself was lovely. We picked this spot mainly because we were visiting Gardaland the next day, and for that it was perfect.',
+                'One downside: when Gardaland closes for the afternoon, the road past the apartment into Peschiera gets completely gridlocked \u2014 walking would almost have been faster.',
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='SEI Garda Apartments · 2 Nights'
+              value='€369.90'
+              support={[
+                { text: '29 Apr → 1 May 2026' },
+                { text: 'Via Monte Baldo 17, Peschiera del Garda', variant: 'label' },
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Peschiera del Garda.jpeg -- the only Lake Garda/Peschiera photo
+            used, per explicit instruction: the landscape shot looking
+            over the water/bridge toward Peschiera's colourful buildings.
+            Native landscape 4:3 (5712x4284), same aspect-[4/3] treatment
+            as this page's other landscape photos. A simple visual ending
+            to this part of the journey -- no gallery. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Peschiera%20del%20Garda.jpeg'
+              alt='Looking over the water toward the colourful buildings of Peschiera del Garda.'
+              fill
+              sizes='(min-width: 768px) 620px, 88vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'We ended the day with a walk through Peschiera del Garda and along the lake \u2014 a lovely place to spend the evening before Gardaland the next morning.',
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* GARDALAND CHAPTER OPENING -- deliberately bare, per explicit
+          instruction: no map for this short local transition, no
+          "More to come" placeholder, just the same minimal RouteLabel +
+          ChapterHeading opening used at every other chapter transition
+          on this page, ready for the actual Gardaland content in a
+          separate pass. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Peschiera del Garda → Gardaland</RouteLabel>
+          </Reveal>
+
+          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>Next stop: Gardaland</ChapterHeading>
           </Reveal>
         </div>
       </section>

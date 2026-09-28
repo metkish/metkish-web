@@ -377,3 +377,73 @@ export const ITALY_LASPEZIA_TO_PISA_JOURNEY: Journey = {
     },
   ],
 };
+
+// ---------------------------------------------------------------------
+// Pisa -> Peschiera del Garda (fourth road-trip leg)
+// ---------------------------------------------------------------------
+
+const PESCHIERA: JourneyPoint = {
+  id: 'peschiera-del-garda',
+  name: 'Peschiera del Garda',
+  coords: [10.683, 45.433],
+  showMapLabel: true,
+};
+
+// Pisa -> Peschiera del Garda: a long, mostly-motorway transit leg (this
+// journey's fast "getting there" drive, the same role
+// ITALY_HOME_TO_MILANO_ROUTE plays at the start of the trip, rather than
+// a slow coastal drive like the Liguria/Tuscany legs above). No
+// screenshot was supplied for this leg, so -- per the metkish-route-
+// geometry rule's normal order (verify real route -> identify real
+// manoeuvres -> simplify) -- this build's network policy still blocks
+// live OSRM access (re-confirmed while building this leg), so the route
+// instead follows Italy's real, unambiguous motorway corridor for this
+// drive: A11 "Firenze-Pisa-Livorno" from Pisa east to Firenze, A1
+// "Autostrada del Sole" north over the Apennines through Firenzuola to
+// Bologna, then west to Modena, A22 "Autostrada del Brennero" north past
+// Mantova to the Verona Nord interchange, and finally a short stretch
+// west on the A4 to the Peschiera del Garda exit -- exactly the corridor
+// the user's own route description named (Florence, then north via
+// Bologna/Modena/Verona). Every waypoint below is a real, independently
+// verified coordinate (live Wikipedia infobox lookups, fetched for this
+// build), not a pixel trace or an estimate: Lucca and Firenzuola capture
+// the A11/A1's real gentle bends (Lucca sits north of the direct
+// Pisa-Firenze line; Firenzuola sits on the real Apennine-crossing
+// section of the A1), and the Verona -> Peschiera del Garda leg preserves
+// the real manoeuvre of heading north up the A22 past Modena before
+// doubling back west on the A4 -- a genuine driving backtrack, not
+// simplified away.
+const ITALY_PISA_TO_PESCHIERA_ROUTE: [number, number][] = [
+  PISA.coords,
+  [10.503, 43.842], // Lucca -- A11, the real gentle northward bow out of Pisa
+  [11.254, 43.771], // Firenze -- A11 ends / A1 begins
+  [11.383, 44.117], // Firenzuola -- the real A1 Apennine crossing
+  [11.343, 44.494], // Bologna
+  [10.926, 44.647], // Modena -- A1/A22 junction near Campogalliano
+  [10.993, 45.439], // Verona -- A22 north past Mantova to the Verona Nord interchange
+  PESCHIERA.coords, // A4 west from Verona Nord to the Peschiera del Garda exit
+];
+
+export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
+  id: 'italy-pisa-to-peschiera',
+  initialCamera: { center: [10.89, 44.58], spanDeg: 5.5 },
+  legs: [
+    {
+      id: 'pisa-to-peschiera',
+      mode: 'car',
+      from: PISA,
+      to: PESCHIERA,
+      camera: { center: [10.89, 44.58], spanDeg: 5.5 },
+      route: ITALY_PISA_TO_PESCHIERA_ROUTE,
+      // A fast, entirely inland motorway transit -- no coastline anywhere
+      // near this corridor, so (same as ITALY_HOME_TO_MILANO_JOURNEY
+      // above, the trip's other long transit leg) no routeLand is needed;
+      // there is no coastal-safety check to run for this leg.
+      // Noticeably longer than any leg since Home->Milano since it
+      // covers the most real ground of any leg on this page after that
+      // one.
+      weight: 4.5,
+      transition: 'ease',
+    },
+  ],
+};
