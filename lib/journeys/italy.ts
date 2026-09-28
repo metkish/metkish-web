@@ -412,32 +412,47 @@ const PECCIOLI: JourneyPoint = {
 // legs so the real Tuscany detour renders as an actual detour rather than
 // a straight line the text above it would then contradict).
 //
-// No screenshot was supplied for either leg, so -- per the metkish-route-
-// geometry rule's normal order (verify real route -> identify real
-// manoeuvres -> simplify) -- this build's network policy still blocks
-// live OSRM access (re-confirmed while building this leg), so both routes
-// instead follow Italy's real, unambiguous road corridors for this drive.
-// Every waypoint below is a real, independently verified coordinate (live
-// Wikipedia infobox lookups, fetched for this build), not a pixel trace or
-// an estimate.
+// This shape was corrected against the user's own supplied Michelin
+// route screenshot for this exact drive (La Spezia/Pisa area down to
+// Peccioli, "4h5min / €64.11" toll estimate visible near the top
+// junction), which shows this is a real there-and-back-by-different-roads
+// loop, not a simple hook off the fast road: the drive leaves the
+// SS67/SGC "Firenze-Pisa-Livorno" corridor near Pontedera, heads south on
+// the WEST side of the Ponsacco/Capannoli/Forcoli triangle (via SP23
+// through Ponsacco, then the SS439 through Capannoli) down to Peccioli,
+// then returns north on the EAST side of that same triangle (via Forcoli)
+// back to the same Pontedera-area junction -- explicitly skipping the
+// direct fast-road segment between them, per the user's own description
+// of the drive -- before continuing on toward Montopoli in Val d'Arno,
+// Empoli and Firenze. No live OSRM access was available while building
+// this leg (this build's network policy still blocks it), so, per the
+// metkish-route-geometry rule, the route's real corridor and shape come
+// from that supplied screenshot rather than from OSRM, and every named
+// waypoint on it below is still a real, independently verified coordinate
+// (live Wikipedia infobox lookups, fetched for this build), not a pixel
+// trace or an estimate.
 //
 // Leg 1, Pisa -> Peccioli: east on the SGC FI-PI-LI "Firenze-Pisa-Livorno"
-// to Pontedera, then south on the SR439 "Sarzanese Valdera" into the
-// Valdera hills to Peccioli -- the real, only sensible corridor for this
-// drive (Pontedera is the road junction every route from Pisa into this
-// part of inland Tuscany passes through), matching the real east/
-// southeast departure direction out of Pisa.
+// to Pontedera, then south -- the outbound, WEST side of the loop -- via
+// Ponsacco (SP23) and Capannoli (SS439) down into the Valdera hills to
+// Peccioli, matching the real east/southeast departure direction out of
+// Pisa and the noticeably larger southward reach the screenshot shows.
 const ITALY_PISA_TO_PECCIOLI_ROUTE: [number, number][] = [
   PISA.coords,
-  [10.63278, 43.6625], // Pontedera -- FI-PI-LI junction, then south on the SR439
+  [10.63278, 43.6625], // Pontedera -- FI-PI-LI junction, leaving the fast road here
+  [10.633, 43.617], // Ponsacco -- SP23, the outbound/west side of the loop
+  [10.667, 43.583], // Capannoli -- SS439, continuing south
   PECCIOLI.coords,
 ];
 
-// Leg 2, Peccioli -> Peschiera del Garda: the drive backtracks north on
-// the same SR439/FI-PI-LI corridor through Pontedera -- a genuine
-// real-world backtrack (there is no other road out of the Valdera hills
-// toward the Florence/A1 corridor), not simplified away -- continuing
-// east on the FI-PI-LI past Empoli into Firenze, then the same verified
+// Leg 2, Peccioli -> Peschiera del Garda: the return, EAST side of the
+// same loop -- north via Forcoli (SS439/SP26), a real but different road
+// from the outbound Ponsacco route, back up to the same Pontedera-area
+// junction -- a genuine driving backtrack, not simplified away, and
+// exactly the "back up onto the fast road, one stretch of it skipped"
+// shape the screenshot and the user's own description both show. From
+// there the drive rejoins the fast road corridor northeast through
+// Montopoli in Val d'Arno and Empoli into Firenze, then the same verified
 // A1/A22/A4 motorway corridor as before: A1 "Autostrada del Sole" north
 // over the Apennines through Firenzuola to Bologna, then west to Modena,
 // A22 "Autostrada del Brennero" north past Mantova to the Verona Nord
@@ -447,7 +462,9 @@ const ITALY_PISA_TO_PECCIOLI_ROUTE: [number, number][] = [
 // genuine driving backtrack in its own right.
 const ITALY_PECCIOLI_TO_PESCHIERA_ROUTE: [number, number][] = [
   PECCIOLI.coords,
-  [10.63278, 43.6625], // Pontedera again -- the real backtrack out of the Valdera hills
+  [10.70306, 43.60472], // Forcoli -- SS439/SP26, the return/east side of the loop
+  [10.63278, 43.6625], // Pontedera area again -- rejoining the fast-road junction
+  [10.75, 43.667], // Montopoli in Val d'Arno -- continuing northeast on the fast road
   [10.95, 43.717], // Empoli -- FI-PI-LI continuing east toward Firenze
   [11.254, 43.771], // Firenze -- A1 begins
   [11.383, 44.117], // Firenzuola -- the real A1 Apennine crossing
@@ -457,26 +474,43 @@ const ITALY_PECCIOLI_TO_PESCHIERA_ROUTE: [number, number][] = [
   PESCHIERA.coords, // A4 west from Verona Nord to the Peschiera del Garda exit
 ];
 
+// Leg 1's own tight camera: at the wide (spanDeg 5.6) camera the whole
+// rest of this journey uses, the real ~35km Peccioli loop -- genuinely
+// noticeable when actually driving it, per the user's own description and
+// the supplied Michelin screenshot -- reads as barely more than a hook
+// next to Pisa, simply because it is a small fraction of the ~400km
+// Pisa->Peschiera span the wide camera has to cover. Framing leg 1 tight
+// on just the Pisa/Ponsacco/Capannoli/Peccioli/Forcoli cluster (bbox
+// lng [10.4, 10.717], lat [43.55, 43.717], centered and padded) lets the
+// loop actually read as a loop before the camera eases back out to the
+// wide highway view for leg 2 -- the same "tight detail shot, then pull
+// back for the long haul" camera language this site already uses (see
+// TENERIFE_VIENNA_TO_TENERIFE_JOURNEY's Vienna-tight opening frame before
+// its flight leg pans out to the wide Europe/Atlantic view).
+const ITALY_PECCIOLI_DETOUR_CAMERA = { center: [10.56, 43.63] as [number, number], spanDeg: 1.1 };
+const ITALY_PISA_TO_PESCHIERA_WIDE_CAMERA = { center: [10.89, 44.49] as [number, number], spanDeg: 5.6 };
+
 export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
   id: 'italy-pisa-to-peschiera',
-  // Widened/recentred slightly south from the original single-leg camera
-  // (center [10.89, 44.58], spanDeg 5.5) so Peccioli's real position
-  // (43.55N, well south of Pisa) sits comfortably inside frame on every
-  // leg, not just cropped in at the very edge.
-  initialCamera: { center: [10.89, 44.49], spanDeg: 5.6 },
+  // Opens on the tight detour camera (not the wide one) so the map's
+  // first frame is already framed on Pisa, matching where leg 1 actually
+  // starts, rather than opening on a wide frame the first leg would then
+  // have to zoom into.
+  initialCamera: ITALY_PECCIOLI_DETOUR_CAMERA,
   legs: [
     {
       id: 'pisa-to-peccioli',
       mode: 'car',
       from: PISA,
       to: PECCIOLI,
-      camera: { center: [10.89, 44.49], spanDeg: 5.6 },
+      camera: ITALY_PECCIOLI_DETOUR_CAMERA,
       route: ITALY_PISA_TO_PECCIOLI_ROUTE,
       // Purely inland, same as every other leg on this route -- no
       // coastline anywhere near this corridor, so no routeLand needed.
-      // Short leg (a small detour, not a main transit haul), so a
-      // correspondingly short share of the map's total autoplay duration.
-      weight: 1,
+      // Slightly longer than before now that it's framed tight (weight
+      // 1.5, not 1): at this zoom the loop's real shape needs a moment
+      // longer on screen to read clearly before the camera pulls back.
+      weight: 1.5,
       transition: 'ease',
     },
     {
@@ -484,14 +518,17 @@ export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
       mode: 'car',
       from: PECCIOLI,
       to: PESCHIERA,
-      camera: { center: [10.89, 44.49], spanDeg: 5.6 },
+      // Eases back out to the wide camera the rest of the journey uses --
+      // the "pull back for the long haul" half of the detail-shot/wide-shot
+      // pairing described above.
+      camera: ITALY_PISA_TO_PESCHIERA_WIDE_CAMERA,
       route: ITALY_PECCIOLI_TO_PESCHIERA_ROUTE,
       // Same fast, entirely inland motorway transit as before -- no
       // routeLand needed. Longer than leg 1: covers the backtrack out of
       // Peccioli plus the full Florence -> Bologna -> Modena -> Verona ->
       // Peschiera haul, the most real ground of any leg on this page
       // after Home->Milano.
-      weight: 4.3,
+      weight: 4.5,
       transition: 'ease',
     },
   ],
