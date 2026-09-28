@@ -146,9 +146,22 @@ const seychelles: GalleryItem = {
   href: '/seychelles',
 };
 
-// Every destination gets its own, hand-set position — not a repeating left/right
-// formula. A destination card always carries the caption; a "memory" photo
-// next to it never does, so it reads as a loose snapshot, not a second card.
+// Every destination image shares one standardized size: Tenerife's own
+// width (70%) and aspect ratio (16:9, the Photo component's default when
+// `aspect` is omitted) -- so no destination unintentionally reads as more
+// "important" than another. Horizontal placement is deliberately varied
+// instead of alternating between a couple of fixed spots: each block's
+// `marginLeft` sits somewhere across the full range the 70% width allows
+// (0% = flush left, 30% = flush right, everything between = every shade of
+// centre-left/centre/centre-right), hand-picked so consecutive
+// destinations never repeat the same offset and the sequence never
+// settles into a predictable left-right-left-right pattern -- an
+// intentionally irregular, organic editorial rhythm rather than a grid or
+// a strict alternation. Only the widths and aspect ratios were normalized
+// to Tenerife's; the horizontal placement of every block, including the
+// currently-hidden ones, was hand-set. A destination card always carries
+// the caption; a "memory" photo next to it never does, so it reads as a
+// loose snapshot, not a second card.
 const BLOCKS: Block[] = [
   {
     kind: 'solo',
@@ -165,8 +178,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: italy,
-    width: 'w-full md:w-[57%]',
-    marginLeft: 'md:ml-[43%]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[25%]',
     caption: {
       location: 'Italy · Road Trip',
       title: 'Italy',
@@ -177,7 +190,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: reykjavikPhoto1,
-    width: 'w-full md:w-[68%]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[6%]',
     caption: {
       location: 'Reykjavik',
       title: 'Iceland',
@@ -188,8 +202,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: sardinia,
-    width: 'w-full md:w-[52%]',
-    marginLeft: 'md:ml-[8%]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[12%]',
     caption: {
       location: 'Italy',
       title: 'Sardinia',
@@ -200,9 +214,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: prague,
-    width: 'w-full md:w-[43%]',
-    marginLeft: 'md:ml-[57%]',
-    aspect: 'aspect-[3314/5708]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[28%]',
     caption: {
       location: 'Czech Republic',
       title: 'Prague',
@@ -213,8 +226,7 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: vietnam,
-    width: 'w-full md:w-[41%]',
-    aspect: 'aspect-[3/4]',
+    width: 'w-full md:w-[70%]',
     caption: {
       title: 'Vietnam',
       description:
@@ -224,9 +236,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: euro2024,
-    width: 'w-full md:w-[56%]',
-    marginLeft: 'md:ml-[44%]',
-    aspect: 'aspect-[4/3]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[22%]',
     caption: {
       location: 'Germany · Euro 2024',
       title: 'Germany',
@@ -237,8 +248,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: rome,
-    width: 'w-full md:w-[72%]',
-    aspect: 'aspect-[4/3]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[9%]',
     caption: {
       location: 'Italy',
       title: 'Rome',
@@ -249,8 +260,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: belek,
-    width: 'w-full md:w-[51%]',
-    marginLeft: 'md:ml-[49%]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[27%]',
     caption: {
       location: 'Turkey',
       title: 'Belek',
@@ -261,8 +272,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: paris,
-    width: 'w-full md:w-[39%]',
-    aspect: 'aspect-[9/16]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[2%]',
     caption: {
       location: 'France',
       title: 'Paris',
@@ -273,8 +284,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: lefkada,
-    width: 'w-full md:w-[65%]',
-    aspect: 'aspect-[3/4]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[18%]',
     caption: {
       location: 'Greece',
       title: 'Lefkada',
@@ -285,9 +296,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: budapest,
-    width: 'w-full md:w-[44%]',
-    marginLeft: 'md:ml-[56%]',
-    aspect: 'aspect-[4/3]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[30%]',
     caption: {
       location: 'Hungary',
       title: 'Budapest',
@@ -299,7 +309,7 @@ const BLOCKS: Block[] = [
     kind: 'solo',
     item: maldives,
     width: 'w-full md:w-[70%]',
-    aspect: 'aspect-[4/3]',
+    marginLeft: 'md:ml-[8%]',
     caption: {
       location: 'Maldives',
       title: 'Kuramathi',
@@ -310,9 +320,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: floridaBahamas,
-    width: 'w-full md:w-[40%]',
-    marginLeft: 'md:ml-[60%]',
-    aspect: 'aspect-[3/4]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[24%]',
     caption: {
       title: 'Florida & Bahamas',
       description:
@@ -322,8 +331,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: marseilleProvence,
-    width: 'w-full md:w-[56%]',
-    aspect: 'aspect-[4/3]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[4%]',
     caption: {
       location: 'France',
       title: 'Provence & Marseille',
@@ -334,9 +343,8 @@ const BLOCKS: Block[] = [
   {
     kind: 'solo',
     item: seychelles,
-    width: 'w-full md:w-[68%]',
-    marginLeft: 'md:ml-[16%]',
-    aspect: 'aspect-[4/3]',
+    width: 'w-full md:w-[70%]',
+    marginLeft: 'md:ml-[19%]',
     caption: {
       title: 'Seychelles',
       description:
