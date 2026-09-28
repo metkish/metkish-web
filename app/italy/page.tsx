@@ -406,8 +406,8 @@ export default function ItalyPage() {
               value='€949.32'
               support={[
                 { text: '25 Apr → 27 Apr 2026' },
-                { text: 'Family of four', variant: 'label' },
-                { text: 'Room · shared kitchen' },
+                { text: 'Room · Family of Four', variant: 'label' },
+                { text: 'Shared kitchen' },
               ]}
             />
           </Reveal>
@@ -1323,7 +1323,7 @@ export default function ItalyPage() {
               value='€369.90'
               support={[
                 { text: '29 Apr → 1 May 2026' },
-                { text: 'Via Monte Baldo 17, Peschiera del Garda', variant: 'label' },
+                { text: 'Apartment · Family of Four', variant: 'label' },
               ]}
             />
           </Reveal>
