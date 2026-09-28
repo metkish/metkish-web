@@ -251,6 +251,24 @@ const ScrollExpandMedia = ({
                     transform: `translate(-50%, calc(-50% - 32px)) scale(${dateTextScale})`,
                   }}
                 >
+                  {/* Soft readability vignette -- sits only behind the title +
+                      tagline, never across the full hero image. A narrow,
+                      very-low-opacity radial gradient concentrated on the
+                      text block's own height (tight vertical inset, shorter
+                      ellipse radius) so it reads as a faint, edgeless
+                      darkening right behind the letters rather than a band
+                      or box across the photo. Purely decorative
+                      (aria-hidden, pointer-events-none) and placed before the
+                      text in the DOM so it paints behind both lines without
+                      needing an explicit z-index. */}
+                  <div
+                    aria-hidden='true'
+                    className='pointer-events-none absolute -inset-x-10 -inset-y-4 sm:-inset-x-16 sm:-inset-y-6'
+                    style={{
+                      background:
+                        'radial-gradient(ellipse 70% 55% at 50% 50%, rgba(0,0,0,0.11) 0%, rgba(0,0,0,0.045) 40%, rgba(0,0,0,0) 68%)',
+                    }}
+                  />
                   {date && (
                     <p
                       className='text-2xl sm:text-5xl md:text-6xl xl:text-7xl text-[#F5F1E8] font-[family-name:var(--font-playfair)] font-medium tracking-tight whitespace-normal sm:whitespace-nowrap text-center'
