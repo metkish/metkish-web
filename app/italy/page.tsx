@@ -1218,7 +1218,7 @@ export default function ItalyPage() {
               className='text-center'
               items={[
                 'Crowded? Very. Everyone was trying to get that photo with the tower. And yes, so were we.',
-                "There’s a large tourist parking area a short walk from Piazza dei Miracoli. You can explore the square for free, with plenty of souvenir stalls just outside.",
+                "There’s a large tourist car park a short walk from Piazza dei Miracoli. The square itself is free to visit, with the Leaning Tower, cathedral and baptistery all together. Outside, expect plenty of souvenir stalls — very touristy, very Pisa.",
               ]}
             />
           </Reveal>
@@ -1255,7 +1255,7 @@ export default function ItalyPage() {
             />
           </div>
           <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
-            Our first glimpse of Peccioli — across its colourful footbridge.
+            The footbridge in Peccioli.
           </p>
         </Reveal>
 
