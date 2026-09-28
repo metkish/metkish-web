@@ -378,7 +378,7 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
       <h3 className='mt-1 text-2xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
         {caption.title}
       </h3>
-      <p className='mt-1 italic text-sm font-[family-name:var(--font-poppins)] text-black/70 dark:text-white/70'>
+      <p className='mt-1 italic text-sm font-[family-name:var(--font-poppins)] text-black/70 dark:text-white/70 md:max-w-[500px]'>
         {caption.description}
       </p>
       <Link
