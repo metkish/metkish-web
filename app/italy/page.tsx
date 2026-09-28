@@ -1119,27 +1119,6 @@ export default function ItalyPage() {
             />
           </Reveal>
         </div>
-
-        {/* MORE TO COME -- added when publishing the page with the Italy
-            trip still in progress. Deliberately minimal, per explicit
-            instruction: no future destinations, no placeholder sections,
-            no dates. Reuses the same RouteLabel eyebrow treatment used at
-            every chapter opening above (pink line + small uppercase
-            label) paired with the page's standard Paragraphs body text --
-            nothing new invented -- so it reads as a quiet pause at the
-            end of what's finished, not a new chapter. This is now the
-            section's true final beat. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <RouteLabel>More to come</RouteLabel>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                "This road trip isn't over yet. More from Italy is coming soon.",
-              ]}
-            />
-          </Reveal>
-        </div>
       </section>
 
       {/* MAP -- La Spezia -> Pisa, the third road-trip leg. Same
@@ -1171,6 +1150,116 @@ export default function ItalyPage() {
 
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
             <ChapterHeading italic>Next stop: Pisa</ChapterHeading>
+          </Reveal>
+        </div>
+
+        {/* A QUICK STOP IN PISA -- deliberately short, personal and
+            image-led per explicit instruction: this is not a Pisa travel
+            guide. No history, cathedral or ticket information -- just the
+            Leaning Tower stop on the way south. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <ChapterHeading italic>A quick stop in Pisa</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "Pisa was just a short stop on our way south. We wanted to see the Leaning Tower \u2014 and in person, it somehow wasn't quite what I'd imagined.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Pisa_tower.mp4 -- this beat's main visual, per explicit
+            instruction. Native 1080x1920 vertical recording, so it drops
+            into the same aspect-[9/16] "moving photograph" wrapper used
+            throughout this page (autoPlay/muted/loop/playsInline,
+            contained by width, not trimmed or re-cropped) -- the opening
+            seconds, which give the clearest sense of the tower's actual
+            scale and lean, stay intact. Sized prominently, matching the
+            Cinque Terre sea video's treatment above, since this is the
+            beat's main image rather than a small aside. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[300px] sm:max-w-[400px] md:max-w-[520px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Pisa_tower.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-hidden='true'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
+
+        {/* Pisa_tower.jpeg -- native portrait 3:4 (2666x3555, EXIF-
+            rotated), same aspect-[3/4] treatment as the rest of the
+            page's portrait photos, so nothing is cropped. */}
+        <Reveal delay={0.1} className='mt-8 md:mt-10 w-[75%] md:w-[350px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Pisa_tower.jpeg'
+              alt='The Leaning Tower of Pisa.'
+              fill
+              sizes='(min-width: 768px) 350px, 75vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'Crowded? Very. Everyone was trying to get that photo with the tower. And yes, so were we.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* A LITTLE TUSCANY DETOUR -- PECCIOLI -- a very small, spontaneous
+            beat, per explicit instruction: no new route map here (the
+            Lake Garda leg comes later), bare ChapterHeading matching
+            Porto Venere's weight above, kept deliberately brief. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>A little Tuscany detour</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'We wanted a glimpse of the Tuscan countryside before heading north, so we made a small detour to Peccioli \u2014 with plans to stop for lunch too.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* Peccioli.jpeg -- native landscape 4:3 (5712x4284), same
+            aspect-[4/3] treatment as this page's other landscape photos
+            (e.g. Porto_Venere_web.jpeg above). Only Peccioli photo used,
+            per explicit instruction. */}
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Peccioli.jpeg'
+              alt='Peccioli, Tuscany.'
+              fill
+              sizes='(min-width: 768px) 620px, 88vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "The views were easy to find. Lunch wasn't.",
+                'Every restaurant we tried was closed. We eventually ended up in a local canteen \u2014 not quite the Tuscan lunch we\'d imagined.',
+              ]}
+            />
           </Reveal>
         </div>
       </section>
