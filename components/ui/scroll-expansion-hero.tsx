@@ -252,20 +252,21 @@ const ScrollExpandMedia = ({
                   }}
                 >
                   {/* Soft readability vignette -- sits only behind the title +
-                      tagline, never across the full hero image. A wide,
-                      low-opacity radial gradient that fades to fully
-                      transparent well before its own edges, so it reads as a
-                      gentle darkening of the photo right behind the letters
-                      rather than a visible shape. Purely decorative
+                      tagline, never across the full hero image. A narrow,
+                      very-low-opacity radial gradient concentrated on the
+                      text block's own height (tight vertical inset, shorter
+                      ellipse radius) so it reads as a faint, edgeless
+                      darkening right behind the letters rather than a band
+                      or box across the photo. Purely decorative
                       (aria-hidden, pointer-events-none) and placed before the
                       text in the DOM so it paints behind both lines without
                       needing an explicit z-index. */}
                   <div
                     aria-hidden='true'
-                    className='pointer-events-none absolute -inset-x-10 -inset-y-10 sm:-inset-x-16 sm:-inset-y-14'
+                    className='pointer-events-none absolute -inset-x-10 -inset-y-4 sm:-inset-x-16 sm:-inset-y-6'
                     style={{
                       background:
-                        'radial-gradient(ellipse 70% 75% at 50% 50%, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.06) 45%, rgba(0,0,0,0) 75%)',
+                        'radial-gradient(ellipse 70% 55% at 50% 50%, rgba(0,0,0,0.11) 0%, rgba(0,0,0,0.045) 40%, rgba(0,0,0,0) 68%)',
                     }}
                   />
                   {date && (
