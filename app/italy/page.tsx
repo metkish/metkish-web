@@ -1305,8 +1305,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We stayed at SEI Garda Apartments, a short walk from the centre of Peschiera del Garda with a shop right next door \u2014 the apartment itself was lovely. We picked this spot mainly because we were visiting Gardaland the next day, and for that it was perfect.',
-                'One downside: when Gardaland closes for the afternoon, the road past the apartment into Peschiera gets completely gridlocked \u2014 walking would almost have been faster.',
+                'We stayed at SEI Garda Apartments \u2014 a lovely apartment, a short walk from the centre with a shop right next door. We chose it mainly for its location near Gardaland, and for that it was perfect.',
               ]}
             />
           </Reveal>
@@ -1318,6 +1317,15 @@ export default function ItalyPage() {
               support={[
                 { text: '29 Apr → 1 May 2026' },
                 { text: 'Via Monte Baldo 17, Peschiera del Garda', variant: 'label' },
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-9 md:mt-11 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'One thing to know: when Gardaland closes, the road into Peschiera gets completely gridlocked. We probably could have walked faster.',
               ]}
             />
           </Reveal>
@@ -1351,22 +1359,17 @@ export default function ItalyPage() {
             />
           </Reveal>
         </div>
-      </section>
 
-      {/* GARDALAND CHAPTER OPENING -- deliberately bare, per explicit
-          instruction: no map for this short local transition, no
-          "More to come" placeholder, just the same minimal RouteLabel +
-          ChapterHeading opening used at every other chapter transition
-          on this page, ready for the actual Gardaland content in a
-          separate pass. */}
-      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        {/* A DAY AT GARDALAND -- bare ChapterHeading, same "activity
+            within a base destination" treatment as "Three villages. Two
+            ways to see them." above (La Spezia -> Cinque Terre):
+            Gardaland is a day trip from this Peschiera del Garda base,
+            not a new road-trip stop, so no RouteLabel, no map, no
+            "Next stop" wording -- just continues within this same
+            chapter/section. Content to follow in a separate pass. */}
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal>
-            <RouteLabel>Peschiera del Garda → Gardaland</RouteLabel>
-          </Reveal>
-
-          <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Next stop: Gardaland</ChapterHeading>
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <ChapterHeading italic>A day at Gardaland</ChapterHeading>
           </Reveal>
         </div>
       </section>
