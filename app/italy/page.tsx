@@ -1229,7 +1229,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We wanted a glimpse of the Tuscan countryside before heading north, so we made a small detour to Peccioli \u2014 with plans to stop for lunch too.',
+                'Before heading north, we made a small detour to Peccioli for a glimpse of the Tuscan countryside \u2014 and hopefully a nice lunch along the way.',
               ]}
             />
           </Reveal>
