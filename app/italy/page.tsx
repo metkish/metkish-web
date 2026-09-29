@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
+import BookedChecklist from '@/components/ui/booked-checklist';
 import {
   ITALY_HOME_TO_MILANO_JOURNEY,
   ITALY_MILANO_TO_LASPEZIA_JOURNEY,
@@ -1577,6 +1578,33 @@ export default function ItalyPage() {
             </p>
           </Reveal>
         </div>
+      </section>
+
+      {/* BOOKED BEFORE WE LEFT -- the same reusable pre-trip checklist
+          component used to close the Tenerife page
+          (components/ui/booked-checklist.tsx), reused here completely
+          unchanged so both destination pages end the same way: no card,
+          no border, no background panel, just the shared pink-checkmark
+          list, same typography/spacing/width as the Tenerife version.
+          This page only supplies its own list of what was actually
+          booked ahead of the Italy trip -- Duomo tickets are deliberately
+          left off, since those were bought spontaneously in Milano, not
+          booked in advance. Same section wrapper spacing every other
+          Italy-page section already uses, for a consistent close. This is
+          now the final section of the Italy page -- no more-content-coming
+          placeholder follows. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <Reveal className='mx-auto'>
+          <BookedChecklist
+            items={[
+              'Accommodation in Milano',
+              'Accommodation in La Spezia',
+              'Accommodation in Peschiera del Garda',
+              'Gardaland tickets',
+              'Venice Access Fee',
+            ]}
+          />
+        </Reveal>
       </section>
     </div>
   );
