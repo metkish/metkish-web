@@ -1461,6 +1461,21 @@ export default function ItalyPage() {
         </div>
       </section>
 
+      {/* MAP -- Peschiera del Garda -> Home, the trip's real final leg.
+          Same JourneyMapScene engine, same height, same edge-to-edge/no-
+          padding placement as every map above (see lib/journeys/italy.ts
+          for the route data and real-coordinate sourcing -- it reuses the
+          Home->Milano route's own Verona/Venice-area/Trieste/Slovenia
+          corridor in reverse). Placed directly after the Gardaland
+          section and before the "Venice? Not this time." chapter, per
+          explicit instruction, matching where every other road-trip map
+          on this page sits between stages. Venice/Mestre is passed
+          through as a plain waypoint only -- never marked as a stop. */}
+      <JourneyMapScene
+        journey={ITALY_PESCHIERA_TO_HOME_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+
       {/* PESCHIERA DEL GARDA -> HOME -- the trip's actual final leg, and
           the page's closing chapter. Same section wrapper classes as
           every other chapter above for consistency, even though no map
@@ -1517,20 +1532,6 @@ export default function ItalyPage() {
           </Reveal>
         </div>
       </section>
-
-      {/* MAP -- Peschiera del Garda -> Home, the trip's real final leg.
-          Same JourneyMapScene engine, same height, same edge-to-edge/no-
-          padding placement as every map above (see lib/journeys/italy.ts
-          for the route data and real-coordinate sourcing -- it reuses the
-          Home->Milano route's own Verona/Venice-area/Trieste/Slovenia
-          corridor in reverse). Placed directly after the "Venice? Not
-          this time." chapter, matching where every other road-trip map on
-          this page sits between stages. Venice/Mestre is passed through
-          as a plain waypoint only -- never marked as a stop. */}
-      <JourneyMapScene
-        journey={ITALY_PESCHIERA_TO_HOME_JOURNEY}
-        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
-      />
 
       {/* 1,984 KM LATER -- the true closing beat of the Italy story.
           Bare ChapterHeading (no RouteLabel: this is a reflection, not
