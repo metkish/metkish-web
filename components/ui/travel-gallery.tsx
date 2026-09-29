@@ -184,7 +184,7 @@ const BLOCKS: Block[] = [
       location: 'Italy · Road Trip',
       title: 'Italy',
       description:
-        "From Milan to Cinque Terre and Pisa — and back to Lake Garda, because we simply couldn't resist.",
+        'A lot of kilometres, a few changed plans — and exactly the kind of road trip we love.',
     },
   },
   {
