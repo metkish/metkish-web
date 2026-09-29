@@ -1367,24 +1367,68 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* A DAY AT GARDALAND -- bare ChapterHeading, same "activity
-            within a base destination" treatment as "Three villages. Two
-            ways to see them." above (La Spezia -> Cinque Terre):
-            Gardaland is a day trip from this Peschiera del Garda base,
-            not a new road-trip stop, so no RouteLabel, no map, no
-            "Next stop" wording -- just continues within this same
-            chapter/section. This is currently where the finished Italy
-            content ends, so a single quiet line follows the heading --
-            the same Paragraphs body-text treatment used under every
-            other ChapterHeading on this page, nothing new invented --
-            to indicate the story continues rather than looking cut off. */}
+        {/* GARDALAND -- bare ChapterHeading, same "activity within a
+            base destination" treatment as "Three villages. Two ways to
+            see them." above (La Spezia -> Cinque Terre): Gardaland is a
+            day trip from this Peschiera del Garda base, not a new
+            road-trip stop, so no RouteLabel, no map, no "Next stop"
+            wording -- just continues within this same chapter/section.
+            This is now the next completed part of the story, so the
+            earlier "more coming soon" placeholder is gone. Kept
+            deliberately short per explicit instruction -- one intro
+            line, the ticket price card, a short practical note about
+            how the tickets were bought, and a closing line -- with the
+            page's existing spacing tokens (mt-9/11 between a tight
+            text/card/note beat, mt-14/16 between wider beats) doing
+            the work of leaving room for photos or video to be added
+            around the text in a later pass. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>A day at Gardaland</ChapterHeading>
+            <ChapterHeading italic>Gardaland</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'More from our Italy road trip coming soon.',
+                "The kids had been looking forward to Gardaland the entire trip. We'd been before when they were younger, but this time they were ready for almost all the big rides — starting with Raptor.",
+              ]}
+            />
+          </Reveal>
+
+          {/* Gardaland ticket price card -- same quiet cream practical-info
+              panel language as every other price card on this page. Kept
+              simple per explicit instruction: full-day price per person,
+              then the family total -- no extra ticket details. */}
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='Gardaland · Full Day'
+              value='€44'
+              support={[
+                { text: 'Per person · Adults & children', variant: 'label' },
+                { text: '€176 total' },
+              ]}
+            />
+          </Reveal>
+
+          {/* Ticket-buying note -- normal page text under the card, not
+              part of it, same treatment as the "One thing to know" note
+              beneath the SEI Garda Apartments card above. */}
+          <Reveal delay={0.1} className='mt-9 md:mt-11 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "I couldn't buy the tickets directly from the official website, so I used a third-party seller instead. Everything worked perfectly.",
+              ]}
+            />
+          </Reveal>
+
+          {/* End of the day -- a short closing line for this beat, with
+              extra space above it (matching the page's wider inter-beat
+              gap) reserving room for photos/video of the day itself to
+              be added in a later pass. */}
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'We spent the whole day in the park — and by the evening, we had no energy left for anything else.',
               ]}
             />
           </Reveal>
