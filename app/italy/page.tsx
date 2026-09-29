@@ -1393,6 +1393,30 @@ export default function ItalyPage() {
             />
           </Reveal>
 
+          {/* Gardaland ticket keepsake -- a small, elegant crop taken from
+              the actual entry ticket: just the Gardaland Resort logo and
+              the colourful park-illustration skyline that frames it,
+              with the QR code, ticket code, transaction number and the
+              terms-and-conditions text all cropped away entirely -- none
+              of that ticket-identifying content is included. The
+              artwork itself is untouched, only cropped. Sized as a small
+              supporting image (same "text -> photo" mt-12/16 gap and
+              narrow percentage-based width used for the smaller
+              secondary photos above, e.g. Milano_streets_web), and
+              object-contain rather than object-cover since this is a
+              flat graphic that must never be cropped further. */}
+          <Reveal delay={0.1} className='mt-12 md:mt-16 w-[80%] md:w-[380px] mx-auto'>
+            <div className='relative w-full overflow-hidden rounded-[2px] bg-white aspect-[1100/465]'>
+              <Image
+                src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Gardaland_ticket_keepsake.png'
+                alt='The Gardaland Resort logo with the colourful park illustrations from our entry ticket.'
+                fill
+                sizes='(min-width: 768px) 380px, 80vw'
+                className='object-contain'
+              />
+            </div>
+          </Reveal>
+
           {/* Gardaland ticket price card -- same quiet cream practical-info
               panel language as every other price card on this page. Kept
               simple per explicit instruction: full-day price per person,
