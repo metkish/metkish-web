@@ -1367,26 +1367,151 @@ export default function ItalyPage() {
           </Reveal>
         </div>
 
-        {/* A DAY AT GARDALAND -- bare ChapterHeading, same "activity
-            within a base destination" treatment as "Three villages. Two
-            ways to see them." above (La Spezia -> Cinque Terre):
-            Gardaland is a day trip from this Peschiera del Garda base,
-            not a new road-trip stop, so no RouteLabel, no map, no
-            "Next stop" wording -- just continues within this same
-            chapter/section. This is currently where the finished Italy
-            content ends, so a single quiet line follows the heading --
-            the same Paragraphs body-text treatment used under every
-            other ChapterHeading on this page, nothing new invented --
-            to indicate the story continues rather than looking cut off. */}
+        {/* GARDALAND -- bare ChapterHeading, same "activity within a
+            base destination" treatment as "Three villages. Two ways to
+            see them." above (La Spezia -> Cinque Terre): Gardaland is a
+            day trip from this Peschiera del Garda base, not a new
+            road-trip stop, so no RouteLabel, no map, no "Next stop"
+            wording -- just continues within this same chapter/section.
+            This is now the next completed part of the story, so the
+            earlier "more coming soon" placeholder is gone. Kept
+            deliberately short per explicit instruction -- one intro
+            line, the ticket price card, a short practical note about
+            how the tickets were bought, and a closing line -- with the
+            page's existing spacing tokens (mt-9/11 between a tight
+            text/card/note beat, mt-14/16 between wider beats) doing
+            the work of leaving room for photos or video to be added
+            around the text in a later pass. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>A day at Gardaland</ChapterHeading>
+            <ChapterHeading italic>Gardaland</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'More from our Italy road trip coming soon.',
+                "The kids had been looking forward to Gardaland the entire trip. We'd been before when they were younger, but this time they were ready for almost all the big rides — starting with Raptor.",
               ]}
             />
+          </Reveal>
+
+          {/* Gardaland ticket keepsake -- a small, elegant crop taken from
+              the actual entry ticket: just the Gardaland Resort logo and
+              the colourful park-illustration skyline that frames it,
+              with the QR code, ticket code, transaction number and the
+              terms-and-conditions text all cropped away entirely -- none
+              of that ticket-identifying content is included. The
+              artwork itself is untouched, only cropped. Sized as a small
+              supporting image (same "text -> photo" mt-12/16 gap and
+              narrow percentage-based width used for the smaller
+              secondary photos above, e.g. Milano_streets_web), and
+              object-contain rather than object-cover since this is a
+              flat graphic that must never be cropped further. */}
+          <Reveal delay={0.1} className='mt-12 md:mt-16 w-[80%] md:w-[380px] mx-auto'>
+            <div className='relative w-full overflow-hidden rounded-[2px] bg-white aspect-[1100/465]'>
+              <Image
+                src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Gardaland_ticket_keepsake.png'
+                alt='The Gardaland Resort logo with the colourful park illustrations from our entry ticket.'
+                fill
+                sizes='(min-width: 768px) 380px, 80vw'
+                className='object-contain'
+              />
+            </div>
+          </Reveal>
+
+          {/* Gardaland ticket price card -- same quiet cream practical-info
+              panel language as every other price card on this page. Kept
+              simple per explicit instruction: full-day price per person,
+              then the family total -- no extra ticket details. */}
+          <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
+            <Fact
+              label='Gardaland · Full Day'
+              value='€44'
+              support={[
+                { text: 'Per person · Adults & children', variant: 'label' },
+                { text: '€176 total' },
+              ]}
+            />
+          </Reveal>
+
+          {/* Ticket-buying note -- normal page text under the card, not
+              part of it, same treatment as the "One thing to know" note
+              beneath the SEI Garda Apartments card above. */}
+          <Reveal delay={0.1} className='mt-9 md:mt-11 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "I couldn't buy the tickets directly from the official website, so I used a third-party seller instead. Everything worked perfectly.",
+              ]}
+            />
+          </Reveal>
+
+          {/* End of the day -- a short closing line for this beat, with
+              extra space above it (matching the page's wider inter-beat
+              gap) reserving room for photos/video of the day itself to
+              be added in a later pass. */}
+          <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'We spent the whole day in the park — and by the evening, we had no energy left for anything else.',
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* PESCHIERA DEL GARDA -> HOME -- the trip's actual final leg, and
+          the page's closing chapter. Same section wrapper classes as
+          every other chapter above for consistency, even though no map
+          precedes it -- this documents a plan that changed, not a route
+          we actually drove, so there is no journey map here. RouteLabel
+          reflects the real direction travelled (home), never "-> Venice",
+          and deliberately not phrased as "Next stop" since we did not
+          end up visiting. Kept short: heading, the four short lines of
+          text as given, and the small refunded-ticket keepsake -- no
+          price card, since the tickets were cancelled and refunded. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Peschiera del Garda → Home</RouteLabel>
+          </Reveal>
+        </div>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>Venice? Not this time.</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "We had already bought the Venice access fee — I like planning ahead.",
+                'But after a full day at Gardaland and several days on the road, we changed our minds. With 1 May being a public holiday, we expected Venice to be extremely busy.',
+                'So we cancelled the tickets, got a refund and chose a slow drive home instead.',
+                'Venice can wait for another trip.',
+              ]}
+            />
+          </Reveal>
+
+          {/* Venice access fee keepsake -- a small crop of the actual
+              (now refunded) access-fee voucher: just the Città di
+              Venezia crest/heading, the date and the €5 price. The QR
+              code and the personal booking code/initials are both
+              cropped out entirely, same privacy approach as the
+              Gardaland ticket crop above -- the artwork itself is
+              untouched, only cropped. No price card alongside it: the
+              tickets were cancelled and refunded, so there's nothing to
+              price. Sized smaller than the Gardaland keepsake (this is a
+              minor scrapbook detail, not a section anchor), with plenty
+              of surrounding whitespace, and object-contain so the
+              voucher graphic is never cropped further. */}
+          <Reveal delay={0.1} className='mt-12 md:mt-16 w-[56%] sm:w-[42%] md:w-[280px] mx-auto'>
+            <div className='relative w-full overflow-hidden rounded-[2px] bg-white aspect-[402/419]'>
+              <Image
+                src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Venice_access_fee_keepsake.png'
+                alt='The Città di Venezia access fee voucher, showing only the date and price.'
+                fill
+                sizes='(min-width: 768px) 280px, 42vw'
+                className='object-contain'
+              />
+            </div>
           </Reveal>
         </div>
       </section>
