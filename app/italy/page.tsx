@@ -1501,9 +1501,9 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "We had already bought the Venice access fee — I like planning ahead.",
-                'But after Gardaland and several days on the road, we were tired. With 1 May being a public holiday, we expected Venice to be extremely busy.',
-                'So we got a refund and chose a slow drive home instead.',
+                'We had already bought the Venice access fee. But plans can change.',
+                'After Gardaland and several days on the road, we were tired. With 1 May being a public holiday, we expected Venice to be extremely busy.',
+                'So we changed our minds and chose a slow drive home instead.',
                 'Venice can wait for another trip.',
               ]}
             />
