@@ -6,11 +6,13 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
+import BookedChecklist from '@/components/ui/booked-checklist';
 import {
   ITALY_HOME_TO_MILANO_JOURNEY,
   ITALY_MILANO_TO_LASPEZIA_JOURNEY,
   ITALY_LASPEZIA_TO_PISA_JOURNEY,
   ITALY_PISA_TO_PESCHIERA_JOURNEY,
+  ITALY_PESCHIERA_TO_HOME_JOURNEY,
 } from '@/lib/journeys/italy';
 
 const LOGO_SRC = '/metkish-logo.png';
@@ -1312,7 +1314,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We stayed at SEI Garda Apartments \u2014 a lovely apartment, a short walk from the centre with a shop right next door. We chose it mainly for its location near Gardaland, and for that it was perfect.',
+                'We stayed at SEI Garda Apartments, right on the road to Gardaland and a short walk from the centre of Peschiera. For us, the location was perfect.',
               ]}
             />
           </Reveal>
@@ -1332,7 +1334,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'One thing to know: when Gardaland closes, the road into Peschiera gets completely gridlocked. We probably could have walked faster.',
+                'The downside? When Gardaland closes, that same road gets completely gridlocked. At that time of day, walking is actually faster.',
               ]}
             />
           </Reveal>
@@ -1418,16 +1420,18 @@ export default function ItalyPage() {
           </Reveal>
 
           {/* Gardaland ticket price card -- same quiet cream practical-info
-              panel language as every other price card on this page. Kept
-              simple per explicit instruction: full-day price per person,
-              then the family total -- no extra ticket details. */}
+              panel language as every other price card on this page. Total
+              amount paid is the large prominent value (matching the San
+              Siro ticket card's hierarchy), with the ticket count/per-
+              person price as the uppercase detail line and the flat-price
+              note as a quieter secondary line -- no other ticket details. */}
           <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
             <Fact
               label='Gardaland · Full Day'
-              value='€44'
+              value='€176'
               support={[
-                { text: 'Per person · Adults & children', variant: 'label' },
-                { text: '€176 total' },
+                { text: '4 Tickets · €44 pp', variant: 'label' },
+                { text: 'Adults & children same price' },
               ]}
             />
           </Reveal>
@@ -1459,6 +1463,21 @@ export default function ItalyPage() {
         </div>
       </section>
 
+      {/* MAP -- Peschiera del Garda -> Home, the trip's real final leg.
+          Same JourneyMapScene engine, same height, same edge-to-edge/no-
+          padding placement as every map above (see lib/journeys/italy.ts
+          for the route data and real-coordinate sourcing -- it reuses the
+          Home->Milano route's own Verona/Venice-area/Trieste/Slovenia
+          corridor in reverse). Placed directly after the Gardaland
+          section and before the "Venice? Not this time." chapter, per
+          explicit instruction, matching where every other road-trip map
+          on this page sits between stages. Venice/Mestre is passed
+          through as a plain waypoint only -- never marked as a stop. */}
+      <JourneyMapScene
+        journey={ITALY_PESCHIERA_TO_HOME_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+
       {/* PESCHIERA DEL GARDA -> HOME -- the trip's actual final leg, and
           the page's closing chapter. Same section wrapper classes as
           every other chapter above for consistency, even though no map
@@ -1482,9 +1501,9 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "We had already bought the Venice access fee — I like planning ahead.",
-                'But after a full day at Gardaland and several days on the road, we changed our minds. With 1 May being a public holiday, we expected Venice to be extremely busy.',
-                'So we cancelled the tickets, got a refund and chose a slow drive home instead.',
+                'We had already bought the Venice access fee. But plans can change.',
+                'After Gardaland and several days on the road, we were tired. With 1 May being a public holiday, we expected Venice to be extremely busy.',
+                'So we changed our minds and chose a slow drive home instead.',
                 'Venice can wait for another trip.',
               ]}
             />
@@ -1514,6 +1533,75 @@ export default function ItalyPage() {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      {/* 1,984 KM LATER -- the true closing beat of the Italy story.
+          Bare ChapterHeading (no RouteLabel: this is a reflection, not
+          a new geographic leg), Tesla.jpeg as the trip's final photo at
+          the same large-landscape width/aspect-[4/3] treatment used for
+          this page's other main photos (e.g. Peschiera del Garda.jpeg)
+          so the whole car is shown with no awkward cropping, and a short
+          two-line note exactly as given (no EV stats beyond that). The
+          small "1,984 km · Italy road trip · done." closing line was
+          removed as repetitive with the "1,984 km later." heading above
+          it -- per explicit instruction. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <ChapterHeading italic>1,984 km later.</ChapterHeading>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Tesla.jpeg'
+              alt='A very dirty black Tesla with its doors open after the long drive home.'
+              fill
+              sizes='(min-width: 768px) 620px, 88vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "A very dirty Tesla and one thing we didn't have to worry about: charging.",
+                'Italy turned out to be incredibly EV-friendly. Tesla Superchargers were easy to find along our route, and charging was never a problem.',
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* BOOKED BEFORE WE LEFT -- the same reusable pre-trip checklist
+          component used to close the Tenerife page
+          (components/ui/booked-checklist.tsx), reused here completely
+          unchanged so both destination pages end the same way: no card,
+          no border, no background panel, just the shared pink-checkmark
+          list, same typography/spacing/width as the Tenerife version.
+          This page only supplies its own list of what was actually
+          booked ahead of the Italy trip -- Duomo tickets are deliberately
+          left off, since those were bought spontaneously in Milano, not
+          booked in advance. Same section wrapper spacing every other
+          Italy-page section already uses, for a consistent close. This is
+          now the final section of the Italy page -- no more-content-coming
+          placeholder follows. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <Reveal className='mx-auto'>
+          <BookedChecklist
+            items={[
+              'Accommodation in Milano',
+              'Accommodation in La Spezia',
+              'Accommodation in Peschiera del Garda',
+              'Gardaland tickets',
+              'Venice Access Fee',
+            ]}
+          />
+        </Reveal>
       </section>
     </div>
   );

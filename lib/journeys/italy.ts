@@ -533,3 +533,79 @@ export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
     },
   ],
 };
+
+// ---------------------------------------------------------------------
+// Peschiera del Garda -> Home (fifth and final road-trip leg)
+// ---------------------------------------------------------------------
+
+// The drive home never actually went to Venice -- the plan to visit was
+// cancelled (see the page's "Venice? Not this time." section) -- so this
+// route runs east from Peschiera del Garda past the Venice area without
+// stopping, through the Trieste/Gorizia corridor and Slovenia, back to
+// Home. The user's supplied Michelin/route-planning screenshot for this
+// exact drive shows almost exactly this corridor in the opposite
+// direction (Lake Garda/Verona -> Venice area -> Trieste -> Slovenia ->
+// the Austria/Hungary/Slovenia border region near Home), which is the
+// same real corridor ITALY_HOME_TO_MILANO_ROUTE above already uses for
+// its own Verona/Vicenza/Padova/Mestre-Venezia/Portogruaro/
+// Gorizia-Villesse/Kozina/Postojna/Ljubljana/Maribor stretch. Rather than
+// deriving a fresh set of waypoints from the screenshot, this leg reuses
+// those already real, independently-verified coordinates in reverse --
+// per this project's route-geometry rule that a shared corridor reused by
+// multiple journeys must stay identical in shape (differing only by
+// camera), and per the standing preference for reusing/re-verifying real
+// coordinates over inventing new ones. The only new connector is Peschiera
+// -> [10.8934, 45.4135]: Peschiera del Garda's own real A4 exit sits on
+// this same verified corridor, directly between the already-verified
+// Brescia and Verona waypoints (10.1243, 45.5201 and 10.9563, 45.3572), so
+// no new coordinate was invented there either. Venice/Mestre (12.2996,
+// 45.4692) is included only as a plain route waypoint -- exactly as it
+// already is on the Home->Milano route -- never as a JourneyPoint/marker,
+// per the explicit instruction not to mark Venice as a stop.
+const ITALY_PESCHIERA_TO_HOME_ROUTE: [number, number][] = [
+  PESCHIERA.coords,
+  [10.8934, 45.4135],
+  [10.9563, 45.3572], // Verona
+  [11.2889, 45.3712],
+  [11.4813, 45.4814], // Vicenza
+  [11.9777, 45.3769], // Padova
+  [12.2996, 45.4692], // Mestre / Venezia -- passed through, never marked as a stop
+  [12.7650, 45.7558], // Portogruaro area
+  [13.0074, 45.7539], // A4 east, staying south of Udine
+  [13.5926, 45.8888], // Gorizia / Villesse (A4 junction)
+  [13.9135, 45.8192], // border area
+  [14.0550, 45.6897], // toward Kozina
+  [14.2290, 45.6939],
+  [14.3248, 45.7601], // Postojna (A1)
+  [14.3387, 45.9777],
+  [14.5503, 45.9872], // Ljubljana
+  [14.6278, 46.1317],
+  [14.8761, 46.1688],
+  [14.9866, 46.2461],
+  [15.3954, 46.2484],
+  [15.6822, 46.4583], // Maribor
+  [15.7082, 46.5642],
+  [16.1008, 46.5945],
+  [16.1463, 46.7784],
+  HOME.coords,
+];
+
+export const ITALY_PESCHIERA_TO_HOME_JOURNEY: Journey = {
+  id: 'italy-peschiera-to-home',
+  initialCamera: { center: [13.35, 46.05], spanDeg: 7.5 },
+  legs: [
+    {
+      id: 'peschiera-to-home',
+      mode: 'car',
+      from: PESCHIERA,
+      to: HOME,
+      camera: { center: [13.35, 46.05], spanDeg: 7.5 },
+      route: ITALY_PESCHIERA_TO_HOME_ROUTE,
+      // A touch shorter than the Home->Milano leg's 4.5s: this leg
+      // covers slightly less ground (it starts from Peschiera, short of
+      // Milano) even though it retraces most of the same corridor.
+      weight: 4.2,
+      transition: 'ease',
+    },
+  ],
+};
