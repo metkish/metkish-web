@@ -1334,7 +1334,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'The downside? When Gardaland closes, that same road gets completely gridlocked. On the way back, we probably could have walked faster.',
+                'The downside? When Gardaland closes, that same road gets completely gridlocked. At that time of day, walking is actually faster.',
               ]}
             />
           </Reveal>
