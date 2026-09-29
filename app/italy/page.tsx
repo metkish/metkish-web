@@ -1458,6 +1458,63 @@ export default function ItalyPage() {
           </Reveal>
         </div>
       </section>
+
+      {/* PESCHIERA DEL GARDA -> HOME -- the trip's actual final leg, and
+          the page's closing chapter. Same section wrapper classes as
+          every other chapter above for consistency, even though no map
+          precedes it -- this documents a plan that changed, not a route
+          we actually drove, so there is no journey map here. RouteLabel
+          reflects the real direction travelled (home), never "-> Venice",
+          and deliberately not phrased as "Next stop" since we did not
+          end up visiting. Kept short: heading, the four short lines of
+          text as given, and the small refunded-ticket keepsake -- no
+          price card, since the tickets were cancelled and refunded. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Peschiera del Garda → Home</RouteLabel>
+          </Reveal>
+        </div>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <ChapterHeading italic>Venice? Not this time.</ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "We had already bought the Venice access fee — I like planning ahead.",
+                'But after a full day at Gardaland and several days on the road, we changed our minds. With 1 May being a public holiday, we expected Venice to be extremely busy.',
+                'So we cancelled the tickets, got a refund and chose a slow drive home instead.',
+                'Venice can wait for another trip.',
+              ]}
+            />
+          </Reveal>
+
+          {/* Venice access fee keepsake -- a small crop of the actual
+              (now refunded) access-fee voucher: just the Città di
+              Venezia crest/heading, the date and the €5 price. The QR
+              code and the personal booking code/initials are both
+              cropped out entirely, same privacy approach as the
+              Gardaland ticket crop above -- the artwork itself is
+              untouched, only cropped. No price card alongside it: the
+              tickets were cancelled and refunded, so there's nothing to
+              price. Sized smaller than the Gardaland keepsake (this is a
+              minor scrapbook detail, not a section anchor), with plenty
+              of surrounding whitespace, and object-contain so the
+              voucher graphic is never cropped further. */}
+          <Reveal delay={0.1} className='mt-12 md:mt-16 w-[56%] sm:w-[42%] md:w-[280px] mx-auto'>
+            <div className='relative w-full overflow-hidden rounded-[2px] bg-white aspect-[402/419]'>
+              <Image
+                src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Venice_access_fee_keepsake.png'
+                alt='The Città di Venezia access fee voucher, showing only the date and price.'
+                fill
+                sizes='(min-width: 768px) 280px, 42vw'
+                className='object-contain'
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </div>
   );
 }
