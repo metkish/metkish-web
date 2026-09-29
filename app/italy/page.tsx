@@ -1314,7 +1314,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We stayed at SEI Garda Apartments \u2014 a lovely apartment, a short walk from the centre with a shop right next door. We chose it mainly for its location near Gardaland, and for that it was perfect.',
+                'We stayed at SEI Garda Apartments, right on the road to Gardaland and a short walk from the centre of Peschiera. For us, the location was perfect.',
               ]}
             />
           </Reveal>
@@ -1334,7 +1334,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'One thing to know: when Gardaland closes, the road into Peschiera gets completely gridlocked. We probably could have walked faster.',
+                'The downside? When Gardaland closes, that same road gets completely gridlocked. On the way back, we probably could have walked faster.',
               ]}
             />
           </Reveal>
@@ -1420,16 +1420,18 @@ export default function ItalyPage() {
           </Reveal>
 
           {/* Gardaland ticket price card -- same quiet cream practical-info
-              panel language as every other price card on this page. Kept
-              simple per explicit instruction: full-day price per person,
-              then the family total -- no extra ticket details. */}
+              panel language as every other price card on this page. Total
+              amount paid is the large prominent value (matching the San
+              Siro ticket card's hierarchy), with the ticket count/per-
+              person price as the uppercase detail line and the flat-price
+              note as a quieter secondary line -- no other ticket details. */}
           <Reveal delay={0.15} className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9'>
             <Fact
               label='Gardaland · Full Day'
-              value='€44'
+              value='€176'
               support={[
-                { text: 'Per person · Adults & children', variant: 'label' },
-                { text: '€176 total' },
+                { text: '4 Tickets · €44 pp', variant: 'label' },
+                { text: 'Adults & children same price' },
               ]}
             />
           </Reveal>
