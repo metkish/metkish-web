@@ -1515,6 +1515,54 @@ export default function ItalyPage() {
           </Reveal>
         </div>
       </section>
+
+      {/* 1,984 KM LATER -- the true closing beat of the Italy story.
+          Bare ChapterHeading (no RouteLabel: this is a reflection, not
+          a new geographic leg), Tesla.jpeg as the trip's final photo at
+          the same large-landscape width/aspect-[4/3] treatment used for
+          this page's other main photos (e.g. Peschiera del Garda.jpeg)
+          so the whole car is shown with no awkward cropping, a short
+          two-line note exactly as given (no EV stats beyond that), and
+          a small understated closing line in the page's established
+          photo-caption style. This is now the final section of the
+          page -- no further "more coming soon" placeholder follows. */}
+      <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <ChapterHeading italic>1,984 km later.</ChapterHeading>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1} className='mt-12 md:mt-16 w-[88%] md:w-[620px] mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Tesla.jpeg'
+              alt='A very dirty black Tesla with its doors open after the long drive home.'
+              fill
+              sizes='(min-width: 768px) 620px, 88vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "A very dirty Tesla and one thing we didn't have to worry about: charging.",
+                'Italy turned out to be incredibly EV-friendly. Tesla Superchargers were easy to find along our route, and charging was never a problem.',
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <p className='text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+              1,984 km · Italy road trip · done.
+            </p>
+          </Reveal>
+        </div>
+      </section>
     </div>
   );
 }
