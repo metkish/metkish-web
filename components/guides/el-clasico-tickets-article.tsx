@@ -517,7 +517,7 @@ export default function ElClasicoTicketsArticle() {
                   'We simply had to wait.',
                   'I had expected that being a member would mean receiving some kind of advance notice, especially for such an important match.',
                   'Instead, we were left checking for updates and wondering whether we might miss the sale.',
-                  'And then, one evening, at around 9 PM, a push notification appeared in the FC Barcelona Members app.',
+                  'On September 29, 2026, at around 9 PM, a push notification appeared in the FC Barcelona Members app.',
                   'It told us to have our membership cards ready.',
                   'The presale had started.',
                 ]}
