@@ -1,0 +1,720 @@
+'use client';
+
+import { useEffect, useState, type ReactNode } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
+import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
+import { TimeStamp } from '@/components/journey/annotation-kit';
+
+const LOGO_SRC = '/metkish-logo.png';
+const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
+
+// Same fade-up-on-scroll rhythm used throughout the site (About, Italy,
+// Tenerife): once-only, generous viewport threshold, no bounce. Duplicated
+// locally rather than imported, following this codebase's established
+// per-page convention.
+function Reveal({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// Major article section marker. Same Playfair scale as every chapter
+// opener on Italy/Tenerife (text-3xl md:text-4xl font-medium) -- but a
+// real <h2>, not a <p>, since this is a long-form article and needs
+// genuine heading semantics.
+function SectionHeading({ children }: { children: ReactNode }) {
+  return (
+    <h2 className='text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
+      {children}
+    </h2>
+  );
+}
+
+// In-section sub-heading. Byte-identical visual style to the site's
+// existing Eyebrow component, rendered as a real <h3> so the article keeps
+// clear, semantic H2/H3 hierarchy for SEO and screen readers.
+function SubHeading({ children }: { children: ReactNode }) {
+  return (
+    <h3 className='mt-10 md:mt-12 text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
+      {children}
+    </h3>
+  );
+}
+
+// Small uppercase kicker/label -- the same token used site-wide, kept as a
+// plain span since it never stands in for a heading here.
+function Eyebrow({ children }: { children: ReactNode }) {
+  return (
+    <span className='block text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
+      {children}
+    </span>
+  );
+}
+
+// The larger standalone lines that punctuate the story -- same component
+// as About's Statement, reused for the article's own punchiest sentences
+// rather than inventing a new treatment.
+function Statement({ children }: { children: ReactNode }) {
+  return (
+    <p className='text-2xl md:text-3xl font-[family-name:var(--font-playfair)] italic font-medium text-black dark:text-white leading-snug'>
+      {children}
+    </p>
+  );
+}
+
+// Body copy -- byte-identical to every other page's Paragraphs component,
+// left-aligned here rather than centered: a long first-person "how to"
+// article reads more comfortably as a conventional editorial column than
+// as the short centered reflective beats About uses.
+function Paragraphs({ items }: { items: string[] }) {
+  return (
+    <div className='space-y-5'>
+      {items.map((text, i) => (
+        <p
+          key={i}
+          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
+        >
+          {text}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+// A small, personal aside -- distinct from both plain body text and the
+// larger "My Tips" box below. Pink is used here exactly the way the site's
+// colour system reserves it ("small accent only"): a thin left rule, never
+// a fill or a badge.
+function InlineTip({ children }: { children: ReactNode }) {
+  return (
+    <p className='border-l-2 border-pink-300 dark:border-pink-400/60 pl-4 text-base italic font-[family-name:var(--font-poppins)] font-light text-black/75 dark:text-white/75 leading-relaxed'>
+      {children}
+    </p>
+  );
+}
+
+// Elegant placeholder for a photograph that doesn't exist yet. Deliberately
+// reads as "a space held open for a real photo" -- cream background,
+// dashed border, quiet italic label -- never a stock or AI-generated
+// image, never an empty/broken box. role="img" + aria-label carries the
+// same descriptive alt text a real <Image> on this page would get once
+// the photo is added.
+function ImagePlaceholder({
+  caption,
+  aspect = 'aspect-[4/3]',
+  large = false,
+}: {
+  caption: string;
+  aspect?: string;
+  large?: boolean;
+}) {
+  return (
+    <div
+      role='img'
+      aria-label={caption}
+      className={`relative w-full ${aspect} overflow-hidden rounded-[2px] border border-dashed border-black/15 dark:border-white/20 bg-[#f1ebdc]/60 dark:bg-white/[0.03] flex flex-col items-center justify-center text-center px-8`}
+    >
+      <span
+        className={`font-[family-name:var(--font-playfair)] italic text-black/30 dark:text-white/30 ${
+          large ? 'text-3xl md:text-4xl' : 'text-xl md:text-2xl'
+        }`}
+      >
+        Photo coming soon
+      </span>
+      <span className='mt-3 max-w-xs text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+        {caption}
+      </span>
+    </div>
+  );
+}
+
+// The elegant price-breakdown treatment the brief asks for, "consistent
+// with the existing Metkish travel pages": the same warm cream card
+// (#f1ebdc / white/[0.04], rounded-[3px]) as every price card on
+// app/italy/page.tsx, but holding a genuine <table> of line items (this
+// content needs real rows, not a single value) with the grand total still
+// pulled out underneath at the same large serif TimeStamp scale Italy
+// uses for its one-line prices.
+function PriceTable({
+  caption,
+  rows,
+  totalLabel,
+  totalValue,
+  note,
+}: {
+  caption: string;
+  rows: { label: string; value: string; emphasis?: boolean }[];
+  totalLabel?: string;
+  totalValue?: string;
+  note?: string;
+}) {
+  return (
+    <div className='mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-6 py-7 md:px-8 md:py-8'>
+      <span className='block text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+        {caption}
+      </span>
+      <table className='mt-5 w-full text-sm font-[family-name:var(--font-poppins)]'>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr
+              key={i}
+              className={`border-t border-black/10 dark:border-white/10 first:border-t-0 ${
+                row.emphasis ? 'font-semibold text-black dark:text-white' : 'text-black/75 dark:text-white/75'
+              }`}
+            >
+              <td className='py-2.5 pr-3'>{row.label}</td>
+              <td className='py-2.5 text-right whitespace-nowrap'>{row.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {totalValue && (
+        <div className='mt-6 pt-5 border-t border-black/15 dark:border-white/15 flex flex-col items-center gap-2 text-center'>
+          <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            {totalLabel}
+          </span>
+          <TimeStamp size='md'>{totalValue}</TimeStamp>
+        </div>
+      )}
+      {note && (
+        <p className='mt-4 text-center text-sm font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+          {note}
+        </p>
+      )}
+    </div>
+  );
+}
+
+const TIPS = [
+  {
+    lead: 'Research official ticket options first.',
+    rest: "Start with FC Barcelona's own ticketing website before considering resale platforms.",
+  },
+  {
+    lead: "Don't assume membership guarantees tickets.",
+    rest: 'It can provide presale access, but availability and pricing depend on the match.',
+  },
+  {
+    lead: 'Apply for membership early.',
+    rest: "Approval may take time, especially if you're registering several family members.",
+  },
+  {
+    lead: 'Install the FC Barcelona Members app.',
+    rest: "Enable push notifications, but don't rely on them as advance notice of ticket sales.",
+  },
+  {
+    lead: "Have everyone's membership details ready.",
+    rest: "Particularly if you're buying tickets for the whole family.",
+  },
+  {
+    lead: 'Be prepared for technical problems.',
+    rest: 'Having both a computer and phone available helped us complete our purchase.',
+  },
+  {
+    lead: 'Check every discount before paying.',
+    rest: "The system didn't apply the member discount to all four of our tickets.",
+  },
+  {
+    lead: 'Set a realistic budget.',
+    rest: 'El Clásico prices can be considerably higher than expected.',
+  },
+];
+
+// The practical-tips box the brief asks to present "in an easy-to-read
+// format" without looking like a generic marketing page: the same warm
+// cream practical-info panel the tenerife-editorial-system skill reserves
+// for objective, selective facts -- used here exactly as that skill
+// intends, not as a CTA card.
+function TipsBox() {
+  return (
+    <div className='rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-6 py-7 md:px-9 md:py-9'>
+      <ol className='space-y-4'>
+        {TIPS.map((tip, i) => (
+          <li key={i} className='flex gap-3'>
+            <span className='shrink-0 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40 pt-0.5'>
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <p className='text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80 leading-relaxed'>
+              <span className='font-medium text-black dark:text-white'>{tip.lead}</span>{' '}
+              {tip.rest}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function BackLink() {
+  return (
+    <Link
+      href='/#guides'
+      className='inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white hover:underline underline-offset-4'
+    >
+      ← Back to Behind the Trip
+    </Link>
+  );
+}
+
+export default function ElClasicoTicketsArticle() {
+  const [pastHero, setPastHero] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setPastHero(window.scrollY > window.innerHeight * 0.5);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className='min-h-screen bg-[#faf9f6] dark:bg-black'>
+      <div className='fixed top-0 left-0 w-full h-28 z-50 pointer-events-none backdrop-blur-md [mask-image:linear-gradient(to_bottom,black,transparent)]' />
+      <Link
+        href='/'
+        aria-label='Back to homepage'
+        className={`fixed top-4 left-4 z-50 cursor-pointer transition-all duration-300 rounded-full ${
+          pastHero ? 'backdrop-blur-sm bg-white/40 dark:bg-black/40' : ''
+        }`}
+      >
+        <Image
+          src={LOGO_SRC}
+          alt='Metkish logo'
+          width={104}
+          height={104}
+          className={`rounded-full transition-all duration-300 ${
+            pastHero
+              ? 'w-11 h-11 sm:w-14 sm:h-14 opacity-70 hover:opacity-100'
+              : 'w-[104px] h-[104px] opacity-100'
+          }`}
+          priority
+        />
+      </Link>
+
+      <article className='px-6 md:px-12'>
+        {/* HERO */}
+        <header className='pt-28 sm:pt-36 md:pt-44 pb-12 md:pb-16 max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <Eyebrow>Behind the Trip · Guide</Eyebrow>
+            <h1 className='mt-5 text-4xl sm:text-5xl md:text-6xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
+              How to Get El Clásico Tickets
+            </h1>
+            <p className='mt-4 text-xl md:text-2xl italic font-[family-name:var(--font-playfair)] font-medium text-black/80 dark:text-white/80'>
+              Our Real Experience as FC Barcelona Members
+            </p>
+            <p className='mt-6 text-base md:text-lg font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
+              From becoming FC Barcelona members to spending more than
+              €3,400 on four tickets. Here&apos;s what we learned about the
+              process, the prices and whether membership is actually worth
+              it.
+            </p>
+          </Reveal>
+        </header>
+
+        <Reveal className='max-w-3xl mx-auto'>
+          <ImagePlaceholder
+            caption='Hero photo — Spotify Camp Nou, to be added after our visit'
+            aspect='aspect-[16/9]'
+            large
+          />
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto mt-8 md:mt-10'>
+          <BackLink />
+        </div>
+
+        {/* A FAMILY OF BARÇA FANS */}
+        <section className='max-w-2xl mx-auto pt-14 md:pt-16 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>A Family of Barça Fans</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'In our family, supporting FC Barcelona goes back generations.',
+                  'My father and brother have always been Barça fans. Then I met my husband, who turned out to be just as passionate about the club. And now our children have joined the tradition, especially our son.',
+                  "For my husband's 30th birthday, I surprised him with tickets to a Barcelona match. That was our first trip to the city together.",
+                  'So, of course, there was one football experience we still wanted to have as a family: El Clásico.',
+                  'Our children had been asking to visit Barcelona for years, but my husband always insisted that we should wait until the renovated Camp Nou was finished.',
+                  "Eventually, we decided to plan a trip during the children's autumn school holidays in October 2026.",
+                  "And here's the funny part: we booked the trip before we even knew El Clásico would take place during our stay.",
+                  "When the match schedule was announced, we couldn't believe our luck.",
+                  'There was just one problem.',
+                  'How on earth were we going to get four tickets?',
+                ]}
+              />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* WHY WE DECIDED TO BECOME MEMBERS */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>Why We Decided to Become FC Barcelona Members</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'We knew El Clásico was one of the most sought-after football matches in the world. We had also seen how expensive tickets could become on resale websites.',
+                  'And we needed four seats, ideally together.',
+                  'After researching our options, we decided that becoming official FC Barcelona members would give us the best chance of buying tickets directly from the club.',
+                  "It wasn't a cheap decision, especially for a family of four, but at the time it seemed like the safest option.",
+                ]}
+              />
+            </div>
+
+            <SubHeading>How to Become an FC Barcelona Member</SubHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'The application itself was fairly straightforward.',
+                  'We completed the online membership forms on the official FC Barcelona website and uploaded the required documents. For our children, this also included birth certificates.',
+                  'Then we waited for approval.',
+                  'We submitted our applications on 27 July 2026 and received confirmation on 12 August 2026.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>That&apos;s 16 days from application to approval.</Statement>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs items={['Once our memberships were approved, we paid the membership fees.']} />
+            </div>
+
+            <SubHeading>How Much Does FC Barcelona Membership Cost?</SubHeading>
+            <div className='mt-6'>
+              <Paragraphs items={['These were the membership prices for July–December 2026:']} />
+            </div>
+
+            <Reveal delay={0.05} className='mt-8 md:mt-9'>
+              <PriceTable
+                caption='FC Barcelona Membership · Jul–Dec 2026'
+                rows={[
+                  { label: 'Adult (15+)', value: '€113' },
+                  { label: 'Child (6–14)', value: '€56' },
+                ]}
+                totalLabel='2 Adults + 2 Children'
+                totalValue='€338'
+                note='Our memberships were valid until 31 December 2026.'
+              />
+            </Reveal>
+
+            <div className='mt-8 md:mt-9'>
+              <Paragraphs
+                items={[
+                  'Membership also comes with other benefits, including discounts on selected tickets, Barça Store purchases and stadium experiences.',
+                ]}
+              />
+              <p className='mt-5 text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'>
+                You can check the latest prices and apply through the{' '}
+                <a
+                  href={MEMBERSHIP_URL}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='underline underline-offset-4 text-black dark:text-white hover:text-black/70 dark:hover:text-white/70'
+                >
+                  official FC Barcelona membership website
+                </a>
+                .
+              </p>
+            </div>
+
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <InlineTip>
+                My tip: Apply well in advance. Our approval took more than
+                two weeks, and you don&apos;t want to be waiting for
+                membership confirmation when ticket sales begin.
+              </InlineTip>
+            </Reveal>
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <ImagePlaceholder caption='Stadium exterior, or a membership-related photo' />
+          </Reveal>
+        </section>
+
+        {/* WAITING FOR THE PRESALE */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>Waiting for the El Clásico Presale</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'This was probably the most frustrating part of the entire process.',
+                  'Once we became members, we had access to membership benefits and tickets already on sale.',
+                  'But when it came to El Clásico?',
+                  'Nothing.',
+                  'No confirmed presale date. No exact time. No countdown.',
+                  'We simply had to wait.',
+                  'I had expected that being a member would mean receiving some kind of advance notice, especially for such an important match.',
+                  'Instead, we were left checking for updates and wondering whether we might miss the sale.',
+                  'And then, one evening, at around 9 PM, a push notification appeared in the FC Barcelona Members app.',
+                  'It told us to have our membership cards ready.',
+                  'The presale had started.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>Not tomorrow. Not next week. Right then.</Statement>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs items={['I immediately opened my laptop.']} />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* THE TICKET PRICES WERE A SHOCK */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>The Ticket Prices Were a Shock</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'Before the sale, I had expected to pay somewhere between €300 and €400 per person.',
+                  'That already seemed like a significant amount for a football match, especially when buying four tickets.',
+                  'We had seen prices advertised from around €500, so I knew my original expectations might have been optimistic.',
+                  "But when I entered the presale, the cheaper categories weren't available to me.",
+                  'The tickets I could see were around €900–€1,000 each.',
+                  "I honestly couldn't believe it.",
+                  'For a moment, I wondered whether we should just forget the whole idea.',
+                  'But after months of planning, paying for memberships and finally having the opportunity to see El Clásico as a family, I was afraid that waiting would mean missing out completely.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>So I decided to buy them. Even though the price felt absurd.</Statement>
+            </Reveal>
+          </Reveal>
+        </section>
+
+        {/* BUYING FOUR TICKETS */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>Buying Four Tickets Wasn&apos;t as Easy as Expected</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'You would think that having four active memberships would make buying four tickets fairly simple.',
+                  'Not quite.',
+                  "I initially tried to complete the purchase on my laptop, but the system wouldn't let me buy all four tickets.",
+                  'I kept running into problems, and eventually I was blocked from accessing the ticketing page.',
+                  'With the tickets already so expensive and no idea how quickly they might sell out, this was incredibly stressful.',
+                  'I quickly switched to my phone, entered our membership numbers again and finally managed to add four tickets to the basket.',
+                  'But there was another problem.',
+                  'The system recognised only three tickets as member tickets. The fourth was processed as a "+1" ticket, without the membership discount.',
+                  "At that point, I wasn't going to risk losing all four tickets over a discount.",
+                  'I completed the purchase.',
+                ]}
+              />
+            </div>
+
+            <SubHeading>What We Actually Paid for El Clásico</SubHeading>
+            <div className='mt-6'>
+              <Paragraphs items={['Here is the exact breakdown from our booking confirmation:']} />
+            </div>
+
+            <Reveal delay={0.05} className='mt-8 md:mt-9'>
+              <PriceTable
+                caption='What We Paid · 4 Tickets + Membership'
+                rows={[
+                  { label: '4 Tickets · 2nd Grandstand Upper', value: '€3,596' },
+                  { label: 'Membership promotion (3 tickets)', value: '−€135' },
+                  { label: 'Administration fee', value: '€11' },
+                  { label: 'Total tickets', value: '€3,472', emphasis: true },
+                  { label: 'Family membership fees', value: '€338' },
+                ]}
+                totalLabel='Total Including Membership'
+                totalValue='€3,810'
+              />
+            </Reveal>
+
+            <div className='mt-8 md:mt-9'>
+              <Paragraphs
+                items={[
+                  'Yes, €3,810 for four football tickets and the memberships we purchased beforehand.',
+                  "And that doesn't include flights, accommodation or any other travel expenses.",
+                  'We received a 5% discount on three tickets, but not the fourth, even though all four of us were members.',
+                  "We've contacted the club to ask whether the missing discount can be reviewed.",
+                ]}
+              />
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <ImagePlaceholder caption='Ticket purchase confirmation, with personal information hidden' />
+          </Reveal>
+        </section>
+
+        {/* WAS MEMBERSHIP WORTH IT */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>Was FC Barcelona Membership Worth It?</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'This is where things get interesting.',
+                  'We became members because we believed it would give us a better chance of securing El Clásico tickets.',
+                  'And it did give us access to the member presale.',
+                  "But because ticket prices were so high, the demand wasn't quite what we had feared. Tickets were still available after our purchase.",
+                  'In our particular case, membership turned out to be less important for securing tickets than we had expected.',
+                  'And financially?',
+                  'We paid €338 for our family memberships and received €135 in ticket discounts.',
+                  'Even if the missing fourth discount is refunded, our total ticket savings would be €180.',
+                  'So if we look only at this one purchase, the membership fees were higher than the discounts we received.',
+                  'Of course, membership includes other benefits, and being part of the club means something to our family.',
+                  "But if you're considering becoming a member purely to save money on El Clásico tickets, I would think carefully before making that decision.",
+                ]}
+              />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* MY TIPS */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>My Tips for Buying El Clásico Tickets</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs items={["Based on our experience, here's what I would recommend:"]} />
+            </div>
+          </Reveal>
+          <Reveal delay={0.05} className='mt-8 md:mt-9'>
+            <TipsBox />
+          </Reveal>
+        </section>
+
+        {/* WOULD WE DO IT AGAIN */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
+          <Reveal>
+            <SectionHeading>Would We Do It Again?</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  "I can't fully answer that question yet.",
+                  'We have the tickets. We have our trip planned. And we are finally going to see El Clásico together.',
+                  "Whether the experience will feel worth the enormous price is something I'll be able to tell you after the match.",
+                  'What I can say already is that getting tickets was far more stressful, confusing and expensive than I had imagined.',
+                  "But there's something special about the idea of four Barça fans, across two generations of our family, finally walking into Camp Nou together for El Clásico.",
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>Now we&apos;re just hoping for a Barcelona win.</Statement>
+            </Reveal>
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <div className='flex flex-col sm:flex-row gap-5'>
+              <div className='flex-1'>
+                <ImagePlaceholder caption='View from our seats' aspect='aspect-[4/3]' />
+              </div>
+              <div className='flex-1'>
+                <ImagePlaceholder caption='Match atmosphere' aspect='aspect-[4/3]' />
+              </div>
+            </div>
+          </Reveal>
+        </section>
+
+        {/* UPDATED AFTER OUR VISIT */}
+        <section className='max-w-2xl mx-auto pb-14 md:pb-16'>
+          <Reveal className='mx-auto max-w-xl rounded-[3px] border border-dashed border-black/15 dark:border-white/20 px-6 py-7 md:px-8 md:py-8 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Updated After Our Visit
+            </span>
+            <p className='mt-3 text-base italic font-[family-name:var(--font-playfair)] text-black/65 dark:text-white/65 leading-relaxed'>
+              We haven&apos;t been to the match yet. Our seats, the stadium
+              experience, the atmosphere and our own photographs will all be
+              added here after our visit, from 25 October 2026.
+            </p>
+          </Reveal>
+        </section>
+
+        <div className='max-w-2xl mx-auto pb-16 md:pb-20 text-center'>
+          <BackLink />
+        </div>
+      </article>
+
+      <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
+        <Image
+          src={LOGO_SRC}
+          alt='Metkish logo'
+          width={240}
+          height={240}
+          className='w-[92px] md:w-[120px] h-auto -mt-8 md:-mt-9'
+        />
+        <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
+          travel · memories · places worth remembering
+        </p>
+        <nav className='flex items-center gap-2 sm:gap-6'>
+          <Link
+            href='/#travels'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+          >
+            Travels
+          </Link>
+          <Link
+            href='/#guides'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+          >
+            Behind the Trip
+          </Link>
+          <Link
+            href='/about'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
+          >
+            About
+          </Link>
+        </nav>
+        <a
+          href='mailto:info@metkish.com'
+          className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+        >
+          info@metkish.com ↗
+        </a>
+        <div className='mt-3 flex items-center gap-5'>
+          <a
+            href={INSTAGRAM_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Instagram'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <InstagramIcon className='h-5 w-5' />
+          </a>
+          <a
+            href={PINTEREST_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Pinterest'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <PinterestIcon className='h-5 w-5' />
+          </a>
+        </div>
+        <p className='mt-8 md:mt-9 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
+          © {new Date().getFullYear()} Metkish
+        </p>
+      </footer>
+    </div>
+  );
+}
