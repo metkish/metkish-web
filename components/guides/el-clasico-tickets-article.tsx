@@ -340,7 +340,7 @@ export default function ElClasicoTicketsArticle() {
                   'My father and brother have always been Barça fans. Then I met my husband, who turned out to be just as passionate about the club. And now our children have joined the tradition, especially our son.',
                   'My husband and I visited Barcelona about 13 years ago, when we also attended a match at Camp Nou. But this time, we wanted to experience something even more special — El Clásico, together with our children.',
                   'Our children had been asking to visit Barcelona for years, but my husband always insisted that we should wait until the renovated Camp Nou was finished.',
-                  "Eventually, we decided to plan a trip during the children's autumn school holidays in October 2026.",
+                  "Well, the stadium still isn't finished, but we eventually decided not to wait any longer and planned our trip during the children's autumn school holidays in October 2026.",
                   "And here's the funny part: we booked the trip before we even knew El Clásico would take place during our stay.",
                   "When the match schedule was announced, we couldn't believe our luck.",
                   'There was just one problem.',
