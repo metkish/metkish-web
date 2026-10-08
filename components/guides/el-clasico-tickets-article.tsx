@@ -258,66 +258,6 @@ function PriceComparison({
   );
 }
 
-const TIPS = [
-  {
-    lead: 'Research official ticket options first.',
-    rest: "Start with FC Barcelona's own ticketing website before considering resale platforms.",
-  },
-  {
-    lead: "Don't assume membership guarantees tickets.",
-    rest: 'It can provide presale access, but availability and pricing depend on the match.',
-  },
-  {
-    lead: 'Apply for membership early.',
-    rest: "Approval may take time, especially if you're registering several family members.",
-  },
-  {
-    lead: 'Install the FC Barcelona Members app.',
-    rest: "Enable push notifications, but don't rely on them as advance notice of ticket sales.",
-  },
-  {
-    lead: "Have everyone's membership details ready.",
-    rest: "Particularly if you're buying tickets for the whole family.",
-  },
-  {
-    lead: 'Be prepared for technical problems.',
-    rest: 'Having both a computer and phone available helped us complete our purchase.',
-  },
-  {
-    lead: 'Check every discount before paying.',
-    rest: "The system didn't apply the member discount to all four of our tickets.",
-  },
-  {
-    lead: 'Set a realistic budget.',
-    rest: 'El Clásico prices can be considerably higher than expected.',
-  },
-];
-
-// The practical-tips box the brief asks to present "in an easy-to-read
-// format" without looking like a generic marketing page: the same warm
-// cream practical-info panel the tenerife-editorial-system skill reserves
-// for objective, selective facts -- used here exactly as that skill
-// intends, not as a CTA card.
-function TipsBox() {
-  return (
-    <div className='rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-6 py-7 md:px-9 md:py-9'>
-      <ol className='space-y-4'>
-        {TIPS.map((tip, i) => (
-          <li key={i} className='flex gap-3'>
-            <span className='shrink-0 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40 pt-0.5'>
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <p className='text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80 leading-relaxed'>
-              <span className='font-medium text-black dark:text-white'>{tip.lead}</span>{' '}
-              {tip.rest}
-            </p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
 function BackLink() {
   return (
     <Link
@@ -615,7 +555,7 @@ export default function ElClasicoTicketsArticle() {
         </section>
 
         {/* WAS MEMBERSHIP WORTH IT */}
-        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
           <Reveal>
             <SectionHeading>Was FC Barcelona Membership Worth It?</SectionHeading>
             <div className='mt-6'>
@@ -680,65 +620,6 @@ export default function ElClasicoTicketsArticle() {
                 ]}
               />
             </div>
-          </Reveal>
-        </section>
-
-        {/* MY TIPS */}
-        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
-          <Reveal>
-            <SectionHeading>My Tips for Buying El Clásico Tickets</SectionHeading>
-            <div className='mt-6'>
-              <Paragraphs items={["Based on our experience, here's what I would recommend:"]} />
-            </div>
-          </Reveal>
-          <Reveal delay={0.05} className='mt-8 md:mt-9'>
-            <TipsBox />
-          </Reveal>
-        </section>
-
-        {/* WOULD WE DO IT AGAIN */}
-        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
-          <Reveal>
-            <SectionHeading>Would We Do It Again?</SectionHeading>
-            <div className='mt-6'>
-              <Paragraphs
-                items={[
-                  "I can't fully answer that question yet.",
-                  'We have the tickets. We have our trip planned. And we are finally going to see El Clásico together.',
-                  "Whether the experience will feel worth the enormous price is something I'll be able to tell you after the match.",
-                  'What I can say already is that getting tickets was far more stressful, confusing and expensive than I had imagined.',
-                  "But there's something special about the idea of four Barça fans, across two generations of our family, finally walking into Camp Nou together for El Clásico.",
-                ]}
-              />
-            </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Now we&apos;re just hoping for a Barcelona win.</Statement>
-            </Reveal>
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <div className='flex flex-col sm:flex-row gap-5'>
-              <div className='flex-1'>
-                <ImagePlaceholder caption='View from our seats' aspect='aspect-[4/3]' />
-              </div>
-              <div className='flex-1'>
-                <ImagePlaceholder caption='Match atmosphere' aspect='aspect-[4/3]' />
-              </div>
-            </div>
-          </Reveal>
-        </section>
-
-        {/* UPDATED AFTER OUR VISIT */}
-        <section className='max-w-2xl mx-auto pb-14 md:pb-16'>
-          <Reveal className='mx-auto max-w-xl rounded-[3px] border border-dashed border-black/15 dark:border-white/20 px-6 py-7 md:px-8 md:py-8 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Updated After Our Visit
-            </span>
-            <p className='mt-3 text-base italic font-[family-name:var(--font-playfair)] text-black/65 dark:text-white/65 leading-relaxed'>
-              We haven&apos;t been to the match yet. Our seats, the stadium
-              experience, the atmosphere and our own photographs will all be
-              added here after our visit, from 25 October 2026.
-            </p>
           </Reveal>
         </section>
 
