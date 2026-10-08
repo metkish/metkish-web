@@ -258,17 +258,6 @@ function PriceComparison({
   );
 }
 
-function BackLink() {
-  return (
-    <Link
-      href='/#guides'
-      className='inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white hover:underline underline-offset-4'
-    >
-      ← Back to Behind the Trip
-    </Link>
-  );
-}
-
 export default function ElClasicoTicketsArticle() {
   const [pastHero, setPastHero] = useState(false);
 
@@ -622,10 +611,6 @@ export default function ElClasicoTicketsArticle() {
             </div>
           </Reveal>
         </section>
-
-        <div className='max-w-2xl mx-auto pb-16 md:pb-20 text-center'>
-          <BackLink />
-        </div>
       </article>
 
       <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
