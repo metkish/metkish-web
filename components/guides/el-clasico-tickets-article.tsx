@@ -204,6 +204,60 @@ function PriceTable({
   );
 }
 
+// A second, distinct price treatment for comparing prices across time
+// (ours vs. three later public prices) rather than summing line items --
+// same cream card language as PriceTable, but a simple label/value list:
+// the member price we paid stands apart (a divider beneath it), the three
+// public prices read almost like a small timeline. Deliberately quiet --
+// no colour, no "deal" styling -- and the caveat note underneath exists
+// specifically so the comparison is never read as claiming those public
+// prices were on offer at the same moment we bought.
+function PriceComparison({
+  caption,
+  rows,
+  note,
+}: {
+  caption: string;
+  rows: { label: string; value: string; highlight?: boolean }[];
+  note?: string;
+}) {
+  return (
+    <div className='mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-6 py-7 md:px-8 md:py-8'>
+      <span className='block text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+        {caption}
+      </span>
+      <div className='mt-6 space-y-4'>
+        {rows.map((row, i) => (
+          <div
+            key={i}
+            className={`flex items-baseline justify-between gap-4 ${
+              row.highlight ? 'pb-4 border-b border-black/15 dark:border-white/15' : ''
+            }`}
+          >
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              {row.label}
+            </span>
+            <span
+              className={`font-[family-name:var(--font-playfair)] italic whitespace-nowrap ${
+                row.highlight
+                  ? 'text-2xl md:text-3xl font-medium text-black dark:text-white'
+                  : 'text-lg text-black/80 dark:text-white/80'
+              }`}
+            >
+              {row.value}
+            </span>
+          </div>
+        ))}
+      </div>
+      {note && (
+        <p className='mt-6 pt-5 border-t border-black/10 dark:border-white/10 text-center text-xs font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50 leading-relaxed'>
+          {note}
+        </p>
+      )}
+    </div>
+  );
+}
+
 const TIPS = [
   {
     lead: 'Research official ticket options first.',
@@ -342,10 +396,6 @@ export default function ElClasicoTicketsArticle() {
           />
         </Reveal>
 
-        <div className='max-w-2xl mx-auto mt-8 md:mt-10'>
-          <BackLink />
-        </div>
-
         {/* A FAMILY OF BARÇA FANS */}
         <section className='max-w-2xl mx-auto pt-14 md:pt-16 pb-12 md:pb-14'>
           <Reveal>
@@ -355,8 +405,7 @@ export default function ElClasicoTicketsArticle() {
                 items={[
                   'In our family, supporting FC Barcelona goes back generations.',
                   'My father and brother have always been Barça fans. Then I met my husband, who turned out to be just as passionate about the club. And now our children have joined the tradition, especially our son.',
-                  "For my husband's 30th birthday, I surprised him with tickets to a Barcelona match. That was our first trip to the city together.",
-                  'So, of course, there was one football experience we still wanted to have as a family: El Clásico.',
+                  'My husband and I visited Barcelona about 13 years ago, when we also attended a match at Camp Nou. But this time, we wanted to experience something even more special — El Clásico, together with our children.',
                   'Our children had been asking to visit Barcelona for years, but my husband always insisted that we should wait until the renovated Camp Nou was finished.',
                   "Eventually, we decided to plan a trip during the children's autumn school holidays in October 2026.",
                   "And here's the funny part: we booked the trip before we even knew El Clásico would take place during our stay.",
@@ -378,8 +427,7 @@ export default function ElClasicoTicketsArticle() {
                 items={[
                   'We knew El Clásico was one of the most sought-after football matches in the world. We had also seen how expensive tickets could become on resale websites.',
                   'And we needed four seats, ideally together.',
-                  'After researching our options, we decided that becoming official FC Barcelona members would give us the best chance of buying tickets directly from the club.',
-                  "It wasn't a cheap decision, especially for a family of four, but at the time it seemed like the safest option.",
+                  'After researching our options, we decided to become official FC Barcelona members, hoping it would give us a better chance of securing four tickets for El Clásico directly from the club.',
                 ]}
               />
             </div>
@@ -493,7 +541,6 @@ export default function ElClasicoTicketsArticle() {
                 items={[
                   'Before the sale, I had expected to pay somewhere between €300 and €400 per person.',
                   'That already seemed like a significant amount for a football match, especially when buying four tickets.',
-                  'We had seen prices advertised from around €500, so I knew my original expectations might have been optimistic.',
                   "But when I entered the presale, the cheaper categories weren't available to me.",
                   'The tickets I could see were around €900–€1,000 each.',
                   "I honestly couldn't believe it.",
@@ -525,6 +572,7 @@ export default function ElClasicoTicketsArticle() {
                   'The system recognised only three tickets as member tickets. The fourth was processed as a "+1" ticket, without the membership discount.',
                   "At that point, I wasn't going to risk losing all four tickets over a discount.",
                   'I completed the purchase.',
+                  'Only after purchasing our tickets did I discover that some El Clásico tickets had been advertised from around €500. Unfortunately, those options hadn\'t been available when I entered the presale.',
                 ]}
               />
             </div>
@@ -555,7 +603,7 @@ export default function ElClasicoTicketsArticle() {
                   'Yes, €3,810 for four football tickets and the memberships we purchased beforehand.',
                   "And that doesn't include flights, accommodation or any other travel expenses.",
                   'We received a 5% discount on three tickets, but not the fourth, even though all four of us were members.',
-                  "We've contacted the club to ask whether the missing discount can be reviewed.",
+                  "We've contacted FC Barcelona to ask about the missing €45 discount on that fourth ticket, but we haven't had a response yet.",
                 ]}
               />
             </div>
@@ -573,17 +621,62 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'This is where things get interesting.',
-                  'We became members because we believed it would give us a better chance of securing El Clásico tickets.',
-                  'And it did give us access to the member presale.',
-                  "But because ticket prices were so high, the demand wasn't quite what we had feared. Tickets were still available after our purchase.",
-                  'In our particular case, membership turned out to be less important for securing tickets than we had expected.',
-                  'And financially?',
-                  'We paid €338 for our family memberships and received €135 in ticket discounts.',
-                  'Even if the missing fourth discount is refunded, our total ticket savings would be €180.',
-                  'So if we look only at this one purchase, the membership fees were higher than the discounts we received.',
-                  'Of course, membership includes other benefits, and being part of the club means something to our family.',
-                  "But if you're considering becoming a member purely to save money on El Clásico tickets, I would think carefully before making that decision.",
+                  'When we decided to become FC Barcelona members, our main goal was simple: to increase our chances of getting four tickets for El Clásico.',
+                  'At the time, we had no idea how much of a difference membership would actually make.',
+                  'We paid €338 for our family memberships and €3,472 for four tickets, bringing our total to €3,810.',
+                  'At first, I wondered whether joining had really been necessary. Despite the high demand we had expected, tickets were still available after our purchase.',
+                  'But then I started checking the prices for non-members.',
+                  "And that's when things got interesting.",
+                ]}
+              />
+            </div>
+
+            <Reveal delay={0.05} className='mt-8 md:mt-9'>
+              <PriceComparison
+                caption='Ticket Price Comparison · 2nd Grandstand Upper'
+                rows={[
+                  { label: 'Our Member Price (before 5% discount)', value: '€899', highlight: true },
+                  { label: 'Public Price · Observed Later', value: '€1,699' },
+                  { label: 'Public Price · Observed Afterwards', value: '€1,849' },
+                  { label: 'Public Price · 8 October 2026', value: '€1,900' },
+                ]}
+                note='These are real prices we personally observed, each at a different point during the on-sale period -- not necessarily available at the same time as our own purchase or as each other.'
+              />
+            </Reveal>
+
+            <div className='mt-8 md:mt-9'>
+              <Paragraphs
+                items={[
+                  'The same 2nd Grandstand Upper category we had purchased for €899 per ticket was later advertised at €1,699 for non-members.',
+                  'Then the price increased to €1,849.',
+                  'By October 8, 2026, it had reached €1,900 per ticket.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>That&apos;s more than double the original price we paid before our additional membership discount.</Statement>
+            </Reveal>
+
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'For a family of four, the difference is enormous.',
+                  'What surprised me just as much was that tickets were still available so close to the match.',
+                  'I genuinely believe that at more affordable prices, El Clásico would have sold out much sooner. Instead, even these extremely expensive tickets were still being advertised as among the last available.',
+                  'So, was membership worth it?',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>For us, absolutely — especially when comparing our purchase with the later public prices.</Statement>
+            </Reveal>
+
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  "But there's an important distinction: membership didn't guarantee us tickets, and it didn't make the purchase process stress-free.",
+                  'It did, however, give us access to a significantly lower price than the non-member prices we saw afterwards.',
+                  "And looking at those prices now, I'm very glad we decided to join.",
                 ]}
               />
             </div>
