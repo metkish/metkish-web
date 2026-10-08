@@ -12,7 +12,7 @@ const LOGO_SRC = '/metkish-logo.png';
 const BOOKING_CONFIRMATION_SRC =
   '/Behind%20the%20trip/FC%20Barcelona%20booking%20confirmation%20-%20redacted.jpeg';
 const MEMBERSHIP_CONFIRMATION_SRC =
-  '/Behind%20the%20trip/FC%20Barcelona%20membership%20confirmation%20-%20redacted.jpeg';
+  '/Behind%20the%20trip/FC%20Barcelona%20membership%20confirmation%20-%20redacted-v2.jpeg';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 
 // Same fade-up-on-scroll rhythm used throughout the site (About, Italy,
