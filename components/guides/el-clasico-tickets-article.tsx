@@ -488,13 +488,10 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'Before the sale, I had expected to pay somewhere between €300 and €400 per person.',
-                  'That already seemed like a significant amount for a football match, especially when buying four tickets.',
-                  "But when I entered the presale, the cheaper categories weren't available to me.",
-                  'The tickets I could see were around €900–€1,000 each.',
+                  'Before the sale, I had expected to pay somewhere between €300 and €400 per person. Even that seemed like a significant amount for a football match, especially when buying four tickets.',
+                  'But when I entered the presale, the only options I could see were €899 and €999 per ticket.',
                   "I honestly couldn't believe it.",
-                  'For a moment, I wondered whether we should just forget the whole idea.',
-                  'But after months of planning, paying for memberships and finally having the opportunity to see El Clásico as a family, I was afraid that waiting would mean missing out completely.',
+                  'For a moment, I wondered whether we should just forget the whole idea. But after months of planning, paying for memberships, and finally having the opportunity to see El Clásico as a family, I was afraid that waiting would mean missing out completely.',
                 ]}
               />
             </div>
