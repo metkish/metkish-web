@@ -501,6 +501,25 @@ export default function ElClasicoTicketsArticle() {
                   'The system recognised only three tickets as member tickets. The fourth was processed as a "+1" ticket, without the membership discount.',
                   "At that point, I wasn't going to risk losing all four tickets over a discount.",
                   'I completed the purchase.',
+                  'After completing the purchase, I contacted FC Barcelona to ask whether the missing €45 membership discount could be refunded.',
+                  "Their response was clear: if membership credentials weren't successfully validated during the purchase, the discount could not be applied afterwards.",
+                  'So we lost the additional €45 discount, even though all four of us had active memberships.',
+                ]}
+              />
+            </div>
+
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <InlineTip>
+                My advice: Make sure every membership is correctly
+                recognised before completing your purchase. According to
+                the club&apos;s response, missing membership discounts
+                cannot be applied retroactively.
+              </InlineTip>
+            </Reveal>
+
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
                   'Only after purchasing our tickets did I discover that some El Clásico tickets had been advertised from around €500. Unfortunately, those options hadn\'t been available when I entered the presale.',
                 ]}
               />
@@ -532,7 +551,6 @@ export default function ElClasicoTicketsArticle() {
                   'Yes, €3,810 for four football tickets and the memberships we purchased beforehand.',
                   "And that doesn't include flights, accommodation or any other travel expenses.",
                   'We received a 5% discount on three tickets, but not the fourth, even though all four of us were members.',
-                  "We've contacted FC Barcelona to ask about the missing €45 discount on that fourth ticket, but we haven't had a response yet.",
                 ]}
               />
             </div>
