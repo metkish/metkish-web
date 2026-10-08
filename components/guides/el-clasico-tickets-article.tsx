@@ -611,9 +611,9 @@ export default function ElClasicoTicketsArticle() {
               <PriceComparison
                 caption='Ticket Price Comparison · 2nd Grandstand Upper'
                 rows={[
-                  { label: 'Our Member Price (before 5% discount)', value: '€899', highlight: true },
-                  { label: 'Public Price · Observed Later', value: '€1,699' },
-                  { label: 'Public Price · Observed Afterwards', value: '€1,849' },
+                  { label: 'Our Member Price (before 5% discount) · 29 September 2026', value: '€899', highlight: true },
+                  { label: 'Public Price · 30 September 2026', value: '€1,699' },
+                  { label: 'Public Price · 2 October 2026', value: '€1,849' },
                   { label: 'Public Price · 8 October 2026', value: '€1,900' },
                 ]}
                 note='These are real prices we personally observed, each at a different point during the on-sale period -- not necessarily available at the same time as our own purchase or as each other.'
