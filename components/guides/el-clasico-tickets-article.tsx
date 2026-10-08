@@ -9,6 +9,10 @@ import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 import { TimeStamp } from '@/components/journey/annotation-kit';
 
 const LOGO_SRC = '/metkish-logo.png';
+const BOOKING_CONFIRMATION_SRC =
+  '/Behind%20the%20trip/How%20to%20Get%20El%20Cl%C3%A1sico%20Tickets/FC%20Barcelona%20booking%20confirmation%20-%20redacted.jpeg';
+const MEMBERSHIP_CONFIRMATION_SRC =
+  '/Behind%20the%20trip/How%20to%20Get%20El%20Cl%C3%A1sico%20Tickets/FC%20Barcelona%20membership%20confirmation%20-%20redacted.jpeg';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 
 // Same fade-up-on-scroll rhythm used throughout the site (About, Italy,
@@ -372,6 +376,22 @@ export default function ElClasicoTicketsArticle() {
                 ]}
               />
             </div>
+
+            <Reveal delay={0.08} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
+              <div className='relative w-full overflow-hidden rounded-[2px] border border-black/10 dark:border-white/15 shadow-[0_2px_20px_rgba(0,0,0,0.08)]'>
+                <Image
+                  src={MEMBERSHIP_CONFIRMATION_SRC}
+                  alt='Our FC Barcelona membership confirmation email, with our name and membership number redacted.'
+                  width={651}
+                  height={481}
+                  className='w-full h-auto'
+                />
+              </div>
+              <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+                Our FC Barcelona membership confirmation, received on August 12, 2026.
+              </p>
+            </Reveal>
+
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
               <Statement>That&apos;s 16 days from application to approval.</Statement>
             </Reveal>
@@ -517,6 +537,21 @@ export default function ElClasicoTicketsArticle() {
               </InlineTip>
             </Reveal>
 
+            <Reveal delay={0.08} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
+              <div className='relative w-full overflow-hidden rounded-[2px] border border-black/10 dark:border-white/15 shadow-[0_2px_20px_rgba(0,0,0,0.08)]'>
+                <Image
+                  src={BOOKING_CONFIRMATION_SRC}
+                  alt='Our FC Barcelona ticket booking confirmation for four tickets to FC Barcelona vs Real Madrid, with membership numbers redacted.'
+                  width={1179}
+                  height={1934}
+                  className='w-full h-auto'
+                />
+              </div>
+              <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+                Our actual booking confirmation: four tickets, but only three membership discounts applied.
+              </p>
+            </Reveal>
+
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
@@ -556,9 +591,6 @@ export default function ElClasicoTicketsArticle() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <ImagePlaceholder caption='Ticket purchase confirmation, with personal information hidden' />
-          </Reveal>
         </section>
 
         {/* WAS MEMBERSHIP WORTH IT */}
