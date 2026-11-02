@@ -860,8 +860,6 @@ export default function ElClasicoTicketsArticle() {
                 items={[
                   'I understand supply and demand — El Clásico is one of the biggest matches in football, and clubs can keep charging these prices as long as people are willing to pay them.',
                   'But I still find it sad that attending a match like this has become something an average supporter may struggle to afford.',
-                  "Out of curiosity, I also checked ticket prices for Barcelona's upcoming match against Manchester City on December 8. Tickets in the same category were being offered for less than half of what we had paid for El Clásico.",
-                  "Of course, El Clásico is a different kind of match — but it still puts the price difference into perspective.",
                 ]}
               />
             </div>
