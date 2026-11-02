@@ -704,7 +704,7 @@ export default function ElClasicoTicketsArticle() {
               <Paragraphs
                 items={[
                   'Members receive a 10% discount on eligible purchases. But because our daughter had recently celebrated her birthday, she received a special voucher by email for 20% off a single purchase as a membership benefit.',
-                  'We used that voucher for one of our larger shopping trips and saved €170.80 on that transaction alone.',
+                  'We used the voucher on a larger purchase and saved €170.80 in one go.',
                   "And we weren't finished shopping.",
                   'We returned for smaller purchases another two or three times, using our membership benefits again.',
                   'Altogether, we saved more than €200 on Barça Store purchases.',
