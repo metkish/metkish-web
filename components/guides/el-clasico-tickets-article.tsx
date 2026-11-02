@@ -671,54 +671,6 @@ export default function ElClasicoTicketsArticle() {
           </Reveal>
         </section>
 
-        {/* SEAT ASSIGNMENTS */}
-        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
-          <Reveal delay={0.05}>
-            <Image
-              src={SEAT_ASSIGNMENTS_SRC}
-              alt='FC Barcelona El Clásico ticket showing our assigned seating section at Spotify Camp Nou.'
-              width={1071}
-              height={845}
-              className='w-full h-auto'
-            />
-            <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              Our assigned seats for El Clásico.
-            </p>
-          </Reveal>
-          <Reveal className='mt-10 md:mt-12'>
-            <SectionHeading>Our Seat Assignments – Not Quite What I Had Hoped For</SectionHeading>
-            <div className='mt-6'>
-              <Paragraphs
-                items={[
-                  'As the match approached, I started wondering where exactly our seats would be.',
-                  'When buying our tickets, we could only choose a seating category, not specific seats. Later, I noticed that tickets offered to non-members in the same category were being advertised as having some of the best available seating positions.',
-                  'That made me wonder whether those of us who had purchased earlier as members might end up with the less desirable seats.',
-                  'I noticed our assigned seat numbers two days before the match. And unfortunately, my concerns seemed justified.',
-                ]}
-              />
-            </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Our seats were almost in the corner of the stadium, as far from the centre of the pitch as you could get within our section.</Statement>
-            </Reveal>
-            <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
-              <Image
-                src={OUR_SEATS_PHOTO_SRC}
-                alt='Our empty seats in the corner section at El Clásico, before kick-off.'
-                width={4284}
-                height={5712}
-                className='w-full h-auto'
-              />
-            </Reveal>
-            <div className='mt-7 md:mt-8'>
-              <Paragraphs
-                items={[
-                  'And despite the enormous demand we had expected, tickets were still available just one day before El Clásico. The price for our category was €1,649 per ticket.',
-                ]}
-              />
-            </div>
-          </Reveal>
-        </section>
-
         {/* THE BARCA STORE */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
           <Reveal>
@@ -766,6 +718,54 @@ export default function ElClasicoTicketsArticle() {
               <Paragraphs
                 items={[
                   'Of course, we also spent far more in the stores than we had originally planned!',
+                ]}
+              />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* SEAT ASSIGNMENTS */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal delay={0.05}>
+            <Image
+              src={SEAT_ASSIGNMENTS_SRC}
+              alt='FC Barcelona El Clásico ticket showing our assigned seating section at Spotify Camp Nou.'
+              width={1071}
+              height={845}
+              className='w-full h-auto'
+            />
+            <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+              Our assigned seats for El Clásico.
+            </p>
+          </Reveal>
+          <Reveal className='mt-10 md:mt-12'>
+            <SectionHeading>Our Seat Assignments – Not Quite What I Had Hoped For</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'As the match approached, I started wondering where exactly our seats would be.',
+                  'When buying our tickets, we could only choose a seating category, not specific seats. Later, I noticed that tickets offered to non-members in the same category were being advertised as having some of the best available seating positions.',
+                  'That made me wonder whether those of us who had purchased earlier as members might end up with the less desirable seats.',
+                  'I noticed our assigned seat numbers two days before the match. And unfortunately, my concerns seemed justified.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>Our seats were almost in the corner of the stadium, as far from the centre of the pitch as you could get within our section.</Statement>
+            </Reveal>
+            <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
+              <Image
+                src={OUR_SEATS_PHOTO_SRC}
+                alt='Our empty seats in the corner section at El Clásico, before kick-off.'
+                width={4284}
+                height={5712}
+                className='w-full h-auto'
+              />
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'And despite the enormous demand we had expected, tickets were still available just one day before El Clásico. The price for our category was €1,649 per ticket.',
                 ]}
               />
             </div>
