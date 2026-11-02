@@ -15,6 +15,8 @@ const MEMBERSHIP_CONFIRMATION_SRC =
   '/Behind%20the%20trip/FC%20Barcelona%20membership%20confirmation%20-%20redacted-v2.jpeg';
 const HERO_PHOTO_SRC =
   '/Behind%20the%20trip/El%20Clasico%20hero%20-%20Spotify%20Camp%20Nou.jpeg';
+const SEAT_ASSIGNMENTS_SRC =
+  '/Behind%20the%20trip/El%20Clasico%20seat%20assignments.jpeg';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 const EL_CLASICO_REVENUE_SOURCE_URL =
   'https://www.mundodeportivo.com/futbol/fc-barcelona/20261026/1004243315/record-historico-taquilla-spotify-camp-nou-19-1-millones-clasico.html';
@@ -667,7 +669,19 @@ export default function ElClasicoTicketsArticle() {
 
         {/* SEAT ASSIGNMENTS */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
-          <Reveal>
+          <Reveal delay={0.05}>
+            <Image
+              src={SEAT_ASSIGNMENTS_SRC}
+              alt='FC Barcelona El Clásico ticket showing our assigned seating section at Spotify Camp Nou.'
+              width={1071}
+              height={845}
+              className='w-full h-auto'
+            />
+            <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+              Our assigned seats for El Clásico.
+            </p>
+          </Reveal>
+          <Reveal className='mt-10 md:mt-12'>
             <SectionHeading>Our Seat Assignments – Not Quite What I Had Hoped For</SectionHeading>
             <div className='mt-6'>
               <Paragraphs
