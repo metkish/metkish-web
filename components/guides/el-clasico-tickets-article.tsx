@@ -457,10 +457,6 @@ export default function ElClasicoTicketsArticle() {
               </InlineTip>
             </Reveal>
           </Reveal>
-
-          <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <ImagePlaceholder caption='Stadium exterior, or a membership-related photo' />
-          </Reveal>
         </section>
 
         {/* WAITING FOR THE PRESALE */}
