@@ -681,7 +681,7 @@ export default function ElClasicoTicketsArticle() {
                   'The day before El Clásico and on match day, the area around Camp Nou was unbelievably crowded.',
                   "The Barça Store was absolutely packed. And it wasn't just the stadium shop — we also visited two FC Barcelona stores in the city, where people were buying merchandise nonstop.",
                   'We certainly contributed to that.',
-                  "One thing that genuinely shocked us was the price of an official men's FC Barcelona jersey. We spotted one with a price tag of €194.99. We knew official football merchandise wasn't cheap, but seeing that price in the store still surprised us.",
+                  "An official FC Barcelona men's match jersey costs €194.99. We knew authentic football shirts were expensive, but we were still shocked by just how much they cost.",
                 ]}
               />
             </div>
