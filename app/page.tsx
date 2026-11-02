@@ -87,18 +87,25 @@ export default function Home() {
           ever leave.
         </p>
 
-        <div className='mt-16 pt-12 border-t border-black/10 dark:border-white/10 w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2'>
+        <div className='mt-16 pt-12 border-t border-black/10 dark:border-white/10 w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3'>
           {BEHIND_THE_TRIP_TOPICS.map((topic, index) => {
             const number = String(index + 1).padStart(2, '0');
-            const isRightColumn = index % 2 === 1;
-            // Row separator: never on the first entry; on mobile every
-            // entry stacks in one column, so entry 2 also needs a top
-            // border there (removed again at md, where it sits beside
-            // entry 1 instead of below it). From entry 3 on, the border
-            // marks a genuine new row at every breakpoint.
-            const rowBorder =
-              index === 0 ? '' : index === 1 ? 'border-t md:border-t-0' : 'border-t';
-            const columnBorder = isRightColumn ? 'md:border-l md:pl-10' : 'md:pr-10';
+            const isLast = index === BEHIND_THE_TRIP_TOPICS.length - 1;
+            // Mobile: every entry stacks in one column, so every entry
+            // after the first needs a top border to separate it from the
+            // one above. Desktop: entries sit side by side in three
+            // balanced columns instead, so that same border is cancelled
+            // (md:border-t-0) and replaced with a subtle vertical rule
+            // between columns (md:border-l) plus the matching side
+            // padding -- first column only needs right padding, the
+            // last only left padding, the middle one needs both.
+            const rowBorder = index === 0 ? '' : 'border-t md:border-t-0';
+            const columnBorder =
+              index === 0
+                ? 'md:pr-8'
+                : isLast
+                  ? 'md:border-l md:pl-8'
+                  : 'md:border-l md:px-8';
 
             return (
               <article
