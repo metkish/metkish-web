@@ -728,6 +728,108 @@ export default function ElClasicoTicketsArticle() {
             </div>
           </Reveal>
         </section>
+
+        {/* MATCH DAY */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>Match Day – The Experience We Had Been Waiting For</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'We arrived at Camp Nou around 5 PM, four hours before kick-off.',
+                  'The area around the stadium was already incredibly crowded. We bought hot dogs, the children had waffles, and with practically nowhere to sit, we ended up eating on the ground.',
+                  'The stadium gates opened at 7 PM, and we finally made our way inside.',
+                  'And then we waited for the match we had been looking forward to for months.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>Despite my disappointment with our seat location, seeing Camp Nou filling up and experiencing the atmosphere before El Clásico was something special.</Statement>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  "Unfortunately, the match didn't end the way we had hoped.",
+                  'The moment the final whistle blew, we left the stadium, completely disappointed.',
+                  'We have travelled home from football matches by metro many times before, but I had never experienced anything quite like this.',
+                  'The silence was extraordinary.',
+                  'Barcelona supporters were genuinely disappointed by the result. Hardly anyone was talking.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>After all the excitement, anticipation and money we had spent, that silent journey back felt like the final chapter of our El Clásico experience.</Statement>
+            </Reveal>
+          </Reveal>
+        </section>
+
+        {/* THE PART THAT DISAPPOINTED ME MOST */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>The Part That Disappointed Me Most</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'A few days after El Clásico, I came across an article about the record revenue FC Barcelona had generated from the match, including ticket sales and merchandise.',
+                  'And I have to admit, it left a bitter taste.',
+                  'We had travelled to Barcelona as a family because we love this club. Just like thousands of other supporters who travel from all over the world to watch their favourite team.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>But reading about those record earnings after paying what we had paid made me feel less like a supporter and more like a source of revenue.</Statement>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'I understand how supply and demand work. El Clásico is one of the biggest matches in football, and as long as people are willing to pay these prices, clubs can continue charging them.',
+                  'But I still find it sad that attending a match like this has become something an average supporter may struggle to afford.',
+                  "Out of curiosity, I also checked ticket prices for Barcelona's upcoming match against Manchester City on December 8. Tickets in the same category were being offered for less than half of what we had paid for El Clásico.",
+                  'Of course, El Clásico is a different kind of match. I understand that.',
+                  'Still, it puts the price difference into perspective.',
+                ]}
+              />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* WOULD WE DO IT AGAIN */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
+          <Reveal>
+            <SectionHeading>Would We Do It Again?</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  "That's a difficult question.",
+                  "Experiencing El Clásico together as a family was something truly special. Despite the disappointing result, it's a memory we'll always have.",
+                  "And no, losing the match hasn't made us any less passionate about FC Barcelona. We were back in front of the television cheering for our team at the very next game.",
+                ]}
+              />
+            </div>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'But the experience also changed the way I look at the business side of football.',
+                  'I understand that El Clásico is one of the most sought-after matches in the world. I understand supply and demand. But I still find it disappointing that an experience like this has become so expensive that many ordinary supporters simply cannot afford it.',
+                  "We haven't even decided whether we'll renew our FC Barcelona memberships.",
+                  'Financially, the memberships made sense for this particular trip. Between the ticket discounts and our purchases at the Barça Store, we recovered almost the entire membership cost.',
+                  "But whether we'll continue paying for them is another question.",
+                ]}
+              />
+            </div>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  "I'm grateful we had the opportunity to experience El Clásico together. I wouldn't trade that memory.",
+                  "At the same time, I can't ignore what this trip made me realise.",
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>The experience was priceless. The tickets certainly weren&apos;t.</Statement>
+            </Reveal>
+          </Reveal>
+        </section>
       </article>
 
       <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
