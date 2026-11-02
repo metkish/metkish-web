@@ -21,7 +21,12 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setPastHero(window.scrollY > window.innerHeight * 0.85);
+      // On mobile the icon should shrink almost immediately on scroll
+      // rather than waiting for most of the viewport height, since a
+      // phone's viewport height makes that threshold feel sluggish;
+      // desktop keeps the original viewport-relative threshold.
+      const isMobile = window.innerWidth < 768;
+      setPastHero(window.scrollY > (isMobile ? 32 : window.innerHeight * 0.85));
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
