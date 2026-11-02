@@ -103,7 +103,7 @@ function Statement({ children }: { children: ReactNode }) {
 // as the short centered reflective beats About uses.
 function Paragraphs({ items }: { items: string[] }) {
   return (
-    <div className='space-y-5'>
+    <div className='space-y-4'>
       {items.map((text, i) => (
         <p
           key={i}
