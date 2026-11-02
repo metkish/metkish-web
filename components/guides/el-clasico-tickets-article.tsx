@@ -128,6 +128,27 @@ function InlineTip({ children }: { children: ReactNode }) {
   );
 }
 
+// A short, numbered list of practical takeaways -- quiet editorial
+// treatment rather than a promotional box: no background, no border, just
+// a thin pink-ringed number (the site's "small accent only" rule) beside
+// body copy in the same type as every other paragraph on the page.
+function TakeawayList({ items }: { items: string[] }) {
+  return (
+    <ol className='space-y-4'>
+      {items.map((text, i) => (
+        <li key={i} className='flex gap-4'>
+          <span className='mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-pink-300 dark:border-pink-400/60 text-xs font-[family-name:var(--font-poppins)] font-semibold text-pink-500 dark:text-pink-300'>
+            {i + 1}
+          </span>
+          <span className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'>
+            {text}
+          </span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 // Elegant placeholder for a photograph that doesn't exist yet. Deliberately
 // reads as "a space held open for a real photo" -- cream background,
 // dashed border, quiet italic label -- never a stock or AI-generated
@@ -636,35 +657,28 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-8 md:mt-9'>
               <Paragraphs
                 items={[
-                  'Watching the price of the very same ticket category rise from €899 to €1,900 in just over a week was astonishing. These were prices I personally observed on different dates, not simultaneous offers.',
+                  'Watching the price of the very same ticket category climb from €899 to €1,900 in just over a week — more than double what we had paid — was astonishing. These were prices I personally observed on different dates, not simultaneous offers.',
                 ]}
               />
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>That&apos;s more than double the original price we paid before our additional membership discount.</Statement>
-            </Reveal>
 
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  'For a family of four, the difference is enormous.',
-                  'What surprised me just as much was that tickets were still available so close to the match.',
-                  'I genuinely believe that at more affordable prices, El Clásico would have sold out much sooner. Instead, even these extremely expensive tickets were still being advertised as among the last available.',
+                  "For a family of four, that difference would have been enormous. What surprised me just as much was that tickets were still available so close to the match — El Clásico, at these prices, still hadn't sold out.",
                   'So, was membership worth it?',
                 ]}
               />
             </div>
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>For us, absolutely — especially when comparing our purchase with the later public prices.</Statement>
+              <Statement>For us, absolutely.</Statement>
             </Reveal>
 
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  "But there's an important distinction: membership didn't guarantee us tickets, and it didn't make the purchase process stress-free.",
-                  'It did, however, give us access to a significantly lower price than the non-member prices we saw afterwards.',
-                  "And looking at those prices now, I'm very glad we decided to join.",
-                  "At that point, though, our conclusion was based purely on ticket prices — before we'd even set foot in Camp Nou. As it turned out, our memberships paid off again in a way we hadn't expected, through the discounts we received at the Barça Store.",
+                  "But there's an important distinction: membership didn't guarantee us tickets, and it didn't make the purchase process stress-free. It did, however, give us access to a significantly lower price than the non-member prices we saw afterwards.",
+                  "And looking at those prices now, I'm very glad we decided to join. As it turned out, our memberships paid off again in a way we hadn't expected, through the discounts we received at the Barça Store.",
                 ]}
               />
             </div>
@@ -703,11 +717,8 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  'Members receive a 10% discount on eligible purchases. But because our daughter had recently celebrated her birthday, she received a special voucher by email for 20% off a single purchase as a membership benefit.',
-                  'We used the voucher on a larger purchase and saved €170.80 in one go.',
-                  "And we weren't finished shopping.",
-                  'We returned for smaller purchases another two or three times, using our membership benefits again.',
-                  'Altogether, we saved more than €200 on Barça Store purchases.',
+                  "Members receive a 10% discount on eligible purchases. But because our daughter had recently celebrated her birthday, she received a special voucher by email for 20% off a single purchase as a membership benefit. We used the voucher on a larger purchase and saved €170.80 in one go.",
+                  "We weren't finished shopping, either — we returned for smaller purchases another two or three times, using our membership benefits again, and altogether saved more than €200 on Barça Store purchases.",
                 ]}
               />
             </div>
@@ -751,7 +762,7 @@ export default function ElClasicoTicketsArticle() {
               />
             </div>
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Our seats were almost in the corner of the stadium, as far from the centre of the pitch as you could get within our section.</Statement>
+              <Statement>Our seats weren&apos;t bad — but for €899 a ticket, I had expected to be closer to the centre of the pitch than near the corner of our section.</Statement>
             </Reveal>
             <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
               <Image
@@ -786,11 +797,14 @@ export default function ElClasicoTicketsArticle() {
               >
                 <source src={BARCA_ANTHEM_VIDEO_SRC} type='video/mp4' />
               </video>
+              <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+                The moment Camp Nou sang the Barça anthem.
+              </p>
             </Reveal>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  "Our seats weren't actually bad. I had simply expected us to be a little closer to the centre of the pitch rather than almost in the corner. But none of that mattered when the entire stadium started singing the Barça anthem. Hearing thousands of supporters singing together was absolutely incredible — one of those moments I'll never forget.",
+                  "None of that mattered once the entire stadium started singing the Barça anthem. Hearing thousands of supporters singing together was absolutely incredible — one of those moments I'll never forget.",
                 ]}
               />
             </div>
@@ -844,11 +858,35 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  'I understand how supply and demand work. El Clásico is one of the biggest matches in football, and as long as people are willing to pay these prices, clubs can continue charging them.',
+                  'I understand supply and demand — El Clásico is one of the biggest matches in football, and clubs can keep charging these prices as long as people are willing to pay them.',
                   'But I still find it sad that attending a match like this has become something an average supporter may struggle to afford.',
                   "Out of curiosity, I also checked ticket prices for Barcelona's upcoming match against Manchester City on December 8. Tickets in the same category were being offered for less than half of what we had paid for El Clásico.",
-                  'Of course, El Clásico is a different kind of match. I understand that.',
-                  'Still, it puts the price difference into perspective.',
+                  "Of course, El Clásico is a different kind of match — but it still puts the price difference into perspective.",
+                ]}
+              />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* WHAT I'D RECOMMEND */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>What I&apos;d Recommend If You&apos;re Planning to Buy El Clásico Tickets</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  "If you're planning to try for El Clásico tickets yourself, here's what I'd keep in mind, based on our own experience:",
+                ]}
+              />
+            </div>
+            <div className='mt-7 md:mt-8'>
+              <TakeawayList
+                items={[
+                  "Apply for FC Barcelona membership as early as possible. Our own approval took more than two weeks, and you don't want to still be waiting when ticket sales begin.",
+                  'Keep notifications on for the official FC Barcelona Members app. Our presale announcement arrived without warning, as a push notification on a random evening.',
+                  "Remember that a seat category doesn't guarantee a specific seat position. You can end up anywhere within that section, including near a corner.",
+                  "Double-check that every membership is correctly recognised before completing your purchase. Once payment goes through, a missed discount can't be added back afterwards.",
+                  'Be financially prepared for prices well above what you might expect. Ours ended up several times higher than we had originally budgeted.',
                 ]}
               />
             </div>
