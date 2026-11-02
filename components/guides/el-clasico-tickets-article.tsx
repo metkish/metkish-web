@@ -863,27 +863,10 @@ export default function ElClasicoTicketsArticle() {
               <Paragraphs
                 items={[
                   "That's a difficult question.",
-                  "Experiencing El Clásico together as a family was something truly special. Despite the disappointing result, it's a memory we'll always have.",
-                  "And no, losing the match hasn't made us any less passionate about FC Barcelona. We were back in front of the television cheering for our team at the very next game.",
-                ]}
-              />
-            </div>
-            <div className='mt-7 md:mt-8'>
-              <Paragraphs
-                items={[
-                  'But the experience also changed the way I look at the business side of football.',
-                  'I understand that El Clásico is one of the most sought-after matches in the world. I understand supply and demand. But I still find it disappointing that an experience like this has become so expensive that many ordinary supporters simply cannot afford it.',
-                  "We haven't even decided whether we'll renew our FC Barcelona memberships.",
-                  'Financially, the memberships made sense for this particular trip. Between the ticket discounts and our purchases at the Barça Store, we recovered almost the entire membership cost.',
-                  "But whether we'll continue paying for them is another question.",
-                ]}
-              />
-            </div>
-            <div className='mt-7 md:mt-8'>
-              <Paragraphs
-                items={[
-                  "I'm grateful we had the opportunity to experience El Clásico together. I wouldn't trade that memory.",
-                  "At the same time, I can't ignore what this trip made me realise.",
+                  "Experiencing El Clásico together as a family was something special, even if the result wasn't what we had hoped for. It's a memory we'll always have.",
+                  "We're still Barça supporters, of course. We were back in front of the television cheering for our team at the very next match.",
+                  "But we haven't decided whether we'll renew our FC Barcelona memberships. Financially, they paid off on this trip, but whether we'll continue paying for them is another question.",
+                  "Would I go again? Maybe. But after this experience, I'd certainly think twice about how much I'd be willing to spend.",
                 ]}
               />
             </div>
