@@ -892,7 +892,7 @@ export default function ElClasicoTicketsArticle() {
         </section>
 
         {/* WOULD WE DO IT AGAIN */}
-        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-16 md:pb-20'>
           <Reveal>
             <SectionHeading>Would We Do It Again?</SectionHeading>
             <div className='mt-6'>
