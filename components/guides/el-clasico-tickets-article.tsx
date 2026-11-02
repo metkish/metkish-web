@@ -35,17 +35,27 @@ function Reveal({
   children,
   className,
   delay = 0,
+  amount = 0.3,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
+  // Fraction of this element's own height that must be visible before it
+  // reveals. The default (0.3) works for the article's typical short
+  // blocks, but a very tall block -- taller than roughly 3.3x the
+  // viewport -- can never satisfy a 30% visibility requirement on a short
+  // mobile viewport, so whileInView never fires and the content stays
+  // invisible forever. Call sites wrapping an unusually tall block should
+  // pass a lower amount (e.g. 0, meaning "as soon as any part is
+  // visible") so the reveal isn't tied to viewport height at all.
+  amount?: number;
 }) {
   return (
     <motion.div
       className={className}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount }}
       transition={{ duration: 0.6, delay }}
     >
       {children}
@@ -304,7 +314,12 @@ export default function ElClasicoTicketsArticle() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setPastHero(window.scrollY > window.innerHeight * 0.5);
+      // On mobile the icon should shrink almost immediately on scroll
+      // rather than waiting for half the viewport height, since a phone's
+      // viewport height makes that threshold feel sluggish; desktop keeps
+      // the original viewport-relative threshold.
+      const isMobile = window.innerWidth < 768;
+      setPastHero(window.scrollY > (isMobile ? 32 : window.innerHeight * 0.5));
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -539,8 +554,15 @@ export default function ElClasicoTicketsArticle() {
         </section>
 
         {/* BUYING FOUR TICKETS */}
+        {/* This section's content (heading through the price table) is
+            unusually long -- by far the tallest single Reveal-wrapped
+            block in the article. At the default amount=0.3, the required
+            30%-visible threshold exceeds a typical mobile viewport height,
+            so whileInView never fires and the whole section stays
+            invisible on mobile. amount={0} makes it reveal as soon as any
+            part scrolls into view, independent of its height. */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
-          <Reveal>
+          <Reveal amount={0}>
             <SectionHeading>Buying Four Tickets Wasn&apos;t as Easy as Expected</SectionHeading>
             <div className='mt-6'>
               <Paragraphs
