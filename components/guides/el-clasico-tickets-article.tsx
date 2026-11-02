@@ -789,9 +789,13 @@ export default function ElClasicoTicketsArticle() {
                 <source src={BARCA_ANTHEM_VIDEO_SRC} type='video/mp4' />
               </video>
             </Reveal>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Our seats weren&apos;t actually bad. I had simply expected us to be a little closer to the centre of the pitch rather than almost in the corner. But none of that mattered when the entire stadium started singing the Barça anthem. Hearing thousands of supporters singing together was absolutely incredible — one of those moments I&apos;ll never forget.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  "Our seats weren't actually bad. I had simply expected us to be a little closer to the centre of the pitch rather than almost in the corner. But none of that mattered when the entire stadium started singing the Barça anthem. Hearing thousands of supporters singing together was absolutely incredible — one of those moments I'll never forget.",
+                ]}
+              />
+            </div>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
