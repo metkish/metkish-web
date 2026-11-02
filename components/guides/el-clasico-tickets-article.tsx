@@ -766,7 +766,7 @@ export default function ElClasicoTicketsArticle() {
               />
             </div>
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Our seats weren&apos;t bad — but for €899 a ticket, I had expected to be closer to the centre of the pitch than near the corner of our section.</Statement>
+              <Statement>Our seats weren&apos;t bad, but even though these were among the cheaper tickets available, €899 per person is still a premium price. And for that kind of money, I think it&apos;s reasonable to expect a more central view of the pitch.</Statement>
             </Reveal>
             <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
               <Image
