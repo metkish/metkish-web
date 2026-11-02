@@ -726,21 +726,21 @@ export default function ElClasicoTicketsArticle() {
 
         {/* SEAT ASSIGNMENTS */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
-          <Reveal delay={0.05}>
-            <Image
-              src={SEAT_ASSIGNMENTS_SRC}
-              alt='FC Barcelona El Clásico ticket showing our assigned seating section at Spotify Camp Nou.'
-              width={1071}
-              height={845}
-              className='w-full h-auto'
-            />
-            <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              Our assigned seats for El Clásico.
-            </p>
-          </Reveal>
-          <Reveal className='mt-10 md:mt-12'>
+          <Reveal>
             <SectionHeading>Our Seat Assignments – Not Quite What I Had Hoped For</SectionHeading>
-            <div className='mt-6'>
+            <Reveal delay={0.05} className='mt-8 md:mt-9'>
+              <Image
+                src={SEAT_ASSIGNMENTS_SRC}
+                alt='FC Barcelona El Clásico ticket showing our assigned seating section at Spotify Camp Nou.'
+                width={1071}
+                height={845}
+                className='w-full h-auto'
+              />
+              <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+                Our assigned seats for El Clásico.
+              </p>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
                   'As the match approached, I started wondering where exactly our seats would be.',
