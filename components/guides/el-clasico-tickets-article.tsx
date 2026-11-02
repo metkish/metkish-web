@@ -597,8 +597,6 @@ export default function ElClasicoTicketsArticle() {
               <Paragraphs
                 items={[
                   'Yes, €3,810 for four football tickets and the memberships we purchased beforehand.',
-                  "And that doesn't include flights, accommodation or any other travel expenses.",
-                  'We received a 5% discount on three tickets, but not the fourth, even though all four of us were members.',
                 ]}
               />
             </div>
