@@ -126,7 +126,7 @@ export default function Home() {
                 </p>
                 <Link
                   href={`/behind-the-trip/${topic.slug}`}
-                  className='mt-6 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+                  className='mt-auto pt-6 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
                 >
                   Read →
                 </Link>
