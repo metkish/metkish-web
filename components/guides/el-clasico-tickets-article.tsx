@@ -552,7 +552,7 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  'Only after purchasing our tickets did I discover that some El Clásico tickets had been advertised from around €500. Unfortunately, those options hadn\'t been available when I entered the presale.',
+                  "Only after purchasing our tickets did I discover that some El Clásico tickets had been advertised from around €500. Until then, I hadn't even known that cheaper categories existed. The only prices I had seen during the presale were €899 and €999.",
                 ]}
               />
             </div>
@@ -599,7 +599,6 @@ export default function ElClasicoTicketsArticle() {
                 items={[
                   'When we decided to become FC Barcelona members, our main goal was simple: to increase our chances of getting four tickets for El Clásico.',
                   'At the time, we had no idea how much of a difference membership would actually make.',
-                  'We paid €338 for our family memberships and €3,472 for four tickets, bringing our total to €3,810.',
                   'At first, I wondered whether joining had really been necessary. Despite the high demand we had expected, tickets were still available after our purchase.',
                   'But then I started checking the prices for non-members.',
                   "And that's when things got interesting.",
@@ -623,9 +622,7 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-8 md:mt-9'>
               <Paragraphs
                 items={[
-                  'The same 2nd Grandstand Upper category we had purchased for €899 per ticket was later advertised at €1,699 for non-members.',
-                  'Then the price increased to €1,849.',
-                  'By October 8, 2026, it had reached €1,900 per ticket.',
+                  'Watching the price of the very same ticket category rise from €899 to €1,900 in just over a week was astonishing. These were prices I personally observed on different dates, not simultaneous offers.',
                 ]}
               />
             </div>
