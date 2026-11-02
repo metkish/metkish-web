@@ -547,9 +547,13 @@ export default function ElClasicoTicketsArticle() {
                 ]}
               />
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>So I decided to buy them. Even though the price felt absurd.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'So I decided to buy them. Even though the price felt absurd.',
+                ]}
+              />
+            </div>
           </Reveal>
         </section>
 
@@ -733,9 +737,13 @@ export default function ElClasicoTicketsArticle() {
                 €194.99 for an official FC Barcelona men&apos;s jersey.
               </p>
             </Reveal>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>We spent quite a lot of money on FC Barcelona merchandise, but our memberships also helped us save a surprising amount.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'We spent quite a lot of money on FC Barcelona merchandise, but our memberships also helped us save a surprising amount.',
+                ]}
+              />
+            </div>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
@@ -787,9 +795,13 @@ export default function ElClasicoTicketsArticle() {
                 ]}
               />
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Our seats weren&apos;t bad, but even though these were among the cheaper tickets available, €899 per person is still a premium price. And for that kind of money, I think it&apos;s reasonable to expect a more central view of the pitch.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  "Our seats weren't bad, but even though these were among the cheaper tickets available, €899 per person is still a premium price. And for that kind of money, I think it's reasonable to expect a more central view of the pitch.",
+                ]}
+              />
+            </div>
             <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
               <Image
                 src={OUR_SEATS_PHOTO_SRC}
@@ -845,9 +857,13 @@ export default function ElClasicoTicketsArticle() {
                 ]}
               />
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>After all the excitement, anticipation and money we had spent, that silent journey back felt like the final chapter of our El Clásico experience.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'After all the excitement, anticipation and money we had spent, that silent journey back felt like the final chapter of our El Clásico experience.',
+                ]}
+              />
+            </div>
           </Reveal>
         </section>
 
@@ -878,9 +894,13 @@ export default function ElClasicoTicketsArticle() {
                 />
               </div>
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>But after everything we had spent, reading about those record earnings made me feel less like a supporter and more like a source of revenue.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'But after everything we had spent, reading about those record earnings made me feel less like a supporter and more like a source of revenue.',
+                ]}
+              />
+            </div>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
