@@ -448,9 +448,13 @@ export default function ElClasicoTicketsArticle() {
               </p>
             </Reveal>
 
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>That&apos;s 16 days from application to approval.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  "That's 16 days from application to approval.",
+                ]}
+              />
+            </div>
             <div className='mt-7 md:mt-8'>
               <Paragraphs items={['Once our memberships were approved, we paid the membership fees.']} />
             </div>
@@ -696,9 +700,13 @@ export default function ElClasicoTicketsArticle() {
                 ]}
               />
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>For us, absolutely.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'For us, absolutely.',
+                ]}
+              />
+            </div>
 
             <div className='mt-7 md:mt-8'>
               <Paragraphs
