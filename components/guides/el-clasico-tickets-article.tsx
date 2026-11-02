@@ -21,6 +21,8 @@ const OUR_SEATS_PHOTO_SRC =
   '/Behind%20the%20trip/El%20Clasico%20our%20seats.jpeg';
 const MENS_JERSEY_PRICE_SRC =
   '/Behind%20the%20trip/El%20Clasico%20mens%20jersey%20price.jpeg';
+const BARCA_ANTHEM_VIDEO_SRC =
+  '/Behind%20the%20trip/El%20Clasico%20Barca%20anthem.mp4';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 const EL_CLASICO_REVENUE_SOURCE_URL =
   'https://www.mundodeportivo.com/futbol/fc-barcelona/20261026/1004243315/record-historico-taquilla-spotify-camp-nou-19-1-millones-clasico.html';
@@ -776,18 +778,19 @@ export default function ElClasicoTicketsArticle() {
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
           <Reveal>
             <SectionHeading>Match Day – The Experience We Had Been Waiting For</SectionHeading>
-            <div className='mt-6'>
-              <Paragraphs
-                items={[
-                  'We arrived at Camp Nou around 5 PM, four hours before kick-off.',
-                  'The area around the stadium was already incredibly crowded. We bought hot dogs, the children had waffles, and with practically nowhere to sit, we ended up eating on the ground.',
-                  'The stadium gates opened at 7 PM, and we finally made our way inside.',
-                  'And then we waited for the match we had been looking forward to for months.',
-                ]}
-              />
-            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8 max-w-[430px] mx-auto'>
+              <video
+                controls
+                playsInline
+                preload='metadata'
+                className='w-full h-auto'
+                style={{ aspectRatio: '1080 / 1920' }}
+              >
+                <source src={BARCA_ANTHEM_VIDEO_SRC} type='video/mp4' />
+              </video>
+            </Reveal>
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Despite my disappointment with our seat location, seeing Camp Nou filling up and experiencing the atmosphere before El Clásico was something special.</Statement>
+              <Statement>Our seats weren&apos;t actually bad. I had simply expected us to be a little closer to the centre of the pitch rather than almost in the corner. But none of that mattered when the entire stadium started singing the Barça anthem. Hearing thousands of supporters singing together was absolutely incredible — one of those moments I&apos;ll never forget.</Statement>
             </Reveal>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
