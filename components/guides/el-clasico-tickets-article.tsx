@@ -650,6 +650,79 @@ export default function ElClasicoTicketsArticle() {
                   "But there's an important distinction: membership didn't guarantee us tickets, and it didn't make the purchase process stress-free.",
                   'It did, however, give us access to a significantly lower price than the non-member prices we saw afterwards.',
                   "And looking at those prices now, I'm very glad we decided to join.",
+                  "At that point, though, our conclusion was based purely on ticket prices — before we'd even set foot in Camp Nou. As it turned out, our memberships paid off again in a way we hadn't expected, through the discounts we received at the Barça Store.",
+                ]}
+              />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* SEAT ASSIGNMENTS */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
+          <Reveal>
+            <SectionHeading>Our Seat Assignments – Not Quite What I Had Hoped For</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'As the match approached, I started wondering where exactly our seats would be.',
+                  'When buying our tickets, we could only choose a seating category, not specific seats. Later, I noticed that tickets offered to non-members in the same category were being advertised as having some of the best available seating positions.',
+                  'That made me wonder whether those of us who had purchased earlier as members might end up with the less desirable seats.',
+                  'I noticed our assigned seat numbers two days before the match. And unfortunately, my concerns seemed justified.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>Our seats were almost in the corner of the stadium, as far from the centre of the pitch as you could get within our section.</Statement>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'Considering how much we had paid, I was disappointed.',
+                  "Another interesting detail was that our entry QR codes only became available a few hours before kick-off. So although we knew our seat numbers in advance, we couldn't access the actual entry codes until match day.",
+                  'And despite the enormous demand we had expected, tickets were still available just one day before El Clásico. The price for our category was €1,649 per ticket.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>After all the stress of securing four tickets, I hadn&apos;t expected that.</Statement>
+            </Reveal>
+          </Reveal>
+        </section>
+
+        {/* THE BARCA STORE */}
+        <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
+          <Reveal>
+            <SectionHeading>The Barça Store – Where Our Memberships Really Paid Off</SectionHeading>
+            <div className='mt-6'>
+              <Paragraphs
+                items={[
+                  'The day before El Clásico and on match day, the area around Camp Nou was unbelievably crowded.',
+                  "The Barça Store was absolutely packed. And it wasn't just the stadium shop — we also visited two FC Barcelona stores in the city, where people were buying merchandise nonstop.",
+                  'We certainly contributed to that.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>We spent quite a lot of money on FC Barcelona merchandise, but our memberships also helped us save a surprising amount.</Statement>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'Members receive a 10% discount on eligible purchases. But because our daughter had recently celebrated her birthday, she received a special voucher by email for 20% off a single purchase as a membership benefit.',
+                  'We used that voucher for one of our larger shopping trips and saved €170.80 on that transaction alone.',
+                  "And we weren't finished shopping.",
+                  'We returned for smaller purchases another two or three times, using our membership benefits again.',
+                  'Altogether, we saved more than €200 on Barça Store purchases.',
+                ]}
+              />
+            </div>
+            <Reveal delay={0.05} className='mt-7 md:mt-8'>
+              <Statement>Considering that our four memberships had cost €338 in total, those shopping discounts — combined with the €135 ticket discount — practically covered the entire membership cost.</Statement>
+            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'Of course, we also spent far more in the stores than we had originally planned!',
                 ]}
               />
             </div>
