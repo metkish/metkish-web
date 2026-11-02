@@ -451,12 +451,9 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  "That's 16 days from application to approval.",
+                  "That's 16 days from application to approval. Once our memberships were approved, we paid the membership fees.",
                 ]}
               />
-            </div>
-            <div className='mt-7 md:mt-8'>
-              <Paragraphs items={['Once our memberships were approved, we paid the membership fees.']} />
             </div>
 
             <SubHeading>How Much Does FC Barcelona Membership Cost?</SubHeading>
