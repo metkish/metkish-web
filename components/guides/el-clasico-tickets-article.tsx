@@ -14,6 +14,8 @@ const BOOKING_CONFIRMATION_SRC =
 const MEMBERSHIP_CONFIRMATION_SRC =
   '/Behind%20the%20trip/FC%20Barcelona%20membership%20confirmation%20-%20redacted-v2.jpeg';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
+const EL_CLASICO_REVENUE_SOURCE_URL =
+  'https://www.mundodeportivo.com/futbol/fc-barcelona/20261026/1004243315/record-historico-taquilla-spotify-camp-nou-19-1-millones-clasico.html';
 
 // Same fade-up-on-scroll rhythm used throughout the site (About, Italy,
 // Tenerife): once-only, generous viewport threshold, no bounce. Duplicated
@@ -768,16 +770,30 @@ export default function ElClasicoTicketsArticle() {
           <Reveal>
             <SectionHeading>The Part That Disappointed Me Most</SectionHeading>
             <div className='mt-6'>
-              <Paragraphs
-                items={[
-                  'A few days after El Clásico, I came across an article about the record revenue FC Barcelona had generated from the match, including ticket sales and merchandise.',
-                  'And I have to admit, it left a bitter taste.',
-                  'We had travelled to Barcelona as a family because we love this club. Just like thousands of other supporters who travel from all over the world to watch their favourite team.',
-                ]}
-              />
+              <p className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'>
+                A few days after El Clásico, I came across a report in{' '}
+                <a
+                  href={EL_CLASICO_REVENUE_SOURCE_URL}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='underline underline-offset-4 text-black dark:text-white hover:text-black/70 dark:hover:text-white/70'
+                >
+                  Mundo Deportivo
+                </a>{' '}
+                about the record revenue FC Barcelona had generated from the match.
+              </p>
+              <div className='mt-5'>
+                <Paragraphs
+                  items={[
+                    'According to the report, the club had earned approximately €19.1 million from ticket sales alone — a new record, even though attendance was slightly lower than at the previous El Clásico. The average ticket price was reportedly €984, excluding VAT, while the Barça Store at the stadium reportedly brought in more than €800,000 over the two days around the match.',
+                    'And I have to admit, reading those numbers left a bitter taste.',
+                    'We had travelled to Barcelona as a family because we love this club. Just like thousands of other supporters who travel from all over the world to watch their favourite team.',
+                  ]}
+                />
+              </div>
             </div>
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>But reading about those record earnings after paying what we had paid made me feel less like a supporter and more like a source of revenue.</Statement>
+              <Statement>But after everything we had spent, reading about those record earnings made me feel less like a supporter and more like a source of revenue.</Statement>
             </Reveal>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
