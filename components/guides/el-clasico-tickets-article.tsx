@@ -13,6 +13,8 @@ const BOOKING_CONFIRMATION_SRC =
   '/Behind%20the%20trip/FC%20Barcelona%20booking%20confirmation%20-%20redacted.jpeg';
 const MEMBERSHIP_CONFIRMATION_SRC =
   '/Behind%20the%20trip/FC%20Barcelona%20membership%20confirmation%20-%20redacted-v2.jpeg';
+const HERO_PHOTO_SRC =
+  '/Behind%20the%20trip/El%20Clasico%20hero%20-%20Spotify%20Camp%20Nou.jpeg';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 const EL_CLASICO_REVENUE_SOURCE_URL =
   'https://www.mundodeportivo.com/futbol/fc-barcelona/20261026/1004243315/record-historico-taquilla-spotify-camp-nou-19-1-millones-clasico.html';
@@ -324,11 +326,19 @@ export default function ElClasicoTicketsArticle() {
         </header>
 
         <Reveal className='max-w-3xl mx-auto'>
-          <ImagePlaceholder
-            caption='Hero photo — Spotify Camp Nou, to be added after our visit'
-            aspect='aspect-[16/9]'
-            large
-          />
+          <div className='relative w-full overflow-hidden rounded-[2px] border border-black/10 dark:border-white/15 shadow-[0_2px_20px_rgba(0,0,0,0.08)]'>
+            <Image
+              src={HERO_PHOTO_SRC}
+              alt='Our view of Spotify Camp Nou from our €899 seats at El Clásico in October 2026.'
+              width={5712}
+              height={4284}
+              className='w-full h-auto'
+              priority
+            />
+          </div>
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Our view from the €899 seats at El Clásico.
+          </p>
         </Reveal>
 
         {/* A FAMILY OF BARÇA FANS */}
