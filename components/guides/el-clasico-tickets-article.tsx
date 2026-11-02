@@ -766,7 +766,7 @@ export default function ElClasicoTicketsArticle() {
               />
             </div>
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Our seats weren&apos;t bad — but for €899 a ticket, I had expected to be closer to the centre of the pitch than near the corner of our section.</Statement>
+              <Statement>Our seats weren&apos;t bad, but even though these were among the cheaper tickets available, €899 per person is still a premium price. And for that kind of money, I think it&apos;s reasonable to expect a more central view of the pitch.</Statement>
             </Reveal>
             <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
               <Image
@@ -908,7 +908,7 @@ export default function ElClasicoTicketsArticle() {
                   "As for our FC Barcelona memberships, they made financial sense for this particular trip. Between the ticket discounts and our purchases at the Barça Store, we saved enough to cover practically the entire membership cost.",
                   "But I think membership makes the most sense if you're planning to attend several matches. We went to just one, and we don't know when we'll have the opportunity to go again.",
                   "Would I keep paying for membership simply to support the club? I'm not so sure. After seeing the ticket prices and reading about the record revenue from El Clásico, it's difficult to shake the feeling that football has become more about money than the supporters who love it.",
-                  "Would we go to El Clásico again? Absolutely. It's the kind of match every Barça supporter dreams of experiencing. But with ticket prices already this high, I can only imagine what they'll cost in the future. And one thing is certain: as much as we love Barça, we wouldn't pay this kind of money for tickets again.",
+                  "Would we go to El Clásico again? Absolutely. It's the kind of match every Barça supporter dreams of experiencing. But with ticket prices already this high, I can't help wondering: how much more expensive can they possibly get? And at what point does a match like this become something only a privileged few can afford?",
                 ]}
               />
             </div>
