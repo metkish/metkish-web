@@ -722,9 +722,13 @@ export default function ElClasicoTicketsArticle() {
                 ]}
               />
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>Considering that our four memberships had cost €338 in total, those shopping discounts — combined with the €135 ticket discount — practically covered the entire membership cost.</Statement>
-            </Reveal>
+            <div className='mt-7 md:mt-8'>
+              <Paragraphs
+                items={[
+                  'Considering that our four memberships had cost €338 in total, those shopping discounts — combined with the €135 ticket discount — practically covered the entire membership cost.',
+                ]}
+              />
+            </div>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
