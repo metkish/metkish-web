@@ -17,6 +17,8 @@ const HERO_PHOTO_SRC =
   '/Behind%20the%20trip/El%20Clasico%20hero%20-%20Spotify%20Camp%20Nou.jpeg';
 const SEAT_ASSIGNMENTS_SRC =
   '/Behind%20the%20trip/El%20Clasico%20seat%20assignments.jpeg';
+const OUR_SEATS_PHOTO_SRC =
+  '/Behind%20the%20trip/El%20Clasico%20our%20seats.jpeg';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 const EL_CLASICO_REVENUE_SOURCE_URL =
   'https://www.mundodeportivo.com/futbol/fc-barcelona/20261026/1004243315/record-historico-taquilla-spotify-camp-nou-19-1-millones-clasico.html';
@@ -696,18 +698,22 @@ export default function ElClasicoTicketsArticle() {
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
               <Statement>Our seats were almost in the corner of the stadium, as far from the centre of the pitch as you could get within our section.</Statement>
             </Reveal>
+            <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
+              <Image
+                src={OUR_SEATS_PHOTO_SRC}
+                alt='Our empty seats in the corner section at El Clásico, before kick-off.'
+                width={4284}
+                height={5712}
+                className='w-full h-auto'
+              />
+            </Reveal>
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  'Considering how much we had paid, I was disappointed.',
-                  "Another interesting detail was that our entry QR codes only became available a few hours before kick-off. So although we knew our seat numbers in advance, we couldn't access the actual entry codes until match day.",
                   'And despite the enormous demand we had expected, tickets were still available just one day before El Clásico. The price for our category was €1,649 per ticket.',
                 ]}
               />
             </div>
-            <Reveal delay={0.05} className='mt-7 md:mt-8'>
-              <Statement>After all the stress of securing four tickets, I hadn&apos;t expected that.</Statement>
-            </Reveal>
           </Reveal>
         </section>
 
