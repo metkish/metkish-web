@@ -899,10 +899,12 @@ export default function ElClasicoTicketsArticle() {
               <Paragraphs
                 items={[
                   "That's a difficult question.",
-                  "Experiencing El Clásico together as a family was something special, even if the result wasn't what we had hoped for. It's a memory we'll always have.",
-                  "We're still Barça supporters, of course. We were back in front of the television cheering for our team at the very next match.",
-                  "But we haven't decided whether we'll renew our FC Barcelona memberships. Financially, they paid off on this trip, but whether we'll continue paying for them is another question.",
-                  "Would I go again? Maybe. But after this experience, I'd certainly think twice about how much I'd be willing to spend.",
+                  "Experiencing El Clásico together as a family was something truly special. Even though the result wasn't what we had hoped for, it's a memory we'll always have.",
+                  "And despite the disappointing result and the extraordinary ticket prices, our love for Barça hasn't changed. We're still just as passionate about the club as we were before.",
+                  "As for our FC Barcelona memberships, they made financial sense for this particular trip. Between the ticket discounts and our purchases at the Barça Store, we saved enough to cover practically the entire membership cost.",
+                  "But I think membership makes the most sense if you're planning to attend several matches. We went to just one, and we don't know when we'll have the opportunity to go again.",
+                  "Would I keep paying for membership simply to support the club? I'm not so sure. After seeing the ticket prices and reading about the record revenue from El Clásico, it's difficult to shake the feeling that football has become more about money than the supporters who love it.",
+                  "Would we go to El Clásico again? Absolutely. It's the kind of match every Barça supporter dreams of experiencing. But with ticket prices already this high, I can only imagine what they'll cost in the future. And one thing is certain: as much as we love Barça, we wouldn't pay this kind of money for tickets again.",
                 ]}
               />
             </div>
