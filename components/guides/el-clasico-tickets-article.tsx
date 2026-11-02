@@ -869,11 +869,11 @@ export default function ElClasicoTicketsArticle() {
         {/* WHAT I'D RECOMMEND */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
           <Reveal>
-            <SectionHeading>What I&apos;d Recommend If You&apos;re Planning to Buy El Clásico Tickets</SectionHeading>
+            <SectionHeading>What I&apos;d Recommend If You&apos;re Buying El Clásico Tickets as an FC Barcelona Member</SectionHeading>
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "If you're planning to try for El Clásico tickets yourself, here's what I'd keep in mind, based on our own experience:",
+                  "If you're planning to buy El Clásico tickets through FC Barcelona membership, here are five things I'd recommend based on our experience:",
                 ]}
               />
             </div>
