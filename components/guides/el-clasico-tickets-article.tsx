@@ -19,6 +19,8 @@ const SEAT_ASSIGNMENTS_SRC =
   '/Behind%20the%20trip/El%20Clasico%20seat%20assignments.jpeg';
 const OUR_SEATS_PHOTO_SRC =
   '/Behind%20the%20trip/El%20Clasico%20our%20seats.jpeg';
+const MENS_JERSEY_PRICE_SRC =
+  '/Behind%20the%20trip/El%20Clasico%20mens%20jersey%20price.jpeg';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 const EL_CLASICO_REVENUE_SOURCE_URL =
   'https://www.mundodeportivo.com/futbol/fc-barcelona/20261026/1004243315/record-historico-taquilla-spotify-camp-nou-19-1-millones-clasico.html';
@@ -727,9 +729,22 @@ export default function ElClasicoTicketsArticle() {
                   'The day before El Clásico and on match day, the area around Camp Nou was unbelievably crowded.',
                   "The Barça Store was absolutely packed. And it wasn't just the stadium shop — we also visited two FC Barcelona stores in the city, where people were buying merchandise nonstop.",
                   'We certainly contributed to that.',
+                  "One thing that genuinely shocked us was the price of an official men's FC Barcelona jersey. We spotted one with a price tag of €194.99. We knew official football merchandise wasn't cheap, but seeing that price in the store still surprised us.",
                 ]}
               />
             </div>
+            <Reveal delay={0.05} className='mt-8 md:mt-9 max-w-[430px] mx-auto'>
+              <Image
+                src={MENS_JERSEY_PRICE_SRC}
+                alt="Price tag showing €194.99 for an official FC Barcelona men's football jersey at the Barça Store."
+                width={2610}
+                height={2480}
+                className='w-full h-auto'
+              />
+              <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+                €194.99 for an official FC Barcelona men&apos;s jersey.
+              </p>
+            </Reveal>
             <Reveal delay={0.05} className='mt-7 md:mt-8'>
               <Statement>We spent quite a lot of money on FC Barcelona merchandise, but our memberships also helped us save a surprising amount.</Statement>
             </Reveal>
