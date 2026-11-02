@@ -678,7 +678,7 @@ export default function ElClasicoTicketsArticle() {
               <Paragraphs
                 items={[
                   "But there's an important distinction: membership didn't guarantee us tickets, and it didn't make the purchase process stress-free. It did, however, give us access to a significantly lower price than the non-member prices we saw afterwards.",
-                  "And looking at those prices now, I'm very glad we decided to join. As it turned out, our memberships paid off again in a way we hadn't expected, through the discounts we received at the Barça Store.",
+                  "Looking at those prices now, I'm very glad we decided to join.",
                 ]}
               />
             </div>
