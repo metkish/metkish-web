@@ -17,6 +17,7 @@ export interface Destination {
 }
 
 export const DESTINATIONS: Destination[] = [
+  { slug: 'barcelona', name: 'Barcelona', location: 'Spain · Catalonia' },
   { slug: 'tenerife', name: 'Tenerife', location: 'Spain · Canary Islands' },
   { slug: 'italy', name: 'Italy', location: 'Italy · Road Trip' },
   { slug: 'iceland', name: 'Iceland', location: 'Reykjavik' },

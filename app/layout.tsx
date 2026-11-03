@@ -1,31 +1,67 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Poppins, Fredoka, Playfair_Display, Caveat } from "next/font/google";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+// Self-hosted, local copies of the same four Google Fonts (Poppins,
+// Fredoka, Playfair Display, Caveat) previously loaded via
+// next/font/google -- same families, same weights, same latin subset,
+// same --font-poppins / --font-fredoka / --font-playfair / --font-caveat
+// CSS variable names, so every existing usage of them across the site
+// (e.g. Tailwind arbitrary-value classes referencing those variables)
+// needs no change.
+// Switched from next/font/google to next/font/local because Turbopack's
+// Google Fonts loader fetches font metadata/files over the network at
+// dev-server start and build time; when that network path to
+// fonts.googleapis.com is unreliable it either hard-crashes ("Module not
+// found: Can't resolve '@vercel/turbopack-next/internal/font/google/font'")
+// or silently falls back to a substitute system font, which is what made
+// the site's typography appear to change after that crash was first
+// "fixed" by only clearing the build cache. Vendoring the actual font
+// files (sourced from the @fontsource npm packages, which redistribute
+// the official Google Fonts files unmodified under the same SIL Open
+// Font License -- see app/fonts/OFL-LICENSE.txt) removes that network
+// dependency entirely, so the real typography now loads identically
+// every time, online or offline.
+const poppins = localFont({
+  src: [
+    { path: "./fonts/poppins/poppins-300.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/poppins/poppins-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/poppins/poppins-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/poppins/poppins-600.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-poppins",
+  display: "swap",
 });
 
-const fredoka = Fredoka({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
+const fredoka = localFont({
+  src: [
+    { path: "./fonts/fredoka/fredoka-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/fredoka/fredoka-600.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/fredoka/fredoka-700.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-fredoka",
+  display: "swap",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const playfair = localFont({
+  src: [
+    { path: "./fonts/playfair-display/playfair-display-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/playfair-display/playfair-display-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/playfair-display/playfair-display-600.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-playfair",
+  display: "swap",
 });
 
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["600", "700"],
+const caveat = localFont({
+  src: [
+    { path: "./fonts/caveat/caveat-600.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/caveat/caveat-700.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-caveat",
+  display: "swap",
 });
 
 export const metadata: Metadata = {

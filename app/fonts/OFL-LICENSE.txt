@@ -1,0 +1,8 @@
+Poppins, Fredoka, Playfair Display and Caveat are licensed under the SIL
+Open Font License, Version 1.1 (http://scripts.sil.org/OFL).
+
+These .woff2 files are the same Google Fonts files previously loaded at
+build time via next/font/google, vendored locally (sourced from the
+@fontsource npm packages, which redistribute the official Google Fonts
+files unmodified) so the site no longer depends on reaching
+fonts.googleapis.com during development or at build time.

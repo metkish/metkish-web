@@ -32,6 +32,15 @@ type Block =
       smallWidth: string;
     };
 
+// Real Barcelona photo (Casa Amatller / Casa Batllo on Passeig de Gracia).
+// Everything else about this card (width, aspect ratio, typography,
+// spacing) matches the Tenerife card exactly; see BLOCKS below.
+const barcelona: GalleryItem = {
+  id: 'barcelona',
+  src: '/2026-10%20-%20Barcelona/Barcelona_landing%20page.jpeg',
+  alt: 'Barcelona',
+  href: '/barcelona',
+};
 // Real Tenerife photo.
 const tenerife: GalleryItem = {
   id: 'tenerife',
@@ -102,11 +111,17 @@ const belek: GalleryItem = {
   alt: 'Belek',
   href: '/belek',
 };
-// Real Italy / Rome photo.
+// St. Peter's Basilica at night, Vatican City -- the Rome card's own
+// photo (replaces the previous Colosseum photo). EXIF/MPO-fixed single-
+// frame derivative of the uploaded Rome_landing page.jpeg, same pattern
+// as every other photo on the site; the original is untouched. The
+// basilica sits centred in the source frame, so the card's existing
+// aspect-[16/9] object-cover crop (no custom object-position needed)
+// keeps it centred and fully visible, same as before.
 const rome: GalleryItem = {
   id: 'rome',
-  src: '/2023-11%20-%20Italy_Rome/Rome_landing%20page.jpeg',
-  alt: 'Rome',
+  src: '/2026-10%20-%20Italy_Rome/Rome_landing_page_web.jpeg',
+  alt: "St. Peter's Basilica at night, Vatican City, Rome.",
   href: '/rome',
 };
 // Real Germany / Euro 2024 photo.
@@ -149,25 +164,66 @@ const seychelles: GalleryItem = {
 // Every destination image shares one standardized size: Tenerife's own
 // width (70%) and aspect ratio (16:9, the Photo component's default when
 // `aspect` is omitted) -- so no destination unintentionally reads as more
-// "important" than another. Horizontal placement is deliberately varied
-// instead of alternating between a couple of fixed spots: each block's
-// `marginLeft` sits somewhere across the full range the 70% width allows
-// (0% = flush left, 30% = flush right, everything between = every shade of
-// centre-left/centre/centre-right), hand-picked so consecutive
-// destinations never repeat the same offset and the sequence never
-// settles into a predictable left-right-left-right pattern -- an
-// intentionally irregular, organic editorial rhythm rather than a grid or
-// a strict alternation. Only the widths and aspect ratios were normalized
-// to Tenerife's; the horizontal placement of every block, including the
-// currently-hidden ones, was hand-set. A destination card always carries
-// the caption; a "memory" photo next to it never does, so it reads as a
-// loose snapshot, not a second card.
+// "important" than another. Horizontal placement for most destinations is
+// deliberately varied instead of alternating between a couple of fixed
+// spots: each block's `marginLeft` sits somewhere across the full range
+// the 70% width allows (0% = flush left, 30% = flush right, everything
+// between = every shade of centre-left/centre/centre-right), hand-picked
+// so consecutive destinations never repeat the same offset and the
+// sequence never settles into a predictable left-right-left-right pattern
+// -- an intentionally irregular, organic editorial rhythm rather than a
+// grid or a strict alternation. Only the widths and aspect ratios were
+// normalized to Tenerife's; the horizontal placement of every block,
+// including the currently-hidden ones, was hand-set. A destination card
+// always carries the caption; a "memory" photo next to it never does, so
+// it reads as a loose snapshot, not a second card.
+//
+// Barcelona, Rome, Tenerife and Italy are the exception: their horizontal
+// placement is computed from their position in ALTERNATING_ORDER below
+// (even position = left/Tenerife's margin, odd position = right/Italy's
+// margin) rather than hand-set, per explicit request. Rome's block has
+// been moved up to sit between Barcelona and Tenerife (both in BLOCKS and
+// in the visible set below), so it already uses `marginFor('rome')`
+// instead of its old hand-set value -- any future reordering of these
+// four only needs a change to ALTERNATING_ORDER itself.
+const LEFT_MARGIN = 'md:ml-[15%]'; // Tenerife's own value
+const RIGHT_MARGIN = 'md:ml-[25%]'; // Italy's own value
+const ALTERNATING_ORDER = ['barcelona', 'rome', 'tenerife', 'italy'];
+function marginFor(slug: string): string {
+  const i = ALTERNATING_ORDER.indexOf(slug);
+  return i % 2 === 0 ? LEFT_MARGIN : RIGHT_MARGIN;
+}
+
 const BLOCKS: Block[] = [
+  {
+    kind: 'solo',
+    item: barcelona,
+    width: 'w-full md:w-[70%]',
+    marginLeft: marginFor('barcelona'),
+    caption: {
+      location: 'Spain · Catalonia',
+      title: 'Barcelona',
+      description:
+        'Five days of incredible architecture, football, unexpected moments and a city that still managed to impress us.',
+    },
+  },
+  {
+    kind: 'solo',
+    item: rome,
+    width: 'w-full md:w-[70%]',
+    marginLeft: marginFor('rome'),
+    caption: {
+      location: 'Italy',
+      title: 'Rome',
+      description:
+        'Two visits, countless historic sights, and the unforgettable Vatican. Rome is a city where history is waiting around every corner.',
+    },
+  },
   {
     kind: 'solo',
     item: tenerife,
     width: 'w-full md:w-[70%]',
-    marginLeft: 'md:ml-[15%]',
+    marginLeft: marginFor('tenerife'),
     caption: {
       location: 'Spain · Canary Islands',
       title: 'Tenerife',
@@ -179,7 +235,7 @@ const BLOCKS: Block[] = [
     kind: 'solo',
     item: italy,
     width: 'w-full md:w-[70%]',
-    marginLeft: 'md:ml-[25%]',
+    marginLeft: marginFor('italy'),
     caption: {
       location: 'Italy · Road Trip',
       title: 'Italy',
@@ -243,18 +299,6 @@ const BLOCKS: Block[] = [
       title: 'Germany',
       description:
         'Germany through football and family travel — three Euro 2024 matches, beautiful places and great memories along the way.',
-    },
-  },
-  {
-    kind: 'solo',
-    item: rome,
-    width: 'w-full md:w-[70%]',
-    marginLeft: 'md:ml-[9%]',
-    caption: {
-      location: 'Italy',
-      title: 'Rome',
-      description:
-        'Incredible history, iconic sights — but somehow, Rome just wasn’t our city. We saw it, experienced it, but never really fell for it.',
     },
   },
   {
@@ -399,14 +443,15 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
 const TIGHT_GAP = 'mt-10 md:mt-[56px]';
 const NORMAL_GAP = 'mt-16 md:mt-[80px]';
 const GAP_SEQUENCE = [
+  TIGHT_GAP, // Barcelona → Rome: new opening pair, kept close
+  TIGHT_GAP, // Rome → Tenerife: still the opening run of big landscapes
   TIGHT_GAP, // Tenerife → Italy: two big opening landscapes, kept close
   NORMAL_GAP, // Italy → Iceland: one deliberate breathing beat after the opener
   TIGHT_GAP, // Iceland → Sardinia: still riding the opening quartet
   TIGHT_GAP, // Sardinia → Prague: was reading as a break, not a beat — tightened
   TIGHT_GAP, // Prague → Vietnam: keeps the smaller editorial moments connected
   TIGHT_GAP, // Vietnam → Germany: size contrast doesn't need a big gap too
-  NORMAL_GAP, // Germany → Rome: breathing beat before the architectural pair
-  TIGHT_GAP, // Rome → Belek: two large architectural moments, kept close
+  TIGHT_GAP, // Germany → Belek: Rome moved earlier in the order, so this is now a direct transition
   TIGHT_GAP, // Belek → Paris: tightened, same continuous-story rhythm
   TIGHT_GAP, // Paris → Lefkada: tightened
   TIGHT_GAP, // Lefkada → Budapest: keeps Budapest feeling placed, not isolated
@@ -434,9 +479,10 @@ function anchorId(href: string): string {
 // (data, photos, captions, and its own /[destination] page via
 // lib/destinations.ts) still exists exactly as before; this just slices
 // which ones render here. To bring a destination back, raise this number
-// -- nothing else needs to change. Currently 4: Tenerife, Italy, Iceland,
-// Sardinia (BLOCKS' own first four entries, already in this order).
-const VISIBLE_COUNT = 4;
+// -- nothing else needs to change. Currently 6: Barcelona, Rome,
+// Tenerife, Italy, Iceland, Sardinia (BLOCKS' own first six entries,
+// already in this order).
+const VISIBLE_COUNT = 6;
 
 export default function TravelGallery() {
   return (

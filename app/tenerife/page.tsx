@@ -249,16 +249,41 @@ export default function TenerifePage() {
           sizes='100vw'
           className='object-cover object-[30%_40%] md:object-[48%_30%]'
         />
-        <div className='absolute inset-0 bg-black/10' />
+        {/* Readability treatment: one flat, even dark wash across the
+            whole photo (below) plus a soft, minimal text-shadow on each
+            line -- no vignette, no gradient patch, no hard-edged outline.
+            An earlier radial-vignette + four-direction outline-shadow
+            version read as harsh and left a visible dark rectangle on this
+            page's plain sky. A full-bleed wash has no edges to show on any
+            background, so it holds up here and on Barcelona's busier photo
+            alike; the soft shadow alone is enough once the whole image is
+            evenly darkened. Keep this in sync with app/barcelona/page.tsx's
+            hero -- same wash strength, same shadow values. */}
+        <div className='absolute inset-0 bg-black/28' />
         <div className='relative z-10 h-full flex flex-col items-center justify-center text-center px-6'>
           <Reveal>
-            <h1 className='text-5xl sm:text-6xl md:text-7xl font-[family-name:var(--font-playfair)] font-medium tracking-tight text-white'>
+            <h1
+              className='text-5xl sm:text-6xl md:text-7xl font-[family-name:var(--font-playfair)] font-medium tracking-tight text-white'
+              style={{
+                textShadow: '0 2px 20px rgba(0,0,0,0.45), 0 1px 6px rgba(0,0,0,0.35)',
+              }}
+            >
               Tenerife
             </h1>
-            <p className='mt-5 text-xs sm:text-sm uppercase tracking-[0.22em] font-[family-name:var(--font-poppins)] font-semibold text-white/80'>
+            <p
+              className='mt-5 text-xs sm:text-sm uppercase tracking-[0.22em] font-[family-name:var(--font-poppins)] font-semibold text-white/80'
+              style={{
+                textShadow: '0 1px 10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
+              }}
+            >
               Spain · Canary Islands · July 2026
             </p>
-            <p className='mt-9 max-w-md mx-auto text-lg md:text-xl italic font-[family-name:var(--font-playfair)] text-white/90'>
+            <p
+              className='mt-9 max-w-md mx-auto text-lg md:text-xl italic font-[family-name:var(--font-playfair)] text-white/90'
+              style={{
+                textShadow: '0 1px 10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
+              }}
+            >
               An island we could easily come back to.
             </p>
           </Reveal>
@@ -704,13 +729,6 @@ export default function TenerifePage() {
               'Great reviews, a family suite and a price that made sense compared with the alternatives.',
             ]}
           />
-          {/* A restrained editorial mention of the review score — deliberately
-              not a Booking.com-style widget: no logo, no star icons, no
-              badge background, just a single quiet line at the same weight
-              as the page's other small supporting text. */}
-          <p className='mt-5 text-sm md:text-base tracking-[0.06em] font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-            9.1 · 1,656 reviews · 5 stars
-          </p>
         </Reveal>
 
         {/* Same quiet practical-information panel language as the flight

@@ -247,6 +247,14 @@ export default function ItalyPage() {
           <h1 className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-[family-name:var(--font-playfair)] font-medium uppercase tracking-wide sm:tracking-[0.04em] text-black dark:text-white'>
             Road Trip
           </h1>
+          {/* Location/date metadata line, styled like the Tenerife hero's
+              own location/date line (same size, tracking, weight, font) --
+              just in the muted black/white eyebrow tone used elsewhere on
+              this page's own (non-photo) background instead of the
+              white-on-photo tone Tenerife's hero uses. */}
+          <p className='mt-5 text-xs sm:text-sm uppercase tracking-[0.22em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
+            Italy · April 2026
+          </p>
         </Reveal>
       </section>
 
