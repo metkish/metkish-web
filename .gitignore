@@ -46,3 +46,13 @@ dev.log
 install.log
 page.html
 _to_delete/
+
+# Raw personal source documents -- unredacted booking/membership
+# confirmations and raw ticket PDFs kept locally as the originals behind
+# already-committed, deliberately redacted/sanitized derivatives used on
+# the site. Never commit these: they contain personal/booking details that
+# were intentionally scrubbed before anything public-facing was built from
+# them.
+public/Behind the trip/How to Get El Cla*sico Tickets/
+public/2026-05 - Italy roadtrip/Milan Cinque Terre Pisa/Gardaland_ticket.pdf
+public/2026-05 - Italy roadtrip/Milan Cinque Terre Pisa/Venice_visit.pdf
