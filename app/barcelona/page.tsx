@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
 import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
+import { ChapterHeading, Paragraphs } from '@/components/ui/typography';
 import WhyViennaSection from '@/components/journey/why-vienna-section';
 import FlightSection from '@/components/journey/flight-section';
 import TransferToHotelSection from '@/components/journey/transfer-to-hotel-section';
@@ -44,41 +45,6 @@ function Reveal({
 
 // Same Level 2 editorial heading scale used throughout the site (see
 // app/tenerife/page.tsx's own ChapterHeading comment).
-function ChapterHeading({
-  children,
-  italic = false,
-  className = '',
-}: {
-  children: ReactNode;
-  italic?: boolean;
-  className?: string;
-}) {
-  return (
-    <p
-      className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
-        italic ? 'italic' : ''
-      } ${className}`}
-    >
-      {children}
-    </p>
-  );
-}
-
-function Paragraphs({ items, className = '' }: { items: string[]; className?: string }) {
-  return (
-    <div className={`space-y-5 ${className}`}>
-      {items.map((text, i) => (
-        <p
-          key={i}
-          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
-        >
-          {text}
-        </p>
-      ))}
-    </div>
-  );
-}
-
 // Same "inline tip" treatment as components/guides/el-clasico-tickets-article.tsx's
 // own InlineTip ("My tip: Apply well in advance" in the FC Barcelona guide):
 // a thin pink left rule, left-aligned italic text, no label, no background --

@@ -14,6 +14,7 @@ import {
   ITALY_PISA_TO_PESCHIERA_JOURNEY,
   ITALY_PESCHIERA_TO_HOME_JOURNEY,
 } from '@/lib/journeys/italy';
+import { ChapterHeading, Eyebrow, Paragraphs } from '@/components/ui/typography';
 
 const LOGO_SRC = '/metkish-logo.png';
 
@@ -49,65 +50,16 @@ function Reveal({
 // Milano!" reads at the identical weight/size a reader already knows from
 // there, even though this component is its own local copy rather than a
 // shared import (see Reveal above for why).
-function ChapterHeading({
-  children,
-  italic = false,
-  className = '',
-}: {
-  children: ReactNode;
-  italic?: boolean;
-  className?: string;
-}) {
-  return (
-    <p
-      className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
-        italic ? 'italic' : ''
-      } ${className}`}
-    >
-      {children}
-    </p>
-  );
-}
-
 // LEVEL 3 body copy — byte-identical to Tenerife's own Paragraphs
 // component (same font, size, weight, line-height, and the mt-5 spacing
 // convention used everywhere it appears), so Milano's first story reads
 // at the same voice as every Tenerife story beat.
-function Paragraphs({
-  items,
-  className = '',
-}: {
-  items: string[];
-  className?: string;
-}) {
-  return (
-    <div className={`space-y-5 ${className}`}>
-      {items.map((text, i) => (
-        <p
-          key={i}
-          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
-        >
-          {text}
-        </p>
-      ))}
-    </div>
-  );
-}
-
 // A small in-chapter marker — one notch below the chapter-opening
 // RouteLabel: no pink tick, used for a beat *within* a chapter. Byte-
 // identical to Tenerife's own Eyebrow component (see tenerife-editorial-
 // system: reuse the existing typography rather than inventing a new
 // scale), duplicated locally rather than imported for the same reason
 // Reveal/ChapterHeading/Paragraphs above are local copies.
-function Eyebrow({ children }: { children: ReactNode }) {
-  return (
-    <span className='block text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
-      {children}
-    </span>
-  );
-}
-
 // LEVEL 4 -- the one practical-info-card treatment used for every price
 // card on this page (accommodation, Duomo, football, train pass, ferry):
 // a small uppercase label, a large serif value at the journey's own
@@ -617,7 +569,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Milan's metro couldn't be easier — just tap your payment card at the gate. One card per traveller, so having a prepaid card for each child comes in handy.",
+                "Milano's metro couldn't be easier — just tap your payment card at the gate. One card per traveller, so having a prepaid card for each child comes in handy.",
               ]}
             />
           </Reveal>
@@ -882,7 +834,7 @@ export default function ItalyPage() {
             />
           </div>
           <p className='mt-3 text-center text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
-            A Little Step Back In Time.
+            A little step back in time.
           </p>
         </Reveal>
 
@@ -967,7 +919,7 @@ export default function ItalyPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "One detail I loved: with streets this steep and narrow, even deliveries work differently \u2014 small tracked trolleys carry supplies up the steps.",
+                "With streets this steep and narrow, even deliveries work differently \u2014 small tracked trolleys carry supplies up the steps.",
               ]}
             />
           </Reveal>
@@ -1611,7 +1563,7 @@ export default function ItalyPage() {
               'Accommodation in La Spezia',
               'Accommodation in Peschiera del Garda',
               'Gardaland tickets',
-              'Venice Access Fee',
+              'Venice access fee',
             ]}
           />
         </Reveal>

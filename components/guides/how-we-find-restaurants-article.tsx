@@ -138,7 +138,7 @@ function CopyPromptButton({ text }: { text: string }) {
 function ExamplePrompt({ text }: { text: string }) {
   return (
     <div>
-      <span className='block text-xs uppercase tracking-[0.15em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
+      <span className='block text-sm uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
         Example Prompt
       </span>
       <p className='mt-2 text-base italic font-[family-name:var(--font-poppins)] font-light text-black/75 dark:text-white/75 leading-relaxed'>

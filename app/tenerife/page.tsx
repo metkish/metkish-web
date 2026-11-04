@@ -562,10 +562,11 @@ export default function TenerifePage() {
           actually worked has been shortened to three short paragraphs so
           it doesn't outweigh the screenshot next to it; the price
           comparison now uses the same fact scale (TimeStamp's md size) as
-          every other fact on the page. "Not there." keeps its existing,
-          already-approved oversized treatment — it's the one deliberate
-          exception to the Level 2 heading scale, the emotional peak of
-          this chapter. */}
+          every other fact on the page. "Not there." now uses the same
+          ChapterHeading scale as "€20. Ten minutes. Why not?" later in
+          this journey — both are the same punchy-fragment device and read
+          as equally weighted beats rather than one being a one-off larger
+          exception. */}
       <section
         className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}
       >
@@ -598,7 +599,7 @@ export default function TenerifePage() {
           <Paragraphs
             className='text-center'
             items={[
-              "We left the airport and went straight to the taxi area — only to realize once we got there that we actually had to go back inside first, to find the meeting point. Booking.com's instructions for that arrived too late to help.",
+              "We left the airport and went straight to the taxi area — only to realise once we got there that we actually had to go back inside first, to find the meeting point. Booking.com's instructions for the meeting point arrived too late to help.",
               'It worked out. At almost 3 AM, it still felt unnecessarily complicated.',
             ]}
           />
@@ -629,9 +630,9 @@ export default function TenerifePage() {
 
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>Would I pre-book it again?</Eyebrow>
-          <p className='mt-4 text-5xl md:text-6xl font-[family-name:var(--font-playfair)] italic font-medium text-black dark:text-white'>
+          <ChapterHeading italic className='mt-4'>
             Not there.
-          </p>
+          </ChapterHeading>
           <Paragraphs
             className='mt-8 text-center'
             items={[
@@ -691,7 +692,7 @@ export default function TenerifePage() {
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/2] md:aspect-[16/9]'>
             <Image
               src='/2026-07%20-%20Tenerife/Hotel%20at%20night_web.jpeg'
-              alt='Roca Nivaria at night — the illuminated pool, palm trees and hotel grounds in Playa Paraiso.'
+              alt='Roca Nivaria at night — the illuminated pool, palm trees and hotel grounds in Playa Paraíso.'
               fill
               sizes='(min-width: 768px) 1024px, 100vw'
               className='object-cover'
@@ -760,7 +761,7 @@ export default function TenerifePage() {
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3] md:aspect-[16/9]'>
             <Image
               src='/2026-07%20-%20Tenerife/Hotel_web.jpeg'
-              alt='Roca Nivaria in daylight — the hotel exterior and grounds at Playa Paraiso.'
+              alt='Roca Nivaria in daylight — the hotel exterior and grounds at Playa Paraíso.'
               fill
               sizes='(min-width: 768px) 1024px, 100vw'
               className='object-cover'
@@ -1082,7 +1083,7 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'It was incredibly hot outside. Somehow, we spent the morning shivering.',
+              'It was brutally hot outside. Somehow, we spent the morning shivering.',
               'Cold water, wet swimsuits, long queues and plenty of natural shade turned out to be a surprisingly chilly combination.',
             ]}
           />
@@ -1275,7 +1276,7 @@ export default function TenerifePage() {
             className='mt-5 text-center'
             items={[
               'Calm, easy to swim in and perfectly nice.',
-              "The sand was incredibly hot, but for us, it simply wasn't a wow beach.",
+              "The sand was scorching, but for us, it simply wasn't a wow beach.",
             ]}
           />
         </Reveal>
@@ -1334,7 +1335,7 @@ export default function TenerifePage() {
           <Paragraphs
             className='text-center'
             items={[
-              'Calima followed us throughout our stay, blurring the distant views. Still, the view was absolutely worth it.',
+              "Calima followed us throughout our stay, blurring the distant views. Still, it was a view we were glad we'd stopped for.",
             ]}
           />
         </Reveal>
@@ -1683,7 +1684,7 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'To reach the actual peak of Teide, you need a separate permit — something that has to be arranged well in advance.',
+              'To reach the actual peak of Teide, we would have needed a separate permit — arranged well in advance.',
               "We didn't have one.",
             ]}
           />
@@ -1699,8 +1700,8 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'There was still plenty of space when we arrived in the morning.',
-              'It became much busier later, although spaces kept opening up as people left.',
+              'Spaces were still easy to find when we got there.',
+              'It got busier as the day went on, though new ones kept opening up as people left.',
             ]}
           />
         </Reveal>
@@ -1970,12 +1971,12 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
           <Eyebrow>The Shows</Eyebrow>
           <ChapterHeading italic className='mt-3'>
-            Check the times before you start.
+            We hadn't checked the show times.
           </ChapterHeading>
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'Orcas, dolphins, sea lions and more — if you want to see several shows, it helps to plan the order around their schedules.',
+              'Orcas, dolphins, sea lions and more — seeing several shows meant planning our order around their timings.',
               'We left the orcas until later in the day and found it much quieter than we expected.',
             ]}
           />
@@ -2127,7 +2128,7 @@ export default function TenerifePage() {
             className='mt-5 text-center'
             items={[
               'We stopped here on our way to the airport and immediately liked the feel of the area.',
-              'Everything felt easy and close at hand — restaurants, shops, beaches.',
+              'Everything felt close at hand — restaurants, shops, beaches.',
               "If I were choosing where to stay on Tenerife again, this is probably the area I'd look at first.",
             ]}
           />
@@ -2150,7 +2151,7 @@ export default function TenerifePage() {
             className='mt-5 text-center'
             items={[
               "We weren't quite sure where to return the car, but we needn't have worried. Everything was clearly signposted from the road and the return itself was simple.",
-              'The airport was bigger than I expected, but just as easy to navigate.',
+              'The airport was bigger than I expected, though straightforward enough to get through.',
             ]}
           />
         </Reveal>
@@ -2169,8 +2170,7 @@ export default function TenerifePage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'Tenerife is an easy island to enjoy — varied, relaxed and with something different never very far away.',
-              'And you can tell tourism is part of its DNA. Everything just works for visitors.',
+              'Tenerife is easy to like — we never had to look far for something to do, and nothing about the week felt like a struggle.',
             ]}
           />
         </Reveal>

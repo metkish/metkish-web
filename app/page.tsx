@@ -41,7 +41,7 @@ export default function Home() {
         className={`fixed top-4 left-4 z-50 cursor-pointer transition-all duration-300 rounded-full ${
           pastHero ? 'backdrop-blur-sm bg-white/40 dark:bg-black/40' : ''
         }`}
-        aria-label='Nazaj na vrh strani'
+        aria-label='Back to homepage'
       >
         <Image
           src={LOGO_SRC}
@@ -62,7 +62,7 @@ export default function Home() {
         textBlend
       >
         <div id='travels' className='w-full max-w-[100rem] mx-auto px-6 md:px-12 flex flex-col items-center scroll-mt-24'>
-          <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
+          <h2 className='text-4xl sm:text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
             My Travels
           </h2>
           <div className='flex items-center justify-center gap-3 mt-4'>
@@ -81,7 +81,7 @@ export default function Home() {
         id='guides'
         className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#eae9e6] dark:bg-black'
       >
-        <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
+        <h2 className='text-4xl sm:text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
           Behind the Trip
         </h2>
         <p className='mt-6 mb-6 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
@@ -117,7 +117,7 @@ export default function Home() {
                 key={topic.slug}
                 className={`flex flex-col items-center text-center py-10 border-black/10 dark:border-white/10 ${rowBorder} ${cancelTopRowBorder} ${columnBorder}`}
               >
-                <span className='text-xs tracking-[0.15em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
+                <span className='text-xs tracking-[0.18em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
                   {number}
                 </span>
                 <h3 className='mt-3 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
@@ -145,7 +145,7 @@ export default function Home() {
         id='about'
         className='scroll-mt-24 flex flex-col items-center px-8 py-24 bg-[#f3f2ef] dark:bg-black'
       >
-        <h2 className='text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
+        <h2 className='text-4xl sm:text-5xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
           About
         </h2>
         <p className='mt-6 mb-6 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>

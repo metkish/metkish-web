@@ -361,8 +361,8 @@ export default function ElClasicoTicketsArticle() {
               Our Real Experience as FC Barcelona Members
             </p>
             <p className='mt-6 text-base md:text-lg font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-              From becoming FC Barcelona members to spending more than
-              €3,400 on four tickets. Here&apos;s what we learned about the
+              From becoming FC Barcelona members to spending €3,472
+              on four tickets. Here&apos;s what we learned about the
               process, the prices and whether membership is actually worth
               it.
             </p>
@@ -519,7 +519,7 @@ export default function ElClasicoTicketsArticle() {
                   'We simply had to wait.',
                   'I had expected that being a member would mean receiving some kind of advance notice, especially for such an important match.',
                   'Instead, we were left checking for updates and wondering whether we might miss the sale.',
-                  'On September 29, 2026, at around 9 PM, a push notification appeared in the FC Barcelona Members app.',
+                  'On 29 September 2026, at around 9 PM, a push notification appeared in the FC Barcelona Members app.',
                   'It told us to have our membership cards ready.',
                   'The presale had started.',
                 ]}
@@ -719,14 +719,14 @@ export default function ElClasicoTicketsArticle() {
         {/* THE BARCA STORE */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-14 md:pb-16'>
           <Reveal>
-            <SectionHeading>The Barça Store – Where Our Memberships Really Paid Off</SectionHeading>
+            <SectionHeading>The Barça Store: Where Our Memberships Really Paid Off</SectionHeading>
             <div className='mt-6'>
               <Paragraphs
                 items={[
                   'The day before El Clásico and on match day, the area around Camp Nou was unbelievably crowded.',
                   "The Barça Store was absolutely packed. And it wasn't just the stadium shop — we also visited two FC Barcelona stores in the city, where people were buying merchandise nonstop.",
                   'We certainly contributed to that.',
-                  "An official FC Barcelona men's match jersey costs €194.99. We knew authentic football shirts were expensive, but we were still shocked by just how much they cost.",
+                  "An official FC Barcelona men's jersey costs €194.99. We knew authentic football shirts were expensive, but we were still shocked by just how much they cost.",
                 ]}
               />
             </div>
@@ -777,7 +777,7 @@ export default function ElClasicoTicketsArticle() {
         {/* SEAT ASSIGNMENTS */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
           <Reveal>
-            <SectionHeading>Our Seat Assignments – Not Quite What I Had Hoped For</SectionHeading>
+            <SectionHeading>Our Seat Assignments: Not Quite What I Had Hoped For</SectionHeading>
             <Reveal delay={0.05} className='mt-8 md:mt-9'>
               <Image
                 src={SEAT_ASSIGNMENTS_SRC}
@@ -803,7 +803,7 @@ export default function ElClasicoTicketsArticle() {
             <div className='mt-7 md:mt-8'>
               <Paragraphs
                 items={[
-                  "Our seats weren't bad, but even though these were among the cheaper tickets available, €899 per person is still a premium price. And for that kind of money, I think it's reasonable to expect a more central view of the pitch.",
+                  "Our seats weren't bad. But even among the cheaper categories, €899 per person is a premium price \u2014 and for that kind of money, I think it's reasonable to expect a more central view of the pitch.",
                 ]}
               />
             </div>
@@ -829,7 +829,7 @@ export default function ElClasicoTicketsArticle() {
         {/* MATCH DAY */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
           <Reveal>
-            <SectionHeading>Match Day – The Experience We Had Been Waiting For</SectionHeading>
+            <SectionHeading>Match Day: The Experience We Had Been Waiting For</SectionHeading>
             <Reveal delay={0.05} className='mt-7 md:mt-8 max-w-[430px] mx-auto'>
               <video
                 controls

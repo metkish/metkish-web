@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel } from '@/components/journey/annotation-kit';
 import type { Journey } from '@/lib/journeys/types';
+import { ChapterHeading, Paragraphs } from '@/components/ui/typography';
 
 // Shared "Getting to the Hotel" chapter -- the animated transfer map plus
 // the chapter's RouteLabel underneath it, with an optional heading /
@@ -51,41 +52,6 @@ function Reveal({
 // italic by default -- Tenerife's own "Getting to the Hotel" heading ("The
 // transfer we probably didn't need.") is the one chapter heading on that
 // page that isn't italic, and this is that same chapter, so it matches.
-function ChapterHeading({
-  children,
-  italic = false,
-  className = '',
-}: {
-  children: ReactNode;
-  italic?: boolean;
-  className?: string;
-}) {
-  return (
-    <p
-      className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
-        italic ? 'italic' : ''
-      } ${className}`}
-    >
-      {children}
-    </p>
-  );
-}
-
-function Paragraphs({ items, className = '' }: { items: string[]; className?: string }) {
-  return (
-    <div className={`space-y-5 ${className}`}>
-      {items.map((text, i) => (
-        <p
-          key={i}
-          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
-        >
-          {text}
-        </p>
-      ))}
-    </div>
-  );
-}
-
 // Same map->content pause, and same photo-ending chapter gap, used
 // sitewide (see app/tenerife/page.tsx's own MAP_TRANSITION_PT /
 // CHAPTER_GAP_END comments) -- repeated here rather than imported since

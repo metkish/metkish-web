@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
 import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
+import { ChapterHeading, Eyebrow, Statement, Paragraphs } from '@/components/ui/typography';
 
 const LOGO_SRC = '/metkish-logo.png';
 const SUITCASES_SRC = '/About/Four%20suitcases.jpg';
@@ -33,52 +34,6 @@ function Reveal({
     >
       {children}
     </motion.div>
-  );
-}
-
-// The small uppercase kicker already used above each destination's title in
-// TravelGallery — reused here as the section marker instead of introducing a
-// new heading style or a blog-style bold headline per section. Kept subtle
-// on purpose (small, not bold, not black) but with slightly higher contrast
-// than a first pass so it reads clearly against the page background.
-function Eyebrow({ children }: { children: ReactNode }) {
-  return (
-    <span className='block text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
-      {children}
-    </span>
-  );
-}
-
-// The larger standalone lines that punctuate the story. Sized per-use so a
-// short punchy line and a longer sentence both read comfortably.
-function Statement({
-  children,
-  className = '',
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <p
-      className={`font-[family-name:var(--font-playfair)] italic font-medium text-black dark:text-white text-center leading-snug ${className}`}
-    >
-      {children}
-    </p>
-  );
-}
-
-function Paragraphs({ items }: { items: string[] }) {
-  return (
-    <div className='space-y-5'>
-      {items.map((text, i) => (
-        <p
-          key={i}
-          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
-        >
-          {text}
-        </p>
-      ))}
-    </div>
   );
 }
 
@@ -127,7 +82,7 @@ export default function AboutPage() {
       </Link>
 
       {/* Hero — unchanged: this opening works, so it stays exactly as it was */}
-      <section className='px-6 md:px-12 pt-36 md:pt-44 pb-20 md:pb-28 flex flex-col items-center text-center'>
+      <section className='px-6 md:px-12 pt-36 md:pt-44 pb-10 md:pb-14 flex flex-col items-center text-center'>
         <Reveal className='max-w-2xl mx-auto flex flex-col items-center'>
           <Eyebrow>About</Eyebrow>
           <h1 className='mt-5 text-4xl sm:text-5xl md:text-6xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
@@ -160,9 +115,9 @@ export default function AboutPage() {
       </section>
 
       {/* It started with a missed flight */}
-      <section className='px-6 md:px-12 pt-16 pb-[51px] md:pt-20 md:pb-16'>
+      <section className='px-6 md:px-12 pt-8 pb-8 md:pt-10 md:pb-10'>
         <Reveal className='max-w-2xl mx-auto text-center'>
-          <Eyebrow>It started with a missed flight</Eyebrow>
+          <ChapterHeading>It started with a missed flight</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
@@ -182,16 +137,16 @@ export default function AboutPage() {
       </section>
 
       {/* Somewhere along the way, I became the planner */}
-      <section className='px-6 md:px-12 pt-[51px] pb-16 md:pt-16 md:pb-20'>
+      <section className='px-6 md:px-12 pt-8 pb-10 md:pt-10 md:pb-12'>
         <Reveal className='max-w-2xl mx-auto text-center'>
-          <Eyebrow>Somewhere along the way, I became the planner</Eyebrow>
+          <ChapterHeading>Somewhere along the way, I became the&nbsp;planner</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
-                "Later that year, an organised trip we'd booked to Paris and London was cancelled because too few people had signed up. So I decided to organise everything myself.",
+                "Later that year, a group trip we'd booked to Paris and London was cancelled because too few people had signed up. So I decided to organise everything myself.",
                 'It worked — mostly. Our London accommodation turned out to be a basement apartment that felt more like a bunker, and I barely slept.',
                 'A few years later I planned our first bigger family journey to the Seychelles entirely on my own.',
-                'Somewhere along the way, I realised I genuinely enjoy the part many people would rather skip: researching destinations, comparing flights, finding the right accommodation and figuring out how everything fits together.',
+                'I eventually realised I genuinely enjoy the part many people would rather skip: researching destinations, comparing flights, finding the right accommodation and figuring out how everything fits together.',
               ]}
             />
           </div>
@@ -201,7 +156,7 @@ export default function AboutPage() {
       {/* Airport photograph — an old, spontaneous family snapshot, not a
           polished shot. Landscape frame, modest width so it doesn't compete
           with the hero photo; no caption, no text over the image. */}
-      <section className='px-6 md:px-12 py-10 md:py-14'>
+      <section className='px-6 md:px-12 py-6 md:py-9'>
         <Reveal className='w-full max-w-xl mx-auto'>
           <div className='relative w-full aspect-[16/9] overflow-hidden rounded-[2px]'>
             <Image
@@ -216,15 +171,15 @@ export default function AboutPage() {
       </section>
 
       {/* Comfort, not luxury — the most important idea on the page */}
-      <section className='px-6 md:px-12 pt-20 pb-16 md:pt-28 md:pb-[90px]'>
+      <section className='px-6 md:px-12 pt-12 pb-10 md:pt-[70px] md:pb-14'>
         <Reveal className='max-w-2xl mx-auto text-center'>
-          <Eyebrow>Comfort, not luxury</Eyebrow>
+          <ChapterHeading>Comfort, not luxury</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
                 "We don't travel as cheaply as possible, and we don't travel luxuriously either.",
                 'We look for comfortable, clean places in good locations.',
-                'Over the years, small experiences changed the way I plan: waiting with two tired little children for a shuttle to a remote airport car park, spending more than an hour waiting for a taxi after a late-night arrival, or discovering that a transport option that sounded easy online wasn’t nearly as practical with children and luggage.',
+                "Over the years, small experiences changed the way I plan. There was the shuttle to a remote airport car park with two tired little children, the taxi that took more than an hour to arrive after a late-night flight, and the transport option that sounded easy online but wasn't nearly as practical with children and luggage.",
                 'Now I prefer to spend a little more where it genuinely makes travelling easier — not for luxury, but to avoid unnecessary stress.',
               ]}
             />
@@ -239,9 +194,9 @@ export default function AboutPage() {
       </section>
 
       {/* We don't try to see everything anymore */}
-      <section className='px-6 md:px-12 pt-[51px] pb-[51px] md:pt-16 md:pb-16'>
+      <section className='px-6 md:px-12 pt-8 pb-8 md:pt-10 md:pb-10'>
         <Reveal className='max-w-2xl mx-auto text-center'>
-          <Eyebrow>We don&apos;t try to see everything anymore</Eyebrow>
+          <ChapterHeading>We don&apos;t try to see everything anymore</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
@@ -263,11 +218,11 @@ export default function AboutPage() {
       </section>
 
       {/* What looks easy online isn't always easy in real life */}
-      <section className='px-6 md:px-12 pt-[51px] pb-[51px] md:pt-16 md:pb-16'>
+      <section className='px-6 md:px-12 pt-8 pb-8 md:pt-10 md:pb-10'>
         <Reveal className='max-w-2xl mx-auto text-center'>
-          <Eyebrow>
+          <ChapterHeading>
             What looks easy online isn&apos;t always easy in real life
-          </Eyebrow>
+          </ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
@@ -275,7 +230,6 @@ export default function AboutPage() {
                 'In reality, the bus was so crowded that getting ourselves inside would have been difficult enough, never mind the children and our luggage.',
                 "Technically, the information we'd found was correct. Practically, it wasn't right for us.",
                 'Today, AI makes finding ideas and planning easier than ever, and I use it too — including while creating this website. But I still check current information, compare options and do my own research.',
-                'Information can be correct and still not be practical for our family.',
               ]}
             />
           </div>
@@ -292,7 +246,7 @@ export default function AboutPage() {
           the stadium photograph as a side-by-side editorial composition on
           desktop; stacks naturally on mobile. No card, no border, no
           football graphics — just the photo and the text. */}
-      <section className='px-6 md:px-12 pt-[38px] pb-12 md:pt-[51px] md:pb-16'>
+      <section className='px-6 md:px-12 pt-6 pb-[30px] md:pt-8 md:pb-10'>
         <Reveal className='max-w-3xl mx-auto'>
           <div className='flex flex-col md:flex-row md:items-center gap-8 md:gap-12'>
             <div className='w-full md:w-[42%] md:shrink-0'>
@@ -307,7 +261,7 @@ export default function AboutPage() {
               </div>
             </div>
             <div className='w-full md:flex-1'>
-              <Eyebrow>Football often comes with us</Eyebrow>
+              <ChapterHeading>Football often comes with us</ChapterHeading>
               <div className='mt-6'>
                 <Paragraphs
                   items={[
@@ -325,12 +279,12 @@ export default function AboutPage() {
       {/* These aren't travel photographs. They're travel memories. — now on
           the same main text axis as every other section; no photo added
           here, the photographs already seen make the point. */}
-      <section className='px-6 md:px-12 pt-16 pb-[51px] md:pt-20 md:pb-16'>
+      <section className='px-6 md:px-12 pt-10 pb-8 md:pt-12 md:pb-10'>
         <Reveal className='max-w-2xl mx-auto text-center'>
-          <Eyebrow>
+          <ChapterHeading>
             These aren&apos;t travel photographs. They&apos;re travel
             memories.
-          </Eyebrow>
+          </ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[
@@ -350,9 +304,9 @@ export default function AboutPage() {
       </section>
 
       {/* Why this site exists — closing section */}
-      <section className='px-6 md:px-12 pt-16 pb-20 md:pt-[90px] md:pb-28'>
+      <section className='px-6 md:px-12 pt-10 pb-12 md:pt-14 md:pb-[70px]'>
         <Reveal className='max-w-2xl mx-auto text-center'>
-          <Eyebrow>Why this site exists</Eyebrow>
+          <ChapterHeading>Why this site exists</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
             <Paragraphs
               items={[

@@ -216,7 +216,7 @@ const BLOCKS: Block[] = [
       location: 'Italy',
       title: 'Rome',
       description:
-        'Two visits, countless historic sights, and the unforgettable Vatican. Rome is a city where history is waiting around every corner.',
+        'Two visits, countless historic sights and the unforgettable Vatican.',
     },
   },
   {
@@ -228,7 +228,7 @@ const BLOCKS: Block[] = [
       location: 'Spain · Canary Islands',
       title: 'Tenerife',
       description:
-        'More than the beaches — it was the variety, the easy exploring and the feeling that there was always more to see.',
+        'More than the beaches — it was the variety, how easy it was to explore and the feeling that there was always more to see.',
     },
   },
   {
@@ -276,7 +276,7 @@ const BLOCKS: Block[] = [
       location: 'Czech Republic',
       title: 'Prague',
       description:
-        'Our second time in Prague — this time with the kids, beautiful architecture and an unforgettable AC/DC concert.',
+        'Our second visit to Prague, this time with the kids — the same beautiful architecture, plus an unforgettable AC/DC concert.',
     },
   },
   {
@@ -298,7 +298,7 @@ const BLOCKS: Block[] = [
       location: 'Germany · Euro 2024',
       title: 'Germany',
       description:
-        'Germany through football and family travel — three Euro 2024 matches, beautiful places and great memories along the way.',
+        'Germany through football and family travel — three Euro 2024 matches and beautiful places.',
     },
   },
   {
@@ -381,7 +381,7 @@ const BLOCKS: Block[] = [
       location: 'France',
       title: 'Provence & Marseille',
       description:
-        'From beautiful Marseille to the roads of Provence, this trip proved that traveling with small children can still be a wonderful adventure — even when the lavender isn’t in bloom.',
+        'From beautiful Marseille to the roads of Provence, this trip proved that travelling with small children can still be a wonderful adventure — even when the lavender isn’t in bloom.',
     },
   },
   {
@@ -392,7 +392,7 @@ const BLOCKS: Block[] = [
     caption: {
       title: 'Seychelles',
       description:
-        'The beaches are beautiful, but it was the giant granite rocks that impressed us most. La Digue, explored by bike with two toddlers, remains our favorite Seychelles memory.',
+        'The beaches are beautiful, but it was the giant granite rocks that impressed us most. La Digue, explored by bike with two toddlers, remains our favourite Seychelles memory.',
     },
   },
 ];
@@ -415,7 +415,7 @@ function DestinationCaption({ item, caption }: { item: GalleryItem; caption: Cap
   return (
     <div className='mt-6'>
       {caption.location && (
-        <span className='text-xs uppercase tracking-wide font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50'>
+        <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50'>
           {caption.location}
         </span>
       )}
