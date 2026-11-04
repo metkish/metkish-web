@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -10,6 +10,7 @@ import WhyViennaSection from '@/components/journey/why-vienna-section';
 import FlightSection from '@/components/journey/flight-section';
 import TransferToHotelSection from '@/components/journey/transfer-to-hotel-section';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
+import BookedChecklist from '@/components/ui/booked-checklist';
 import {
   BARCELONA_VIENNA_TO_BARCELONA_JOURNEY,
   BARCELONA_AIRPORT_TO_HOTEL_JOURNEY,
@@ -89,6 +90,61 @@ function InlineTip({ children }: { children: ReactNode }) {
     <p className='border-l-2 border-pink-300 dark:border-pink-400/60 pl-4 text-base italic font-[family-name:var(--font-poppins)] font-light text-black/75 dark:text-white/75 leading-relaxed'>
       {children}
     </p>
+  );
+}
+
+// Same "moving photograph" treatment as Tenerife's Hotel_beach.mp4 (muted,
+// looped, no controls, no sound, no decorative overlay) -- with one
+// addition this site hasn't needed before: pausing once the clip scrolls
+// out of view, so a background loop doesn't keep decoding on a long page
+// after the visitor has moved on. An IntersectionObserver drives real
+// video.play()/video.pause() calls instead of the plain `autoPlay`
+// attribute (which only ever fires once, on load, and never pauses) --
+// the same "observer triggers playback" shape JourneyMapScene already
+// uses elsewhere on this site for its own map animations, just applied
+// here to a <video> instead of a GSAP timeline. play() is wrapped in a
+// no-op catch because some browsers can reject an autoplay call that
+// races their own loading/user-gesture checks; muted+loop+playsInline
+// keeps it eligible for autoplay everywhere, including iOS Safari.
+function ViewportVideo({
+  src,
+  className,
+}: {
+  src: string;
+  className?: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(video);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload='metadata'
+      aria-hidden='true'
+      className={className}
+    />
   );
 }
 
@@ -473,24 +529,752 @@ export default function BarcelonaPage() {
         </Reveal>
       </section>
 
-      {/* 7. COMING SOON — placeholder continuation, not a real chapter;
-          see the hero comment above. */}
-      <main className='flex-1 flex flex-col items-center justify-center text-center px-6 py-24 md:py-32'>
-        <Reveal className='max-w-xl mx-auto flex flex-col items-center'>
-          <p className='text-2xl md:text-3xl italic font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white leading-snug'>
-            Coming soon.
-          </p>
-          <p className='mt-4 text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/70 dark:text-white/70'>
-            The full travel story is on its way.
-          </p>
+      {/* 7. EXPLORING BARCELONA -- same hand-authored shape as THE HOTEL
+          and GETTING AROUND above (RouteLabel -> italic ChapterHeading),
+          but here the landscape photo sits directly below the heading,
+          before the body text, rather than after it -- label, heading,
+          photo, then all the text. This is a photo -> new chapter
+          transition (the ticket-machine photo above closes "Getting
+          Around"), so it reuses the same CHAPTER_GAP_START as every other
+          photo -> new chapter opening on this page.
+          Barcelona_La_Rambla_web.jpeg is the same EXIF-rotation /
+          single-frame-RGB fix applied to every other phone-camera photo on
+          the site (see the hero comment above); the original,
+          Barcelona_La Rambla.jpeg, is untouched. The photo uses the same
+          landscape-photo container as the rest of the site (see
+          components/journey/flight-section.tsx's own experience-photo
+          comment: max-w-5xl md:max-w-3xl mx-auto, aspect-[4/3] on mobile
+          and 16:9 on desktop, object-cover, no custom object-position --
+          the source is natively 4:3, so mobile shows the full, uncropped
+          frame and only the desktop 16:9 crop trims a little off the top
+          and bottom, evenly, which here is just sky/tree canopy above and
+          construction debris below, not the fencing, signage or people
+          that carry the "construction site" story). The label/heading and
+          the body text are split into their own Reveal blocks (rather than
+          one block containing everything, as other sections on this page
+          do) purely so the wider photo Reveal can sit between them at its
+          own width; the text itself is unchanged. No other photos or
+          sections are added, and nothing else on the page changes. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <RouteLabel>Exploring Barcelona</RouteLabel>
+          <ChapterHeading italic className='mt-8 md:mt-10'>
+            Not quite how I remembered it
+          </ChapterHeading>
+        </Reveal>
+
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3] md:aspect-[16/9]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_La_Rambla_web.jpeg'
+              alt="Construction fencing and a 'La Rambla renovation' sign along a cordoned-off section of La Rambla, Barcelona, with pedestrian signage, trees and building facades beyond."
+              fill
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-14 md:mt-16 max-w-2xl mx-auto'>
+          <Paragraphs
+            className='text-center'
+            items={[
+              'After checking into our hotel, we headed towards Plaça de Catalunya and continued down La Rambla.',
+              "It didn't take long to realise this wasn't quite the Barcelona I remembered.",
+              'There was a protest camp in Plaça de Catalunya, La Rambla was one big construction site, and the crowds were overwhelming.',
+              'Not exactly the first impression I had expected.',
+              "After exploring the city centre, we took the metro to the FC Barcelona stadium to buy a few things for the next day's El Clásico. The crowds there were unbelievable too.",
+              "Back at the hotel, my daughter and I decided to do some shopping. We were staying right in the middle of Barcelona's shopping district, after all. But I'd never seen stores so packed with people.",
+              'We had already noticed police officers everywhere throughout the day. By evening, things started getting tense.',
+              'At one point, we were stuck inside a store because of disturbances outside. When we were finally able to leave, we found ourselves surrounded by groups of young men running through the streets and threatening to attack shops.',
+              'We made it back to the hotel safely, but the night was anything but peaceful. A helicopter kept circling overhead, and the following day we read reports of damage to shops and streets.',
+              'Quite a first day in Barcelona.',
+            ]}
+          />
+        </Reveal>
+      </section>
+
+      {/* 8. THE SECOND DAY -- same shape as EXPLORING BARCELONA above
+          (bare pink divider line -> italic ChapterHeading -> landscape
+          photo -> Paragraphs, photo directly below the heading, before
+          the body text). This chapter has no uppercase eyebrow/label text
+          above the heading -- by request, only the small pink decorative
+          line is kept (the same line RouteLabel renders internally,
+          reproduced here directly without its <p> label) sitting right
+          above the heading, exactly as it would under a label. This is a
+          text -> new chapter transition (the first-day story above ends
+          in running body text, not a photo or video), so, per the
+          Tenerife editorial system's own transition rules, it uses the
+          FULL chapter-to-chapter gap rather than CHAPTER_GAP_START alone:
+          extra pt on top of CHAPTER_GAP_START, matching the weight of a
+          genuine new-chapter beat rather than a continuation.
+          Barcelona_Sea_web.jpeg is the same EXIF-rotation / single-frame-
+          RGB fix as every other phone-camera photo on the site; the
+          original, Barcelona_Sea.jpeg, is untouched. Same landscape-photo
+          container/crop as the La Rambla photo above and
+          components/journey/flight-section.tsx's own experience photo:
+          max-w-5xl md:max-w-3xl mx-auto, aspect-[4/3] mobile / 16:9
+          desktop, object-cover, no custom object-position -- the source is
+          natively 4:3, so mobile shows the full frame and the desktop crop
+          only trims a little empty sky above and pavement below, evenly,
+          keeping the full run of palm trees and the marina in frame. No
+          other photos or sections are added, and nothing above this point
+          changes. */}
+      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <span className='mx-auto block h-0.5 w-8 bg-pink-300 dark:bg-pink-400/60' />
+          <ChapterHeading italic className='mt-8 md:mt-10'>
+            Why I fell in love with Barcelona in the first place
+          </ChapterHeading>
+        </Reveal>
+
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3] md:aspect-[16/9]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_Sea_web.jpeg'
+              alt="A palm-tree-lined promenade along Barcelona's harbour, boats moored in the marina, under a clear blue sky."
+              fill
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-14 md:mt-16 max-w-2xl mx-auto'>
+          <Paragraphs
+            className='text-center'
+            items={[
+              'After everything that happened on our first day, the next morning reminded me why I fell in love with Barcelona in the first place.',
+              'We headed towards the sea, and suddenly everything felt different. The palm trees, the sunshine, the atmosphere — it was like paradise.',
+              'Later, we enjoyed tapas in the Gothic Quarter, and in the evening, the biggest match of them all was waiting for us. El Clásico.',
+              'A perfect day. Or so we thought.',
+            ]}
+          />
+        </Reveal>
+
+        {/* El Clásico -- a short subsection within THE SECOND DAY chapter,
+            not a new chapter of its own: no pink line/eyebrow of its own
+            (same "sub-beat" logic as the Tenerife rental-car chapter's
+            second Eyebrow/ChapterHeading beat -- only a chapter's own
+            opening heading gets the pink line), just a heading directly
+            below the paragraphs above. mt-14/16 matches the weight of the
+            other "extra beat within a chapter" gaps already used on this
+            page (see GETTING AROUND's own paragraphs -> InlineTip -> photo
+            progression). Heading -> Paragraphs (mt-5, the same spacing
+            used after every other ChapterHeading on this page) -> photo
+            -> link, in that exact order per this step's request.
+            Barcelona_el_clasico_web.jpeg is the same EXIF-rotation /
+            single-frame-RGB fix as every other phone-camera photo on the
+            site; the original, "Barcelona_el clasico.jpeg", is untouched.
+            Same responsive landscape-photo container as the Sea/La Rambla
+            photos above (max-w-5xl md:max-w-3xl mx-auto, aspect-[4/3]
+            mobile / 16:9 desktop, object-cover, no custom object-position)
+            -- the source is natively 4:3, so mobile shows the whole
+            stadium bowl uncropped, and the desktop 16:9 crop only trims a
+            sliver of the dark lighting rig above and the nearest
+            spectators' heads below, keeping the full pitch and stands (the
+            actual "full stadium view") intact. The link below it reuses
+            the exact "Read →" link styling and Link component from the
+            homepage's Behind the Trip cards (app/page.tsx), pointed at
+            this guide's real published route (lib/behind-the-trip.ts's
+            'el-clasico-tickets' slug -> /behind-the-trip/el-clasico-
+            tickets, rendered by components/guides/el-clasico-tickets-
+            article.tsx) rather than repeating that article's own detailed
+            ticket-buying story here. */}
+        <Reveal delay={0.2} className='mt-14 md:mt-16 max-w-2xl mx-auto text-center'>
+          <ChapterHeading italic>
+            The match we&apos;d been waiting for
+          </ChapterHeading>
+          <Paragraphs
+            className='mt-5 text-center'
+            items={[
+              'El Clásico was the main reason we came to Barcelona. After months of planning and some seriously expensive tickets, we were finally there.',
+              'The atmosphere was incredible. The result? Not so much.',
+              "But that's football.",
+            ]}
+          />
+        </Reveal>
+
+        <Reveal delay={0.25} className='mt-10 md:mt-12 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3] md:aspect-[16/9]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_el_clasico_web.jpeg'
+              alt='A packed Spotify Camp Nou under the floodlights during El Clásico, FC Barcelona against Real Madrid.'
+              fill
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.3} className='mt-6 md:mt-8 text-center'>
           <Link
-            href='/#barcelona'
-            className='mt-16 md:mt-20 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white hover:underline underline-offset-4'
+            href='/behind-the-trip/el-clasico-tickets'
+            className='inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
           >
-            ← Back to destinations
+            Read our El Clásico experience →
           </Link>
         </Reveal>
-      </main>
+      </section>
+
+      {/* 9. SAGRADA FAMÍLIA -- a genuine new chapter (full RouteLabel, like
+          THE HOTEL / GETTING AROUND / EXPLORING BARCELONA above), unlike
+          THE SECOND DAY and its El Clásico subsection, which deliberately
+          have no label of their own. The section immediately above closes
+          on the "Read our El Clásico experience" link -- a short line of
+          text, not a photo -- so, per the same text -> new chapter logic
+          already used for THE SECOND DAY's own opening, this uses the
+          FULL chapter-to-chapter gap (extra pt on top of CHAPTER_GAP_START)
+          rather than CHAPTER_GAP_START alone.
+          RouteLabel -> italic ChapterHeading -> Paragraphs all share one
+          Reveal, same shape as THE HOTEL/GETTING AROUND. Then, in the
+          exact order requested: the interior ceiling photo, the ticket
+          price card, the InlineTip aside, and the Nativity Tower view.
+          Both photos are portrait, so -- like the taxi photo in
+          transfer-to-hotel-section.tsx -- they use the same outer
+          max-w-5xl md:max-w-3xl mx-auto width as this page's landscape
+          photos, but shown at their own natural aspect ratio (explicit
+          width/height, w-full h-auto, no aspect-ratio box, no
+          object-cover) rather than cropped into a fixed box, so nothing
+          -- including the ceiling in the first photo -- is cropped away.
+          Barcelona_Sagrada_Familia1_web.jpeg and ..._Familia2_web.jpeg are
+          the same EXIF-rotation / single-frame-RGB fix as every other
+          phone-camera photo on the site (the second photo also needed an
+          actual 90° rotation, unlike the others so far, since its raw
+          EXIF orientation was 6); the originals, "Barcelona_Sagrada
+          Familia1.jpeg" and "Barcelona_Sagrada Familia2.jpeg", are
+          untouched.
+          The price card reuses the exact same beige practical-information
+          panel as the hotel/flight cards elsewhere on this page (bg-
+          [#f1ebdc], max-w-[460px], TimeStamp for the headline figure, the
+          same uppercase-label/plain-value span alternation) -- no new
+          card design, just more line items than the simpler hotel card,
+          grouped the same way the flight card groups "Checked luggage"
+          under its own label. Per this step's explicit instruction, no
+          extra labels or decoration were invented beyond what was given.
+          The InlineTip below it is the exact same local component used
+          for "My tip: Apply well in advance" in GETTING AROUND above
+          (thin pink left rule, left-aligned italic text, no background,
+          no uppercase label) -- reused verbatim, not redesigned, per this
+          step's explicit instruction. */}
+      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <RouteLabel>Sagrada Família</RouteLabel>
+          <ChapterHeading italic className='mt-8 md:mt-10'>
+            Even more impressive on the inside
+          </ChapterHeading>
+          <Paragraphs
+            className='mt-5 text-center'
+            items={[
+              "On our first visit to Barcelona, we only admired the Sagrada Família from the outside. This time, we wanted to see the interior — and I'm so glad we did.",
+              'We booked our tickets on 8 September, well ahead of our visit on 26 October. We also included access to the Nativity Tower, which turned out to be an excellent decision.',
+              'The interior was absolutely breathtaking. Even the children were impressed, and the experience was one of the highlights of our trip.',
+            ]}
+          />
+        </Reveal>
+
+        <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_Sagrada_Familia1_web.jpeg'
+              alt="Looking straight up at the Sagrada Família's interior ceiling, with its tree-like branching columns and star-shaped skylights."
+              width={2662}
+              height={3552}
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='w-full h-auto'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+          <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            Sagrada Família · 26 October 2026
+          </span>
+          <TimeStamp size='md'>€106.00</TimeStamp>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            Basilica entrance + Nativity Tower
+          </span>
+          <div className='mt-4 flex flex-col items-center gap-1'>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              2 adults · €36 each
+            </span>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              1 under 30 · €34
+            </span>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              1 child under 11 · Free
+            </span>
+          </div>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            Booked: 8 September 2026
+          </span>
+          <div className='mt-4 flex flex-col items-center gap-1'>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Basilica entry: 15:00
+            </span>
+            <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Nativity Tower: 15:45
+            </span>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2} className='mt-12 md:mt-14 max-w-2xl mx-auto'>
+          <InlineTip>
+            My tip: Book your tickets well in advance, especially if you
+            want to visit one of the towers. We booked ours almost seven
+            weeks before our visit, and I would definitely recommend
+            including the tower experience.
+          </InlineTip>
+        </Reveal>
+
+        <Reveal delay={0.25} className='mt-12 md:mt-14 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_Sagrada_Familia2_web.jpeg'
+              alt='The view from the Sagrada Família Nativity Tower, looking down through an iron grille over Parc de la Ciutadella and the Barcelona skyline.'
+              width={4284}
+              height={5712}
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='w-full h-auto'
+            />
+          </div>
+        </Reveal>
+      </section>
+
+      {/* 10. MONTJUÏC -- another genuine new chapter (full RouteLabel), same
+          shape as SAGRADA FAMÍLIA above. The section immediately before
+          this one closes on the Nativity Tower photo, so (per this page's
+          own photo -> new chapter rule) this uses CHAPTER_GAP_START alone,
+          not the heavier full gap SAGRADA FAMÍLIA needed.
+          RouteLabel -> italic ChapterHeading -> Paragraphs share one
+          Reveal (same shape as THE HOTEL/SAGRADA FAMÍLIA), then, in the
+          order requested: the cable car price card, the clip, the two
+          closing paragraphs, and the InlineTip.
+          Barcelona_Montjuic_web.mp4 is a re-encoded, web-optimised
+          derivative of the original Barcelona_Montjuic.MOV (scaled from
+          1080x1920 to 720x1280 -- still an exact 9:16, so nothing is
+          cropped -- H.264/yuv420p, faststart, audio track dropped since
+          the clip is muted-by-design and will never be heard); the
+          original file is completely untouched. It uses the exact same
+          "moving photograph" container as Tenerife's own Hotel_beach.mp4
+          (max-w-[240px] sm:max-w-xs md:max-w-md mx-auto, aspect-[9/16]),
+          the only other autoplay/muted/looping video on the site, rather
+          than stretching it to the page's full text width -- consistent
+          with how this site already treats a vertical autoplay clip,
+          same "contained by width, not stretched" principle as the metro
+          ticket photo above. See the ViewportVideo helper above for the
+          one addition beyond that existing pattern: it pauses once
+          scrolled out of view.
+          The price card reuses the exact same beige panel as every other
+          price card on this page -- nothing beyond the four lines
+          requested (no booking reference, no extra copy). The InlineTip
+          below the closing paragraphs is the same local component used
+          for "My tip: Apply well in advance" and the Sagrada Família tip
+          above, reused verbatim. Per the explicit correction in this
+          step's request: the queue was people waiting to go UP when we
+          came back down around noon -- we did not wait in it ourselves. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <RouteLabel>Montjuïc</RouteLabel>
+          <ChapterHeading italic className='mt-8 md:mt-10'>
+            Worth the Trip Up
+          </ChapterHeading>
+          <Paragraphs
+            className='mt-5 text-center'
+            items={[
+              'We decided to spend the morning exploring Montjuïc, although getting there was a little more complicated than expected. We had some trouble finding the funicular at the metro station, which takes you up to the cable car station.',
+              "Since we arrived before the cable car opened at 10 AM, we walked to the Olympic Stadium first. We couldn't go inside, but the surroundings were beautiful and well worth exploring.",
+              "We had bought our return cable car tickets through Hola Barcelona with a 10% discount. There's no need to book in advance, though — tickets can also be purchased at the station, and they're not tied to a specific departure time.",
+              'We boarded shortly after opening and barely had to wait. With beautiful sunshine and clear skies, the views over Barcelona were absolutely stunning.',
+            ]}
+          />
+        </Reveal>
+
+        <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+          <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            Montjuïc Cable Car · Return
+          </span>
+          <TimeStamp size='md'>€57.60</TimeStamp>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            2 adults + 2 children
+          </span>
+          <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            10% online discount included
+          </span>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            26 October 2026
+          </span>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-12 md:mt-14 max-w-[240px] sm:max-w-xs md:max-w-md mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <ViewportVideo
+              src='/2026-10%20-%20Barcelona/Barcelona_Montjuic_web.mp4'
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2} className='mt-12 md:mt-14 max-w-2xl mx-auto'>
+          <Paragraphs
+            className='text-center'
+            items={[
+              "At the top, we skipped the castle and simply walked around its walls. It was a lovely walk, and we didn't feel we had missed anything by not going inside.",
+              'When we came back down around noon, we saw an enormous queue at the bottom station — all those people were waiting to go UP. Luckily, we had already enjoyed our ride without the crowds.',
+            ]}
+          />
+        </Reveal>
+
+        <Reveal delay={0.25} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <InlineTip>
+            My tip: Visit Montjuïc early, ideally when the cable car opens.
+            You can buy tickets on arrival, but booking through Hola
+            Barcelona saved us 10%. And don&apos;t feel you need to enter
+            the castle — the walk around its walls is beautiful on its
+            own.
+          </InlineTip>
+        </Reveal>
+      </section>
+
+      {/* 11. PARK GÜELL -- another genuine new chapter (full RouteLabel),
+          same shape as SAGRADA FAMÍLIA/MONTJUÏC above. The section
+          immediately before this one closes on the Montjuïc InlineTip --
+          text, not a photo -- so, per this page's own text -> new chapter
+          rule, it uses the full chapter-to-chapter gap (extra pt on top
+          of CHAPTER_GAP_START), same as SAGRADA FAMÍLIA's own opening.
+          Unlike every other chapter on this page, the photo here sits
+          directly below the heading with NO text before it (RouteLabel +
+          ChapterHeading share one small Reveal on their own), per this
+          step's explicit "photo before the text" order -- all five
+          paragraphs come after the photo instead.
+          Barcelona_Park_Guell_web.jpeg is the same EXIF-fix as every
+          other phone photo on the site (orientation was already 1, so no
+          rotation was needed, just the usual single-frame-RGB
+          conversion); the original, "Barcelona_Park Guell.jpeg" (found on
+          the Desktop, same as the La Rambla photo earlier, and copied
+          into this folder), is untouched. This photo uses the natural-
+          proportion, uncropped container (max-w-5xl md:max-w-3xl mx-auto,
+          explicit width/height, w-full h-auto, no aspect-ratio box, no
+          object-cover) rather than this page's usual cropped 4:3/16:9 box
+          -- the same choice already made for both Sagrada Família photos
+          -- specifically because a center 16:9 crop here would cut into
+          the crowd filling the bottom of the frame, which this step
+          explicitly asks not to happen; this way neither the staircase
+          nor the crowd is ever cropped, at any breakpoint.
+          The price card below the text reuses the exact same beige panel
+          as every other price card on this page, with only the six lines
+          given (no booking reference, nothing extra). The InlineTip after
+          it is the same local component reused verbatim throughout this
+          page (thin pink left rule, left-aligned italic text, no
+          background, no label).
+          Per this step's explicit tone instruction, the paragraphs stay
+          personal and candidly a little disappointed -- not rewritten
+          into a generic positive review -- and make no claim about what
+          happens after a 30-minute late arrival, since that was never
+          actually tested. No historical or general tourist information
+          was added beyond what was given, and no ticket screenshots are
+          referenced or included anywhere here. */}
+      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <RouteLabel>Park Güell</RouteLabel>
+          <ChapterHeading italic className='mt-8 md:mt-10'>
+            Not Quite as Magical This Time
+          </ChapterHeading>
+        </Reveal>
+
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_Park_Guell_web.jpeg'
+              alt='A crowd climbing the mosaic-tiled staircase toward the Hypostyle Room at Park Güell, under a clear blue sky.'
+              width={5712}
+              height={4284}
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='w-full h-auto'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-14 md:mt-16 max-w-2xl mx-auto'>
+          <Paragraphs
+            className='text-center'
+            items={[
+              "After a morning on Montjuïc, we headed to Park Güell. But with all the walking we'd already done and the afternoon heat, we were starting to feel tired.",
+              'The walk from the metro station to the park was longer than expected. And once we arrived, we were met with yet another enormous crowd.',
+              'We had tickets for 2:30 PM but were allowed in an hour early without any problems.',
+              "I remember being absolutely amazed by Park Güell on my first visit to Barcelona. This time, I just didn't feel the same. Maybe it was the heat, the tired legs or simply the number of people everywhere.",
+              "We didn't stay very long.",
+            ]}
+          />
+        </Reveal>
+
+        <Reveal delay={0.2} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+          <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            Park Güell · 27 October 2026
+          </span>
+          <TimeStamp size='md'>€63.00</TimeStamp>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            2 adults × €18.00
+          </span>
+          <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            2 children × €13.50
+          </span>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            Entry time: 14:30
+          </span>
+          <span className='text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            Booked: 17 October 2026
+          </span>
+        </Reveal>
+
+        <Reveal delay={0.25} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <InlineTip>
+            My tip: Park Güell requires a ticket, something I hadn&apos;t
+            realised until shortly before our trip. We booked ours just
+            ten days in advance, but I&apos;d recommend booking earlier.
+            And if possible, visit in the morning rather than after an
+            already exhausting day of sightseeing.
+          </InlineTip>
+        </Reveal>
+      </section>
+
+      {/* 12. MONTSERRAT -- another genuine new chapter (full RouteLabel),
+          same shape as the chapters above. The section before this one
+          closes on the Park Güell InlineTip -- text, not a photo -- so,
+          per this page's own text -> new chapter rule, it uses the full
+          chapter-to-chapter gap, same as SAGRADA FAMÍLIA/PARK GÜELL's own
+          openings.
+          Order follows this step's own section headings literally:
+          RouteLabel + ChapterHeading, then all seven paragraphs, then
+          both photos (the mountain first, "displayed prominently", then
+          the railway train as a secondary/supporting photo), then the
+          cost card, then the InlineTip.
+          Barcelona_Montserrat_web.jpeg and ..._railway_web.jpeg are the
+          same EXIF-rotation / single-frame-RGB fix as every other phone
+          photo on the site (both needed the actual 90° rotation -- their
+          raw EXIF orientation was 6, same as the Sagrada Família tower
+          photo); the originals are untouched. Despite "main landscape
+          photo" in this step's own wording, both source photos are
+          portrait (4284x5712, exactly 3:4), so -- consistent with how
+          every other portrait photo on this page is already handled --
+          the mountain photo uses the natural-proportion, uncropped
+          container (max-w-5xl md:max-w-3xl mx-auto, explicit width/
+          height, w-full h-auto, no object-cover) at the same prominent
+          width as the Sagrada Família/Park Güell photos, while the
+          railway photo uses the narrower "secondary" width already
+          established for the metro ticket machine photo above
+          (max-w-[280px] sm:max-w-sm mx-auto) rather than the mountain
+          photo's full width, so it visibly reads as the supporting image
+          it's described as. Per this step's explicit instruction, the
+          ticket screenshot (Barcelona_Montserrat_ticket.jpeg) is not used
+          anywhere on this page.
+          The cost card reuses the exact same beige panel as every other
+          price card on this page, reformatted into this page's own
+          label/TimeStamp/caption shape (uppercase label, big price,
+          plain caption line below) rather than literally pasting this
+          step's one-line wording, since that's how every other card here
+          already works -- still just the two facts given, nothing extra.
+          The InlineTip below it is the same local component reused
+          verbatim throughout this page. */}
+      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <RouteLabel>Montserrat</RouteLabel>
+          <ChapterHeading italic className='mt-8 md:mt-10'>
+            A Day Away from the City
+          </ChapterHeading>
+          <Paragraphs
+            className='mt-5 text-center'
+            items={[
+              'After several busy days in Barcelona, we had one goal for our final full day: as little walking as possible.',
+              'With a little help from AI, we planned a day trip to Montserrat. We took the metro to the train station and bought combined train and rack railway (cremallera) tickets for all four of us.',
+              'And honestly, the journey itself was part of the experience. After days of walking, it felt wonderful to simply sit back and enjoy the scenery.',
+              "Montserrat's unusual rock formations fascinated me. The rest of my family? Not quite as impressed.",
+              'Once at the top, we enjoyed the views, stopped for something to eat and eventually headed back. We considered taking the funicular further up, but none of us really felt like it.',
+              'We also skipped visiting the basilica, which I slightly regret now.',
+              'It was a pleasant, relaxing day trip and a welcome change from the busy streets of Barcelona.',
+            ]}
+          />
+        </Reveal>
+
+        <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_Montserrat_web.jpeg'
+              alt="Montserrat's jagged rock formations rising above the monastery buildings clinging to the cliffside."
+              width={4284}
+              height={5712}
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='w-full h-auto'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-12 md:mt-14 max-w-[280px] sm:max-w-sm mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_Montserrat_railway_web.jpeg'
+              alt='A green Cremallera de Montserrat rack railway train signed for Montserrat, waiting at the platform.'
+              width={4284}
+              height={5712}
+              sizes='(min-width: 640px) 384px, 70vw'
+              className='w-full h-auto'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2} className='mt-12 md:mt-14 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+          <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+            Train + Cremallera
+          </span>
+          <TimeStamp size='md'>€100.20</TimeStamp>
+          <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            Return tickets for four
+          </span>
+        </Reveal>
+
+        <Reveal delay={0.25} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <InlineTip>
+            My tip: When buying your tickets at the station, you can
+            choose between the rack railway (cremallera) and the cable car
+            (Aeri de Montserrat). If you choose the cable car, get off at
+            Montserrat-Aeri, one stop before Monistrol de Montserrat,
+            where you change to the rack railway. Also, arrive early — our
+            train was packed, and some passengers had to stand for almost
+            an hour.
+          </InlineTip>
+        </Reveal>
+      </section>
+
+      {/* 13. ONE LAST THING ABOUT BARCELONA -- this page's genuine final
+          chapter. The earlier "Coming soon" placeholder (see the hero
+          comment above) is now gone: the full travel story is complete,
+          and this step's own closing sentence is explicitly the final
+          sentence of the entire page, so a "more is coming" placeholder
+          below it would contradict that. The "Back to destinations" link
+          is kept as ordinary site navigation, inside the same <main>
+          flex-1 spacer landmark as before so the footer still sits at the
+          bottom of the viewport on short pages.
+          Previous section closes on the Montserrat InlineTip -- text, not
+          a photo -- so, per this page's own text -> new chapter rule, it
+          uses the full chapter-to-chapter gap, same as every other
+          text-closed chapter opening on this page.
+          Order follows this step's own section headings literally:
+          RouteLabel + ChapterHeading, then the photo directly below the
+          heading and before the text (per explicit instruction), then all
+          eight paragraphs, then the non-clickable "Behind the Trip"
+          article teaser, then the final closing sentence.
+          Barcelona_La_Boqueria_web.jpeg is the same EXIF-transpose +
+          single-frame-RGB fix as every other phone photo on this page
+          (raw EXIF orientation was already 1, so only the RGB/
+          single-frame conversion actually applied); the original is
+          untouched. Natural dimensions are 3524x5712 (portrait), so --
+          consistent with how every other portrait photo on this page is
+          already handled -- it uses the natural-proportion, uncropped
+          container (explicit width/height, w-full h-auto, no
+          object-cover) at the same prominent width as the Sagrada
+          Família/Park Güell/Montserrat mountain photos, rather than a
+          cropped landscape box.
+          The article teaser is deliberately NOT a <Link> -- the guide
+          isn't published yet and the instruction is explicit about not
+          creating a broken link -- styled as quiet, muted, non-interactive
+          text (lower opacity, no hover/underline affordance, cursor-
+          default) so it visually reads as an editorial note about what's
+          coming next rather than a clickable element matching the El
+          Clásico link's styling earlier on this page.
+          The final closing sentence is this page's true closing line, so
+          it borrows the hero's own short italic-Playfair sentiment
+          treatment ("An island we could easily come back to." on
+          Tenerife) rather than the smaller InlineTip/aside treatment,
+          with extra margin-top for the "breathing room" explicitly asked
+          for. */}
+      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-20 md:pb-24 bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='max-w-2xl mx-auto text-center'>
+          <RouteLabel>One Last Thing About Barcelona</RouteLabel>
+          <ChapterHeading italic className='mt-8 md:mt-10'>
+            The Little Things We Loved
+          </ChapterHeading>
+        </Reveal>
+
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-5xl md:max-w-3xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px]'>
+            <Image
+              src='/2026-10%20-%20Barcelona/Barcelona_La_Boqueria_web.jpeg'
+              alt='Colourful fruit stalls piled with dragon fruit, figs and fresh fruit cups inside La Boqueria Market.'
+              width={3524}
+              height={5712}
+              sizes='(min-width: 768px) 768px, 100vw'
+              className='w-full h-auto'
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-14 md:mt-16 max-w-2xl mx-auto'>
+          <Paragraphs
+            className='text-center'
+            items={[
+              'Once again, this trip reminded us how convenient it is to stay right in the city centre. Having shops, restaurants and so many places within easy reach made everything easier.',
+              'One place we kept returning to was La Boqueria Market.',
+              "On our first visit to Barcelona, my husband and I weren't particularly impressed by it. This time, we ended up going almost every day.",
+              "Our son fell in love with the chocolate-covered strawberries and wanted them every single day. We tried churros, which honestly weren't our favourite. Our daughter had an absolutely delicious jamón sandwich, and we even bought some Spanish cured meats to take home.",
+              'Same market, completely different experience.',
+              'And the food in Barcelona? We absolutely loved it.',
+              "Every restaurant we visited was a great find, and we actually discovered them all with the help of AI. That's a story for another article.",
+            ]}
+          />
+        </Reveal>
+
+        <Reveal delay={0.2} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <p className='text-sm font-[family-name:var(--font-poppins)] text-black/40 dark:text-white/40 cursor-default select-none'>
+            Behind the Trip — How We Find Restaurants When Travelling →
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.25} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
+          <p className='text-lg md:text-xl italic font-[family-name:var(--font-playfair)] text-black/80 dark:text-white/80 leading-snug'>
+            Barcelona wasn&apos;t always easy this time around, but it gave us plenty of reasons to want to come back.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* 14. BOOKED BEFORE WE LEFT -- the same reusable pre-trip checklist
+          component Tenerife uses (components/ui/booked-checklist.tsx):
+          centred RouteLabel (pink line + uppercase label), then the
+          component's own small pink-checkmark list -- no new styling
+          introduced here, exactly per instruction to reuse the existing
+          component and design. This replaces the previous "Back to
+          destinations" link entirely: this section is now the page's
+          final content, sitting directly above the footer, the same
+          layout shape as Tenerife's own closing section (no <main>
+          spacer -- that was only ever needed to vertically centre the
+          old "Coming soon" placeholder text, which is long gone).
+          Previous section closes on the final italic sentence -- text,
+          not a photo -- so, per this page's own text -> new chapter rule,
+          it uses the full chapter-to-chapter gap on top, same as every
+          other text-closed chapter opening on this page. The bottom
+          follows Tenerife's own one-off override of CHAPTER_GAP_END
+          (+50px) rather than the page's standard chapter-close padding,
+          since -- like Tenerife's -- this section sits directly against
+          the dark footer rather than another cream section.
+          List is exactly what this step specified: flights, Vienna
+          airport parking, hotel, El Clásico tickets, Sagrada Família +
+          Nativity Tower tickets, Park Güell tickets. Montserrat, the
+          Montjuïc cable car and metro tickets are deliberately excluded
+          per explicit instruction, since those were bought during the
+          trip rather than booked beforehand. */}
+      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-[calc(3rem+50px)] md:pb-[calc(3.5rem+50px)] bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='mx-auto'>
+          <BookedChecklist
+            items={[
+              'Flights',
+              'Airport parking in Vienna',
+              'Hotel',
+              'El Clásico tickets',
+              'Sagrada Família + Nativity Tower tickets',
+              'Park Güell tickets',
+            ]}
+          />
+        </Reveal>
+      </section>
 
       <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
         <Image
