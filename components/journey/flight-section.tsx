@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import type { Journey } from '@/lib/journeys/types';
+import { ChapterHeading, Paragraphs, Eyebrow } from '@/components/ui/typography';
 
 // Shared "The Flight" chapter -- the flight map (Vienna Airport -> the
 // destination airport) plus the quiet airline/price/luggage fact card
@@ -50,53 +51,10 @@ function Reveal({
 
 // Same Level 2 editorial heading scale used throughout Tenerife's own
 // opening journey (see that page's ChapterHeading comment).
-function ChapterHeading({
-  children,
-  italic = false,
-  className = '',
-}: {
-  children: ReactNode;
-  italic?: boolean;
-  className?: string;
-}) {
-  return (
-    <p
-      className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
-        italic ? 'italic' : ''
-      } ${className}`}
-    >
-      {children}
-    </p>
-  );
-}
-
 // A small in-chapter marker -- one notch below RouteLabel: no pink tick,
 // used for a beat *within* this chapter (e.g. Tenerife's own "A first with
 // Ryanair") rather than a chapter opener. Same component as
 // app/tenerife/page.tsx's own Eyebrow.
-function Eyebrow({ children }: { children: ReactNode }) {
-  return (
-    <span className='block text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
-      {children}
-    </span>
-  );
-}
-
-function Paragraphs({ items, className = '' }: { items: string[]; className?: string }) {
-  return (
-    <div className={`space-y-5 ${className}`}>
-      {items.map((text, i) => (
-        <p
-          key={i}
-          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
-        >
-          {text}
-        </p>
-      ))}
-    </div>
-  );
-}
-
 // Same map->content pause, and same chapter-ending bottom gap, used
 // sitewide (see app/tenerife/page.tsx's own MAP_TRANSITION_PT /
 // CHAPTER_GAP_END comments) -- repeated here rather than imported since

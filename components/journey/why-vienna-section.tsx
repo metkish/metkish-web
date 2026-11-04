@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import { TENERIFE_HOME_TO_VIENNA_JOURNEY } from '@/lib/journeys/tenerife';
+import { ChapterHeading, Paragraphs } from '@/components/ui/typography';
 
 // Shared "Why Vienna?" chapter -- the map (home -> Vienna Airport) plus the
 // Vienna / Car Park 3 story that follows it. First built for
@@ -55,26 +56,6 @@ function Reveal({
 
 // Same Level 2 editorial heading scale used throughout Tenerife's own
 // opening journey (see that page's ChapterHeading comment).
-function ChapterHeading({
-  children,
-  italic = false,
-  className = '',
-}: {
-  children: ReactNode;
-  italic?: boolean;
-  className?: string;
-}) {
-  return (
-    <p
-      className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
-        italic ? 'italic' : ''
-      } ${className}`}
-    >
-      {children}
-    </p>
-  );
-}
-
 // Same Level 4 fact treatment used throughout Tenerife's own page (see
 // that page's Fact comment): small uppercase label, large serif value,
 // optional small supporting lines underneath.
@@ -100,21 +81,6 @@ function Fact({
         >
           {line}
         </span>
-      ))}
-    </div>
-  );
-}
-
-function Paragraphs({ items, className = '' }: { items: string[]; className?: string }) {
-  return (
-    <div className={`space-y-5 ${className}`}>
-      {items.map((text, i) => (
-        <p
-          key={i}
-          className='text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-black/80 dark:text-white/80 leading-relaxed'
-        >
-          {text}
-        </p>
       ))}
     </div>
   );

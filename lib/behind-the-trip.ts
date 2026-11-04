@@ -26,7 +26,7 @@ export const BEHIND_THE_TRIP_TOPICS: BehindTheTripTopic[] = [
     slug: 'hotels',
     heading: 'Hotels',
     kicker: 'How I choose where we stay',
-    body: 'What I look for, what I compare and what actually matters to me when choosing a hotel.',
+    body: 'What I look for, compare and actually care about when choosing a hotel.',
   },
   {
     slug: 'flights',
