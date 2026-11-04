@@ -768,7 +768,7 @@ export default function BarcelonaPage() {
             items={[
               "On our first visit to Barcelona, we only admired the Sagrada Família from the outside. This time, we wanted to see the interior — and I'm so glad we did.",
               'We booked our tickets on 8 September, well ahead of our visit on 26 October. We also included access to the Nativity Tower, which turned out to be an excellent decision.',
-              'The interior was absolutely breathtaking. Even the children were impressed, and the experience was one of the highlights of our trip.',
+              'The interior was incredible. Even the children were impressed, and it quickly became one of the highlights of our trip.',
             ]}
           />
         </Reveal>
@@ -885,7 +885,7 @@ export default function BarcelonaPage() {
               'We decided to spend the morning exploring Montjuïc, although getting there was a little more complicated than expected. We had some trouble finding the funicular at the metro station, which takes you up to the cable car station.',
               "Since we arrived before the cable car opened at 10 AM, we walked to the Olympic Stadium first. We couldn't go inside, but the surroundings were beautiful and well worth exploring.",
               "We had bought our return cable car tickets through Hola Barcelona with a 10% discount. There's no need to book in advance, though — tickets can also be purchased at the station, and they're not tied to a specific departure time.",
-              'We boarded shortly after opening and barely had to wait. With beautiful sunshine and clear skies, the views over Barcelona were absolutely stunning.',
+              'We boarded shortly after opening and barely had to wait — and with clear skies, the views over Barcelona were stunning.',
             ]}
           />
         </Reveal>
@@ -1091,7 +1091,6 @@ export default function BarcelonaPage() {
               "Montserrat's unusual rock formations fascinated me. The rest of my family? Not quite as impressed.",
               'Once at the top, we enjoyed the views, stopped for something to eat and eventually headed back. We considered taking the funicular further up, but none of us really felt like it.',
               'We also skipped visiting the basilica, which I slightly regret now.',
-              'It was a pleasant, relaxing day trip and a welcome change from the busy streets of Barcelona.',
             ]}
           />
         </Reveal>
@@ -1167,27 +1166,33 @@ export default function BarcelonaPage() {
           single-frame-RGB fix as every other phone photo on this page
           (raw EXIF orientation was already 1, so only the RGB/
           single-frame conversion actually applied); the original is
-          untouched. Natural dimensions are 3524x5712 (portrait), so --
-          consistent with how every other portrait photo on this page is
-          already handled -- it uses the natural-proportion, uncropped
-          container (explicit width/height, w-full h-auto, no
-          object-cover) at the same prominent width as the Sagrada
-          Família/Park Güell/Montserrat mountain photos, rather than a
-          cropped landscape box.
-          The article teaser is deliberately NOT a <Link> -- the guide
-          isn't published yet and the instruction is explicit about not
-          creating a broken link -- styled as quiet, muted, non-interactive
-          text (lower opacity, no hover/underline affordance, cursor-
-          default) so it visually reads as an editorial note about what's
-          coming next rather than a clickable element matching the El
-          Clásico link's styling earlier on this page.
+          untouched. Natural dimensions are 3524x5712 (portrait), kept
+          uncropped (explicit width/height, w-full h-auto, no fill, no
+          object-cover) -- capped at max-w-[500px] (width: 100% of that
+          500px parent, height: auto, so the aspect ratio is preserved
+          exactly) rather than the page's usual full-width photo
+          treatment, since this closing photo is meant to read as a
+          modest editorial accent -- narrower than the max-w-2xl (672px)
+          text column around it -- rather than another full-size hero
+          image.
+          The article teaser reads as an inline sentence -- "Curious how
+          we did it? Read [How We Find Restaurants When Travelling -->]"
+          -- with only the article title + arrow as the actual <Link>,
+          rather than the page's usual standalone bold link treatment, so
+          it sits quietly under the paragraphs instead of reading as its
+          own call-to-action. The article now has real content (see
+          components/guides/how-we-find-restaurants-article.tsx) but
+          stays out of search via noindex metadata until it's ready to
+          publish.
           The final closing sentence is this page's true closing line, so
           it borrows the hero's own short italic-Playfair sentiment
           treatment ("An island we could easily come back to." on
           Tenerife) rather than the smaller InlineTip/aside treatment,
           with extra margin-top for the "breathing room" explicitly asked
-          for. */}
-      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-20 md:pb-24 bg-[#faf9f6] dark:bg-black`}>
+          for -- sized up (text-[22px] md:text-[25px], ~20-25% larger
+          than the original text-lg/text-xl) so it reads as the page's
+          final editorial statement rather than just another aside. */}
+      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>One Last Thing About Barcelona</RouteLabel>
           <ChapterHeading italic className='mt-8 md:mt-10'>
@@ -1195,14 +1200,14 @@ export default function BarcelonaPage() {
           </ChapterHeading>
         </Reveal>
 
-        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-5xl md:max-w-3xl mx-auto'>
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-[500px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px]'>
             <Image
               src='/2026-10%20-%20Barcelona/Barcelona_La_Boqueria_web.jpeg'
               alt='Colourful fruit stalls piled with dragon fruit, figs and fresh fruit cups inside La Boqueria Market.'
               width={3524}
               height={5712}
-              sizes='(min-width: 768px) 768px, 100vw'
+              sizes='(min-width: 768px) 500px, 100vw'
               className='w-full h-auto'
             />
           </div>
@@ -1212,25 +1217,30 @@ export default function BarcelonaPage() {
           <Paragraphs
             className='text-center'
             items={[
-              'Once again, this trip reminded us how convenient it is to stay right in the city centre. Having shops, restaurants and so many places within easy reach made everything easier.',
               'One place we kept returning to was La Boqueria Market.',
               "On our first visit to Barcelona, my husband and I weren't particularly impressed by it. This time, we ended up going almost every day.",
               "Our son fell in love with the chocolate-covered strawberries and wanted them every single day. We tried churros, which honestly weren't our favourite. Our daughter had an absolutely delicious jamón sandwich, and we even bought some Spanish cured meats to take home.",
               'Same market, completely different experience.',
               'And the food in Barcelona? We absolutely loved it.',
-              "Every restaurant we visited was a great find, and we actually discovered them all with the help of AI. That's a story for another article.",
+              'Every restaurant we visited in Barcelona turned out to be a great find. And surprisingly, we discovered them all with the help of AI.',
             ]}
           />
         </Reveal>
 
-        <Reveal delay={0.2} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
-          <p className='text-sm font-[family-name:var(--font-poppins)] text-black/40 dark:text-white/40 cursor-default select-none'>
-            Behind the Trip — How We Find Restaurants When Travelling →
+        <Reveal delay={0.2} className='mt-6 md:mt-7 max-w-2xl mx-auto text-center'>
+          <p className='text-base font-[family-name:var(--font-poppins)] text-black/70 dark:text-white/70'>
+            Curious how we did it? Read{' '}
+            <Link
+              href='/behind-the-trip/how-we-find-restaurants'
+              className='text-black dark:text-white hover:underline underline-offset-4'
+            >
+              How We Find Restaurants When Travelling →
+            </Link>
           </p>
         </Reveal>
 
-        <Reveal delay={0.25} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
-          <p className='text-lg md:text-xl italic font-[family-name:var(--font-playfair)] text-black/80 dark:text-white/80 leading-snug'>
+        <Reveal delay={0.25} className='mt-16 md:mt-20 max-w-2xl mx-auto text-center'>
+          <p className='text-[22px] md:text-[25px] italic font-[family-name:var(--font-playfair)] text-black/80 dark:text-white/80 leading-snug'>
             Barcelona wasn&apos;t always easy this time around, but it gave us plenty of reasons to want to come back.
           </p>
         </Reveal>
@@ -1247,21 +1257,27 @@ export default function BarcelonaPage() {
           layout shape as Tenerife's own closing section (no <main>
           spacer -- that was only ever needed to vertically centre the
           old "Coming soon" placeholder text, which is long gone).
-          Previous section closes on the final italic sentence -- text,
-          not a photo -- so, per this page's own text -> new chapter rule,
-          it uses the full chapter-to-chapter gap on top, same as every
-          other text-closed chapter opening on this page. The bottom
-          follows Tenerife's own one-off override of CHAPTER_GAP_END
-          (+50px) rather than the page's standard chapter-close padding,
-          since -- like Tenerife's -- this section sits directly against
-          the dark footer rather than another cream section.
+          Top padding is CHAPTER_GAP_START alone, byte-identical to
+          Tenerife's own BOOKED BEFORE WE LEFT section -- it previously
+          also carried an extra pt-20/24 copied from a nearby section,
+          which won the cascade over CHAPTER_GAP_START and, combined with
+          the previous section's pb-20/24, produced a visibly larger gap
+          than Tenerife's equivalent. The previous section's closing
+          padding was reduced to pb-16/20 to match -- the same standard
+          chapter-close value used throughout this page -- so the total
+          gap above this section now equals Tenerife's exactly. The
+          bottom follows Tenerife's own one-off override of
+          CHAPTER_GAP_END (+50px) rather than the page's standard
+          chapter-close padding, since -- like Tenerife's -- this section
+          sits directly against the dark footer rather than another
+          cream section.
           List is exactly what this step specified: flights, Vienna
           airport parking, hotel, El Clásico tickets, Sagrada Família +
           Nativity Tower tickets, Park Güell tickets. Montserrat, the
           Montjuïc cable car and metro tickets are deliberately excluded
           per explicit instruction, since those were bought during the
           trip rather than booked beforehand. */}
-      <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-[calc(3rem+50px)] md:pb-[calc(3.5rem+50px)] bg-[#faf9f6] dark:bg-black`}>
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-[calc(3rem+50px)] md:pb-[calc(3.5rem+50px)] bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='mx-auto'>
           <BookedChecklist
             items={[
