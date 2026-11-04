@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import ComingSoonDestination from '@/components/ui/coming-soon-destination';
 import ElClasicoTicketsArticle from '@/components/guides/el-clasico-tickets-article';
 import HowWeFindRestaurantsArticle from '@/components/guides/how-we-find-restaurants-article';
+import HotelsArticle from '@/components/guides/hotels-article';
 import { BEHIND_THE_TRIP_TOPICS, getBehindTheTripTopicBySlug } from '@/lib/behind-the-trip';
 
 // One static page per Behind the Trip topic in lib/behind-the-trip.ts,
@@ -43,6 +44,43 @@ export async function generateMetadata({
         title,
         description,
         url: 'https://www.metkish.com/behind-the-trip/el-clasico-tickets',
+        images: [
+          {
+            url: '/og/og-home.jpg',
+            width: 1200,
+            height: 630,
+            alt: 'Metkish Travels',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: ['/og/og-home.jpg'],
+      },
+    };
+  }
+
+  // 'hotels' is a real, finished article (see the default export below),
+  // so -- like 'el-clasico-tickets' above -- it gets its own full SEO
+  // treatment rather than the generic "coming soon" metadata every other
+  // unbuilt topic still uses.
+  if (topic === 'hotels') {
+    const title = 'How I Choose Where We Stay | Metkish Travels';
+    const description =
+      "How I actually pick a hotel: Booking.com filters, guest-rating thresholds, how I read reviews, and the location trade-offs behind our family's real stays.";
+
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: 'https://www.metkish.com/behind-the-trip/hotels',
+      },
+      openGraph: {
+        title,
+        description,
+        url: 'https://www.metkish.com/behind-the-trip/hotels',
         images: [
           {
             url: '/og/og-home.jpg',
@@ -129,6 +167,13 @@ export default async function BehindTheTripTopicPage({
   // still gets the generic "coming soon" placeholder.
   if (topic === 'el-clasico-tickets') {
     return <ElClasicoTicketsArticle />;
+  }
+
+  // 'hotels' has real, finished content (see
+  // components/guides/hotels-article.tsx); every other topic still gets
+  // the generic "coming soon" placeholder.
+  if (topic === 'hotels') {
+    return <HotelsArticle />;
   }
 
   // 'how-we-find-restaurants' has real, finished content (see
