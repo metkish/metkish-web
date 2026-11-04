@@ -125,20 +125,19 @@ function CopyPromptButton({ text }: { text: string }) {
   );
 }
 
-// A copyable example prompt. Visually related to the sitewide InlineTip
-// "My tip" treatment used elsewhere on the site, e.g. Barcelona's Getting
-// Around/Sagrada Familia tips (same thin pink left rule, same italic body
-// text, per this step's explicit request to keep both) but deliberately
-// its own component -- this article has no InlineTip of its own to reuse
-// now -- so a copyable example never reads as a personal "My tip" aside.
-// A small uppercase "Example Prompt" label stands in for any "My tip"
-// wording, and the Copy button sits directly beneath the prompt text,
-// indented to the same pl-4 baseline so it reads as part of the same
-// block -- no colored background, box, shadow or other decoration, same
-// restraint as every other control already on this page.
+// A copyable example prompt -- deliberately its own visual identity,
+// separate from the sitewide InlineTip "My tip" treatment used elsewhere
+// on the site (e.g. Barcelona's Getting Around/Sagrada Familia tips).
+// Per this step's explicit request, it has no pink left rule or left
+// padding at all, so it reads as plain article content rather than an
+// aside: the label, prompt text and Copy button all sit flush with the
+// surrounding paragraphs, with no colored background, box, shadow or
+// other decoration -- same restraint as every other control on this
+// page. The small uppercase "Example Prompt" label is what distinguishes
+// it from body text, never "My tip" wording.
 function ExamplePrompt({ text }: { text: string }) {
   return (
-    <div className='border-l-2 border-pink-300 dark:border-pink-400/60 pl-4'>
+    <div>
       <span className='block text-xs uppercase tracking-[0.15em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
         Example Prompt
       </span>
