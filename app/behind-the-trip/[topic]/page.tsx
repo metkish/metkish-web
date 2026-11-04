@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ComingSoonDestination from '@/components/ui/coming-soon-destination';
 import ElClasicoTicketsArticle from '@/components/guides/el-clasico-tickets-article';
+import HowWeFindRestaurantsArticle from '@/components/guides/how-we-find-restaurants-article';
 import { BEHIND_THE_TRIP_TOPICS, getBehindTheTripTopicBySlug } from '@/lib/behind-the-trip';
 
 // One static page per Behind the Trip topic in lib/behind-the-trip.ts,
@@ -60,6 +61,44 @@ export async function generateMetadata({
     };
   }
 
+  // 'how-we-find-restaurants' is a real, finished article (see the
+  // default export below), so -- like 'el-clasico-tickets' above -- it
+  // gets its own full SEO treatment rather than the generic "coming soon"
+  // metadata every other unbuilt topic still uses. No more noindex/
+  // nofollow: the draft is done and ready to be found.
+  if (topic === 'how-we-find-restaurants') {
+    const title = 'How We Find Restaurants When Travelling | Metkish Travels';
+    const description =
+      'How AI helped us discover great restaurants in Barcelona, from a brunch spot to a hidden tapas bar — and the one thing we always check before going.';
+
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: 'https://www.metkish.com/behind-the-trip/how-we-find-restaurants',
+      },
+      openGraph: {
+        title,
+        description,
+        url: 'https://www.metkish.com/behind-the-trip/how-we-find-restaurants',
+        images: [
+          {
+            url: '/og/og-home.jpg',
+            width: 1200,
+            height: 630,
+            alt: 'Metkish Travels',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: ['/og/og-home.jpg'],
+      },
+    };
+  }
+
   const description = 'The full story is on its way.';
 
   return {
@@ -90,6 +129,14 @@ export default async function BehindTheTripTopicPage({
   // still gets the generic "coming soon" placeholder.
   if (topic === 'el-clasico-tickets') {
     return <ElClasicoTicketsArticle />;
+  }
+
+  // 'how-we-find-restaurants' has real, finished content (see
+  // components/guides/how-we-find-restaurants-article.tsx), so -- like
+  // 'el-clasico-tickets' above -- it gets its real article page rather
+  // than the generic "coming soon" placeholder below.
+  if (topic === 'how-we-find-restaurants') {
+    return <HowWeFindRestaurantsArticle />;
   }
 
   return (

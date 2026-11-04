@@ -2,12 +2,13 @@
 // "guides" section in app/page.tsx). This is the single source of truth
 // for both the homepage preview grid and each topic's own permanent page
 // (see app/behind-the-trip/[topic]/page.tsx): add a topic here and it
-// automatically appears in the grid (three balanced columns on desktop,
-// a single stacked column on mobile -- see app/page.tsx). Most topics
+// automatically appears in the grid (a balanced 2-column, 2-row grid on
+// desktop, a single stacked column on mobile -- see app/page.tsx). Most topics
 // get a generic "coming soon" page; a topic can instead render a full
 // article by branching on its slug in app/behind-the-trip/[topic]/page.tsx
-// (see 'el-clasico-tickets', which renders
-// components/guides/el-clasico-tickets-article.tsx).
+// (see 'el-clasico-tickets' and 'how-we-find-restaurants', which render
+// components/guides/el-clasico-tickets-article.tsx and
+// components/guides/how-we-find-restaurants-article.tsx respectively).
 //
 // `heading` is the short label shown above the topic on the homepage
 // (e.g. "Hotels"). `kicker` is the fuller description of what the topic
@@ -38,6 +39,12 @@ export const BEHIND_THE_TRIP_TOPICS: BehindTheTripTopic[] = [
     heading: 'El Clásico Tickets',
     kicker: 'How we got our tickets',
     body: 'Membership, presale chaos and the real cost of securing four seats for El Clásico.',
+  },
+  {
+    slug: 'how-we-find-restaurants',
+    heading: 'Restaurants',
+    kicker: 'How we find restaurants when travelling',
+    body: 'How AI helped us discover amazing restaurants in Barcelona — and why we always check the reviews.',
   },
 ];
 

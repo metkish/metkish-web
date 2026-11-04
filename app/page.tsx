@@ -85,37 +85,37 @@ export default function Home() {
           Behind the Trip
         </h2>
         <p className='mt-6 mb-6 text-base lowercase font-[family-name:var(--font-poppins)] font-bold tracking-normal text-black/70 dark:text-white/70 text-center'>
-          planning · searching · booking
+          planning · decisions · real experiences
         </p>
         <p className='max-w-xl text-center text-base font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-          The choices, comparisons and little decisions that happen before we
-          ever leave.
+          The practical side of our travels — from planning and booking to
+          the little decisions we make along the way.
         </p>
 
-        <div className='mt-16 pt-12 border-t border-black/10 dark:border-white/10 w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3'>
+        <div className='mt-16 pt-12 border-t border-black/10 dark:border-white/10 w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2'>
           {BEHIND_THE_TRIP_TOPICS.map((topic, index) => {
             const number = String(index + 1).padStart(2, '0');
-            const isLast = index === BEHIND_THE_TRIP_TOPICS.length - 1;
-            // Mobile: every entry stacks in one column, so every entry
+            // Mobile: all four entries stack in one column, so every entry
             // after the first needs a top border to separate it from the
-            // one above. Desktop: entries sit side by side in three
-            // balanced columns instead, so that same border is cancelled
-            // (md:border-t-0) and replaced with a subtle vertical rule
-            // between columns (md:border-l) plus the matching side
-            // padding -- first column only needs right padding, the
-            // last only left padding, the middle one needs both.
-            const rowBorder = index === 0 ? '' : 'border-t md:border-t-0';
-            const columnBorder =
-              index === 0
-                ? 'md:pr-8'
-                : isLast
-                  ? 'md:border-l md:pl-8'
-                  : 'md:border-l md:px-8';
+            // one above. Desktop: a balanced 2-column, 2-row grid instead.
+            // Row 1 (index 0 and 1) sits right under the section's top
+            // rule, so its inherited mobile border-t is cancelled at md
+            // (md:border-t-0). Row 2 (index 2 and 3) keeps that same
+            // border-t -- it now reads as the horizontal divider between
+            // the two rows, so no extra desktop class is needed there. A
+            // vertical divider between the two columns (md:border-l) is
+            // added to the right-hand card in each row (index 1 and 3),
+            // with matching side padding (md:pr-8 on the left column,
+            // md:pl-8 on the right) so neither divider crowds the text.
+            const isRightColumn = index % 2 === 1;
+            const rowBorder = index === 0 ? '' : 'border-t';
+            const cancelTopRowBorder = index < 2 ? 'md:border-t-0' : '';
+            const columnBorder = isRightColumn ? 'md:border-l md:pl-8' : 'md:pr-8';
 
             return (
               <article
                 key={topic.slug}
-                className={`flex flex-col items-center text-center py-10 border-black/10 dark:border-white/10 ${rowBorder} ${columnBorder}`}
+                className={`flex flex-col items-center text-center py-10 border-black/10 dark:border-white/10 ${rowBorder} ${cancelTopRowBorder} ${columnBorder}`}
               >
                 <span className='text-xs tracking-[0.15em] uppercase font-[family-name:var(--font-poppins)] font-semibold text-black/35 dark:text-white/35'>
                   {number}
