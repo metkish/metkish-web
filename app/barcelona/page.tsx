@@ -1205,6 +1205,16 @@ export default function BarcelonaPage() {
           </p>
         </Reveal>
 
+        <Reveal delay={0.22} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <Paragraphs
+            className='text-center'
+            items={[
+              'A few times during the trip, we found ourselves properly lost — unsure which metro exit to take, or, at one point, trying to work out where the funicular up to Montjuïc actually was. On two separate occasions, someone simply noticed, came over without us asking, and pointed us the right way.',
+              "Before the trip, we'd read a fair bit about Barcelona's anti-tourism protests and a city said to be growing tired of visitors. We understand the frustration behind that — overtourism is a real issue, and not one we'd dismiss. But it wasn't what we experienced. The people who stopped to help us clearly weren't thinking about any of that. They just saw we were lost and wanted to help.",
+            ]}
+          />
+        </Reveal>
+
         <Reveal delay={0.25} className='mt-16 md:mt-20 max-w-2xl mx-auto text-center'>
           <p className='text-[22px] md:text-[25px] italic font-[family-name:var(--font-playfair)] text-black/80 dark:text-white/80 leading-snug'>
             Barcelona wasn&apos;t always easy this time around, but it gave us plenty of reasons to want to come back.
