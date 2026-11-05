@@ -115,7 +115,7 @@ export default function AboutPage() {
       </section>
 
       {/* It started with a missed flight */}
-      <section className='px-6 md:px-12 pt-8 pb-8 md:pt-10 md:pb-10'>
+      <section className='px-6 md:px-12 pt-10 pb-10 md:pt-12 md:pb-12'>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <ChapterHeading>It started with a missed flight</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
@@ -129,7 +129,7 @@ export default function AboutPage() {
             />
           </div>
         </Reveal>
-        <Reveal delay={0.1} className='mt-14 md:mt-16'>
+        <Reveal delay={0.1} className='mt-6 md:mt-8'>
           <Statement className='text-2xl md:text-3xl max-w-xl mx-auto'>
             Some travel lessons stay with you.
           </Statement>
@@ -137,7 +137,7 @@ export default function AboutPage() {
       </section>
 
       {/* Somewhere along the way, I became the planner */}
-      <section className='px-6 md:px-12 pt-8 pb-10 md:pt-10 md:pb-12'>
+      <section className='px-6 md:px-12 pt-10 pb-10 md:pt-12 md:pb-12'>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <ChapterHeading>Somewhere along the way, I became the&nbsp;planner</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
@@ -156,8 +156,8 @@ export default function AboutPage() {
       {/* Airport photograph — an old, spontaneous family snapshot, not a
           polished shot. Landscape frame, modest width so it doesn't compete
           with the hero photo; no caption, no text over the image. */}
-      <section className='px-6 md:px-12 py-6 md:py-9'>
-        <Reveal className='w-full max-w-xl mx-auto'>
+      <section className='px-6 md:px-12 py-10 md:py-12'>
+        <Reveal className='w-full max-w-xl mx-auto flex flex-col items-center'>
           <div className='relative w-full aspect-[16/9] overflow-hidden rounded-[2px]'>
             <Image
               src={AIRPORT_SRC}
@@ -167,11 +167,14 @@ export default function AboutPage() {
               className='object-cover'
             />
           </div>
+          <span className='mt-4 italic text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            Little travellers, big adventures.
+          </span>
         </Reveal>
       </section>
 
       {/* Comfort, not luxury — the most important idea on the page */}
-      <section className='px-6 md:px-12 pt-12 pb-10 md:pt-[70px] md:pb-14'>
+      <section className='px-6 md:px-12 pt-10 pb-10 md:pt-12 md:pb-12'>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <ChapterHeading>Comfort, not luxury</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
@@ -185,7 +188,7 @@ export default function AboutPage() {
             />
           </div>
         </Reveal>
-        <Reveal delay={0.1} className='mt-16 md:mt-24'>
+        <Reveal delay={0.1} className='mt-6 md:mt-8'>
           <Statement className='text-2xl md:text-3xl max-w-2xl mx-auto'>
             For us, comfort isn&apos;t about luxury. It&apos;s about removing
             unnecessary stress.
@@ -194,7 +197,7 @@ export default function AboutPage() {
       </section>
 
       {/* We don't try to see everything anymore */}
-      <section className='px-6 md:px-12 pt-8 pb-8 md:pt-10 md:pb-10'>
+      <section className='px-6 md:px-12 pt-10 pb-10 md:pt-12 md:pb-12'>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <ChapterHeading>We don&apos;t try to see everything anymore</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
@@ -209,7 +212,7 @@ export default function AboutPage() {
             />
           </div>
         </Reveal>
-        <Reveal delay={0.1} className='mt-14 md:mt-16'>
+        <Reveal delay={0.1} className='mt-6 md:mt-8'>
           <Statement className='text-2xl md:text-3xl max-w-xl mx-auto'>
             I plan a lot so we don&apos;t have to plan much when we&apos;re
             there.
@@ -218,7 +221,7 @@ export default function AboutPage() {
       </section>
 
       {/* What looks easy online isn't always easy in real life */}
-      <section className='px-6 md:px-12 pt-8 pb-8 md:pt-10 md:pb-10'>
+      <section className='px-6 md:px-12 pt-10 pb-10 md:pt-12 md:pb-12'>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <ChapterHeading>
             What looks easy online isn&apos;t always easy in real life
@@ -234,7 +237,7 @@ export default function AboutPage() {
             />
           </div>
         </Reveal>
-        <Reveal delay={0.1} className='mt-14 md:mt-16'>
+        <Reveal delay={0.1} className='mt-6 md:mt-8'>
           <Statement className='text-2xl md:text-3xl max-w-2xl mx-auto'>
             Knowing that something can be done isn&apos;t quite the same as
             knowing whether I&apos;d actually recommend doing it.
@@ -246,7 +249,7 @@ export default function AboutPage() {
           the stadium photograph as a side-by-side editorial composition on
           desktop; stacks naturally on mobile. No card, no border, no
           football graphics — just the photo and the text. */}
-      <section className='px-6 md:px-12 pt-6 pb-[30px] md:pt-8 md:pb-10'>
+      <section className='px-6 md:px-12 pt-10 pb-10 md:pt-12 md:pb-12'>
         <Reveal className='max-w-3xl mx-auto'>
           <div className='flex flex-col md:flex-row md:items-center gap-8 md:gap-12'>
             <div className='w-full md:w-[42%] md:shrink-0'>
@@ -259,6 +262,9 @@ export default function AboutPage() {
                   className='object-cover'
                 />
               </div>
+              <span className='mt-4 block text-center italic text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+                Football has taken us to some unforgettable places.
+              </span>
             </div>
             <div className='w-full md:flex-1'>
               <ChapterHeading>Football often comes with us</ChapterHeading>
@@ -279,7 +285,7 @@ export default function AboutPage() {
       {/* These aren't travel photographs. They're travel memories. — now on
           the same main text axis as every other section; no photo added
           here, the photographs already seen make the point. */}
-      <section className='px-6 md:px-12 pt-10 pb-8 md:pt-12 md:pb-10'>
+      <section className='px-6 md:px-12 pt-10 pb-10 md:pt-12 md:pb-12'>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <ChapterHeading>
             These aren&apos;t travel photographs. They&apos;re travel
@@ -295,7 +301,7 @@ export default function AboutPage() {
             />
           </div>
         </Reveal>
-        <Reveal delay={0.1} className='mt-14 md:mt-16'>
+        <Reveal delay={0.1} className='mt-6 md:mt-8'>
           <Statement className='text-2xl md:text-3xl max-w-xl mx-auto'>
             I&apos;d rather experience the trip than experience it through a
             camera.
@@ -304,7 +310,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why this site exists — closing section */}
-      <section className='px-6 md:px-12 pt-10 pb-12 md:pt-14 md:pb-[70px]'>
+      <section className='px-6 md:px-12 pt-10 pb-12 md:pt-12 md:pb-[70px]'>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <ChapterHeading>Why this site exists</ChapterHeading>
           <div className='mt-6 max-w-xl mx-auto'>
@@ -319,7 +325,7 @@ export default function AboutPage() {
             />
           </div>
         </Reveal>
-        <Reveal delay={0.1} className='mt-16 md:mt-24'>
+        <Reveal delay={0.1} className='mt-6 md:mt-8'>
           <Statement className='text-2xl md:text-3xl max-w-2xl mx-auto'>
             This is simply how we found our way of travelling.
           </Statement>
