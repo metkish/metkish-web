@@ -396,10 +396,9 @@ export default function FlightsArticle() {
               items={[
                 "Vienna is often my first choice for European trips. We're lucky to have a large international airport within a manageable driving distance, with plenty of airlines and destinations to choose from.",
                 "Trieste and Venice are also options geographically, but personally, I don't see much sense in driving that far just to save a little money on flights.",
-                "If the difference were significant, I might reconsider. But a slightly cheaper ticket doesn't automatically make the journey cheaper or better.",
+                "If the difference were significant, I might reconsider. But a slightly cheaper ticket doesn't automatically make the journey better.",
                 "I'd rather pay more for a flight and spend less time driving to the airport.",
                 'For long-haul flights, though, things can be different.',
-                "We've often found good connections with Turkish Airlines from Ljubljana and Qatar Airways from Zagreb.",
                 "Something I've noticed repeatedly is that flights to the same long-haul destinations can be cheaper from Ljubljana or Zagreb than from Vienna, even with similar connections.",
                 "I can't say exactly why. Airline pricing depends on many things, including demand, competition and availability.",
                 "But it's something I've noticed often enough that I always compare departure airports before making a decision.",
@@ -433,7 +432,7 @@ export default function FlightsArticle() {
             alt='A Skyscanner search results page for flights from Ljubljana to Bangkok, comparing airlines, prices and journey times.'
             width={1067}
             height={1146}
-            caption='Step 1: I use Skyscanner to compare available flights, prices and travel times.'
+            caption='Step 1: I use Skyscanner to compare available airlines, prices and journey times.'
             className='max-w-xl'
           />
 
@@ -454,7 +453,7 @@ export default function FlightsArticle() {
             alt="Turkish Airlines' own booking flow for the same Ljubljana to Bangkok search, showing several connections with different durations and prices on the same departure date."
             width={1094}
             height={1163}
-            caption="Step 2: I check the airline's website directly. Even on the same date, connection times and prices can vary significantly."
+            caption="Step 2: I check the airline's website directly, comparing connection times, schedules and prices before booking."
             className='max-w-xl'
           />
 
@@ -466,7 +465,7 @@ export default function FlightsArticle() {
                 "That's why I don't just look at the price. I check the actual departure and arrival times, the length of each connection and the total travel time.",
                 "I usually do all of this on my computer. It's simply easier to compare everything on a larger screen.",
                 "Once I've made my decision, I book directly with the airline.",
-                'That way, if something changes, I prefer having the booking directly with the company operating the flight rather than dealing with an additional intermediary.',
+                "That way, if something changes, I'm dealing with the company operating the flight, not with an extra intermediary.",
               ]}
             />
           </Reveal>
@@ -480,7 +479,7 @@ export default function FlightsArticle() {
               <Paragraphs
                 items={[
                   "One advantage we have is that we're fairly flexible with our travel dates.",
-                  'Flights on Friday afternoons and Saturday mornings are often more expensive because they’re popular times to start a holiday. Return flights on Sunday evenings can be similarly popular.',
+                  "Flights on Friday afternoons and Saturday mornings are often more expensive because they're popular times to start a holiday. Return flights on Sunday evenings can be similarly popular.",
                   "So I don't automatically choose the first and last days of the school holidays.",
                   'If the holidays run from Monday to Friday, for example, I might find better flights departing on Tuesday and returning the following Tuesday.',
                   'That means arranging a couple of additional days off school for the children, but it can make a real difference to our flight options and sometimes the price.',
@@ -498,7 +497,7 @@ export default function FlightsArticle() {
                   'Arriving at our destination before noon means we still have almost an entire day ahead of us.',
                   'Return flights are a different story.',
                   'My favourite time to fly home is around midday.',
-                  'What I really dislike is checking out of a hotel at 10 AM when our flight isn’t until late in the evening.',
+                  "What I really dislike is checking out of a hotel at 10 AM when our flight isn't until late in the evening.",
                   "Your luggage is stored somewhere, you can't properly settle down anywhere, and the whole day feels like you're just waiting to leave.",
                   "But very early return flights aren't ideal either. They often mean getting up in the middle of the night, rushing to the airport and sometimes missing breakfast.",
                   'So, ideally, an early flight out and a midday flight home.',
@@ -520,7 +519,7 @@ export default function FlightsArticle() {
                   "When we're travelling somewhere far away, I usually look for Turkish Airlines connections from Ljubljana or Qatar Airways from Zagreb.",
                   'And I always pay close attention to the layover.',
                   'I have absolutely no interest in spending five or six hours sitting at an airport just to save some money.',
-                  'Airports are often like small cities, full of shops, restaurants and things to do. But for me, they’re still stressful places.',
+                  "Airports are often like small cities, full of shops, restaurants and things to do. But for me, they're still stressful places.",
                   "I've never really understood spending hours shopping at an airport. We'll occasionally buy a small gift or something we need, but I've certainly never gone shopping for clothes during a layover.",
                   "For us, it's pretty simple.",
                   'We get something to eat, have a drink, use the bathroom and move on to the next flight.',
@@ -568,7 +567,7 @@ export default function FlightsArticle() {
               />
             </div>
             <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              Settling in — seats chosen in advance, one less thing to think about.
+              Choosing our seats in advance is one of the extras I&apos;m always happy to pay for.
             </p>
           </Reveal>
 
@@ -629,7 +628,7 @@ export default function FlightsArticle() {
                   "We're departing Ljubljana on a Monday evening, travelling overnight and arriving in Thailand around midday, local time.",
                   "For me, that's a great schedule.",
                   'We can arrange a transfer during the day, head straight to our hotel and settle in without dealing with a late-night arrival.',
-                  'It wasn’t about finding the absolute cheapest ticket. It was about finding a price that made sense and a journey that worked for us.',
+                  "It wasn't about finding the absolute cheapest ticket. It was about finding a price that made sense and a journey that worked for us.",
                 ]}
               />
             </div>
@@ -654,7 +653,7 @@ export default function FlightsArticle() {
                   'Luckily, Vueling had another flight to Barcelona about three hours later. We paid the difference and waited for the next departure.',
                   'But there was one big problem.',
                   'We had tickets for a Barça match that evening.',
-                  'The match was the whole reason for our trip, and suddenly we weren’t even sure we’d make it.',
+                  "The match was the whole reason for our trip, and suddenly we weren't even sure we'd make it.",
                   "I still remember how disappointed we felt, sitting at the airport, wondering whether we'd just ruined the entire trip.",
                   'In the end, we made it to the match.',
                   'But I learned my lesson.',
