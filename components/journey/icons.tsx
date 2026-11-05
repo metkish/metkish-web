@@ -19,6 +19,16 @@ export function CarIcon({ className }: { className?: string }) {
   );
 }
 
+export function HomeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox='0 0 24 24' className={className} {...common}>
+      <path d='M4 11.3 12 4.5l8 6.8' />
+      <path d='M6 10.2V19a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-8.8' />
+      <path d='M9.6 20v-5a1 1 0 0 1 1-1h2.8a1 1 0 0 1 1 1v5' />
+    </svg>
+  );
+}
+
 export function PlaneIcon({ className }: { className?: string }) {
   return (
     <svg viewBox='0 0 24 24' className={className} {...common}>
