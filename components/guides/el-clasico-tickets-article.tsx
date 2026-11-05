@@ -22,7 +22,7 @@ const OUR_SEATS_PHOTO_SRC =
 const MENS_JERSEY_PRICE_SRC =
   '/Behind%20the%20trip/El%20Clasico%20mens%20jersey%20price.jpeg';
 const BARCA_ANTHEM_VIDEO_SRC =
-  '/Behind%20the%20trip/El%20Clasico%20Barca%20anthem.mp4';
+  '/Behind%20the%20trip/El%20Clasico%20Barca%20anthem_web.mp4';
 const MEMBERSHIP_URL = 'https://www.fcbarcelona.com/en/club/members/become-member';
 const EL_CLASICO_REVENUE_SOURCE_URL =
   'https://www.mundodeportivo.com/futbol/fc-barcelona/20261026/1004243315/record-historico-taquilla-spotify-camp-nou-19-1-millones-clasico.html';
