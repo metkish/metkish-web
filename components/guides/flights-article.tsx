@@ -12,11 +12,15 @@ import { DEPARTURE_AIRPORTS, DEPARTURE_AIRPORTS_HOME } from '@/lib/journeys/flig
 const LOGO_SRC = '/metkish-logo.png';
 
 const FLIGHTS_BASE = '/Behind%20the%20trip/Flights';
-// Real personal photos only -- see this component's own note further down
-// about the two fabricated "screenshot" mockups that were found sitting
-// in this same folder and deliberately left unused.
 const NIGHT_BOARDING_SRC = `${FLIGHTS_BASE}/Airplane%20at%20night.jpeg`;
 const CABIN_SEATS_SRC = `${FLIGHTS_BASE}/Aiplane.jpeg`;
+// Genuine screenshots the user captured herself from Skyscanner and
+// Turkish Airlines' own site while researching this exact Ljubljana ->
+// Bangkok search -- same Screenshot/Lightbox treatment as every
+// screenshot in hotels-article.tsx. (On-disk filenames keep their
+// original spelling -- "Scyscanner.png", "Turkish_airnines.png".)
+const SKYSCANNER_SRC = `${FLIGHTS_BASE}/Scyscanner.png`;
+const TURKISH_AIRLINES_SRC = `${FLIGHTS_BASE}/Turkish_airnines.png`;
 
 // Same fade-up-on-scroll rhythm used throughout the site (About, Italy,
 // Tenerife, the other Behind the Trip articles): once-only, generous
@@ -111,6 +115,128 @@ function Paragraphs({ items }: { items: ReactNode[] }) {
   );
 }
 
+// What the shared lightbox at the bottom of this page needs to render
+// whichever screenshot was last clicked. Byte-identical to
+// hotels-article.tsx's LightboxImage type.
+type LightboxImage = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+// A real screenshot (Skyscanner, an airline's own site): bordered/shadow
+// treatment byte-identical to hotels-article.tsx's Screenshot component.
+// Clicking it opens the same image full-size in the page's own lightbox
+// (see Lightbox below) rather than a new browser tab, so small print --
+// prices, durations, filters -- stays fully legible and can be closed
+// again without leaving the article.
+function Screenshot({
+  src,
+  alt,
+  width,
+  height,
+  caption,
+  onEnlarge,
+  className = 'max-w-3xl',
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption: string;
+  onEnlarge: (image: LightboxImage) => void;
+  className?: string;
+}) {
+  return (
+    <Reveal delay={0.05} className={`mt-8 md:mt-9 mx-auto ${className}`}>
+      <button
+        type='button'
+        onClick={() => onEnlarge({ src, alt, width, height })}
+        aria-label={`${alt} — view enlarged`}
+        className='block w-full cursor-zoom-in text-left'
+      >
+        <div className='relative w-full overflow-hidden rounded-[2px] border border-black/10 dark:border-white/15 shadow-[0_2px_20px_rgba(0,0,0,0.08)] bg-white'>
+          <Image
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            sizes='(min-width: 768px) 768px, 100vw'
+            className='w-full h-auto'
+          />
+        </div>
+      </button>
+      <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+        {caption} <span className='not-italic'>·</span> click to enlarge
+      </p>
+    </Reveal>
+  );
+}
+
+// Full-screen lightbox for an enlarged screenshot: dark backdrop, the
+// image at its natural size (capped to the viewport), and an explicit
+// close button -- plus clicking the backdrop or pressing Escape also
+// closes it. Byte-identical to hotels-article.tsx's Lightbox.
+function Lightbox({
+  image,
+  onClose,
+}: {
+  image: LightboxImage;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      role='dialog'
+      aria-modal='true'
+      aria-label={image.alt}
+      onClick={onClose}
+      className='fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 md:p-10'
+    >
+      <button
+        type='button'
+        onClick={onClose}
+        aria-label='Close enlarged image'
+        className='absolute top-4 right-4 md:top-6 md:right-6 flex h-11 w-11 items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors'
+      >
+        <svg
+          width='22'
+          height='22'
+          viewBox='0 0 22 22'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='1.75'
+          strokeLinecap='round'
+        >
+          <line x1='3' y1='3' x2='19' y2='19' />
+          <line x1='19' y1='3' x2='3' y2='19' />
+        </svg>
+      </button>
+      <Image
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        onClick={(e) => e.stopPropagation()}
+        className='max-h-full max-w-full w-auto h-auto object-contain rounded-[2px]'
+      />
+    </div>
+  );
+}
+
 // "How I Search for Flights" (Behind the Trip · Flights). Shares its
 // shell (fixed logo/home link, hero header, article sections, footer)
 // with hotels-article.tsx and the site's other full Behind the Trip
@@ -123,19 +249,16 @@ function Paragraphs({ items }: { items: ReactNode[] }) {
 // placement instruction -- rather than at the top or bottom of the
 // section.
 //
-// Photos: only two of the four images already sitting in
-// public/Behind the trip/Flights/ are used here (NIGHT_BOARDING_SRC,
-// CABIN_SEATS_SRC) -- both genuine personal photos. The other two files
-// found in that same folder (a "Skyscanner" and a "Turkish Airlines"
-// screenshot) are fabricated mockups of those sites' real UIs with
-// invented flight data, not real captures -- unlike every Screenshot in
-// hotels-article.tsx, which are the user's own genuine Booking.com
-// captures. Publishing a fabricated screenshot as if it were a real one
-// would misrepresent it to readers, so those two files are deliberately
-// left out of this article and untouched on disk (not deleted, in case
-// the user wants to replace them with real screenshots later).
+// Photos: two genuine personal photos (NIGHT_BOARDING_SRC,
+// CABIN_SEATS_SRC) plus two genuine screenshots the user captured herself
+// from Skyscanner and Turkish Airlines' own site (SKYSCANNER_SRC,
+// TURKISH_AIRLINES_SRC) while researching the Ljubljana -> Bangkok search
+// described in "How I Compare Flights — And Where I Book" -- same
+// Screenshot/Lightbox treatment as every screenshot in
+// hotels-article.tsx.
 export default function FlightsArticle() {
   const [pastHero, setPastHero] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<LightboxImage | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -285,7 +408,12 @@ export default function FlightsArticle() {
           </Reveal>
         </section>
 
-        {/* HOW I COMPARE FLIGHTS -- AND WHERE I BOOK */}
+        {/* HOW I COMPARE FLIGHTS -- AND WHERE I BOOK -- two real
+            screenshots (the user's own captures) sit inline: Skyscanner
+            right after the paragraph explaining how she uses it to
+            compare airlines/prices/times, and Turkish Airlines' own site
+            right after the paragraph describing opening it directly --
+            both per the original placement brief. */}
         <section className='max-w-2xl mx-auto pt-12 md:pt-14 pb-12 md:pb-14'>
           <Reveal>
             <SectionHeading>How I Compare Flights — And Where I Book</SectionHeading>
@@ -294,19 +422,53 @@ export default function FlightsArticle() {
                 items={[
                   'I use Skyscanner to get an overview of the available flights.',
                   "It's useful for comparing airlines, prices, travel times and connections in one place.",
-                  'But I never book through third-party booking websites.',
-                  "Once I find an interesting option, I go directly to the airline's website and check the flights there.",
-                  'For example, when searching for flights from Ljubljana to Bangkok, Skyscanner showed several airlines with different prices and journey times.',
-                  "I then opened Turkish Airlines' website to compare the connections in more detail.",
-                  'And this is where you really need to pay attention.',
-                  "On the same departure date, I found connections taking around 13 hours, but also others taking more than 30 hours. Some of those much longer journeys weren't even cheaper.",
-                  "That's why I don't just look at the price. I check the actual departure and arrival times, the length of each connection and the total travel time.",
-                  "I usually do all of this on my computer. It's simply easier to compare everything on a larger screen.",
-                  "Once I've made my decision, I book directly with the airline.",
-                  'That way, if something changes, I prefer having the booking directly with the company operating the flight rather than dealing with an additional intermediary.',
                 ]}
               />
             </div>
+          </Reveal>
+
+          <Screenshot
+            onEnlarge={setLightboxImage}
+            src={SKYSCANNER_SRC}
+            alt='A Skyscanner search results page for flights from Ljubljana to Bangkok, comparing airlines, prices and journey times.'
+            width={1067}
+            height={1146}
+            caption='Step 1: I use Skyscanner to compare available flights, prices and travel times.'
+            className='max-w-xl'
+          />
+
+          <Reveal className='mt-9 md:mt-11'>
+            <Paragraphs
+              items={[
+                'But I never book through third-party booking websites.',
+                "Once I find an interesting option, I go directly to the airline's website and check the flights there.",
+                'For example, when searching for flights from Ljubljana to Bangkok, Skyscanner showed several airlines with different prices and journey times.',
+                "I then opened Turkish Airlines' website to compare the connections in more detail.",
+              ]}
+            />
+          </Reveal>
+
+          <Screenshot
+            onEnlarge={setLightboxImage}
+            src={TURKISH_AIRLINES_SRC}
+            alt="Turkish Airlines' own booking flow for the same Ljubljana to Bangkok search, showing several connections with different durations and prices on the same departure date."
+            width={1094}
+            height={1163}
+            caption="Step 2: I check the airline's website directly. Even on the same date, connection times and prices can vary significantly."
+            className='max-w-xl'
+          />
+
+          <Reveal className='mt-9 md:mt-11'>
+            <Paragraphs
+              items={[
+                'And this is where you really need to pay attention.',
+                "On the same departure date, I found connections taking around 13 hours, but also others taking more than 30 hours. Some of those much longer journeys weren't even cheaper.",
+                "That's why I don't just look at the price. I check the actual departure and arrival times, the length of each connection and the total travel time.",
+                "I usually do all of this on my computer. It's simply easier to compare everything on a larger screen.",
+                "Once I've made my decision, I book directly with the airline.",
+                'That way, if something changes, I prefer having the booking directly with the company operating the flight rather than dealing with an additional intermediary.',
+              ]}
+            />
           </Reveal>
         </section>
 
@@ -586,6 +748,10 @@ export default function FlightsArticle() {
           © {new Date().getFullYear()} Metkish
         </p>
       </footer>
+
+      {lightboxImage && (
+        <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
+      )}
     </div>
   );
 }
