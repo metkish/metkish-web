@@ -300,6 +300,9 @@ export default function HowWeFindRestaurantsArticle() {
                 sizes='430px'
                 className='w-full h-auto rounded-[2px]'
               />
+              <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+                Bodega Biarritz, a tapas bar we visited in Barcelona.
+              </p>
             </Reveal>
           </Reveal>
         </section>
@@ -328,6 +331,9 @@ export default function HowWeFindRestaurantsArticle() {
                 sizes='480px'
                 className='w-full h-auto rounded-[2px]'
               />
+              <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+                Traditional Spanish paella with seafood.
+              </p>
             </Reveal>
           </Reveal>
         </section>
