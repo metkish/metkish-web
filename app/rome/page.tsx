@@ -482,6 +482,7 @@ export default function RomePage() {
             <Paragraphs
               items={[
                 'After 3 hours and 52 minutes, we arrived at Roma Termini at 11:30 PM, exactly on schedule.',
+                'On our previous visit to Rome, we flew into Fiumicino Airport and booked a return shuttle bus transfer through GetYourGuide. It was a convenient alternative to arranging private transport.',
               ]}
             />
           </Reveal>
@@ -757,7 +758,7 @@ export default function RomePage() {
               className='mt-5 text-center'
               items={[
                 "This trip was a little different from what I would normally plan. We were travelling with a parish group, so alongside Rome's famous landmarks, our itinerary included all four major papal basilicas.",
-                "I don't usually visit many churches when travelling, but these basilicas genuinely fascinated me — the enormous interiors, marble, golden ceilings and extraordinary wealth on display were unlike anything I expected.",
+                "Churches aren't usually high on my list when I'm exploring a city, so this was a different kind of itinerary for me — more on that below.",
                 'What I enjoyed much less were the crowds. I had visited Rome before, but this time the number of people around the main attractions was overwhelming, and travelling in a group of nine made it even more challenging.',
               ]}
             />
@@ -811,6 +812,43 @@ export default function RomePage() {
             <Paragraphs
               items={[
                 'I had already visited the inside of the Colosseum on my first trip to Rome, so this time we admired it from the outside. We also saw the Trevi Fountain without paying for the closer-access area.',
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.17} className='mt-6 text-center'>
+            <InlineTip>
+              My tip: Book popular attractions well in advance. For our
+              November 2023 visit, I booked the Vatican Museums 45 days
+              ahead; Colosseum tickets weren&apos;t available any earlier,
+              so I bought ours as soon as sales opened, 30 days before our
+              visit. If you&apos;re planning to visit either attraction,
+              check the official ticket release dates and book early — I
+              wouldn&apos;t rely on last-minute availability.
+            </InlineTip>
+            <div className='mt-3 flex flex-col items-center gap-1.5'>
+              <a
+                href='https://ticketing.colosseo.it/en'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-block text-sm font-[family-name:var(--font-poppins)] text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
+              >
+                Colosseum &ndash; Official Tickets ↗
+              </a>
+              <a
+                href='https://tickets.museivaticani.va/'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-block text-sm font-[family-name:var(--font-poppins)] text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
+              >
+                Vatican Museums &ndash; Official Tickets ↗
+              </a>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.19} className='mt-6 text-center'>
+            <Paragraphs
+              items={[
                 "The Pantheon, however, was something I hadn't explored properly before, and I'm glad we went inside this time — looking up at the enormous dome and its open oculus was fascinating.",
               ]}
             />
@@ -885,7 +923,7 @@ export default function RomePage() {
               items={[
                 'Our second day began with a special visit inside the Vatican walls, organised for our group. We visited a building where priests live and a Vatican cemetery, which I found particularly fascinating.',
                 "This wasn't a visit to the Vatican Museums or the Sistine Chapel — I had already seen both during my first trip to Rome.",
-                "Afterwards, we visited St. Peter's Basilica, followed by Santa Maria Maggiore and St. Paul Outside the Walls. Although I don't usually plan my travels around churches, visiting these four major basilicas was one of the highlights of this trip — their scale, architecture and elaborate golden details were extraordinary.",
+                "Afterwards, we visited St. Peter's Basilica, followed by Santa Maria Maggiore and St. Paul Outside the Walls, completing all four major basilicas on our itinerary.",
               ]}
             />
           </Reveal>
@@ -922,6 +960,27 @@ export default function RomePage() {
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.18} className='mt-10 md:mt-12'>
+            <Eyebrow>Rome&apos;s Four Major Basilicas</Eyebrow>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "Visiting all four major papal basilicas was part of our group's itinerary, though churches aren't usually high on my list when I'm exploring a city.",
+                "The architecture was undeniably impressive, but what struck me most was the extraordinary wealth on display — golden ceilings, marble, enormous sculptures and elaborate decorations everywhere. I'd felt something similar visiting the Vatican Museums on my previous trip; the sheer value of everything collected over centuries is staggering.",
+                "I couldn't help thinking about the contrast — the Church teaches simplicity and modesty, yet here we were, surrounded by unimaginable wealth, and it made me wonder how all of it had been accumulated over the centuries.",
+                <>
+                  Would I recommend visiting all four basilicas? Not
+                  necessarily. If you&apos;re short on time,{' '}
+                  <strong className='font-semibold text-black dark:text-white'>
+                    St. Peter&apos;s Basilica alone
+                  </strong>{' '}
+                  gives you a very good impression of their scale and
+                  grandeur.
+                </>,
+              ]}
+            />
+          </Reveal>
+
           <Reveal delay={0.2} className='mt-8 md:mt-10 text-center'>
             <Paragraphs
               items={[
@@ -948,7 +1007,7 @@ export default function RomePage() {
           each day's five-plus, no second photograph, and the return
           train journey is NOT repeated here -- it already has its own
           chapter earlier on this page. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Day 3 · 21 October 2026</RouteLabel>
@@ -1032,6 +1091,40 @@ export default function RomePage() {
             Square.
           </p>
         </Reveal>
+      </section>
+
+      {/* 14. FINAL THOUGHTS -- "Would I visit Rome again?" A short,
+          personal closing reflection, not a conclusion/verdict on the
+          whole site's usual scale: no new photo (the Pantheon photo
+          earlier already carries that beat), no cost box, no My Tip, no
+          map. Closes the page (pb-16 md:pb-20), same text->new-chapter
+          rhythm (CHAPTER_GAP_START) as every other chapter transition. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Final Thoughts</RouteLabel>
+            <ChapterHeading italic className='mt-8 md:mt-10'>
+              Would I visit Rome again?
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "After visiting Rome twice, I can honestly say I have no desire to return — not because Rome isn't worth visiting, but quite the opposite.",
+                "There's so much history here that even if you're not particularly interested in art, architecture or culture, it's difficult not to be impressed. Just standing in front of the Pantheon, knowing it's been there for almost 2,000 years, is something extraordinary — and stepping inside to look up at that enormous dome makes it even more so.",
+                "But on this visit, the crowds were overwhelming. At times it felt like we were spending more energy trying to move through the streets and stay together than actually enjoying what we'd come to see, and travelling in a group of nine certainly made that more exhausting.",
+                "I'm glad I've experienced Rome, and I'm glad I returned for a second visit. But for me, twice is enough.",
+                <>
+                  Would I recommend Rome to someone who has never been?{' '}
+                  <strong className='font-semibold text-black dark:text-white'>
+                    Absolutely.
+                  </strong>{' '}
+                  It&apos;s one of those places you should experience at
+                  least once, even if you never feel the need to return.
+                </>,
+              ]}
+            />
+          </Reveal>
+        </div>
       </section>
     </div>
   );
