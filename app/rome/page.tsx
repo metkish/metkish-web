@@ -21,6 +21,11 @@ const MAP_TRANSITION_PT = 'pt-8 md:pt-10';
 // destination page -- goes on the bottom of a section that's ending right
 // before a map.
 const CHAPTER_GAP_END = 'pb-12 md:pb-14';
+// CHAPTER_GAP_START pairs with CHAPTER_GAP_END for a text -> new-chapter
+// transition (no map between them) -- same value as every other
+// destination page's own CHAPTER_GAP_START. Goes on the top of the
+// section that opens the new chapter.
+const CHAPTER_GAP_START = 'pt-12 md:pt-14';
 
 // Same fade-up-on-scroll rhythm used throughout the site (Tenerife,
 // Barcelona, Italy pages) -- once-only, generous viewport threshold, no
@@ -450,7 +455,7 @@ export default function RomePage() {
       {/* 5. TRAVELLING TO ROME -- the outbound train journey itself,
           an in-chapter beat (Eyebrow, not a new RouteLabel) continuing
           the same "Getting to Rome" chapter the map above belongs to. */}
-      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
             <Eyebrow>By Train</Eyebrow>
@@ -656,6 +661,68 @@ export default function RomePage() {
               Business Class on the longer legs and a family fare — not a
               fixed or universal Trenitalia price.
             </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 9. ARRIVING IN ROME -- a new top-level chapter (its own RouteLabel,
+          not just an Eyebrow sub-beat), since this leaves the train story
+          itself behind for a genuinely different topic: the transfer from
+          Roma Termini to where we actually stayed. Text -> new-chapter
+          transition, so it gets the full CHAPTER_GAP_END/CHAPTER_GAP_START
+          pair rather than the compressed map transition. The €275 fact
+          gets the same bg-[#f1ebdc] practical-info panel as the train
+          tickets above, since it's just as objective a price, with its own
+          short caveat line below rather than folded into the story
+          paragraphs. No photo -- none was supplied for this part of the
+          trip, so none is invented. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Arriving in Rome</RouteLabel>
+            <ChapterHeading italic className='mt-8 md:mt-10'>
+              Getting to our accommodation
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'I usually prefer staying in the city centre, or at least somewhere close to a metro station. On our first visit to Rome, we stayed not far from Roma Termini.',
+                'This time, however, we were travelling with a group, and our accommodation was about a 20-minute drive from the city centre.',
+                'Our train arrived at Roma Termini at 11:30 PM, which made getting to our accommodation a little complicated.',
+                "The metro was about to close, and buses weren't particularly convenient at that hour either. With nine people, children, and suitcases, public transport wasn't an appealing option.",
+                'We could have taken three taxis or booked two separate vans, but that would have meant splitting up the group.',
+                'So I contacted a private transfer company, Rome Transfers Agency, and asked for a minibus that could accommodate all nine of us.',
+              ]}
+            />
+          </Reveal>
+
+          {/* Private transfer cost -- same quiet bg-[#f1ebdc] practical-info
+              panel as the Train Tickets card above, with its own small
+              caveat line below rather than a second heading. */}
+          <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Private Transfer · Roma Termini to Accommodation
+            </span>
+            <TimeStamp size='md'>€275</TimeStamp>
+            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Rome Transfers Agency · Minibus for 9 · ~20 minutes
+            </span>
+          </Reveal>
+          <Reveal delay={0.15} className='mt-4 max-w-sm mx-auto text-center'>
+            <p className='text-xs italic font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50 leading-relaxed'>
+              For a journey of approximately 20 minutes. Definitely not
+              cheap!
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.2} className='mt-10 md:mt-12 text-center'>
+            <Paragraphs
+              items={[
+                'But everything went exactly as arranged. Our driver was waiting for us, and we all travelled together directly to our accommodation.',
+                'After a long day of travelling, it was a relief to have everything organised.',
+                'And it reminded me why I usually prefer staying somewhere central. A hotel further from the city might seem like a good deal, but transport costs can quickly change the calculation.',
+              ]}
+            />
           </Reveal>
         </div>
       </section>
