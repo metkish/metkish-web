@@ -623,7 +623,7 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Although we weren't staying in the city centre, there was a bus stop nearby. We could take two buses to reach the metro and continue exploring Rome.",
+                'There was a bus stop close to our accommodation, with several bus lines connecting to the nearest metro station. We rarely had to wait long for a bus, which made getting around Rome quite convenient.',
                 <>
                   For our three-day stay, we chose the{' '}
                   <strong className='font-semibold text-black dark:text-white'>
@@ -841,14 +841,37 @@ export default function RomePage() {
             />
           </Reveal>
         </div>
+
+        {/* St. Peter's Square at night -- reuses the same photo already
+            used for the Rome destination card on the main Destinations
+            page (see components/ui/travel-gallery.tsx's `rome` item), no
+            new file. Landscape like the Frecciarossa photo above, so it
+            gets the same max-w-2xl full-width treatment rather than the
+            narrower portrait crops used elsewhere in this section. */}
+        <Reveal delay={0.4} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <Image
+            src='/2026-10%20-%20Italy_Rome/Rome_landing_page_web.jpeg'
+            alt="St. Peter's Basilica at night, Vatican City, Rome."
+            width={5712}
+            height={4284}
+            sizes='(min-width: 768px) 672px, 100vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            St. Peter&apos;s Square at night — a completely different
+            atmosphere.
+          </p>
+        </Reveal>
       </section>
 
       {/* 12. DAY 2 -- INSIDE THE VATICAN AND ROME'S BASILICAS (20
-          October). The transport-problem beat is an in-chapter sub-beat
-          (Eyebrow only, no new ChapterHeading, no new RouteLabel) rather
-          than its own chapter, kept brief per the brief's own
-          instruction -- this is one personal experience on one crowded
-          evening, not a general statement about anyone. */}
+          October). The "An Unexpected Transport Problem" sub-beat (the
+          metro breakdown, the crowded replacement bus, the passenger
+          covering her ears) has been removed entirely per the user's
+          request -- not moved or reused elsewhere. A brief personal
+          observation comparing Rome and Barcelona now closes the
+          sightseeing narrative instead, at the end of the "An Audience
+          with the Pope" section (Day 3), before the return journey. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -914,6 +937,7 @@ export default function RomePage() {
                   gives you a very good impression of their scale and
                   grandeur.
                 </>,
+                "Entrance to all four major papal basilicas is free, but you do have to go through security checks. This can mean long queues, especially at St. Peter's Basilica in the Vatican, where the line of people waiting to get inside often stretches across the square.",
               ]}
             />
           </Reveal>
@@ -922,17 +946,6 @@ export default function RomePage() {
             <Paragraphs
               items={[
                 "During our time at the Vatican, we also collected our tickets for the following morning's papal audience. Our priest had arranged them for the group.",
-              ]}
-            />
-          </Reveal>
-
-          <Reveal delay={0.25} className='mt-10 md:mt-12'>
-            <Eyebrow>An Unexpected Transport Problem</Eyebrow>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                "On our way from the Vatican, our metro train stopped because of a problem. After waiting, we decided to continue by bus instead, but the bus was even more crowded than the metro.",
-                'As a group of nine, we were spread out and occasionally needed to communicate about where to get off. One passenger was visibly irritated by our conversations, even covering her ears when we spoke — an unpleasant moment after an already exhausting day of crowded public transport.',
               ]}
             />
           </Reveal>
@@ -953,7 +966,7 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Our final morning in Rome started early. We arrived at the Vatican before 8 AM, but the crowds were already enormous. Our priest had arranged tickets for the Wednesday papal audience with Pope Leo XIV, and we joined the long queue to enter St. Peter's Square.",
+                "Our final morning in Rome started early. We arrived at the Vatican before 8 AM, but the crowds were already enormous. Even with our tickets, we still had to join the long queue to enter St. Peter's Square.",
                 'With rain in the forecast, we had bought rain ponchos at a market the day before, and we definitely needed them — several short showers passed through while we waited. Luckily, the rain stopped before the Pope arrived.',
                 'The audience itself lasted around half an hour and was a memorable way to end our visit to Rome. Afterwards, we had lunch, collected our luggage and headed to Roma Termini for our journey home.',
               ]}
@@ -1027,47 +1040,59 @@ export default function RomePage() {
             Square.
           </p>
         </Reveal>
+
+        {/* A brief personal observation closing out the sightseeing
+            narrative -- added per the user's request to replace the
+            removed "An Unexpected Transport Problem" beat (Day 2). Plain
+            body text, no heading, a one-off personal impression rather
+            than a generalisation about Italians. */}
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.2} className='mt-10 md:mt-12 text-center'>
+            <Paragraphs
+              items={[
+                "One thing I noticed on this trip was the contrast with our recent visit to Barcelona. There, strangers went out of their way to help us, even when we hadn't asked. In Rome, we experienced quite the opposite on several occasions. People seemed less patient, especially with a group of nine travelling together. Of course, these were just our personal experiences, but the difference was noticeable.",
+              ]}
+            />
+          </Reveal>
+        </div>
       </section>
 
-      {/* 13B. THE JOURNEY HOME -- re-titled "A Stressful Return Journey",
-          relocated here (immediately after the Rome sightseeing and
-          before the closing reflection) per the layout-and-structure
-          brief's "move the return journey after the Rome visit" change.
-          The Outbound timeline + €92.80 cost card that used to live in
-          this same chapter now live inside "Travelling to Rome" (right
-          after that story, before "Arriving in Rome"), so only the
-          Return leg's own timeline stays here -- no duplicated train
-          info. The "Train journey overview" heading is intentionally
-          dropped down to just the Eyebrow (no ChapterHeading) to match
-          the lighter, heading-free treatment now used for the Outbound
-          block and fix the "oversized heading" complaint. */}
+      {/* 13B. THE JOURNEY HOME -- re-titled "A Little Panic at Roma
+          Termini" per the user's correction (the original "stressful
+          return journey" framing overstated it -- the train was never
+          actually in danger of being missed, and the carriage numbers
+          only became visible once the train arrived, so there was no
+          failure to check them in advance; the delay-driven uncertainty
+          is what caused the panic). Relocated here (immediately after
+          the Rome sightseeing and before the closing reflection) per
+          the layout-and-structure brief's "move the return journey
+          after the Rome visit" change. The Outbound timeline + €92.80
+          cost card that used to live in this same chapter now live
+          inside "Travelling to Rome" (right after that story, before
+          "Arriving in Rome"), so only the Return leg's own timeline
+          stays here -- no duplicated train info, and its own factual
+          details (times, stations, delay notes) are unchanged by this
+          rewrite. The misleading "check your carriage number in
+          advance" My Tip has been removed entirely per the user's
+          request -- it implied a planning failure that didn't happen. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
             <Eyebrow>Homeward</Eyebrow>
             <ChapterHeading italic className='mt-3'>
-              A stressful return journey
+              A Little Panic at Roma Termini
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Our return journey started with a little chaos at Roma Termini.',
-                'We were waiting for our platform number to appear, while our train was already showing a delay. Once the platform was announced, we hurried through the crowded ticket checks.',
-                'By the time we reached the platform, the train was pulling in. We were standing near carriage 11, but our reserved seats were in carriage 2!',
-                'So there we were, nine people running along the platform with suitcases. When we heard a whistle, we ran even faster, convinced the train was about to leave.',
-                'In the end, we boarded and still had five minutes to spare.',
-                'Luckily, the train recovered some of its delay, and our connection at Venezia Mestre was easy. The next train departed from the opposite track of the same platform.',
-                'Everything worked out, but it was definitely more stressful than it needed to be.',
+                'Our return journey started with a little confusion at Roma Termini. Our train was delayed, and we were waiting for the platform number to appear on the departure board.',
+                'Once the platform was announced, we made our way through the crowded ticket checks. By the time we reached the platform, the train was just arriving.',
+                'We were standing near carriage 11, while our reserved seats were in carriage 2, at the other end of the train. So there we were, nine people hurrying along the platform with our luggage.',
+                'At one point, we heard a whistle and started moving even faster, thinking the train might be about to leave. In reality, the whistle had nothing to do with our departure, and we still had about five minutes before the train left!',
+                "Looking back, there was no real reason to run. We simply weren't sure how much time we had because of the delay, and a little panic took over.",
+                'Fortunately, the train made up some of its delay, and changing trains at Venezia Mestre was surprisingly easy. Our connecting train was waiting on the opposite track of the same platform.',
               ]}
             />
-          </Reveal>
-
-          <Reveal delay={0.15} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
-            <InlineTip>
-              My tip: At busy railway stations, check your carriage
-              number in advance. Reaching the correct carriage can take
-              longer than expected, especially with luggage.
-            </InlineTip>
           </Reveal>
 
           {/* RETURN TRAIN TIMELINE -- the Outbound block and its cost
@@ -1076,8 +1101,11 @@ export default function RomePage() {
               Return leg stays here. The scheduled 15:35 departure time
               is shown with its own note calling out the actual ~15:50
               departure and partial recovery, so scheduled and actual
-              stay clearly distinguished. */}
-          <Reveal delay={0.1} className='mt-16 md:mt-[76px] flex flex-col items-center'>
+              stay clearly distinguished. Top margin brought back down to
+              the standard paragraphs->timeline gap (mt-10/12, matching
+              the Outbound timeline's own gap in "Travelling to Rome")
+              now that the My Tip that used to sit between them is gone. */}
+          <Reveal delay={0.1} className='mt-10 md:mt-12 flex flex-col items-center'>
             <Eyebrow>At a Glance</Eyebrow>
           </Reveal>
 
@@ -1117,8 +1145,14 @@ export default function RomePage() {
           personal closing reflection, not a conclusion/verdict on the
           whole site's usual scale: no new photo (the Pantheon photo
           earlier already carries that beat), no cost box, no My Tip, no
-          map. Closes the page (pb-16 md:pb-20), same text->new-chapter
-          rhythm (CHAPTER_GAP_START) as every other chapter transition. */}
+          map. Rewritten per the user's request to soften the original
+          "no desire to return" framing into a more honest, undecided
+          note (open to a future visit with her son, not a Barcelona
+          comparison), while keeping the "Absolutely" recommendation for
+          first-time visitors as the closing line, now bolded in full per
+          the brief. Closes the page (pb-16 md:pb-20), same
+          text->new-chapter rhythm (CHAPTER_GAP_START) as every other
+          chapter transition. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -1129,18 +1163,17 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "After visiting Rome twice, I can honestly say I have no desire to return — not because Rome isn't worth visiting, but quite the opposite.",
-                "There's so much history here that even if you're not particularly interested in art, architecture or culture, it's difficult not to be impressed. Just standing in front of the Pantheon, knowing it's been there for almost 2,000 years, is something extraordinary — and stepping inside to look up at that enormous dome makes it even more so.",
-                "But on this visit, the crowds were overwhelming. At times it felt like we were spending more energy trying to move through the streets and stay together — nine of us, weaving through Rome at its busiest — than actually enjoying what we'd come to see.",
-                "I'm glad I've experienced Rome, and I'm glad I returned for a second visit. But for me, twice is enough.",
-                <>
-                  Would I recommend Rome to someone who has never been?{' '}
-                  <strong className='font-semibold text-black dark:text-white'>
-                    Absolutely.
-                  </strong>{' '}
-                  It&apos;s one of those places you should experience at
-                  least once, even if you never feel the need to return.
-                </>,
+                "After visiting Rome twice, I can't say I'm already dreaming of going back.",
+                "And that's not because Rome isn't worth visiting. Quite the opposite.",
+                "There's so much history here that even if you're not particularly interested in art, architecture or culture, it's difficult not to be impressed. Standing in front of the Pantheon, knowing it's been there for almost 2,000 years, is something extraordinary. And stepping inside to look up at that enormous dome makes it even more impressive.",
+                'But Rome can also be overwhelming. On this visit, the crowds were enormous, and travelling in a group of nine made it harder to really enjoy everything around us.',
+                "Of course, every visit is different, and perhaps I'd experience the city differently another time. My son hasn't been to Rome yet, so I wouldn't rule out returning one day.",
+                "But for now, Rome simply isn't a place I feel drawn to revisit.",
+                <strong key='recommend' className='font-semibold text-black dark:text-white'>
+                  Would I recommend it to someone who has never been?
+                  Absolutely.
+                </strong>,
+                "It's a city worth experiencing at least once, even if history and culture aren't usually your thing.",
               ]}
             />
           </Reveal>
