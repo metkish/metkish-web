@@ -5,10 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
+import RomeItineraryMap from '@/components/journey/RomeItineraryMap';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import {
   ROME_HOME_TO_TRIESTE_JOURNEY,
   ROME_TRIESTE_TO_ROME_TRAIN_JOURNEY,
+  ROME_ITINERARY_DAYS,
 } from '@/lib/journeys/rome';
 
 const LOGO_SRC = '/metkish-logo.png';
@@ -608,10 +610,11 @@ export default function RomePage() {
           cleanup pass. The "Carriage 11. Our seats were in carriage 2."
           standalone pivot line is gone, folded back into the running
           story. No photo, per the brief. Text -> new-chapter transition
-          on top; this is the last chapter before the Train Journey
-          Overview (unchanged below), so it closes with the page's own
-          final pb-16/20 instead of CHAPTER_GAP_END. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+          on top; this used to be the page's very last chapter (closing
+          with pb-16/20) before the three-day sightseeing itinerary was
+          appended after it -- now closes with the ordinary CHAPTER_GAP_END
+          instead, since "Three Days Exploring Rome" follows directly. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
             <Eyebrow>Homeward</Eyebrow>
@@ -735,6 +738,300 @@ export default function RomePage() {
             </p>
           </Reveal>
         </div>
+      </section>
+      {/* 9. THREE DAYS EXPLORING ROME -- short introduction to the
+          sightseeing itinerary that follows, a new top-level chapter
+          (its own RouteLabel) picking up directly after the Train
+          Journey Overview. Trimmed from the brief's four short
+          paragraphs to three natural ones (the two one-sentence closing
+          lines folded together), per the "avoid one-sentence paragraphs"
+          rule. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>The Itinerary</RouteLabel>
+            <ChapterHeading italic className='mt-8 md:mt-10'>
+              Three days exploring Rome
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "This trip was a little different from what I would normally plan. We were travelling with a parish group, so alongside Rome's famous landmarks, our itinerary included all four major papal basilicas.",
+                "I don't usually visit many churches when travelling, but these basilicas genuinely fascinated me — the enormous interiors, marble, golden ceilings and extraordinary wealth on display were unlike anything I expected.",
+                'What I enjoyed much less were the crowds. I had visited Rome before, but this time the number of people around the main attractions was overwhelming, and travelling in a group of nine made it even more challenging.',
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 10. ITINERARY MAP -- real point locations only, grouped by day
+          behind a day selector, deliberately with no route/path drawn
+          between them (see components/journey/RomeItineraryMap.tsx's own
+          header comment for why). Sits directly against the section
+          above with zero gap, same full-bleed convention as every other
+          map on the page. */}
+      <RomeItineraryMap days={ROME_ITINERARY_DAYS} />
+
+      {/* 11. DAY 1 -- ROME'S FAMOUS LANDMARKS (19 October). A top-level
+          chapter; the three photos are spread naturally through the
+          story rather than grouped at the end, per the brief. */}
+      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Day 1 · 19 October 2026</RouteLabel>
+            <ChapterHeading italic className='mt-8 md:mt-10'>
+              Rome&apos;s famous landmarks
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "We started our first full day at the Basilica of St. John Lateran, the first of the four major papal basilicas on our itinerary. From there, we explored some of Rome's best-known landmarks: the Colosseum, Vittoriano, Trevi Fountain, the Spanish Steps and the Pantheon.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-sm sm:max-w-md mx-auto'>
+          <Image
+            src='/2026-10%20-%20Italy_Rome/Bazilika%20sv.Janeza_web.jpeg'
+            alt="The extraordinary gilded, frescoed interior of St. John Lateran Basilica, Rome's cathedral."
+            width={2000}
+            height={2666}
+            sizes='(min-width: 640px) 448px, 90vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            The extraordinary interior of St. John Lateran Basilica.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.15} className='mt-8 md:mt-10 text-center'>
+            <Paragraphs
+              items={[
+                'I had already visited the inside of the Colosseum on my first trip to Rome, so this time we admired it from the outside. We also saw the Trevi Fountain without paying for the closer-access area.',
+                "The Pantheon, however, was something I hadn't explored properly before, and I'm glad we went inside this time — looking up at the enormous dome and its open oculus was fascinating.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.2} className='mt-10 md:mt-12 max-w-sm sm:max-w-md mx-auto'>
+          <Image
+            src='/2026-10%20-%20Italy_Rome/Pantheon_web.jpeg'
+            alt="Looking straight up at the Pantheon's coffered dome and its open oculus, a shaft of light falling through."
+            width={2000}
+            height={2666}
+            sizes='(min-width: 640px) 448px, 90vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Looking up at the oculus inside the Pantheon.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.25} className='mt-8 md:mt-10 text-center'>
+            <Paragraphs
+              items={[
+                "Unfortunately, the crowds were almost unbearable. Around most of the major attractions we could barely move, and with nine people travelling together, constantly making sure nobody got separated made the experience even more stressful.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.3} className='mt-10 md:mt-12 max-w-xs sm:max-w-sm mx-auto'>
+          <Image
+            src='/2026-10%20-%20Italy_Rome/Spanish%20steps_web.jpeg'
+            alt='The crowded Spanish Steps in October, with Trinità dei Monti and its obelisk above.'
+            width={2000}
+            height={2666}
+            sizes='(min-width: 640px) 384px, 80vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            The Spanish Steps in October — and the crowds that came with
+            them.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.35} className='mt-8 md:mt-10 text-center'>
+            <Paragraphs
+              items={[
+                "After dinner, we visited St. Peter's Square at night. What a difference — after a day surrounded by crowds, seeing the square almost empty was a welcome change.",
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 12. DAY 2 -- INSIDE THE VATICAN AND ROME'S BASILICAS (20
+          October). The transport-problem beat is an in-chapter sub-beat
+          (Eyebrow only, no new ChapterHeading, no new RouteLabel) rather
+          than its own chapter, kept brief per the brief's own
+          instruction -- this is one personal experience on one crowded
+          evening, not a general statement about anyone. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Day 2 · 20 October 2026</RouteLabel>
+            <ChapterHeading italic className='mt-8 md:mt-10'>
+              Inside the Vatican and Rome&apos;s basilicas
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Our second day began with a special visit inside the Vatican walls, organised for our group. We visited a building where priests live and a Vatican cemetery, which I found particularly fascinating.',
+                "This wasn't a visit to the Vatican Museums or the Sistine Chapel — I had already seen both during my first trip to Rome.",
+                "Afterwards, we visited St. Peter's Basilica, followed by Santa Maria Maggiore and St. Paul Outside the Walls. Although I don't usually plan my travels around churches, visiting these four major basilicas was one of the highlights of this trip — their scale, architecture and elaborate golden details were extraordinary.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-sm sm:max-w-md mx-auto'>
+          <Image
+            src='/2026-10%20-%20Italy_Rome/Sv.Peter_web.jpeg'
+            alt="Bernini's bronze baldachin beneath the dome of St. Peter's Basilica."
+            width={2000}
+            height={2666}
+            sizes='(min-width: 640px) 448px, 90vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Bernini&apos;s magnificent baldachin inside St. Peter&apos;s
+            Basilica.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.15} className='mt-10 md:mt-12 max-w-sm sm:max-w-md mx-auto'>
+          <Image
+            src='/2026-10%20-%20Italy_Rome/Sv.%20Pavel_web.jpeg'
+            alt='The coffered, gilded ceiling of St. Paul Outside the Walls, seen from beneath its colonnade.'
+            width={2000}
+            height={2287}
+            sizes='(min-width: 640px) 448px, 90vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            The extraordinary gilded ceiling of St. Paul Outside the
+            Walls.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.2} className='mt-8 md:mt-10 text-center'>
+            <Paragraphs
+              items={[
+                "During our time at the Vatican, we also collected our tickets for the following morning's papal audience. Our priest had arranged them for the group.",
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.25} className='mt-10 md:mt-12'>
+            <Eyebrow>An Unexpected Transport Problem</Eyebrow>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "On our way from the Vatican, our metro train stopped because of a problem. After waiting, we decided to continue by bus instead, but the bus was even more crowded than the metro.",
+                'As a group of nine, we were spread out and occasionally needed to communicate about where to get off. One passenger was visibly irritated by our conversations, even covering her ears when we spoke — an unpleasant moment after an already exhausting day of crowded public transport.',
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 13. DAY 3 -- THE PAPAL AUDIENCE (21 October). Deliberately the
+          shortest of the three days: three tight paragraphs instead of
+          each day's five-plus, no second photograph, and the return
+          train journey is NOT repeated here -- it already has its own
+          chapter earlier on this page. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Day 3 · 21 October 2026</RouteLabel>
+            <ChapterHeading italic className='mt-8 md:mt-10'>
+              The papal audience
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "Our final morning in Rome started early. We arrived at the Vatican before 8 AM, but the crowds were already enormous. Our priest had arranged tickets for the Wednesday papal audience with Pope Leo XIV, and we joined the long queue to enter St. Peter's Square.",
+                'With rain in the forecast, we had bought rain ponchos at a market the day before, and we definitely needed them — several short showers passed through while we waited. Luckily, the rain stopped before the Pope arrived.',
+                'The audience itself lasted around half an hour and was a memorable way to end our visit to Rome. Afterwards, we had lunch, collected our luggage and headed to Roma Termini for our journey home.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* The papal-audience ticket -- our actual paper ticket, the
+            printed serial number in the upper-right corner redacted
+            before this image was ever saved to the repo (no unredacted
+            version of this photo exists on disk). Moderate width, not
+            full-screen, per the brief. */}
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-sm sm:max-w-md mx-auto'>
+          <Image
+            src='/2026-10%20-%20Italy_Rome/Papa%20audience_web.jpeg'
+            alt='Our paper ticket for the Wednesday general papal audience with Pope Leo XIV, 21 October 2026 at 10:00, issued by the Prefettura della Casa Pontificia. Free admission; the printed serial number is redacted.'
+            width={2000}
+            height={1400}
+            sizes='(min-width: 640px) 448px, 90vw'
+            className='w-full h-auto rounded-[2px] border border-black/10 dark:border-white/10'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Our ticket for the Wednesday papal audience with Pope Leo XIV.
+            Admission is free.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal delay={0.15} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
+            <InlineTip>
+              My tip: Tickets for the Wednesday papal audience are free
+              and can be requested through the Vatican&apos;s official
+              reservation website. Our priest arranged ours, and we
+              collected them the day before. Even with tickets, arrive
+              early and expect queues and security checks.
+            </InlineTip>
+          </Reveal>
+          <Reveal delay={0.18} className='mt-5 text-center'>
+            <a
+              href='https://eventi.pontificalisdomus.va/?lang=en-us'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='inline-block text-sm font-[family-name:var(--font-poppins)] text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
+            >
+              Request free papal audience tickets ↗
+            </a>
+          </Reveal>
+        </div>
+
+        {/* Our own recording from the audience -- same silent, no-
+            controls "moving photograph" treatment used for every other
+            video on the site (muted, looped, no visible controls), just
+            with an accessible label rather than aria-hidden since this
+            clip -- unlike an ambient b-roll loop -- carries real
+            documentary content. */}
+        <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-[240px] sm:max-w-xs mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
+            <video
+              src='/2026-10%20-%20Italy_Rome/Papa_web.mp4'
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload='auto'
+              aria-label="Pope Leo XIV waving from the popemobile at the Wednesday general audience in St. Peter's Square."
+              className='absolute inset-0 h-full w-full object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Pope Leo XIV at the Wednesday general audience in St. Peter&apos;s
+            Square.
+          </p>
+        </Reveal>
       </section>
     </div>
   );
