@@ -1,21 +1,51 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ItineraryDay } from '@/lib/journeys/rome';
+import { useEffect, useMemo, useRef } from 'react';
+import type { JourneyPoint } from '@/lib/journeys/types';
 import { project } from './geo';
 
-// A third static sibling of JourneyMapScene/DepartureAirportsMap (see
+// A static sibling of JourneyMapScene/DepartureAirportsMap (see
 // DepartureAirportsMap.tsx's own header comment for the family this
 // belongs to), for a shape neither of those two covers: a single
-// destination's multi-day sightseeing itinerary, grouped by day behind a
-// day selector, with real point markers only -- deliberately no route or
-// path drawn between them. The brief this was built for was explicit that
-// no walking route, transport path or distance between these stops has
-// been verified, so unlike every other Metkish map (which draws a real,
+// destination's sightseeing landmarks, plotted together on one still
+// overview with real point markers only -- deliberately no route or path
+// drawn between them. The brief this was built for was explicit that no
+// walking route, transport path or distance between these stops has been
+// verified, so unlike every other Metkish map (which draws a real,
 // independently-verified route), this one only ever plots real point
 // locations and never a line connecting them. The pink/typography/marker
 // language is still the same established system -- just markers and
 // labels, no path.
+//
+// REDESIGN (this version replaces an earlier day-by-day selector): the
+// previous version switched between three separate framings (Day 1/Day 2/
+// Day 3), each reframed around just that day's own points. That produced
+// three separate sets of mobile bugs -- markers rendering off-screen on a
+// narrow aspect with only two widely-spaced points, and labels clipping or
+// overlapping differently on each day -- because each day's tiny point set
+// gave the framing/label logic very little room to work with. This version
+// drops the day selector entirely and plots every unique landmark from all
+// three days together on one consolidated map (see ROME_OVERVIEW_POINTS in
+// lib/journeys/rome.ts), which is both the simpler, more honest shape for
+// "where did we go in Rome" and, with ten points spread across a real
+// ~4km-wide area instead of two or three in a tight corner, gives the
+// camera-framing and label-placement logic a much more stable box to work
+// with at every viewport width.
+//
+// MAP BACKGROUND: the brief asked for a real street-map background (roads,
+// blocks, the Tiber, parks) if one could be implemented reliably, and
+// explicitly asked for this limitation to be explained rather than for an
+// inaccurate decorative map if it couldn't. It couldn't: fetching real
+// OpenStreetMap tile/static-map imagery was tested directly against
+// several tile providers (tile.openstreetmap.org, staticmap.openstreetmap.de,
+// maps.wikimedia.org) from both this project's cloud build environment and
+// the linked local machine, and every one of those domains is blocked by
+// the organization's own network egress policy in both places (confirmed
+// via the proxy's own request log, not just a timeout). Rather than
+// fabricate streets, a river, or parks that would look plausible but have
+// no real geographic data behind them, this map keeps the same accurate
+// custom-projection, muted-background approach the previous version used:
+// real coordinates, real relative positions, no invented geography.
 //
 // Unlike JourneyMapScene and DepartureAirportsMap, this map is zoomed to
 // a single city at a scale far too close for the shared coastline dataset
@@ -29,46 +59,54 @@ import { project } from './geo';
 
 const MUTED_BACKGROUND = '#f6f1e6';
 
-const LABEL_FLIP_MARGIN_PX = 160;
+// How much text-measurement buffer to leave before flipping a horizontal
+// label to the other side of its dot.
+const LABEL_EDGE_BUFFER_PX = 16;
+// Only used on the very first paint, before a text node has ever been
+// measured (getBoundingClientRect can legitimately return 0 for an
+// element that hasn't painted yet) -- a same-order-of-magnitude guess so
+// the very first frame doesn't badly misjudge room on either side; the
+// very next measure (ResizeObserver fires on mount too) uses the real
+// measured width.
+const LABEL_FALLBACK_WIDTH_PX = 140;
 
-// Camera framing is recomputed per day from that day's own real points
-// (not hardcoded per-day constants, since a day's point list is the
-// single source of truth for its own framing) -- same aspect-aware
-// reframing approach as DepartureAirportsMap's computeFrame, just driven
-// by a live bounding box instead of one fixed reference box.
-const PADDING_FACTOR = 1.7;
+// Camera framing is computed once from every plotted point's own real
+// coordinates (not hardcoded, since the point list is the single source
+// of truth for the map's own framing) -- same aspect-aware reframing
+// approach as DepartureAirportsMap's computeFrame, just driven by a live
+// bounding box instead of one fixed reference box. PADDING_FACTOR is a
+// little more generous than a single-day framing needed, since labels now
+// have to clear real neighbours across the whole consolidated point set
+// rather than just one or two nearby points.
+const PADDING_FACTOR = 1.15;
 const MIN_SPAN_DEG = 0.012;
-const MAX_HEIGHT_MULTIPLIER = 1.5;
+const MAX_HEIGHT_MULTIPLIER = 1.3;
 
 interface MarkerRefs {
   wrapper: HTMLDivElement | null;
   text: HTMLSpanElement | null;
-  labelPlacement?: 'right' | 'above';
+  labelPlacement: JourneyPoint['labelPlacement'];
 }
 
 export interface RomeItineraryMapProps {
-  days: ItineraryDay[];
+  points: JourneyPoint[];
   className?: string;
   heightClassName?: string;
 }
 
-const DEFAULT_HEIGHT_CLASSNAME = 'h-[360px] sm:h-[420px] md:h-[480px]';
+const DEFAULT_HEIGHT_CLASSNAME = 'h-[460px] sm:h-[540px] md:h-[640px]';
 
 export default function RomeItineraryMap({
-  days,
+  points,
   className = '',
   heightClassName = DEFAULT_HEIGHT_CLASSNAME,
 }: RomeItineraryMapProps) {
-  const [selectedDay, setSelectedDay] = useState(0);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const markerRefs = useRef<MarkerRefs[]>([]);
 
-  const activeDay = days[selectedDay] ?? days[0];
-  const points = activeDay.points;
-
-  // Real bounding box of the active day's own points, in [lon, lat]
-  // degrees -- the only geographic input to this map's framing.
+  // Real bounding box of every plotted point, in [lon, lat] degrees --
+  // the only geographic input to this map's framing.
   const bbox = useMemo(() => {
     const lons = points.map((p) => p.coords[0]);
     const lats = points.map((p) => p.coords[1]);
@@ -152,16 +190,54 @@ export default function RomeItineraryMap({
           wrapper.style.transform = `translate(${leftPx.toFixed(1)}px, ${topPx.toFixed(1)}px)`;
         }
         if (!text) return;
-        if (labelPlacement === 'above') {
+
+        if (labelPlacement === 'above' || labelPlacement === 'below') {
+          // Centered labels still need to stay clear of the container's
+          // own left/right edges on a narrow viewport -- measure the
+          // text's real width and nudge the centering sideways just
+          // enough to keep it fully on-screen, rather than always
+          // centering exactly on the dot regardless of how close that dot
+          // sits to the frame's edge (see 'right'/'left' below for the
+          // same underlying "measure, don't guess" approach).
+          const textWidth = text.getBoundingClientRect().width || LABEL_FALLBACK_WIDTH_PX;
+          const halfWidth = textWidth / 2;
+          const minCenter = halfWidth + LABEL_EDGE_BUFFER_PX;
+          const maxCenter = containerWidth - halfWidth - LABEL_EDGE_BUFFER_PX;
+          const clampedCenter =
+            minCenter <= maxCenter
+              ? Math.min(Math.max(leftPx, minCenter), maxCenter)
+              : containerWidth / 2;
+          const offsetX = clampedCenter - leftPx;
+          const vertical = labelPlacement === 'above' ? 'calc(-100% - 16px)' : '16px';
           text.style.textAlign = 'center';
-          text.style.transform = 'translate(-50%, calc(-100% - 10px))';
-        } else {
-          const flip = containerWidth - leftPx < LABEL_FLIP_MARGIN_PX;
-          text.style.textAlign = flip ? 'right' : 'left';
-          text.style.transform = flip
-            ? 'translate(-14px, -50%) translateX(-100%)'
-            : 'translate(14px, -50%)';
+          text.style.transform = `translate(calc(-50% + ${offsetX.toFixed(1)}px), ${vertical})`;
+          return;
         }
+
+        // 'right' (the default, unset) and 'left': measure this label's
+        // own actually-rendered text width and flip to whichever side has
+        // real room for it, rather than a single fixed-pixel threshold
+        // that doesn't account for how long a given label's text is --
+        // that fixed-threshold approach is exactly what let "St. Paul
+        // Outside the Walls" (the longest label on the page) clip off the
+        // right edge of a narrow mobile viewport on the old per-day map.
+        const textWidth = text.getBoundingClientRect().width || LABEL_FALLBACK_WIDTH_PX;
+        const roomOnRight = containerWidth - leftPx;
+        const roomOnLeft = leftPx;
+        const preferLeft = labelPlacement === 'left';
+        const preferredRoom = preferLeft ? roomOnLeft : roomOnRight;
+        const otherRoom = preferLeft ? roomOnRight : roomOnLeft;
+        const fitsPreferred = preferredRoom >= textWidth + LABEL_EDGE_BUFFER_PX;
+        const growLeft = fitsPreferred
+          ? preferLeft
+          : otherRoom > preferredRoom
+            ? !preferLeft
+            : preferLeft;
+
+        text.style.textAlign = growLeft ? 'right' : 'left';
+        text.style.transform = growLeft
+          ? 'translate(-14px, -50%) translateX(-100%)'
+          : 'translate(14px, -50%)';
       };
 
       pointWorlds.forEach((w, i) => {
@@ -178,43 +254,8 @@ export default function RomeItineraryMap({
 
   return (
     <div className={className}>
-      {/* Day selector -- same uppercase/tracking/Poppins-semibold language
-          as every other small label on the site (Eyebrow, RouteLabel),
-          the active day picked out with the site's one accent color
-          rather than a background pill or border, so it reads as part of
-          the same typographic system instead of a separate UI widget. */}
-      <div className='flex items-center justify-center gap-6 sm:gap-8'>
-        {days.map((d, i) => {
-          const active = i === selectedDay;
-          return (
-            <button
-              key={d.day}
-              type='button'
-              onClick={() => setSelectedDay(i)}
-              className='group flex flex-col items-center gap-1.5 py-1'
-              aria-pressed={active}
-            >
-              <span
-                className={`text-xs sm:text-sm uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold transition-colors ${
-                  active
-                    ? 'text-pink-500 dark:text-pink-300'
-                    : 'text-black/45 dark:text-white/45 group-hover:text-black/70 dark:group-hover:text-white/70'
-                }`}
-              >
-                {d.label}
-              </span>
-              <span
-                className={`h-0.5 w-8 rounded-full transition-colors ${
-                  active ? 'bg-pink-400 dark:bg-pink-300/80' : 'bg-transparent'
-                }`}
-              />
-            </button>
-          );
-        })}
-      </div>
-
       <div
-        className={`relative w-full overflow-hidden mt-5 md:mt-6 ${heightClassName} bg-[#f6f1e6] dark:bg-[#161310]`}
+        className={`relative w-full overflow-hidden ${heightClassName} bg-[#f6f1e6] dark:bg-[#161310]`}
       >
         <div ref={mapBoxRef} className='absolute inset-0'>
           <svg
@@ -227,10 +268,14 @@ export default function RomeItineraryMap({
 
           {points.map((point, i) => (
             <div
-              key={`${activeDay.day}-${point.id}`}
+              key={point.id}
               ref={(el) => {
                 markerRefs.current[i] = {
-                  ...(markerRefs.current[i] ?? { wrapper: null, text: null }),
+                  ...(markerRefs.current[i] ?? {
+                    wrapper: null,
+                    text: null,
+                    labelPlacement: point.labelPlacement,
+                  }),
                   wrapper: el,
                   labelPlacement: point.labelPlacement,
                 };
@@ -241,7 +286,11 @@ export default function RomeItineraryMap({
               <span
                 ref={(el) => {
                   markerRefs.current[i] = {
-                    ...(markerRefs.current[i] ?? { wrapper: null, text: null }),
+                    ...(markerRefs.current[i] ?? {
+                      wrapper: null,
+                      text: null,
+                      labelPlacement: point.labelPlacement,
+                    }),
                     text: el,
                     labelPlacement: point.labelPlacement,
                   };

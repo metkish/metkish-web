@@ -338,6 +338,114 @@ export interface ItineraryDay {
   points: JourneyPoint[];
 }
 
+// Single consolidated overview map (replaces the old day-by-day
+// selector): every unique landmark from all three days, deduplicated.
+// St. Peter's Square is visited on all three days under three different
+// labels/sublabels above (evening visit, Day 2 basilica tour, Day 3 papal
+// audience) -- all three are the exact same real square, so this list
+// merges them into the single ST_PETERS_SQUARE point defined above,
+// rather than plotting three overlapping markers at one coordinate.
+// Every coordinate here is the same real, independently-verified value
+// already used above -- nothing re-estimated or invented for this view.
+// `labelPlacement` choices below were worked out by hand from the real
+// lon/lat deltas between nearby points (see RomeItineraryMap.tsx's own
+// header comment for the full reasoning), then confirmed live with
+// Playwright at both desktop and mobile widths -- not guessed and left
+// unverified.
+export const ROME_OVERVIEW_POINTS: JourneyPoint[] = [
+  {
+    id: 'colosseum',
+    name: 'Colosseum',
+    coords: [12.4922, 41.8903],
+    showMapLabel: true,
+  },
+  {
+    id: 'st-john-lateran',
+    name: 'St. John Lateran',
+    coords: [12.5062, 41.8859],
+    showMapLabel: true,
+  },
+  {
+    id: 'vittoriano',
+    name: 'Vittoriano',
+    coords: [12.4831, 41.8947],
+    showMapLabel: true,
+    // Santa Maria Maggiore sits only ~1.3km northeast of this point -- a
+    // rightward label here reaches straight toward it, so this one grows
+    // upward instead, into the gap below Trevi Fountain.
+    labelPlacement: 'above',
+  },
+  {
+    id: 'trevi-fountain',
+    name: 'Trevi Fountain',
+    coords: [12.4831, 41.9008],
+    showMapLabel: true,
+  },
+  {
+    id: 'spanish-steps',
+    name: 'Spanish Steps',
+    coords: [12.4821, 41.906],
+    showMapLabel: true,
+    // The northernmost point on the whole map, with nothing above it to
+    // collide with -- grows upward instead of the default right, which
+    // otherwise crowds Trevi Fountain and St. Peter's Square just south
+    // of it at this zoom.
+    labelPlacement: 'above',
+  },
+  {
+    id: 'pantheon',
+    name: 'Pantheon',
+    coords: [12.4768, 41.8986],
+    showMapLabel: true,
+    // Sandwiched between St. Peter's Square (west, far enough not to
+    // conflict) and the Trevi/Vittoriano pair (east, close) at almost the
+    // same latitude -- a rightward label would crowd that pair, so it
+    // grows left instead, toward St. Peter's Square's own greater real
+    // distance.
+    labelPlacement: 'left',
+  },
+  {
+    id: 'st-peters-square',
+    name: "St. Peter's Square",
+    coords: ST_PETERS_SQUARE.coords,
+    showMapLabel: true,
+  },
+  {
+    id: 'santa-maria-maggiore',
+    name: 'Santa Maria Maggiore',
+    coords: [12.4986, 41.8975],
+    showMapLabel: true,
+    // Close to both Roma Termini (northeast) and St. John Lateran
+    // (southeast) -- grows downward rather than sideways to stay clear of
+    // both at this zoom.
+    labelPlacement: 'below',
+  },
+  {
+    id: 'st-paul-outside-the-walls',
+    name: 'St. Paul Outside the Walls',
+    coords: [12.4767, 41.8587],
+    showMapLabel: true,
+    // The longest label on the page, and this point sits well south of
+    // every other marker with nothing beside it -- grows downward from
+    // its own dot (centered) instead of sideways, which was the direct
+    // cause of this exact label clipping off the right edge of narrow
+    // mobile viewports on the old per-day map.
+    labelPlacement: 'below',
+  },
+  {
+    id: 'roma-termini',
+    name: 'Roma Termini',
+    coords: ROMA_TERMINI.coords,
+    showMapLabel: true,
+    // Sits at almost exactly the same latitude as Trevi Fountain, ~1.6km
+    // east of it -- a rightward label here has no room to flip clear on a
+    // narrow mobile frame without landing back on Trevi's own label, so it
+    // grows upward instead. Nothing sits close above Roma Termini at any
+    // viewport width.
+    labelPlacement: 'above',
+  },
+];
+
 export const ROME_ITINERARY_DAYS: ItineraryDay[] = [
   {
     day: 1,

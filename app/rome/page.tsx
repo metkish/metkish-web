@@ -7,10 +7,12 @@ import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import RomeItineraryMap from '@/components/journey/RomeItineraryMap';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
+import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
+import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 import {
   ROME_HOME_TO_TRIESTE_JOURNEY,
   ROME_TRIESTE_TO_ROME_TRAIN_JOURNEY,
-  ROME_ITINERARY_DAYS,
+  ROME_OVERVIEW_POINTS,
 } from '@/lib/journeys/rome';
 
 const LOGO_SRC = '/metkish-logo.png';
@@ -444,7 +446,7 @@ export default function RomePage() {
               className='mt-5 text-center'
               items={[
                 'Our first train from Trieste Airport to Venezia Mestre was a regional train. It took 1 hour and 24 minutes, and there were no assigned seats.',
-                'We had 29 minutes to change trains in Venice Mestre, which was more than enough.',
+                'We had 29 minutes to change trains in Venezia Mestre, which was more than enough.',
                 'The second part of our journey was much more comfortable. We travelled to Rome on a Frecciarossa high-speed train in Business Class.',
                 'The seats were spacious, and complimentary drinks and snacks were served shortly after departure. We could choose a sandwich, biscuits, or both.',
               ]}
@@ -514,24 +516,96 @@ export default function RomePage() {
             />
           </Reveal>
 
-          {/* Transfer cost box -- unchanged: same quiet bg-[#f1ebdc]
-              practical-info panel as every price card sitewide, per-
-              person figure headlining it, total and vehicle/duration as
-              supporting lines. */}
-          <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+          {/* Transfer cost box -- price and its "Per Person" label are now
+              grouped directly together (no gap-breaking info between
+              them), with the total/vehicle details as a separate
+              supporting line underneath, and tighter padding overall so
+              the card reads as compact rather than roomy. */}
+          <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[420px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-7 py-6 md:px-8 md:py-7 flex flex-col items-center gap-1 text-center'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Private Transfer – Roma Termini
             </span>
             <TimeStamp size='md'>€30.56</TimeStamp>
-            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Per Person
+            </span>
+            <span className='mt-3 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
               €275 total for 9 passengers
             </span>
             <span className='mt-1 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
               Private minibus · Approximately 20 minutes
             </span>
-            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Per Person
+          </Reveal>
+        </div>
+      </section>
+
+      {/* OUTBOUND TRAIN TIMELINE + COST -- split out of the old combined
+          "Train journey overview" (which showed both legs at once), so the
+          outbound numbers live with the rest of the outbound story instead
+          of being paired with the return journey, which now has its own
+          chapter later on the page. Just an Eyebrow, not a repeated big
+          ChapterHeading -- this is practical reference information, not a
+          new narrative beat, so it gets the same lightweight treatment as
+          a cost card rather than its own oversized heading. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='flex flex-col items-center'>
+            <Eyebrow>At a Glance</Eyebrow>
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-sm mx-auto text-left'>
+            <span className='block text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Outbound · 18 October 2026
             </span>
+            <div className='mt-4 space-y-0'>
+              <TimelineLeg
+                fromTime='17:45'
+                fromStation='Trieste Airport'
+                toTime='19:09'
+                toStation='Venezia Mestre'
+                detail='Regionale Veloce 3564 · Second Class · 1h 24m'
+              />
+              <TimelineTransfer>Transfer · 29 min</TimelineTransfer>
+              <TimelineLeg
+                fromTime='19:38'
+                fromStation='Venezia Mestre'
+                toTime='23:30'
+                toStation='Roma Termini'
+                detail='Frecciarossa 9437 · Business Class · 3h 52m'
+              />
+            </div>
+            <div className='mt-5 pt-4 border-t border-black/10 dark:border-white/10 text-center'>
+              <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+                Total
+              </span>
+              <TimeStamp size='sm'>5h 45m</TimeStamp>
+            </div>
+          </Reveal>
+
+          {/* TRAIN COSTS -- covers both legs of the round trip, so it sits
+              with the outbound timeline rather than being duplicated; the
+              note underneath now says so explicitly instead of leaving it
+              to the "Round Trip" label alone. */}
+          <Reveal delay={0.15} className='mt-12 md:mt-14 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Train Tickets · Round Trip
+            </span>
+            <TimeStamp size='md'>€92.80</TimeStamp>
+            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Trieste Airport → Venezia Mestre → Roma Termini → Venezia
+              Mestre → Trieste Airport
+            </span>
+            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Average Per Person
+            </span>
+          </Reveal>
+          <Reveal delay={0.2} className='mt-4 max-w-sm mx-auto text-center'>
+            <p className='text-xs italic font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50 leading-relaxed'>
+              Average per-person cost based on our own booking, covering
+              both the outbound and return journeys, including Business
+              Class on the longer legs and a family fare — not a fixed or
+              universal Trenitalia price.
+            </p>
           </Reveal>
         </div>
       </section>
@@ -552,7 +626,7 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Although we weren’t staying in the city centre, there was a bus stop nearby. We could take two buses to reach the metro and continue exploring Rome.',
+                "Although we weren't staying in the city centre, there was a bus stop nearby. We could take two buses to reach the metro and continue exploring Rome.",
                 <>
                   For our three-day stay, we chose the{' '}
                   <strong className='font-semibold text-black dark:text-white'>
@@ -606,140 +680,6 @@ export default function RomePage() {
         </div>
       </section>
 
-      {/* 8. THE RETURN JOURNEY -- re-titled "A Stressful Return Journey"
-          and trimmed to seven short paragraphs during the editorial-
-          cleanup pass. The "Carriage 11. Our seats were in carriage 2."
-          standalone pivot line is gone, folded back into the running
-          story. No photo, per the brief. Text -> new-chapter transition
-          on top; this used to be the page's very last chapter (closing
-          with pb-16/20) before the three-day sightseeing itinerary was
-          appended after it -- now closes with the ordinary CHAPTER_GAP_END
-          instead, since "Three Days Exploring Rome" follows directly. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal className='flex flex-col items-center'>
-            <Eyebrow>Homeward</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              A stressful return journey
-            </ChapterHeading>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                'Our return journey started with a little chaos at Roma Termini.',
-                'We were waiting for our platform number to appear, while our train was already showing a delay. Once the platform was announced, we hurried through the crowded ticket checks.',
-                'By the time we reached the platform, the train was pulling in. We were standing near carriage 11, but our reserved seats were in carriage 2!',
-                'So there we were, nine people running along the platform with suitcases. When we heard a whistle, we ran even faster, convinced the train was about to leave.',
-                'In the end, we boarded and still had five minutes to spare.',
-                'Luckily, the train recovered some of its delay, and our connection at Venezia Mestre was easy. The next train departed from the opposite track of the same platform.',
-                'Everything worked out, but it was definitely more stressful than it needed to be.',
-              ]}
-            />
-          </Reveal>
-
-          <Reveal delay={0.15} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
-            <InlineTip>
-              My tip: At busy railway stations, check your carriage
-              number in advance. Reaching the correct carriage can take
-              longer than expected, especially with luggage.
-            </InlineTip>
-          </Reveal>
-
-          {/* TRAIN JOURNEY OVERVIEW -- unchanged: a compact timeline,
-              reusing the map's own small-pink-dot visual language.
-              24-hour times throughout. The Return leg's own time shows
-              the scheduled 15:35 departure, with its note calling out
-              the actual ~15:50 departure and partial recovery, so
-              scheduled and actual stay clearly distinguished. */}
-          <Reveal delay={0.1} className='mt-16 md:mt-[76px] flex flex-col items-center'>
-            <Eyebrow>At a Glance</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              Train journey overview
-            </ChapterHeading>
-          </Reveal>
-
-          <Reveal delay={0.15} className='mt-10 md:mt-12 max-w-sm mx-auto text-left'>
-            <span className='block text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Outbound · 18 October 2026
-            </span>
-            <div className='mt-4 space-y-0'>
-              <TimelineLeg
-                fromTime='17:45'
-                fromStation='Trieste Airport'
-                toTime='19:09'
-                toStation='Venezia Mestre'
-                detail='Regionale Veloce 3564 · Second Class · 1h 24m'
-              />
-              <TimelineTransfer>Transfer · 29 min</TimelineTransfer>
-              <TimelineLeg
-                fromTime='19:38'
-                fromStation='Venezia Mestre'
-                toTime='23:30'
-                toStation='Roma Termini'
-                detail='Frecciarossa 9437 · Business Class · 3h 52m'
-              />
-            </div>
-            <div className='mt-5 pt-4 border-t border-black/10 dark:border-white/10 text-center'>
-              <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-                Total
-              </span>
-              <TimeStamp size='sm'>5h 45m</TimeStamp>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.2} className='mt-12 md:mt-14 max-w-sm mx-auto text-left'>
-            <span className='block text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Return · 21 October 2026
-            </span>
-            <div className='mt-4 space-y-0'>
-              <TimelineLeg
-                fromTime='15:35'
-                fromStation='Roma Termini'
-                toTime='19:23'
-                toStation='Venezia Mestre'
-                detail='Frecciarossa 9426 · Business Class · scheduled 3h 48m'
-                note='Actual departure ~15:50; time partly recovered en route'
-              />
-              <TimelineTransfer>Scheduled transfer 17 min · actual ~10 min</TimelineTransfer>
-              <TimelineLeg
-                fromTime='19:40'
-                fromStation='Venezia Mestre'
-                toTime='20:57'
-                toStation='Trieste Airport'
-                detail='Frecciarossa 9749 · Standard Class · 1h 17m'
-              />
-            </div>
-            <div className='mt-5 pt-4 border-t border-black/10 dark:border-white/10 text-center'>
-              <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-                Total (scheduled)
-              </span>
-              <TimeStamp size='sm'>5h 22m</TimeStamp>
-            </div>
-          </Reveal>
-
-          {/* TRAIN COSTS -- unchanged: the same quiet bg-[#f1ebdc]
-              practical-info panel language as every price card sitewide. */}
-          <Reveal delay={0.1} className='mt-16 md:mt-[76px] mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Train Tickets · Round Trip
-            </span>
-            <TimeStamp size='md'>€92.80</TimeStamp>
-            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Trieste Airport → Venezia Mestre → Roma Termini → Venezia
-              Mestre → Trieste Airport
-            </span>
-            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Average Per Person
-            </span>
-          </Reveal>
-          <Reveal delay={0.15} className='mt-4 max-w-sm mx-auto text-center'>
-            <p className='text-xs italic font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50 leading-relaxed'>
-              Average per-person cost based on our own booking, including
-              Business Class on the longer legs and a family fare — not a
-              fixed or universal Trenitalia price.
-            </p>
-          </Reveal>
-        </div>
-      </section>
       {/* 9. THREE DAYS EXPLORING ROME -- short introduction to the
           sightseeing itinerary that follows, a new top-level chapter
           (its own RouteLabel) picking up directly after the Train
@@ -758,21 +698,23 @@ export default function RomePage() {
               className='mt-5 text-center'
               items={[
                 "This trip was a little different from what I would normally plan. We were travelling with a parish group, so alongside Rome's famous landmarks, our itinerary included all four major papal basilicas.",
-                "Churches aren't usually high on my list when I'm exploring a city, so this was a different kind of itinerary for me — more on that below.",
-                'What I enjoyed much less were the crowds. I had visited Rome before, but this time the number of people around the main attractions was overwhelming, and travelling in a group of nine made it even more challenging.',
+                'What I enjoyed much less were the crowds. I had visited Rome before, but this time the number of people around the main attractions was overwhelming.',
               ]}
             />
           </Reveal>
         </div>
       </section>
 
-      {/* 10. ITINERARY MAP -- real point locations only, grouped by day
-          behind a day selector, deliberately with no route/path drawn
-          between them (see components/journey/RomeItineraryMap.tsx's own
-          header comment for why). Sits directly against the section
-          above with zero gap, same full-bleed convention as every other
-          map on the page. */}
-      <RomeItineraryMap days={ROME_ITINERARY_DAYS} />
+      {/* 10. ITINERARY MAP -- a single consolidated overview of every
+          sightseeing stop across all three days (the old Day 1/Day 2/Day 3
+          selector has been removed per the layout brief), real point
+          locations only, deliberately with no route/path drawn between
+          them (see components/journey/RomeItineraryMap.tsx's own header
+          comment for why, and for the real-street-map-background
+          limitation that was tested and found infeasible). Sits directly
+          against the section above with zero gap, same full-bleed
+          convention as every other map on the page. */}
+      <RomeItineraryMap points={ROME_OVERVIEW_POINTS} />
 
       {/* 11. DAY 1 -- ROME'S FAMOUS LANDMARKS (19 October). A top-level
           chapter; the three photos are spread naturally through the
@@ -780,9 +722,8 @@ export default function RomePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <RouteLabel>Day 1 · 19 October 2026</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
-              Rome&apos;s famous landmarks
+            <ChapterHeading italic>
+              Exploring Historic Rome
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
@@ -914,14 +855,13 @@ export default function RomePage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <RouteLabel>Day 2 · 20 October 2026</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
-              Inside the Vatican and Rome&apos;s basilicas
+            <ChapterHeading italic>
+              Inside the Vatican &amp; Rome&apos;s Basilicas
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Our second day began with a special visit inside the Vatican walls, organised for our group. We visited a building where priests live and a Vatican cemetery, which I found particularly fascinating.',
+                "Our second day began with a special visit inside the Vatican walls, organised for our group. We visited a building where priests live and a Vatican cemetery — it wasn't a religious pull for me, just a rare chance to see somewhere very few visitors get access to.",
                 "This wasn't a visit to the Vatican Museums or the Sistine Chapel — I had already seen both during my first trip to Rome.",
                 "Afterwards, we visited St. Peter's Basilica, followed by Santa Maria Maggiore and St. Paul Outside the Walls, completing all four major basilicas on our itinerary.",
               ]}
@@ -965,7 +905,7 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Visiting all four major papal basilicas was part of our group's itinerary, though churches aren't usually high on my list when I'm exploring a city.",
+                "Churches aren't usually high on my list when I'm exploring a city.",
                 "The architecture was undeniably impressive, but what struck me most was the extraordinary wealth on display — golden ceilings, marble, enormous sculptures and elaborate decorations everywhere. I'd felt something similar visiting the Vatican Museums on my previous trip; the sheer value of everything collected over centuries is staggering.",
                 "I couldn't help thinking about the contrast — the Church teaches simplicity and modesty, yet here we were, surrounded by unimaginable wealth, and it made me wonder how all of it had been accumulated over the centuries.",
                 <>
@@ -1010,9 +950,8 @@ export default function RomePage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <RouteLabel>Day 3 · 21 October 2026</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
-              The papal audience
+            <ChapterHeading italic>
+              An Audience with the Pope
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
@@ -1093,6 +1032,90 @@ export default function RomePage() {
         </Reveal>
       </section>
 
+      {/* 13B. THE JOURNEY HOME -- re-titled "A Stressful Return Journey",
+          relocated here (immediately after the Rome sightseeing and
+          before the closing reflection) per the layout-and-structure
+          brief's "move the return journey after the Rome visit" change.
+          The Outbound timeline + €92.80 cost card that used to live in
+          this same chapter now live in their own "At a Glance" block
+          right after "Arriving in Rome", so only the Return leg's own
+          timeline stays here -- no duplicated train info. The "Train
+          journey overview" heading is intentionally dropped down to just
+          the Eyebrow (no ChapterHeading) to match the lighter treatment
+          used for the Outbound block and fix the "oversized heading"
+          complaint. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='flex flex-col items-center'>
+            <Eyebrow>Homeward</Eyebrow>
+            <ChapterHeading italic className='mt-3'>
+              A stressful return journey
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Our return journey started with a little chaos at Roma Termini.',
+                'We were waiting for our platform number to appear, while our train was already showing a delay. Once the platform was announced, we hurried through the crowded ticket checks.',
+                'By the time we reached the platform, the train was pulling in. We were standing near carriage 11, but our reserved seats were in carriage 2!',
+                'So there we were, nine people running along the platform with suitcases. When we heard a whistle, we ran even faster, convinced the train was about to leave.',
+                'In the end, we boarded and still had five minutes to spare.',
+                'Luckily, the train recovered some of its delay, and our connection at Venezia Mestre was easy. The next train departed from the opposite track of the same platform.',
+                'Everything worked out, but it was definitely more stressful than it needed to be.',
+              ]}
+            />
+          </Reveal>
+
+          <Reveal delay={0.15} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
+            <InlineTip>
+              My tip: At busy railway stations, check your carriage
+              number in advance. Reaching the correct carriage can take
+              longer than expected, especially with luggage.
+            </InlineTip>
+          </Reveal>
+
+          {/* RETURN TRAIN TIMELINE -- the Outbound block and its cost
+              card were moved out of this chapter into their own "At a
+              Glance" section right after "Arriving in Rome"; only the
+              Return leg stays here. The scheduled 15:35 departure time
+              is shown with its own note calling out the actual ~15:50
+              departure and partial recovery, so scheduled and actual
+              stay clearly distinguished. */}
+          <Reveal delay={0.1} className='mt-16 md:mt-[76px] flex flex-col items-center'>
+            <Eyebrow>At a Glance</Eyebrow>
+          </Reveal>
+
+          <Reveal delay={0.15} className='mt-8 md:mt-10 max-w-sm mx-auto text-left'>
+            <span className='block text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Return · 21 October 2026
+            </span>
+            <div className='mt-4 space-y-0'>
+              <TimelineLeg
+                fromTime='15:35'
+                fromStation='Roma Termini'
+                toTime='19:23'
+                toStation='Venezia Mestre'
+                detail='Frecciarossa 9426 · Business Class · scheduled 3h 48m'
+                note='Actual departure ~15:50; time partly recovered en route'
+              />
+              <TimelineTransfer>Scheduled transfer 17 min · actual ~10 min</TimelineTransfer>
+              <TimelineLeg
+                fromTime='19:40'
+                fromStation='Venezia Mestre'
+                toTime='20:57'
+                toStation='Trieste Airport'
+                detail='Frecciarossa 9749 · Standard Class · 1h 17m'
+              />
+            </div>
+            <div className='mt-5 pt-4 border-t border-black/10 dark:border-white/10 text-center'>
+              <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+                Total (scheduled)
+              </span>
+              <TimeStamp size='sm'>5h 22m</TimeStamp>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* 14. FINAL THOUGHTS -- "Would I visit Rome again?" A short,
           personal closing reflection, not a conclusion/verdict on the
           whole site's usual scale: no new photo (the Pantheon photo
@@ -1111,7 +1134,7 @@ export default function RomePage() {
               items={[
                 "After visiting Rome twice, I can honestly say I have no desire to return — not because Rome isn't worth visiting, but quite the opposite.",
                 "There's so much history here that even if you're not particularly interested in art, architecture or culture, it's difficult not to be impressed. Just standing in front of the Pantheon, knowing it's been there for almost 2,000 years, is something extraordinary — and stepping inside to look up at that enormous dome makes it even more so.",
-                "But on this visit, the crowds were overwhelming. At times it felt like we were spending more energy trying to move through the streets and stay together than actually enjoying what we'd come to see, and travelling in a group of nine certainly made that more exhausting.",
+                "But on this visit, the crowds were overwhelming. At times it felt like we were spending more energy trying to move through the streets and stay together — nine of us, weaving through Rome at its busiest — than actually enjoying what we'd come to see.",
                 "I'm glad I've experienced Rome, and I'm glad I returned for a second visit. But for me, twice is enough.",
                 <>
                   Would I recommend Rome to someone who has never been?{' '}
@@ -1126,6 +1149,74 @@ export default function RomePage() {
           </Reveal>
         </div>
       </section>
+
+      {/* FOOTER -- the same shared footer as every other fully-built
+          destination page (Tenerife, Barcelona): logo, tagline, site nav,
+          email, social icons and copyright. Rome previously ended without
+          one, a dead end for anyone finishing the article; copied verbatim
+          (markup, classes and copy) rather than re-derived, so it stays in
+          sync with the other pages' footers. */}
+      <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
+        <Image
+          src={LOGO_SRC}
+          alt='Metkish logo'
+          width={240}
+          height={240}
+          className='w-[92px] md:w-[120px] h-auto -mt-8 md:-mt-9'
+        />
+        <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
+          travel · memories · places worth remembering
+        </p>
+        <nav className='flex items-center gap-2 sm:gap-6'>
+          <Link
+            href='/#travels'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            Travels
+          </Link>
+          <Link
+            href='/#guides'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            Behind the Trip
+          </Link>
+          <Link
+            href='/about'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            About
+          </Link>
+        </nav>
+        <a
+          href='mailto:info@metkish.com'
+          className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+        >
+          info@metkish.com ↗
+        </a>
+        <div className='mt-3 flex items-center gap-5'>
+          <a
+            href={INSTAGRAM_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Instagram'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <InstagramIcon className='h-5 w-5' />
+          </a>
+          <a
+            href={PINTEREST_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Pinterest'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <PinterestIcon className='h-5 w-5' />
+          </a>
+        </div>
+        <p className='mt-8 md:mt-9 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
+          © 2026 Metkish
+        </p>
+      </footer>
     </div>
   );
 }
