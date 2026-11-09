@@ -320,7 +320,8 @@ export default function RomePage() {
                     our departure station.
                   </strong>
                 </>,
-                'I had assumed we were leaving from Trieste city centre and started looking for parking there myself. Fortunately, I left the actual parking arrangements to someone else in our group — otherwise, I might have booked parking at the wrong location, or arrived without a suitable reservation.',
+                'I had assumed we were leaving from Trieste city centre and even started looking for parking there. Luckily, I left the actual parking arrangements to someone else in our group.',
+                'Otherwise, I might have booked parking in completely the wrong place — or we might have arrived without a parking reservation at all.',
               ]}
             />
           </Reveal>
@@ -351,7 +352,7 @@ export default function RomePage() {
             <Paragraphs
               items={[
                 "It wasn't until we arrived at Trieste Airport that I realised my mistake!",
-                'But it turned out to be a lucky one. The airport had convenient parking and a covered walkway directly connecting it to the railway station.',
+                'Fortunately, it turned out to be a convenient departure point, with parking and a covered walkway directly connecting the airport to the railway station.',
               ]}
             />
           </Reveal>
@@ -453,7 +454,7 @@ export default function RomePage() {
                 'Our first train from Trieste Airport to Venezia Mestre was a regional train. It took 1 hour and 24 minutes, and there were no assigned seats.',
                 'We had 29 minutes to change trains in Venezia Mestre, which was more than enough.',
                 'The second part of our journey was much more comfortable. We travelled to Rome on a Frecciarossa high-speed train in Business Class.',
-                'The seats were spacious, and complimentary drinks and snacks were served shortly after departure. We could choose a sandwich, biscuits, or both.',
+                'The seats were spacious, and complimentary drinks and snacks were served shortly after departure.',
               ]}
             />
           </Reveal>
@@ -489,7 +490,6 @@ export default function RomePage() {
             <Paragraphs
               items={[
                 'After 3 hours and 52 minutes, we arrived at Roma Termini at 11:30 PM, exactly on schedule.',
-                'On our previous visit to Rome, we flew into Fiumicino Airport and booked a return shuttle bus transfer through GetYourGuide. It was a convenient alternative to arranging private transport.',
               ]}
             />
           </Reveal>
@@ -785,7 +785,9 @@ export default function RomePage() {
           <Reveal delay={0.19} className='mt-6 text-center'>
             <Paragraphs
               items={[
-                "The Pantheon, however, was something I hadn't explored properly before, and I'm glad we went inside this time — looking up at the enormous dome and its open oculus was fascinating.",
+                "The Pantheon, however, was something I hadn't explored properly before, and I'm glad we went inside this time.",
+                "We bought our tickets directly at the entrance for €7 per adult. The queues for both tickets and entry were incredibly long, so I'd definitely recommend planning ahead.",
+                "Once inside, looking up at that enormous dome and its open oculus was one of those moments that reminded me just how extraordinary Rome's history really is.",
               ]}
             />
           </Reveal>
@@ -856,9 +858,9 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Our second day began with a special visit inside the Vatican walls, organised for our group. We visited a building where priests live and a Vatican cemetery — it wasn't a religious pull for me, just a rare chance to see somewhere very few visitors get access to.",
-                "This wasn't a visit to the Vatican Museums or the Sistine Chapel — I had already seen both during my first trip to Rome.",
-                "Afterwards, we visited St. Peter's Basilica, followed by Santa Maria Maggiore and St. Paul Outside the Walls, completing all four major basilicas on our itinerary.",
+                "Our second day began with a visit to the Vatican and St. Peter's Basilica.",
+                "We then continued to Santa Maria Maggiore and St. Paul Outside the Walls, completing our visit to Rome's four major papal basilicas.",
+                "I had already visited the Vatican Museums and the Sistine Chapel during my first trip to Rome, so they weren't part of this visit.",
               ]}
             />
           </Reveal>
