@@ -5,14 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
-import RomeItineraryMap from '@/components/journey/RomeItineraryMap';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
 import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 import {
   ROME_HOME_TO_TRIESTE_JOURNEY,
   ROME_TRIESTE_TO_ROME_TRAIN_JOURNEY,
-  ROME_OVERVIEW_POINTS,
 } from '@/lib/journeys/rome';
 
 const LOGO_SRC = '/metkish-logo.png';
@@ -322,7 +320,7 @@ export default function RomePage() {
                     our departure station.
                   </strong>
                 </>,
-                'I had assumed we were leaving from Trieste city centre and even spent time searching for parking there.',
+                'I had assumed we were leaving from Trieste city centre and started looking for parking there myself. Fortunately, I left the actual parking arrangements to someone else in our group — otherwise, I might have booked parking at the wrong location, or arrived without a suitable reservation.',
               ]}
             />
           </Reveal>
@@ -393,15 +391,14 @@ export default function RomePage() {
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.3} className='mt-8 md:mt-10 text-center'>
-            <Paragraphs
-              items={[
-                'What I initially thought was a booking mistake actually worked out in our favour.',
-              ]}
-            />
-          </Reveal>
-
-          <Reveal delay={0.35} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
+          {/* The redundant closing line that used to sit here ("What I
+              initially thought was a booking mistake actually worked out
+              in our favour.") has been removed per the user's request --
+              it was inaccurate (the mistake was the station assumption,
+              not the booking itself) and repeated what the story above
+              already explains. The InlineTip now follows the parking
+              link directly, keeping its original spacing. */}
+          <Reveal delay={0.3} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
             <InlineTip>
               My tip: Always double-check your exact departure station
               when booking train tickets. Trieste has several stations,
@@ -433,8 +430,16 @@ export default function RomePage() {
           the same "Getting to Rome" chapter the map above belongs to.
           Trimmed to five short paragraphs; the full timetable isn't
           repeated here since it's already in the Train Journey Overview
-          below. Closes its own section (CHAPTER_GAP_END) since "Arriving
-          in Rome" follows directly after. */}
+          below. Per the user's reordering request, this section now also
+          carries the outbound timeline and the round-trip train cost
+          card directly underneath the story -- all outbound train
+          information lives in one place, in natural reading order
+          (story -> timeline -> cost card), before "Arriving in Rome"
+          starts the next chapter. The standalone "At a Glance" Eyebrow
+          that used to sit above the timeline has been removed per that
+          same request; the timeline now follows the story directly.
+          Closes its own section (CHAPTER_GAP_END) since "Arriving in
+          Rome" follows directly after. */}
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
@@ -488,6 +493,69 @@ export default function RomePage() {
               ]}
             />
           </Reveal>
+
+          {/* OUTBOUND TRAIN TIMELINE -- moved here from its own standalone
+              section (which sat after "Arriving in Rome") so all outbound
+              train information reads together, right after the story it
+              belongs to. No heading above it (the removed "At a Glance"
+              Eyebrow) -- it reads as practical reference information
+              continuing directly from the story above, the same way the
+              Private Transfer cost card continues directly from its own
+              story in the next section. */}
+          <Reveal delay={0.2} className='mt-10 md:mt-12 max-w-sm mx-auto text-left'>
+            <span className='block text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Outbound · 18 October 2026
+            </span>
+            <div className='mt-4 space-y-0'>
+              <TimelineLeg
+                fromTime='17:45'
+                fromStation='Trieste Airport'
+                toTime='19:09'
+                toStation='Venezia Mestre'
+                detail='Regionale Veloce 3564 · Second Class · 1h 24m'
+              />
+              <TimelineTransfer>Transfer · 29 min</TimelineTransfer>
+              <TimelineLeg
+                fromTime='19:38'
+                fromStation='Venezia Mestre'
+                toTime='23:30'
+                toStation='Roma Termini'
+                detail='Frecciarossa 9437 · Business Class · 3h 52m'
+              />
+            </div>
+            <div className='mt-5 pt-4 border-t border-black/10 dark:border-white/10 text-center'>
+              <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+                Total
+              </span>
+              <TimeStamp size='sm'>5h 45m</TimeStamp>
+            </div>
+          </Reveal>
+
+          {/* TRAIN COSTS -- directly below the outbound timeline, per the
+              user's request. Covers both legs of the round trip, so it
+              sits with the outbound timeline rather than being
+              duplicated; the note underneath says so explicitly. */}
+          <Reveal delay={0.25} className='mt-12 md:mt-14 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Train Tickets · Round Trip
+            </span>
+            <TimeStamp size='md'>€92.80</TimeStamp>
+            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
+              Trieste Airport → Venezia Mestre → Roma Termini → Venezia
+              Mestre → Trieste Airport
+            </span>
+            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
+              Average Per Person
+            </span>
+          </Reveal>
+          <Reveal delay={0.3} className='mt-4 max-w-sm mx-auto text-center'>
+            <p className='text-xs italic font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50 leading-relaxed'>
+              Average per-person cost based on our own booking, covering
+              both the outbound and return journeys, including Business
+              Class on the longer legs and a family fare — not a fixed or
+              universal Trenitalia price.
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -535,77 +603,6 @@ export default function RomePage() {
             <span className='mt-1 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
               Private minibus · Approximately 20 minutes
             </span>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* OUTBOUND TRAIN TIMELINE + COST -- split out of the old combined
-          "Train journey overview" (which showed both legs at once), so the
-          outbound numbers live with the rest of the outbound story instead
-          of being paired with the return journey, which now has its own
-          chapter later on the page. Just an Eyebrow, not a repeated big
-          ChapterHeading -- this is practical reference information, not a
-          new narrative beat, so it gets the same lightweight treatment as
-          a cost card rather than its own oversized heading. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal className='flex flex-col items-center'>
-            <Eyebrow>At a Glance</Eyebrow>
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-sm mx-auto text-left'>
-            <span className='block text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Outbound · 18 October 2026
-            </span>
-            <div className='mt-4 space-y-0'>
-              <TimelineLeg
-                fromTime='17:45'
-                fromStation='Trieste Airport'
-                toTime='19:09'
-                toStation='Venezia Mestre'
-                detail='Regionale Veloce 3564 · Second Class · 1h 24m'
-              />
-              <TimelineTransfer>Transfer · 29 min</TimelineTransfer>
-              <TimelineLeg
-                fromTime='19:38'
-                fromStation='Venezia Mestre'
-                toTime='23:30'
-                toStation='Roma Termini'
-                detail='Frecciarossa 9437 · Business Class · 3h 52m'
-              />
-            </div>
-            <div className='mt-5 pt-4 border-t border-black/10 dark:border-white/10 text-center'>
-              <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-                Total
-              </span>
-              <TimeStamp size='sm'>5h 45m</TimeStamp>
-            </div>
-          </Reveal>
-
-          {/* TRAIN COSTS -- covers both legs of the round trip, so it sits
-              with the outbound timeline rather than being duplicated; the
-              note underneath now says so explicitly instead of leaving it
-              to the "Round Trip" label alone. */}
-          <Reveal delay={0.15} className='mt-12 md:mt-14 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
-            <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Train Tickets · Round Trip
-            </span>
-            <TimeStamp size='md'>€92.80</TimeStamp>
-            <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
-              Trieste Airport → Venezia Mestre → Roma Termini → Venezia
-              Mestre → Trieste Airport
-            </span>
-            <span className='mt-4 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
-              Average Per Person
-            </span>
-          </Reveal>
-          <Reveal delay={0.2} className='mt-4 max-w-sm mx-auto text-center'>
-            <p className='text-xs italic font-[family-name:var(--font-poppins)] text-black/50 dark:text-white/50 leading-relaxed'>
-              Average per-person cost based on our own booking, covering
-              both the outbound and return journeys, including Business
-              Class on the longer legs and a family fare — not a fixed or
-              universal Trenitalia price.
-            </p>
           </Reveal>
         </div>
       </section>
@@ -705,21 +702,19 @@ export default function RomePage() {
         </div>
       </section>
 
-      {/* 10. ITINERARY MAP -- a single consolidated overview of every
-          sightseeing stop across all three days (the old Day 1/Day 2/Day 3
-          selector has been removed per the layout brief), real point
-          locations only, deliberately with no route/path drawn between
-          them (see components/journey/RomeItineraryMap.tsx's own header
-          comment for why, and for the real-street-map-background
-          limitation that was tested and found infeasible). Sits directly
-          against the section above with zero gap, same full-bleed
-          convention as every other map on the page. */}
-      <RomeItineraryMap points={ROME_OVERVIEW_POINTS} />
-
-      {/* 11. DAY 1 -- ROME'S FAMOUS LANDMARKS (19 October). A top-level
+      {/* 10. DAY 1 -- ROME'S FAMOUS LANDMARKS (19 October). A top-level
           chapter; the three photos are spread naturally through the
-          story rather than grouped at the end, per the brief. */}
-      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+          story rather than grouped at the end, per the brief. The
+          sightseeing overview map that used to sit here (a single-city
+          marker-only map with no real street/river background available,
+          see the removed RomeItineraryMap.tsx) was removed at the
+          user's request -- it read as unfinished, mostly empty beige
+          space with pink dots and labels and no real geographic
+          background, and the page doesn't need it. This section now
+          follows "Three days exploring Rome" directly, so it opens with
+          the ordinary text->new-chapter spacing (CHAPTER_GAP_START)
+          instead of the map->content pause it used before. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <ChapterHeading italic>
@@ -1037,13 +1032,13 @@ export default function RomePage() {
           before the closing reflection) per the layout-and-structure
           brief's "move the return journey after the Rome visit" change.
           The Outbound timeline + €92.80 cost card that used to live in
-          this same chapter now live in their own "At a Glance" block
-          right after "Arriving in Rome", so only the Return leg's own
-          timeline stays here -- no duplicated train info. The "Train
-          journey overview" heading is intentionally dropped down to just
-          the Eyebrow (no ChapterHeading) to match the lighter treatment
-          used for the Outbound block and fix the "oversized heading"
-          complaint. */}
+          this same chapter now live inside "Travelling to Rome" (right
+          after that story, before "Arriving in Rome"), so only the
+          Return leg's own timeline stays here -- no duplicated train
+          info. The "Train journey overview" heading is intentionally
+          dropped down to just the Eyebrow (no ChapterHeading) to match
+          the lighter, heading-free treatment now used for the Outbound
+          block and fix the "oversized heading" complaint. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>

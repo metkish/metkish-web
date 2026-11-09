@@ -19,9 +19,9 @@ export interface JourneyPoint {
   coords: [number, number];
   showMapLabel?: boolean;
   /** Which side of the marker dot the text label grows from. Every point
-   * on every existing JourneyMapScene map leaves this unset, which keeps
-   * the original, only-ever behaviour: text sits to the right of the dot
-   * (flipping left only when close to a narrow frame's right edge — see
+   * on every existing map leaves this unset, which keeps the original,
+   * only-ever behaviour: text sits to the right of the dot (flipping left
+   * only when close to a narrow frame's right edge — see
    * JourneyMapScene's LABEL_FLIP_MARGIN_PX). Set to 'above' only for a
    * point whose incoming route approaches from the side at a shallow
    * angle, so the default rightward text would sit on top of the route
@@ -29,16 +29,8 @@ export interface JourneyPoint {
    * lib/journeys/tenerife.ts for the worked case (its final approach runs
    * almost due east into the marker, so a right-side label overlapped the
    * line on every mobile width, 320-414px, while sitting clear on desktop's
-   * wider frame). 'left' and 'below' are additionally understood by the
-   * static, route-free RomeItineraryMap renderer only (a dense cluster of
-   * real landmarks with no route line to dodge, where two directions
-   * weren't enough to keep every label clear of its neighbours) — see
-   * ROME_OVERVIEW_POINTS in lib/journeys/rome.ts for worked cases.
-   * JourneyMapScene itself only ever branches on 'above' vs. not, so a
-   * 'left'/'below' point there would fall back to the default right-side
-   * (flip-on-crowding) behaviour rather than erroring. The dot's own
-   * position never changes with any of these. */
-  labelPlacement?: 'right' | 'left' | 'above' | 'below';
+   * wider frame). The dot's own position never changes either way. */
+  labelPlacement?: 'right' | 'above';
   /** Marks this point as a secondary/minor waypoint (e.g. a detour stop
    * between two main road-trip bases) rather than a major stop. Unset on
    * every existing point, which keeps the original default marker/label
