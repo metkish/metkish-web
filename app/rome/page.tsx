@@ -967,7 +967,7 @@ export default function RomePage() {
               className='mt-5 text-center'
               items={[
                 "Our final morning in Rome started early. We arrived at the Vatican before 8 AM, but the crowds were already enormous. Even with our tickets, we still had to join the long queue to enter St. Peter's Square.",
-                'With rain in the forecast, we had bought rain ponchos at a market the day before, and we definitely needed them — several short showers passed through while we waited. Luckily, the rain stopped before the Pope arrived.',
+                "With rain in the forecast, we had bought rain ponchos at a market the day before. They were also being sold to people waiting in the queue, but we were glad we'd come prepared. Several short showers passed through while we waited, although luckily, the rain stopped before the Pope arrived.",
                 'The audience itself lasted around half an hour and was a memorable way to end our visit to Rome. Afterwards, we had lunch, collected our luggage and headed to Roma Termini for our journey home.',
               ]}
             />
