@@ -171,6 +171,23 @@ const TRANSFER_WHEELS: [number, number][] = [
   [16.5, 16.2],
 ];
 
+// TRAIN_BODY_PATH — a real train icon (added for the Rome page's
+// Trieste Airport -> Venezia Mestre -> Roma Termini leg), distinct from
+// both CAR_BODY_PATH (a passenger car) and the TRANSFER_PATHS/WHEELS
+// shuttle-van icon 'train' mode previously borrowed. Same top-down,
+// solid-silhouette language and the same nose-first-along-+x authoring
+// convention as PLANE_PATH/CAR_BODY_PATH (rotate(vehicleAngle) then
+// always faces the real direction of travel). A long, low, gently
+// rounded body with a blunt (not pointed) nose on the right, reading as
+// a modern high-speed train rather than a bus/car — visibly longer and
+// flatter than the car body, with no wheel hints (a top-down train
+// doesn't show wheels). TRAIN_WINDOWS is a single thin cutout strip
+// running most of the body's length, same cutout-via-mask technique as
+// CAR_ROOF, standing in for the carriage's window band.
+const TRAIN_BODY_PATH =
+  'M 18.4,10.2 Q 20.3,10.5 20.3,12 Q 20.3,13.5 18.4,13.8 L 4.6,13.8 Q 3.6,13.7 3.6,12 Q 3.6,10.3 4.6,10.2 Z';
+const TRAIN_WINDOWS = { x: 5.2, y: 10.6, width: 13.6, height: 1.3, rx: 0.5 };
+
 export interface JourneyMapSceneProps {
   journey: Journey;
   className?: string;
@@ -204,6 +221,7 @@ export default function JourneyMapScene({
   // another's — an id collision would leave a later map's car referencing
   // the wrong (or a since-unmounted) mask.
   const carMaskId = useId();
+  const trainMaskId = useId();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -710,7 +728,22 @@ export default function JourneyMapScene({
           <g ref={vehicleGroupRef}>
             {vehicleMode === 'plane' ? (
               <path d={PLANE_PATH} fill={VEHICLE_STROKE} stroke='none' />
-            ) : vehicleMode === 'transfer' || vehicleMode === 'train' ? (
+            ) : vehicleMode === 'train' ? (
+              <>
+                <mask id={trainMaskId} maskUnits='userSpaceOnUse' x={-4} y={-4} width={32} height={32}>
+                  <path d={TRAIN_BODY_PATH} fill='white' />
+                  <rect
+                    x={TRAIN_WINDOWS.x}
+                    y={TRAIN_WINDOWS.y}
+                    width={TRAIN_WINDOWS.width}
+                    height={TRAIN_WINDOWS.height}
+                    rx={TRAIN_WINDOWS.rx}
+                    fill='black'
+                  />
+                </mask>
+                <path d={TRAIN_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' mask={`url(#${trainMaskId})`} />
+              </>
+            ) : vehicleMode === 'transfer' ? (
               <>
                 {TRANSFER_PATHS.map((d, i) => (
                   <path

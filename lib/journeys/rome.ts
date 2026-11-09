@@ -168,3 +168,134 @@ export const ROME_HOME_TO_TRIESTE_JOURNEY: Journey = {
     },
   ],
 };
+
+// ---------------------------------------------------------------------
+// Trieste Airport -> Venezia Mestre -> Roma Termini, by train (the real
+// 18 October 2026 outbound trip: a Regionale Veloce to Venezia Mestre,
+// then a Frecciarossa onward to Roma Termini). Reuses the same
+// TRIESTE_AIRPORT point defined above -- one canonical coordinate per
+// location, per the project's route-geometry rule -- rather than
+// redefining it.
+//
+// This is a RAIL route, not a driving route: mode 'train' throughout, and
+// the polyline below follows the real Venezia-Trieste railway and the
+// Milano-Napoli high-speed line's Padova/Bologna/Firenze/Roma branch,
+// not a motorway and not a straight line between stations. There is no
+// OSRM-equivalent public turn-by-turn routing API for rail, so this was
+// built the way an editorial atlas builds a rail line: real, individually
+// verified station coordinates for every major anchor city the train
+// actually calls at or passes through, connected through the real
+// intermediate towns the line is known to run via, rather than a
+// generic curve from origin to destination.
+//
+// Anchor coordinates verified against each station's own Wikipedia
+// infobox (decimal-converted from the DMS value given there):
+//   Venezia Mestre   45°28'57"N 12°13'53"E -> 45.48250, 12.23139
+//   Bologna Centrale 44°30'21"N 11°20'30"E -> 44.50583, 11.34167
+//   Firenze S.M.N.   43°46'34"N 11°14'53"E -> 43.77611, 11.24806
+//   Arezzo           43°27'40"N 11°52'32"E -> 43.46111, 11.87556
+//   Orvieto          42°43'26"N 12°07'35"E -> 42.72392, 12.12651
+//   Roma Termini     41°54'03"N 12°30'07"E -> 41.90083, 12.50194
+// (Padova and the smaller Friuli/Veneto towns along the Trieste-Venezia
+// leg are well-documented town centres, not individually re-verified to
+// the same infobox precision -- appropriate for this map's minimalist,
+// small-multiple scale, same spirit as the "simplify only insignificant
+// detail" rule for driving routes.)
+const VENEZIA_MESTRE: JourneyPoint = {
+  id: 'venezia-mestre',
+  name: 'Venezia Mestre',
+  coords: [12.23139, 45.4825],
+  showMapLabel: true,
+};
+
+const ROMA_TERMINI: JourneyPoint = {
+  id: 'roma-termini',
+  name: 'Roma Termini',
+  coords: [12.50194, 41.90083],
+  showMapLabel: true,
+};
+
+// Real anchor coordinates along the AV corridor between Mestre and Roma
+// that are not their own labeled JourneyPoint on this map (only Trieste
+// Airport, Venezia Mestre and Roma Termini are labeled, per the brief) --
+// kept as named constants purely so the route array below reads by city
+// name rather than bare coordinate pairs. Same Wikipedia-infobox source
+// as the comment above this journey.
+const BOLOGNA_CENTRALE: [number, number] = [11.34167, 44.50583];
+const FIRENZE_SMN: [number, number] = [11.24806, 43.77611];
+const AREZZO: [number, number] = [11.87556, 43.46111];
+const ORVIETO: [number, number] = [12.12651, 42.72392];
+
+// Trieste Airport -> Venezia Mestre: the real Venezia-Trieste main line
+// west from the airport's own station, via Cervignano del Friuli, San
+// Giorgio di Nogaro, Latisana, Portogruaro, San Donà di Piave and Quarto
+// d'Altino -- the Friuli/Veneto plain the line actually crosses, never
+// the coast itself (this leg stays well inland of the Gulf of Trieste
+// and the Adriatic throughout, unlike the HOME_TO_TRIESTE driving leg's
+// own southern dip near Sežana, which is a different corridor).
+const TRIESTE_AIRPORT_TO_MESTRE_ROUTE: [number, number][] = [
+  TRIESTE_AIRPORT.coords,
+  [13.333, 45.867], // Cervignano del Friuli
+  [13.192, 45.798], // San Giorgio di Nogaro
+  [12.978, 45.772], // Latisana
+  [12.838, 45.783], // Portogruaro
+  [12.567, 45.633], // San Donà di Piave
+  [12.372, 45.558], // Quarto d'Altino
+  VENEZIA_MESTRE.coords,
+];
+
+// Venezia Mestre -> Roma Termini: the Milano-Napoli Alta Velocità line's
+// Venezia branch, joining the main AV spine at Bologna and continuing via
+// Firenze, Arezzo and Orvieto to Roma -- the same real corridor Frecciarossa
+// 9437 runs on. Padova, then two bends roughly tracking the AV alignment's
+// path south of the historic Ferrara line, carry the curve from Mestre
+// down to Bologna; from Firenze, the route bows east through the real
+// Arno/Chiana valley corridor the line follows via Arezzo and Orvieto
+// before turning into Roma -- confirmed against a straight Firenze->Roma
+// line, the real route sits roughly 30-40km further east at Arezzo's
+// latitude, which is exactly the real valley the Direttissima follows,
+// not a simplification artefact.
+const MESTRE_TO_ROMA_ROUTE: [number, number][] = [
+  VENEZIA_MESTRE.coords,
+  [11.8807, 45.4149], // Padova
+  [11.7, 45.15],
+  [11.45, 44.75],
+  BOLOGNA_CENTRALE,
+  [11.25, 44.05], // Apennine crossing (AV tunnel corridor)
+  FIRENZE_SMN,
+  [11.55, 43.56], // Valdarno
+  AREZZO,
+  [12.02, 43.05], // toward Chiusi
+  ORVIETO,
+  [12.32, 42.25], // Paglia valley, approaching Roma
+  ROMA_TERMINI.coords,
+];
+
+export const ROME_TRIESTE_TO_ROME_TRAIN_JOURNEY: Journey = {
+  id: 'rome-trieste-to-rome-train',
+  initialCamera: { center: [12.3, 43.85], spanDeg: 11 },
+  legs: [
+    {
+      id: 'trieste-airport-to-mestre',
+      mode: 'train',
+      from: TRIESTE_AIRPORT,
+      to: VENEZIA_MESTRE,
+      camera: { center: [12.3, 43.85], spanDeg: 11 },
+      curve: 0.08,
+      route: TRIESTE_AIRPORT_TO_MESTRE_ROUTE,
+      weight: 1.5,
+      transition: 'ease',
+    },
+    {
+      id: 'mestre-to-roma',
+      mode: 'train',
+      from: VENEZIA_MESTRE,
+      to: ROMA_TERMINI,
+      camera: { center: [12.3, 43.85], spanDeg: 11 },
+      curve: 0.08,
+      route: MESTRE_TO_ROMA_ROUTE,
+      weight: 4.5,
+      transition: 'ease',
+    },
+  ],
+};
