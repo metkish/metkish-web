@@ -382,21 +382,24 @@ export default function RomePage() {
             bg-[#f1ebdc] panel (this page already has one of those coming
             up for the ticket cost, and a second so soon after would start
             reading as a dashboard). No price given, since we don't have
-            the exact amount. */}
+            the exact amount. The booking link sits on its own centred
+            line below, styled in the site's pink accent rather than a
+            default underlined black hyperlink, so it reads as a quiet
+            editorial detail rather than a form control. */}
         <Reveal delay={0.28} className='mt-6 max-w-sm mx-auto text-center'>
           <p className='text-sm font-[family-name:var(--font-poppins)] text-black/65 dark:text-white/65 leading-relaxed'>
-            We parked our van at Trieste Airport before continuing to Rome
-            by train — parking was easy, and the station is reached
-            directly via the walkway above.{' '}
-            <a
-              href='https://park.triesteairport.it/#/booking'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='underline underline-offset-4 text-black dark:text-white hover:text-black/70 dark:hover:text-white/70'
-            >
-              Book parking at Trieste Airport
-            </a>
+            We parked our van at Trieste Airport, where parking was easy
+            and the railway station was just a short walk away via the
+            covered walkway.
           </p>
+          <a
+            href='https://park.triesteairport.it/#/booking'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='mt-3 inline-block whitespace-nowrap text-sm font-[family-name:var(--font-poppins)] text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
+          >
+            Book parking at Trieste Airport ↗
+          </a>
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
