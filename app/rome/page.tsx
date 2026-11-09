@@ -512,14 +512,47 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'The return journey was a little more exciting.',
-                "Our train from Rome was scheduled to leave at 3:35 PM, but we didn't depart until around 3:50 PM. With only 17 minutes originally scheduled for our connection in Venice Mestre, we started to worry about missing the next train.",
-                'Luckily, the Frecciarossa managed to make up some of the lost time along the way.',
-                "And when we arrived in Venice, things couldn't have been easier. Our connecting train was leaving from the same platform, just the opposite track. No underground passages, no rushing through the station.",
-                'We waited a little over ten minutes and boarded our final train to Trieste Airport.',
+                'Our return journey from Rome was probably the most stressful part of travelling by train.',
+                'We were waiting in front of the departure board at Roma Termini for our platform number to appear. Our train was scheduled to depart at 3:35 PM, and the board initially showed a five-minute delay, which eventually became fifteen minutes.',
+                "As soon as the platform number appeared, we headed straight there. But first, we had to get through the ticket checks — with nine people, suitcases, and a crowd of passengers trying to get through, it wasn't exactly quick.",
+                "By the time we reached the platform, our train was already pulling in. And that's when we realised we had another problem.",
+              ]}
+            />
+          </Reveal>
+
+          {/* Dramatic pivot line -- same treatment as "Our departure
+              station." in the booking-mistake section: a short, punchy
+              Playfair-italic beat that creates the turn before the next
+              paragraph explains it. */}
+          <Reveal delay={0.05} className='mt-6'>
+            <p className='text-lg md:text-xl italic font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
+              Carriage 11. Our seats were in carriage 2.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.1} className='mt-6 max-w-2xl mx-auto'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'Almost the entire length of the train was between us and our seats.',
+                'So we started running, dragging our suitcases along the platform. Then we heard a whistle — thinking the train was about to leave, we ran even faster. Everyone was trying to keep up, manage their luggage, and make sure nobody got left behind.',
+                'Eventually, we reached our carriage, boarded, and settled into our seats. And then we waited — for another five minutes. After all that rushing, we actually had time to spare.',
+                'Looking back, I think the most frustrating part was the lack of clear information. We had been waiting for the platform announcement, but once it appeared, everything suddenly felt rushed. With a large group, crowded ticket checks, and eleven carriages to navigate, it was genuinely stressful.',
+                'Fortunately, the rest of the journey went much more smoothly. The train recovered some of its delay on the way to Venice Mestre, and although we had worried about our short connection, our next train was waiting on the opposite track of the same platform.',
+                "We didn't even have to use an underpass. After waiting a little over ten minutes, we boarded our final train to Trieste Airport.",
                 'In the end, everything worked out perfectly.',
               ]}
             />
+          </Reveal>
+
+          <Reveal delay={0.15} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+            <InlineTip>
+              My tip: At large stations like Roma Termini, check your
+              carriage number in advance and pay attention to the train
+              composition displayed at the station. If you&apos;re
+              travelling with luggage or in a group, reaching your
+              carriage can take longer than you expect.
+            </InlineTip>
           </Reveal>
 
           {/* 7. TRAIN JOURNEY OVERVIEW -- a compact timeline, reusing the
