@@ -89,15 +89,21 @@ function ChapterHeading({
   );
 }
 
+// items accepts ReactNode (not just string) so a paragraph can carry one
+// inline <strong> emphasis (e.g. "our departure station.") without a
+// separate oversized/italic standalone-line treatment -- per the
+// editorial-cleanup brief's "no oversized bold or italic statements,
+// no decorative standalone sentences" rule, emphasis now lives inline,
+// at the same size and weight as the surrounding copy.
 function Paragraphs({
   items,
   className = '',
 }: {
-  items: string[];
+  items: ReactNode[];
   className?: string;
 }) {
   return (
-    <div className={`space-y-5 ${className}`}>
+    <div className={`space-y-4 ${className}`}>
       {items.map((text, i) => (
         <p
           key={i}
@@ -283,13 +289,16 @@ export default function RomePage() {
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
 
-      {/* 3. GETTING TO ROME -- the booking-mistake story. Real trip
-          content: travelling as a group of nine, the Trenitalia booking
-          itself, and the departure-station mix-up, exactly as told --
-          nothing invented or generalised. Same map->content pause as
-          every other destination page, and a CHAPTER_GAP_END close since
-          the train route map follows directly after this section, not
-          more text. */}
+      {/* 3. GETTING TO ROME -- the booking-mistake story, trimmed during
+          the editorial-cleanup pass: fewer, longer paragraphs, the
+          "Our departure station." standalone pivot line folded into an
+          inline <strong> instead (no oversized/italic standalone
+          statements), and the parking paragraph beneath the walkway
+          photo removed since the story already covers that ground --
+          only the pink booking link stays. Same map->content pause as
+          every other destination page, and a CHAPTER_GAP_END close
+          since the train route map follows directly after this
+          section. */}
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -300,30 +309,16 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "This trip was a little different from our usual travels. We were travelling in a group of nine, and for once, I wasn't the main organiser. Someone else was responsible for the itinerary, while I helped with some of the arrangements.",
-                "And perhaps that's why I made what I consider a complete beginner's mistake.",
-                'I had never booked train tickets in Italy before. We booked through Trenitalia, travelling from Trieste Airport to Venice Mestre and then continuing to Rome, with the same route on our return journey.',
-                "The booking process was already a little complicated. We couldn't book all nine passengers together, so we used two computers at the same time — one booking five tickets and the other booking four.",
-                'For most of the trains, we also had to select our seats. We had booked Business Class between Venice and Rome, and we wanted to make sure all nine of us could sit together. So we carefully coordinated our bookings, choosing seats next to each other.',
-                'We paid so much attention to the seating arrangements that I completely overlooked one rather important detail.',
-              ]}
-            />
-          </Reveal>
-
-          {/* The dramatic pivot -- same Playfair-italic editorial
-              emphasis used for the hero's own short sentiment line, just
-              a smaller size, standing alone as its own beat before the
-              story continues. */}
-          <Reveal delay={0.05} className='mt-6'>
-            <p className='text-lg md:text-xl italic font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
-              Our departure station.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-6 text-center'>
-            <Paragraphs
-              items={[
-                'I had simply assumed we were leaving from Trieste city centre.',
+                "This trip was a little different from our usual travels. We were travelling in a group of nine, and for once, I wasn't the main organiser.",
+                "I helped book our train tickets through Trenitalia. Since we couldn't book all nine passengers together, we used two computers to coordinate the bookings and make sure we had seats close to each other.",
+                <>
+                  I was so focused on the seating arrangements that I
+                  overlooked one rather important detail:{' '}
+                  <strong className='font-semibold text-black dark:text-white'>
+                    our departure station.
+                  </strong>
+                </>,
+                'I had assumed we were leaving from Trieste city centre and even spent time searching for parking there.',
               ]}
             />
           </Reveal>
@@ -350,14 +345,11 @@ export default function RomePage() {
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.2} className='mt-10 md:mt-12 text-center'>
+          <Reveal delay={0.2} className='mt-8 md:mt-10 text-center'>
             <Paragraphs
               items={[
-                'I even spent time looking for parking for our van near the city station, without much success. Eventually, I left that task to the person organising the trip.',
-                'He found parking at the airport almost immediately.',
-                "It wasn't until we actually arrived and parked at Trieste Airport that I realised my mistake. I had been searching for parking in a completely different part of Trieste!",
-                'And the funny thing is, Trieste Airport turned out to be a much better departure point than the city centre.',
-                'There was a large parking area, and a huge pedestrian bridge connecting the airport area to the railway station. Everything was well organised and convenient for travellers.',
+                "It wasn't until we arrived at Trieste Airport that I realised my mistake!",
+                'But it turned out to be a lucky one. The airport had convenient parking and a covered walkway directly connecting it to the railway station.',
               ]}
             />
           </Reveal>
@@ -382,37 +374,19 @@ export default function RomePage() {
           </p>
         </Reveal>
 
-        {/* Parking note -- right beside the walkway photo it's about, but
-            typographically it belongs to the main article, not to the
-            photo's caption, so it reuses the Paragraphs component (same
-            text-base/lg, font-light, text-black/80, leading-relaxed,
-            max-w-2xl centred column) exactly as the "What I initially
-            thought..." paragraph below does. No bg-[#f1ebdc] panel here
-            (this page already has one of those coming up for the ticket
-            cost, and a second so soon after would start reading as a
-            dashboard), and no price, since we don't have the exact
-            amount. The booking link matches the paragraph's own size and
-            weight, just in the site's pink accent instead of body black,
-            with no underline at rest and a subtle one on hover, so it
-            reads as a quiet editorial detail rather than a form control
-            or a caption. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.28} className='mt-10 md:mt-12 text-center'>
-            <Paragraphs
-              items={[
-                'We parked our van at Trieste Airport, where parking was easy and the railway station was just a short walk away via the covered walkway.',
-              ]}
-            />
-            <a
-              href='https://park.triesteairport.it/#/booking'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='mt-5 inline-block text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
-            >
-              Book parking at Trieste Airport ↗
-            </a>
-          </Reveal>
-        </div>
+        {/* The parking paragraph that used to sit here is gone -- the
+            story above already covers it -- but the booking link itself
+            stays, right under the photo it refers to. */}
+        <Reveal delay={0.28} className='mt-5 text-center'>
+          <a
+            href='https://park.triesteairport.it/#/booking'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-block text-base md:text-lg font-[family-name:var(--font-poppins)] font-light text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
+          >
+            Book parking at Trieste Airport ↗
+          </a>
+        </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.3} className='mt-8 md:mt-10 text-center'>
@@ -423,13 +397,11 @@ export default function RomePage() {
             />
           </Reveal>
 
-          <Reveal delay={0.35} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <Reveal delay={0.35} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
             <InlineTip>
-              My tip: Always check the exact departure station when
-              booking train tickets. Trieste has several stations, and
-              they are not interchangeable. If you&apos;re arriving by
-              car, Trieste Airport is worth considering — we found the
-              parking and railway access very convenient.
+              My tip: Always double-check your exact departure station
+              when booking train tickets. Trieste has several stations,
+              and they are not interchangeable.
             </InlineTip>
           </Reveal>
         </div>
@@ -455,9 +427,10 @@ export default function RomePage() {
       {/* 5. TRAVELLING TO ROME -- the outbound train journey itself,
           an in-chapter beat (Eyebrow, not a new RouteLabel) continuing
           the same "Getting to Rome" chapter the map above belongs to.
-          Now closes its own section (CHAPTER_GAP_END) since "Arriving
-          in Rome" follows directly after, not more of this same
-          thread. */}
+          Trimmed to five short paragraphs; the full timetable isn't
+          repeated here since it's already in the Train Journey Overview
+          below. Closes its own section (CHAPTER_GAP_END) since "Arriving
+          in Rome" follows directly after. */}
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
@@ -468,12 +441,10 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Our first train from Trieste Airport to Venezia Mestre was a regional train. It was fairly slow, and there were no assigned seats, so we simply sat wherever we found space.',
-                'The journey took 1 hour and 24 minutes.',
-                'In Venice Mestre, we had 29 minutes to change trains, which was more than enough. Everything ran on schedule, with no delays.',
-                'The second part of our journey was a completely different experience.',
-                'We travelled to Rome on a Frecciarossa high-speed train in Business Class, and I really enjoyed it.',
-                'The seats were comfortable, the train was fast, and shortly after departure, a member of staff came through with a trolley offering drinks and snacks. We could choose something to drink, along with a sandwich, biscuits, or even both.',
+                'Our first train from Trieste Airport to Venezia Mestre was a regional train. It took 1 hour and 24 minutes, and there were no assigned seats.',
+                'We had 29 minutes to change trains in Venice Mestre, which was more than enough.',
+                'The second part of our journey was much more comfortable. We travelled to Rome on a Frecciarossa high-speed train in Business Class.',
+                'The seats were spacious, and complimentary drinks and snacks were served shortly after departure. We could choose a sandwich, biscuits, or both.',
               ]}
             />
           </Reveal>
@@ -505,11 +476,10 @@ export default function RomePage() {
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.15} className='mt-10 md:mt-12 text-center'>
+          <Reveal delay={0.15} className='mt-8 md:mt-10 text-center'>
             <Paragraphs
               items={[
-                'The journey from Venice to Rome took just 3 hours and 52 minutes.',
-                'We arrived at Roma Termini at 11:30 PM, exactly as scheduled.',
+                'After 3 hours and 52 minutes, we arrived at Roma Termini at 11:30 PM, exactly on schedule.',
               ]}
             />
           </Reveal>
@@ -518,61 +488,34 @@ export default function RomePage() {
 
       {/* 6. ARRIVING IN ROME -- a top-level chapter (its own RouteLabel):
           the transfer from Roma Termini to where we actually stayed.
-          Placed here -- between the outbound journey and the public-
-          transport chapter -- per the requested chronological order:
-          arrival, late-night transfer, public transport, return journey.
-          Text -> new-chapter transition on both sides (no map adjacent),
-          so it gets the full CHAPTER_GAP_START/CHAPTER_GAP_END pair. No
-          transfer-company name this time, and no mention of the
-          accommodation itself -- a group stay, not a reviewed hotel. No
-          photo, since none was supplied for this part of the trip. */}
+          Trimmed to five short paragraphs; the "price was €275" pivot
+          line is gone entirely -- the figure lives only in the cost box
+          now, not repeated in the body text. No transfer-company name,
+          no accommodation name, no photo. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Arriving in Rome</RouteLabel>
             <ChapterHeading italic className='mt-8 md:mt-10'>
-              Getting from Roma Termini to our accommodation
+              Our late-night transfer
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'I usually prefer staying in the city centre, or at least somewhere close to a metro station. On our first visit to Rome, we stayed not far from Roma Termini.',
-                'This time was different.',
-                'We were travelling with a group of nine, and our accommodation was about a 20-minute drive from the city centre.',
-                'Our train arrived at Roma Termini at 11:30 PM, which made getting to our accommodation a little complicated.',
-                "The metro was about to close, and buses weren't particularly convenient at that hour either. With nine people, children, and suitcases, trying to figure out public transport late at night wasn't particularly appealing.",
-                'We could have taken three taxis, or booked two separate vans, but that would have meant splitting up the group.',
-                'So I contacted a private transfer company and asked for a vehicle that could accommodate all nine of us.',
-                'A private minibus was considerably more expensive than using two smaller vehicles.',
+                'Our train arrived at Roma Termini at 11:30 PM, and our accommodation was about a 20-minute drive from the city centre.',
+                "With nine people, children and suitcases, public transport wasn't a practical option at that hour.",
+                'We could have taken several taxis, but I preferred to keep everyone together, so I arranged a private minibus in advance.',
+                'The driver was waiting for us as agreed, and everything went smoothly.',
+                "It wasn't cheap, but after a long day of travelling, having everything organised was worth it.",
               ]}
             />
           </Reveal>
 
-          {/* Dramatic pivot -- same Playfair-italic treatment used
-              throughout the page for a single bolded, stand-alone line. */}
-          <Reveal delay={0.05} className='mt-6'>
-            <p className='text-lg md:text-xl italic font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
-              The price was €275 for a journey of approximately 20 minutes.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-6 text-center'>
-            <Paragraphs
-              items={[
-                'Definitely not cheap!',
-                'But everything went exactly as arranged. Our driver was waiting for us, and we all travelled together directly to our accommodation.',
-                'After a long day of travelling, it was a relief to have everything organised.',
-                'And it reminded me why I usually prefer staying somewhere central. Accommodation further from the city might seem like a good deal, but transport costs can quickly change the calculation.',
-              ]}
-            />
-          </Reveal>
-
-          {/* Transfer cost box -- same quiet bg-[#f1ebdc] practical-info
-              panel as every price card sitewide. The per-person figure
-              headlines it (same convention as the Train Tickets card
-              below), with the total and vehicle/duration as supporting
-              lines. */}
-          <Reveal delay={0.15} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
+          {/* Transfer cost box -- unchanged: same quiet bg-[#f1ebdc]
+              practical-info panel as every price card sitewide, per-
+              person figure headlining it, total and vehicle/duration as
+              supporting lines. */}
+          <Reveal delay={0.1} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Private Transfer – Roma Termini
             </span>
@@ -590,13 +533,12 @@ export default function RomePage() {
         </div>
       </section>
 
-      {/* 7. GETTING AROUND ROME -- a top-level chapter: public transport
-          once settled in, the Roma 72H ticket, and the ticket-buying and
-          -validating frustrations. Two in-chapter beats (Eyebrow +
-          ChapterHeading, same pairing as "By Train"/"Homeward"
-          elsewhere), each split from the section's own two-part working
-          title at its dash, same as every other beat on this page.
-          Text -> new-chapter transition on both sides. */}
+      {/* 7. GETTING AROUND ROME -- the three former sub-sections (intro,
+          "Buying Tickets", "Was the Roma 72H Ticket Worth It?") merged
+          into one flowing section with a single heading, per the
+          editorial-cleanup brief. The "scanners were surprisingly
+          unreliable" standalone pivot line is gone, folded into the
+          scanner paragraph below instead. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -607,75 +549,27 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                "Although our accommodation wasn't centrally located, there was a bus stop very close by.",
-                'We could take two buses to reach the metro station and then continue exploring Rome.',
-                'For our three-day stay, we chose the Roma 72H ticket, which cost €22 per person.',
-                'And I have to say, the ticket itself was a great solution.',
-                'It allowed us to use public transport without constantly buying individual tickets.',
-                'But the ticketing system? That was another story.',
+                'Although we weren’t staying in the city centre, there was a bus stop nearby. We could take two buses to reach the metro and continue exploring Rome.',
+                <>
+                  For our three-day stay, we chose the{' '}
+                  <strong className='font-semibold text-black dark:text-white'>
+                    Roma 72H ticket
+                  </strong>
+                  , which was a great solution.
+                </>,
+                "I bought mine in advance through the ATAC app, but couldn't purchase one for my underage daughter through the same process. We had to buy hers from a ticket machine instead.",
+                'What frustrated me most were the ticket scanners. Both digital and physical tickets were frequently rejected by one reader, only to work perfectly at another.',
+                "We experienced similar problems in Paris, while Barcelona's ticketing system worked much more smoothly during our visit.",
+                'Rome also offers Tap & Go for contactless payment, but for us, the 72-hour ticket was the better option.',
+                'Despite the frustrating scanners, I would choose the same ticket again.',
               ]}
             />
           </Reveal>
 
-          <Reveal delay={0.1} className='mt-16 md:mt-[76px] flex flex-col items-center'>
-            <Eyebrow>Buying Tickets</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              Not as simple as it should be
-            </ChapterHeading>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                'I bought my Roma 72H ticket in advance through the ATAC app.',
-                "However, I couldn't purchase a ticket for my underage daughter through the same process.",
-                'Instead, we had to buy hers from a ticket machine.',
-                "I found this unnecessarily complicated. When travelling with children, being able to organise everyone's tickets together should be straightforward.",
-                'Rome also offers a Tap & Go contactless payment system, which is another option for travellers who prefer paying directly with a bank card or phone.',
-                'But what frustrated me most was actually using the tickets.',
-              ]}
-            />
-          </Reveal>
-
-          <Reveal delay={0.05} className='mt-6'>
-            <p className='text-lg md:text-xl italic font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
-              The scanners were surprisingly unreliable.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-6 text-center'>
-            <Paragraphs
-              items={[
-                "With my digital ticket, I had to use the designated readers to scan the code, but quite often the scanner simply wouldn't recognise it.",
-                'I would move to another reader, try again, and suddenly it worked.',
-                "And it wasn't just the digital tickets.",
-                'Others in our group experienced similar problems with their physical tickets.',
-                "Sometimes one reader wouldn't accept the ticket, while the next one worked perfectly.",
-                'It felt unnecessarily complicated for something that should be so simple.',
-                'We experienced similar frustrations in Paris.',
-                'In Barcelona, on the other hand, the ticketing system generally worked much more smoothly.',
-              ]}
-            />
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-16 md:mt-[76px] flex flex-col items-center'>
-            <Eyebrow>The Verdict</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
-              Was the Roma 72H ticket worth it?
-            </ChapterHeading>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
-                'For us, absolutely.',
-                "At €22 for 72 hours, it was a convenient way to use public transport throughout our stay, especially since we weren't staying in the city centre.",
-                'I would choose the same ticket again.',
-                'I just wish the system for buying and validating tickets worked a little better.',
-              ]}
-            />
-          </Reveal>
-
-          {/* Roma 72H cost box -- same card language as every price card
-              sitewide, with a subtle pink text link underneath instead of
-              a button, same treatment as the Trieste Airport parking link
-              above. */}
+          {/* Roma 72H cost box -- unchanged: same card language as every
+              price card sitewide, with a subtle pink text link
+              underneath instead of a button, same treatment as the
+              Trieste Airport parking link above. */}
           <Reveal delay={0.15} className='mt-10 md:mt-12 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Roma 72H Ticket
@@ -699,77 +593,50 @@ export default function RomePage() {
             </a>
           </Reveal>
 
-          <Reveal delay={0.2} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <Reveal delay={0.2} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
             <InlineTip>
-              My tip: For a three-day visit, the Roma 72H ticket is worth
+              My tip: For a three-day stay, the Roma 72H ticket is worth
               considering, especially if you&apos;re staying outside the
-              city centre. Just allow a little extra time at the ticket
-              readers. In our experience, they didn&apos;t always work on
-              the first try.
+              centre. Just allow some extra time at the ticket readers.
             </InlineTip>
           </Reveal>
         </div>
       </section>
 
-      {/* 8. THE RETURN JOURNEY -- moved into its own chapter block, now
-          that two new chapters sit between the outbound story and this
-          one, per the requested order (arrival, transfer, public
-          transport, return journey). Still an Eyebrow sub-beat of the
-          overall train-journey thread rather than a new RouteLabel,
-          since it's still about the trains themselves. Text -> new-
-          chapter transition on top; this is the last chapter on the page
-          for now, so it closes with the page's own final pb-16/20
-          instead of CHAPTER_GAP_END. */}
+      {/* 8. THE RETURN JOURNEY -- re-titled "A Stressful Return Journey"
+          and trimmed to seven short paragraphs during the editorial-
+          cleanup pass. The "Carriage 11. Our seats were in carriage 2."
+          standalone pivot line is gone, folded back into the running
+          story. No photo, per the brief. Text -> new-chapter transition
+          on top; this is the last chapter before the Train Journey
+          Overview (unchanged below), so it closes with the page's own
+          final pb-16/20 instead of CHAPTER_GAP_END. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
             <Eyebrow>Homeward</Eyebrow>
             <ChapterHeading italic className='mt-3'>
-              The return journey
+              A stressful return journey
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Our return journey from Rome was probably the most stressful part of travelling by train.',
-                'We were waiting in front of the departure board at Roma Termini for our platform number to appear. Our train was scheduled to leave at 3:35 PM, and the board initially showed a five-minute delay, which eventually became fifteen minutes.',
-                "As soon as the platform number appeared, we headed straight there. But first, we had to get through the ticket checks — with nine people, suitcases, and a crowd of passengers trying to get through, it wasn't exactly quick.",
-                "By the time we reached the platform, our train was already pulling in. And that's when we realised we had another problem.",
+                'Our return journey started with a little chaos at Roma Termini.',
+                'We were waiting for our platform number to appear, while our train was already showing a delay. Once the platform was announced, we hurried through the crowded ticket checks.',
+                'By the time we reached the platform, the train was pulling in. We were standing near carriage 11, but our reserved seats were in carriage 2!',
+                'So there we were, nine people running along the platform with suitcases. When we heard a whistle, we ran even faster, convinced the train was about to leave.',
+                'In the end, we boarded and still had five minutes to spare.',
+                'Luckily, the train recovered some of its delay, and our connection at Venezia Mestre was easy. The next train departed from the opposite track of the same platform.',
+                'Everything worked out, but it was definitely more stressful than it needed to be.',
               ]}
             />
           </Reveal>
 
-          {/* Dramatic pivot line -- same treatment as "Our departure
-              station." in the booking-mistake section: a short, punchy
-              Playfair-italic beat that creates the turn before the next
-              paragraph explains it. */}
-          <Reveal delay={0.05} className='mt-6'>
-            <p className='text-lg md:text-xl italic font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white text-center'>
-              Carriage 11. Our seats were in carriage 2.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-6 max-w-2xl mx-auto'>
-            <Paragraphs
-              className='text-center'
-              items={[
-                'Almost the entire length of the train was between us and our seats.',
-                'So we started running, dragging our suitcases along the platform. Then we heard a whistle — thinking the train was about to leave, we ran even faster. Everyone was trying to keep up, manage their luggage, and make sure nobody got left behind.',
-                'Eventually, we reached our carriage, boarded, and settled into our seats. And then we waited — for another five minutes. After all that rushing, we actually had time to spare.',
-                'Looking back, I think the most frustrating part was the lack of clear information. We had been waiting for the platform announcement, but once it appeared, everything suddenly felt rushed. With a large group, crowded ticket checks, and eleven carriages to navigate, it was genuinely stressful.',
-                'Fortunately, the rest of the journey went much more smoothly. The train recovered some of its delay on the way to Venice Mestre, and although we had worried about our short connection, our next train was departing from the opposite track of the same platform.',
-                "We didn't even have to use an underpass. After waiting a little over ten minutes, we boarded our final train to Trieste Airport.",
-                'In the end, everything worked out perfectly.',
-              ]}
-            />
-          </Reveal>
-
-          <Reveal delay={0.15} className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <Reveal delay={0.15} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
             <InlineTip>
-              My tip: At large stations like Roma Termini, check your
-              carriage number in advance and pay attention to the train
-              composition displayed at the station. If you&apos;re
-              travelling with luggage or in a group, reaching your
-              carriage can take longer than you expect.
+              My tip: At busy railway stations, check your carriage
+              number in advance. Reaching the correct carriage can take
+              longer than expected, especially with luggage.
             </InlineTip>
           </Reveal>
 
