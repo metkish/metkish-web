@@ -869,7 +869,7 @@ export default function RomePage() {
               items={[
                 "Our second day began with a visit to the Vatican and St. Peter's Basilica.",
                 "We then continued to Santa Maria Maggiore and St. Paul Outside the Walls, completing our visit to Rome's four major papal basilicas.",
-                "I had already visited the Vatican Museums and the Sistine Chapel during my first trip to Rome, so they weren't part of this visit.",
+                "I had visited the Vatican Museums and the Sistine Chapel on my first trip to Rome in 2023. They weren't included in our itinerary this time.",
               ]}
             />
           </Reveal>
