@@ -92,10 +92,13 @@ function Fact({
 const MAP_TRANSITION_PT = 'pt-8 md:pt-10';
 
 export interface WhyViennaSectionProps {
-  /** The single paragraph under the "Why Vienna?" heading -- the only
+  /** The paragraph(s) under the "Why Vienna?" heading -- the only
    *  destination-specific editorial copy in this section (e.g. which city
-   *  the direct flight out of Vienna is to). */
-  introText: string;
+   *  the direct flight out of Vienna is to, and why). A single string
+   *  renders as one paragraph; an array renders as one paragraph per
+   *  item, same spacing as every other multi-paragraph Paragraphs use on
+   *  the site. */
+  introText: string | string[];
   /** Parking-card fact, same visual treatment as Tenerife's. */
   parkingLabel: string;
   parkingValue: string;
@@ -135,7 +138,10 @@ export default function WhyViennaSection({
 
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
             <ChapterHeading italic>Why Vienna?</ChapterHeading>
-            <Paragraphs className='mt-5 text-center' items={[introText]} />
+            <Paragraphs
+              className='mt-5 text-center'
+              items={Array.isArray(introText) ? introText : [introText]}
+            />
           </Reveal>
 
           {/* Same quiet practical-information panel language as

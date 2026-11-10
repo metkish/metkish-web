@@ -251,7 +251,10 @@ export default function BarcelonaPage() {
           See that component's own comment for why app/tenerife/page.tsx is
           deliberately left untouched rather than also switched to use it. */}
       <WhyViennaSection
-        introText='Close enough to drive, large enough to give us plenty of choice. And this time, the deciding factor: a direct flight to Barcelona.'
+        introText={[
+          'Close enough to drive, with plenty of flight options.',
+          'This time, it was all about the schedule: a direct flight to Barcelona at 7 AM on a Saturday. An early start, but almost a full day in the city ahead of us. What more could we ask for?',
+        ]}
         parkingLabel='Vienna Airport · Car Park 3'
         parkingValue='€154.08'
         parkingSupport={['24 Oct, 04:30 → 29 Oct, 14:10']}
