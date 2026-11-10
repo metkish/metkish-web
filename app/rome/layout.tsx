@@ -34,6 +34,42 @@ export const metadata: Metadata = {
   },
 };
 
+// BlogPosting structured data -- only verified, already-published facts
+// (title, description, canonical URL, OG image, the Metkish site/brand
+// identity as the Organization author/publisher). No publication date is
+// included: the exact date this page was first published isn't tracked
+// anywhere, and the trip's own month/year (October 2026) is a different
+// fact from that, so it's deliberately left out rather than guessed.
+const ROME_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'Rome',
+  description:
+    'Italy · October 2026 — three days exploring Rome, from the Pantheon and Colosseum to the Vatican and an audience with the Pope.',
+  image: ['https://www.metkish.com/og/og-rome.jpg'],
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://www.metkish.com/rome',
+  },
+  author: { '@type': 'Organization', name: 'Metkish' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Metkish',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.metkish.com/metkish-logo.png',
+    },
+  },
+};
+
 export default function RomeLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ROME_JSON_LD) }}
+      />
+      {children}
+    </>
+  );
 }

@@ -77,7 +77,7 @@ function Eyebrow({ children }: { children: ReactNode }) {
 // Body copy -- byte-identical to el-clasico-tickets-article.tsx's
 // Paragraphs component (left-aligned editorial column), duplicated locally
 // per this codebase's established per-page convention.
-function Paragraphs({ items }: { items: string[] }) {
+function Paragraphs({ items }: { items: ReactNode[] }) {
   return (
     <div className='space-y-4'>
       {items.map((text, i) => (
@@ -216,7 +216,14 @@ export default function HowWeFindRestaurantsArticle() {
               spend another half an hour walking around looking at menus.
             </p>
             <p className='text-base md:text-lg font-[family-name:var(--font-poppins)] text-black/80 dark:text-white/80'>
-              During our recent trip to Barcelona, we tried something
+              During our recent trip to{' '}
+              <Link
+                href='/barcelona'
+                className='underline underline-offset-2'
+              >
+                Barcelona
+              </Link>
+              , we tried something
               different. Instead of researching restaurants in advance, we
               used ChatGPT to find somewhere to eat whenever we got hungry.
             </p>

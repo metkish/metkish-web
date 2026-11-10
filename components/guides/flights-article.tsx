@@ -360,7 +360,15 @@ export default function FlightsArticle() {
                   "Once we've decided where we want to go, my first step isn't usually opening a flight comparison website.",
                   "I start by checking the destination's airport. Or airports, if there are several.",
                   'I look at which airlines fly there and where they operate flights from. It gives me a better understanding of the available routes before I start comparing prices.',
-                  'Tenerife is a good example.',
+                  <>
+                    <Link
+                      href='/tenerife'
+                      className='underline underline-offset-2'
+                    >
+                      Tenerife
+                    </Link>{' '}
+                    is a good example.
+                  </>,
                   'When I was planning our trip, I first checked which airport would be most convenient for where we wanted to stay. Tenerife has two airports, Tenerife North and Tenerife South, and the difference matters.',
                   "I know of people who booked flights to the north without even realising there was another airport in the south.",
                   "Once I'd decided on Tenerife South, I checked the airlines operating there. Many of the options were low-cost carriers, so I went directly to their websites to search for flights.",

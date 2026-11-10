@@ -324,7 +324,11 @@ export default function HotelsArticle() {
             />
           </div>
           <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-            At Roca Nivaria in Tenerife, the pool, surroundings and hotel
+            At Roca Nivaria in{' '}
+            <Link href='/tenerife' className='underline underline-offset-2'>
+              Tenerife
+            </Link>
+            , the pool, surroundings and hotel
             facilities were part of the holiday experience.
           </p>
         </Reveal>
@@ -491,7 +495,16 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'On our recent trip to Barcelona, we stayed at ICON BCN by Petit Palace.',
+                  <>
+                    On our recent trip to{' '}
+                    <Link
+                      href='/barcelona'
+                      className='underline underline-offset-2'
+                    >
+                      Barcelona
+                    </Link>
+                    , we stayed at ICON BCN by Petit Palace.
+                  </>,
                   'Could I have found a much cheaper hotel? Definitely.',
                   'But the location was fantastic.',
                   'We could walk out of the hotel and already be in the part of the city we wanted to explore.',

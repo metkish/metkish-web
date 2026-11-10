@@ -138,7 +138,7 @@ export default function FlightSection({
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>The Flight</RouteLabel>
-            <ChapterHeading italic className='mt-5'>
+            <ChapterHeading as='h2' italic className='mt-5'>
               {heading}
             </ChapterHeading>
           </Reveal>
@@ -175,7 +175,7 @@ export default function FlightSection({
           {experience && (
             <Reveal className='mt-16 md:mt-[76px] max-w-xl mx-auto'>
               <Eyebrow>{experience.label}</Eyebrow>
-              <ChapterHeading italic className='mt-3'>
+              <ChapterHeading as='h3' italic className='mt-3'>
                 {experience.heading}
               </ChapterHeading>
               <Paragraphs className='mt-5 text-center' items={experience.paragraphs} />

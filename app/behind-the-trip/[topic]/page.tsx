@@ -192,6 +192,57 @@ export async function generateMetadata({
   };
 }
 
+// BlogPosting structured data shared by every real Behind the Trip guide
+// below. Only verified, already-published facts go in: the headline is
+// the guide's own title (without the " | Metkish Travels" suffix used in
+// the <title> tag), the description and image are exactly what
+// generateMetadata above already declares for that guide, and the author/
+// publisher is the Metkish site identity itself -- never a fabricated
+// person or an invented publication date.
+function buildGuideJsonLd({
+  headline,
+  description,
+  url,
+  image,
+}: {
+  headline: string;
+  description: string;
+  url: string;
+  image: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline,
+    description,
+    image: [image],
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    author: { '@type': 'Organization', name: 'Metkish' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Metkish',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.metkish.com/metkish-logo.png',
+      },
+    },
+  };
+}
+
+function GuideJsonLd(props: {
+  headline: string;
+  description: string;
+  url: string;
+  image: string;
+}) {
+  return (
+    <script
+      type='application/ld+json'
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(buildGuideJsonLd(props)) }}
+    />
+  );
+}
+
 export default async function BehindTheTripTopicPage({
   params,
 }: {
@@ -208,21 +259,51 @@ export default async function BehindTheTripTopicPage({
   // components/guides/el-clasico-tickets-article.tsx); every other topic
   // still gets the generic "coming soon" placeholder.
   if (topic === 'el-clasico-tickets') {
-    return <ElClasicoTicketsArticle />;
+    return (
+      <>
+        <GuideJsonLd
+          headline='How to Get El Clásico Tickets (2026)'
+          description='Our real experience buying four El Clásico tickets as FC Barcelona members. Membership fees, presale problems, ticket prices and practical tips.'
+          url='https://www.metkish.com/behind-the-trip/el-clasico-tickets'
+          image='https://www.metkish.com/og/og-home.jpg'
+        />
+        <ElClasicoTicketsArticle />
+      </>
+    );
   }
 
   // 'hotels' has real, finished content (see
   // components/guides/hotels-article.tsx); every other topic still gets
   // the generic "coming soon" placeholder.
   if (topic === 'hotels') {
-    return <HotelsArticle />;
+    return (
+      <>
+        <GuideJsonLd
+          headline='How I Choose Where We Stay'
+          description="How I actually pick a hotel: Booking.com filters, guest-rating thresholds, how I read reviews, and the location trade-offs behind our family's real stays."
+          url='https://www.metkish.com/behind-the-trip/hotels'
+          image='https://www.metkish.com/og/og-home.jpg'
+        />
+        <HotelsArticle />
+      </>
+    );
   }
 
   // 'flights' has real, finished content (see
   // components/guides/flights-article.tsx); every other topic still gets
   // the generic "coming soon" placeholder.
   if (topic === 'flights') {
-    return <FlightsArticle />;
+    return (
+      <>
+        <GuideJsonLd
+          headline='How I Search for Flights'
+          description="How I compare routes, times and prices — and why the cheapest flight isn't always my choice."
+          url='https://www.metkish.com/behind-the-trip/flights'
+          image='https://www.metkish.com/og/og-home.jpg'
+        />
+        <FlightsArticle />
+      </>
+    );
   }
 
   // 'how-we-find-restaurants' has real, finished content (see
@@ -230,7 +311,17 @@ export default async function BehindTheTripTopicPage({
   // 'el-clasico-tickets' above -- it gets its real article page rather
   // than the generic "coming soon" placeholder below.
   if (topic === 'how-we-find-restaurants') {
-    return <HowWeFindRestaurantsArticle />;
+    return (
+      <>
+        <GuideJsonLd
+          headline='How We Find Restaurants When Travelling'
+          description='How AI helped us discover great restaurants in Barcelona, from a brunch spot to a hidden tapas bar — and the one thing we always check before going.'
+          url='https://www.metkish.com/behind-the-trip/how-we-find-restaurants'
+          image='https://www.metkish.com/og/og-home.jpg'
+        />
+        <HowWeFindRestaurantsArticle />
+      </>
+    );
   }
 
   return (

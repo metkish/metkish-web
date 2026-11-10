@@ -137,7 +137,7 @@ export default function WhyViennaSection({
           </Reveal>
 
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Why Vienna?</ChapterHeading>
+            <ChapterHeading as='h2' italic>Why Vienna?</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={Array.isArray(introText) ? introText : [introText]}

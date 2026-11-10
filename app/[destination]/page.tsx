@@ -38,6 +38,15 @@ export async function generateMetadata({
     alternates: {
       canonical: url,
     },
+    // These are thin placeholder pages ("coming soon" stubs) for
+    // destinations that don't have a published story yet. Keep them
+    // crawlable (follow: true) so internal link equity still flows, but
+    // keep them out of Google's index until each one has a real page.
+    // Already excluded from sitemap.xml separately.
+    robots: {
+      index: false,
+      follow: true,
+    },
     openGraph: {
       title,
       description,

@@ -15,6 +15,8 @@ import {
   ITALY_PESCHIERA_TO_HOME_JOURNEY,
 } from '@/lib/journeys/italy';
 import { ChapterHeading, Eyebrow, Paragraphs } from '@/components/ui/typography';
+import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
+import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 
 const LOGO_SRC = '/metkish-logo.png';
 
@@ -244,7 +246,7 @@ export default function ItalyPage() {
           </Reveal>
 
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>First stop? Milano!</ChapterHeading>
+            <ChapterHeading as='h2' italic>First stop? Milano!</ChapterHeading>
           </Reveal>
         </div>
 
@@ -298,7 +300,7 @@ export default function ItalyPage() {
               exactly the text the brief gave, and no separate closing
               line: the heading already carries that message. */}
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <ChapterHeading italic>Lesson learned: check the holidays.</ChapterHeading>
+            <ChapterHeading as='h3' italic>Lesson learned: check the holidays.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -348,7 +350,7 @@ export default function ItalyPage() {
               transition (mt-14/16). No property name, no photo. */}
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <Eyebrow>Where We Stayed</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
+            <ChapterHeading as='h3' italic className='mt-3'>
               Right in the heart of Milano
             </ChapterHeading>
             <Paragraphs
@@ -405,7 +407,7 @@ export default function ItalyPage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <Eyebrow>Sunday Morning</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
+            <ChapterHeading as='h3' italic className='mt-3'>
               One ticket we didn&apos;t plan to buy
             </ChapterHeading>
             <Paragraphs
@@ -506,7 +508,7 @@ export default function ItalyPage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <Eyebrow>Slow Sunday</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
+            <ChapterHeading as='h3' italic className='mt-3'>
               Walking, gelato &amp; no rush
             </ChapterHeading>
             <Paragraphs
@@ -565,7 +567,7 @@ export default function ItalyPage() {
             that same tier's own token (mt-12/14). */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto'>
-            <ChapterHeading italic>Getting around was surprisingly easy</ChapterHeading>
+            <ChapterHeading as='h3' italic>Getting around was surprisingly easy</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -583,7 +585,7 @@ export default function ItalyPage() {
             deliberate shift away from the historic centre. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>Then Milano turned green</ChapterHeading>
+            <ChapterHeading as='h3' italic>Then Milano turned green</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -627,7 +629,7 @@ export default function ItalyPage() {
             it are coming separately. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>
+            <ChapterHeading as='h3' italic>
               The one thing we had actually planned.
             </ChapterHeading>
           </Reveal>
@@ -642,7 +644,7 @@ export default function ItalyPage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-14 md:mt-16 max-w-xl mx-auto'>
             <Eyebrow>Sunday Night</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
+            <ChapterHeading as='h3' italic className='mt-3'>
               Football night at San Siro
             </ChapterHeading>
             <Paragraphs
@@ -761,7 +763,7 @@ export default function ItalyPage() {
           </Reveal>
 
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Next stop: La Spezia</ChapterHeading>
+            <ChapterHeading as='h2' italic>Next stop: La Spezia</ChapterHeading>
           </Reveal>
         </div>
 
@@ -774,7 +776,7 @@ export default function ItalyPage() {
             matching the rest of this section. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto'>
-            <ChapterHeading italic>Our base for Cinque Terre.</ChapterHeading>
+            <ChapterHeading as='h3' italic>Our base for Cinque Terre.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -844,7 +846,7 @@ export default function ItalyPage() {
             opening paragraph explaining the route actually chosen. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>Three villages. Two ways to see them.</ChapterHeading>
+            <ChapterHeading as='h3' italic>Three villages. Two ways to see them.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -915,7 +917,7 @@ export default function ItalyPage() {
             connected moment, same caption as before. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>A detail I loved</ChapterHeading>
+            <ChapterHeading as='h3' italic>A detail I loved</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -949,7 +951,7 @@ export default function ItalyPage() {
             its own. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>Vernazza — our favourite</ChapterHeading>
+            <ChapterHeading as='h3' italic>Vernazza — our favourite</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -985,7 +987,7 @@ export default function ItalyPage() {
             story that explains it, rather than as a final bill. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>
+            <ChapterHeading as='h3' italic>
               Why take the ferry when we already had train passes?
             </ChapterHeading>
             <Paragraphs
@@ -1050,7 +1052,7 @@ export default function ItalyPage() {
             used rather than mislabelling footage of somewhere else. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>Porto Venere</ChapterHeading>
+            <ChapterHeading as='h3' italic>Porto Venere</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -1130,7 +1132,7 @@ export default function ItalyPage() {
             marker sat between them. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>A quick stop in Pisa</ChapterHeading>
+            <ChapterHeading as='h2' italic>A quick stop in Pisa</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -1197,7 +1199,7 @@ export default function ItalyPage() {
             Porto Venere's weight above, kept deliberately brief. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>A little Tuscany detour</ChapterHeading>
+            <ChapterHeading as='h3' italic>A little Tuscany detour</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -1275,11 +1277,22 @@ export default function ItalyPage() {
             it had when a chapter marker sat between them. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Our base by Lake Garda.</ChapterHeading>
+            <ChapterHeading as='h2' italic>Our base by Lake Garda.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We stayed at SEI Garda Apartments, right on the road to Gardaland and a short walk from the centre of Peschiera. For us, the location was perfect.',
+                <>
+                  We stayed at SEI Garda Apartments, right on the road to
+                  Gardaland and a short walk from the centre of Peschiera.
+                  For us, the{' '}
+                  <Link
+                    href='/behind-the-trip/hotels'
+                    className='underline underline-offset-2'
+                  >
+                    location
+                  </Link>{' '}
+                  was perfect.
+                </>,
               ]}
             />
           </Reveal>
@@ -1351,7 +1364,7 @@ export default function ItalyPage() {
             around the text in a later pass. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto'>
-            <ChapterHeading italic>Gardaland</ChapterHeading>
+            <ChapterHeading as='h3' italic>Gardaland</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -1462,7 +1475,7 @@ export default function ItalyPage() {
 
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.1} className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Venice? Not this time.</ChapterHeading>
+            <ChapterHeading as='h2' italic>Venice? Not this time.</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -1513,7 +1526,7 @@ export default function ItalyPage() {
       <section className='px-6 md:px-12 pt-8 md:pt-10 pb-16 md:pb-24 bg-[#faf9f6] dark:bg-black'>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <ChapterHeading italic>1,984 km later.</ChapterHeading>
+            <ChapterHeading as='h3' italic>1,984 km later.</ChapterHeading>
           </Reveal>
         </div>
 
@@ -1568,6 +1581,73 @@ export default function ItalyPage() {
           />
         </Reveal>
       </section>
+
+      {/* Standard site footer -- copied verbatim from app/tenerife/page.tsx
+          so every destination page ends with the same navigation, contact
+          and social links. This page previously had none at all, leaving
+          readers with no way to get anywhere else on the site once they
+          reached the end. */}
+      <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
+        <Image
+          src={LOGO_SRC}
+          alt='Metkish logo'
+          width={240}
+          height={240}
+          className='w-[92px] md:w-[120px] h-auto -mt-8 md:-mt-9'
+        />
+        <p className='text-sm italic lowercase font-[family-name:var(--font-poppins)] font-medium text-white/70'>
+          travel · memories · places worth remembering
+        </p>
+        <nav className='flex items-center gap-2 sm:gap-6'>
+          <Link
+            href='/#travels'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            Travels
+          </Link>
+          <Link
+            href='/#guides'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            Behind the Trip
+          </Link>
+          <Link
+            href='/about'
+            className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white whitespace-nowrap'
+          >
+            About
+          </Link>
+        </nav>
+        <a
+          href='mailto:info@metkish.com'
+          className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] text-white/90 hover:text-white underline underline-offset-4'
+        >
+          info@metkish.com ↗
+        </a>
+        <div className='mt-3 flex items-center gap-5'>
+          <a
+            href={INSTAGRAM_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Instagram'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <InstagramIcon className='h-5 w-5' />
+          </a>
+          <a
+            href={PINTEREST_URL}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Pinterest'
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <PinterestIcon className='h-5 w-5' />
+          </a>
+        </div>
+        <p className='mt-8 md:mt-9 text-xs font-[family-name:var(--font-poppins)] text-white/40'>
+          © 2026 Metkish
+        </p>
+      </footer>
     </div>
   );
 }

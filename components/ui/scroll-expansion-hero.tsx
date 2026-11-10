@@ -270,12 +270,12 @@ const ScrollExpandMedia = ({
                     }}
                   />
                   {date && (
-                    <p
+                    <h1
                       className='text-2xl sm:text-5xl md:text-6xl xl:text-7xl text-[#F5F1E8] font-[family-name:var(--font-playfair)] font-medium tracking-tight whitespace-normal sm:whitespace-nowrap text-center'
                       style={{ textShadow: '0 2px 16px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.5)' }}
                     >
                       {date}
-                    </p>
+                    </h1>
                   )}
                   <p
                     className='mt-4 text-xs sm:text-sm md:text-base text-[#F5F1E8]/85 font-[family-name:var(--font-poppins)] font-medium tracking-normal whitespace-normal sm:whitespace-nowrap lowercase text-center'

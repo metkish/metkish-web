@@ -17,19 +17,27 @@ export function ChapterHeading({
   children,
   italic = false,
   className = '',
+  as: Tag = 'p',
 }: {
   children: ReactNode;
   italic?: boolean;
   className?: string;
+  // Semantic heading level for this chapter title, independent of its
+  // (always identical) visual size -- defaults to 'p' so every existing
+  // call site that doesn't pass `as` renders exactly as before. Pass
+  // as="h2" for a page's top-level chapter headings and as="h3" for a
+  // heading that continues an already-open chapter, per the actual
+  // content outline rather than the shared visual scale.
+  as?: 'p' | 'h1' | 'h2' | 'h3' | 'h4';
 }) {
   return (
-    <p
+    <Tag
       className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
         italic ? 'italic' : ''
       } ${className}`}
     >
       {children}
-    </p>
+    </Tag>
   );
 }
 
@@ -50,7 +58,10 @@ export function Paragraphs({
   items,
   className = '',
 }: {
-  items: string[];
+  // ReactNode so a paragraph can carry one inline link (e.g. to a
+  // related destination or guide) without changing its text, same
+  // allowance already used by app/rome/page.tsx's local Paragraphs.
+  items: ReactNode[];
   className?: string;
 }) {
   return (

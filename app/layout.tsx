@@ -66,14 +66,14 @@ const caveat = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.metkish.com"),
-  title: "Metkish",
-  description: "Travel · memories · places worth remembering",
+  title: "Metkish — Honest Family Travel Stories & Real Trip Costs",
+  description: "Honest, practical travel stories from a family of four — real costs, real itineraries, and places worth remembering.",
   alternates: {
     canonical: "https://www.metkish.com/",
   },
   openGraph: {
-    title: "Metkish",
-    description: "Travel · memories · places worth remembering",
+    title: "Metkish — Honest Family Travel Stories & Real Trip Costs",
+    description: "Honest, practical travel stories from a family of four — real costs, real itineraries, and places worth remembering.",
     url: "https://www.metkish.com/",
     siteName: "Metkish",
     images: [
@@ -95,8 +95,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Metkish",
-    description: "Travel · memories · places worth remembering",
+    title: "Metkish — Honest Family Travel Stories & Real Trip Costs",
+    description: "Honest, practical travel stories from a family of four — real costs, real itineraries, and places worth remembering.",
     images: ["/og/og-home.jpg"],
   },
   icons: {

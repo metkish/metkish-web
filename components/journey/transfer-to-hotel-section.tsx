@@ -109,7 +109,7 @@ export default function TransferToHotelSection({
           <Reveal className='flex flex-col items-center'>
             <RouteLabel>{label}</RouteLabel>
             {heading && (
-              <ChapterHeading className='mt-5 text-center'>{heading}</ChapterHeading>
+              <ChapterHeading as='h2' className='mt-5 text-center'>{heading}</ChapterHeading>
             )}
           </Reveal>
 

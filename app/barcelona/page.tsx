@@ -344,7 +344,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>The Hotel</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Location over luxury
           </ChapterHeading>
           {/* The rating is the body text's own last line, not a separate
@@ -353,7 +353,17 @@ export default function BarcelonaPage() {
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'We stayed at ICON BCN, just a short walk from Plaça de Catalunya. The location was easily the best thing about this hotel.',
+              <>
+                We stayed at ICON BCN, just a short walk from Plaça de
+                Catalunya. The{' '}
+                <Link
+                  href='/behind-the-trip/hotels'
+                  className='underline underline-offset-2'
+                >
+                  location
+                </Link>{' '}
+                was easily the best thing about this hotel.
+              </>,
               'The rooms were spacious, breakfast was good and the staff were friendly. The hotel was pleasantly decorated, but nothing extraordinary, and both cleanliness and service could have been better.',
               "We spent most of our time exploring Barcelona, so we didn't need much more. The staff stored our luggage on arrival and arranged our airport transfer for departure.",
               'Our rating: 8/10 — mainly thanks to the location.',
@@ -388,7 +398,7 @@ export default function BarcelonaPage() {
             room than the panel->photo gaps elsewhere, since this opens a
             genuinely new short story rather than continuing the intro. */}
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
-          <ChapterHeading italic>The little things we remember</ChapterHeading>
+          <ChapterHeading as='h3' italic>The little things we remember</ChapterHeading>
           <Paragraphs
             className='mt-5 text-center'
             items={[
@@ -442,7 +452,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Getting Around</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Metro tickets in Barcelona
           </ChapterHeading>
           <Paragraphs
@@ -527,7 +537,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Exploring Barcelona</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Not quite how I remembered it
           </ChapterHeading>
         </Reveal>
@@ -592,7 +602,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <span className='mx-auto block h-0.5 w-8 bg-pink-300 dark:bg-pink-400/60' />
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h3' italic className='mt-8 md:mt-10'>
             Why I fell in love with Barcelona in the first place
           </ChapterHeading>
         </Reveal>
@@ -651,7 +661,7 @@ export default function BarcelonaPage() {
             article.tsx) rather than repeating that article's own detailed
             ticket-buying story here. */}
         <Reveal delay={0.2} className='mt-14 md:mt-16 max-w-2xl mx-auto text-center'>
-          <ChapterHeading italic>
+          <ChapterHeading as='h3' italic>
             The match we&apos;d been waiting for
           </ChapterHeading>
           <Paragraphs
@@ -729,7 +739,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Sagrada Família</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Even more impressive on the inside
           </ChapterHeading>
           <Paragraphs
@@ -845,7 +855,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Montjuïc</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Worth the Trip Up
           </ChapterHeading>
           <Paragraphs
@@ -946,7 +956,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Park Güell</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Not Quite as Magical This Time
           </ChapterHeading>
         </Reveal>
@@ -1048,7 +1058,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Montserrat</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             A Day Away from the City
           </ChapterHeading>
           <Paragraphs
@@ -1164,7 +1174,7 @@ export default function BarcelonaPage() {
       <section className={`px-6 md:px-12 pt-20 md:pt-24 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>One Last Thing About Barcelona</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             The Little Things We Loved
           </ChapterHeading>
         </Reveal>

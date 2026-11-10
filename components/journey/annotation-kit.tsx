@@ -88,9 +88,16 @@ export function SideNote({
 export function TimeStamp({
   children,
   size = 'md',
+  as: Tag = 'p',
 }: {
   children: ReactNode;
   size?: 'sm' | 'md' | 'lg';
+  // Semantic heading level, independent of visual size -- defaults to 'p'
+  // since almost every TimeStamp is a fact/figure callout (a price, a
+  // duration), not a heading. Pass as="h2" only where a TimeStamp is
+  // itself standing in as a chapter's title (i.e. the chapter has no
+  // separate ChapterHeading of its own).
+  as?: 'p' | 'h2' | 'h3';
 }) {
   const sizes = {
     sm: 'text-2xl md:text-3xl',
@@ -98,10 +105,10 @@ export function TimeStamp({
     lg: 'text-4xl md:text-5xl',
   };
   return (
-    <p
+    <Tag
       className={`${sizes[size]} font-[family-name:var(--font-playfair)] italic font-medium text-black dark:text-white`}
     >
       {children}
-    </p>
+    </Tag>
   );
 }

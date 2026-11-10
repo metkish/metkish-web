@@ -76,19 +76,24 @@ function ChapterHeading({
   children,
   italic = false,
   className = '',
+  as: Tag = 'p',
 }: {
   children: ReactNode;
   italic?: boolean;
   className?: string;
+  // Semantic heading level, independent of the (always identical) visual
+  // size -- defaults to 'p' so every existing call that doesn't pass `as`
+  // renders exactly as before.
+  as?: 'p' | 'h1' | 'h2' | 'h3' | 'h4';
 }) {
   return (
-    <p
+    <Tag
       className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
         italic ? 'italic' : ''
       } ${className}`}
     >
       {children}
-    </p>
+    </Tag>
   );
 }
 
@@ -151,7 +156,9 @@ function Paragraphs({
   items,
   className = '',
 }: {
-  items: string[];
+  // ReactNode so a paragraph can carry one inline link (e.g. to a
+  // related Behind the Trip guide) without changing its text.
+  items: ReactNode[];
   className?: string;
 }) {
   return (
@@ -325,7 +332,7 @@ export default function TenerifePage() {
           </Reveal>
 
           <Reveal className='mt-8 md:mt-10 max-w-xl mx-auto'>
-            <ChapterHeading italic>Why Vienna?</ChapterHeading>
+            <ChapterHeading as='h2' italic>Why Vienna?</ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
@@ -392,7 +399,7 @@ export default function TenerifePage() {
               journal entry, not a confirmation screen. */}
           <Reveal>
             <RouteLabel>The Flight</RouteLabel>
-            <ChapterHeading italic className='mt-5'>
+            <ChapterHeading as='h2' italic className='mt-5'>
               Vienna to Tenerife
             </ChapterHeading>
           </Reveal>
@@ -452,7 +459,7 @@ export default function TenerifePage() {
               wasn't asleep." above and below it. */}
           <Reveal className='mt-16 md:mt-[76px] max-w-xl mx-auto'>
             <Eyebrow>A first with Ryanair</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
+            <ChapterHeading as='h3' italic className='mt-3'>
               What I hadn&apos;t thought about
             </ChapterHeading>
             <Paragraphs
@@ -540,7 +547,7 @@ export default function TenerifePage() {
           <p className='mt-2 text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
             Tenerife South · local time · one hour behind Slovenia
           </p>
-          <ChapterHeading italic className='mt-10 md:mt-12'>
+          <ChapterHeading as='h2' italic className='mt-10 md:mt-12'>
             The airport wasn&apos;t asleep.
           </ChapterHeading>
           <Paragraphs
@@ -572,7 +579,7 @@ export default function TenerifePage() {
       >
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Getting to the Hotel</RouteLabel>
-          <ChapterHeading className='mt-5'>
+          <ChapterHeading as='h2' className='mt-5'>
             The transfer we probably didn&apos;t need.
           </ChapterHeading>
           <Paragraphs
@@ -630,7 +637,7 @@ export default function TenerifePage() {
 
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>Would I pre-book it again?</Eyebrow>
-          <ChapterHeading italic className='mt-4'>
+          <ChapterHeading as='h3' italic className='mt-4'>
             Not there.
           </ChapterHeading>
           <Paragraphs
@@ -657,7 +664,7 @@ export default function TenerifePage() {
         <Reveal className='max-w-2xl mx-auto flex flex-col items-center gap-6'>
           <RouteLabel>Tenerife South → Roca Nivaria · Playa Paraíso</RouteLabel>
           <div className='flex flex-col items-center gap-3 text-center'>
-            <TimeStamp size='md'>Just before 04:00</TimeStamp>
+            <TimeStamp as='h2' size='md'>Just before 04:00</TimeStamp>
             <p className='text-base sm:text-lg font-[family-name:var(--font-poppins)] font-light text-black/70 dark:text-white/70'>
               Finally, our hotel.
             </p>
@@ -721,13 +728,22 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>The Hotel</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Why this one?
           </ChapterHeading>
           <Paragraphs
             className='mt-5 text-center'
             items={[
-              'Great reviews, a family suite and a price that made sense compared with the alternatives.',
+              <>
+                Great{' '}
+                <Link
+                  href='/behind-the-trip/hotels'
+                  className='underline underline-offset-2'
+                >
+                  reviews
+                </Link>
+                , a family suite and a price that made sense compared with the alternatives.
+              </>,
             ]}
           />
         </Reveal>
@@ -777,7 +793,7 @@ export default function TenerifePage() {
             with Ryanair", deliberately kept to a single short sentence. */}
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
           <Eyebrow>The Hotel Itself</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             Overall, a very good hotel.
           </ChapterHeading>
           <Paragraphs
@@ -817,7 +833,7 @@ export default function TenerifePage() {
             the section's other internal gaps, so the video clearly closes
             before this final thought opens. */}
         <Reveal delay={0.1} className='mt-[78px] md:mt-[86px] max-w-xl mx-auto text-center'>
-          <ChapterHeading italic>
+          <ChapterHeading as='h3' italic>
             The location? I&apos;m not so sure.
           </ChapterHeading>
           <Paragraphs
@@ -841,7 +857,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>The Rental Car</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             No prepayment?
           </ChapterHeading>
           <Paragraphs
@@ -908,7 +924,7 @@ export default function TenerifePage() {
             same established scales and gaps used everywhere else. */}
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
           <Eyebrow>No prepayment. No deposit.</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             So far, just a confirmation.
           </ChapterHeading>
           <Paragraphs
@@ -918,7 +934,7 @@ export default function TenerifePage() {
               'Just before 11, a CICAR representative walked into reception with the paperwork.',
             ]}
           />
-          <ChapterHeading italic className='mt-6 md:mt-7'>
+          <ChapterHeading as='h3' italic className='mt-6 md:mt-7'>
             And that was it.
           </ChapterHeading>
           <Paragraphs
@@ -953,7 +969,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Our First Stop</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             So, which beach first?
           </ChapterHeading>
           <Paragraphs
@@ -989,7 +1005,7 @@ export default function TenerifePage() {
             pattern "The airport wasn't asleep." uses. Purely about how
             this family travels, not a comment on the beach itself. */}
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
-          <ChapterHeading italic>
+          <ChapterHeading as='h3' italic>
             We&apos;re not all-day beach people.
           </ChapterHeading>
           <Paragraphs
@@ -1026,7 +1042,7 @@ export default function TenerifePage() {
             single short paragraph on purpose, no practical-info framing,
             no name/business/service invented. */}
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto text-center'>
-          <ChapterHeading italic>
+          <ChapterHeading as='h3' italic>
             €20. Ten minutes. Why not?
           </ChapterHeading>
           <Paragraphs
@@ -1077,7 +1093,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Siam Park</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Hot day. Cold water. We were freezing.
           </ChapterHeading>
           <Paragraphs
@@ -1195,7 +1211,7 @@ export default function TenerifePage() {
             inside the park, and this page uses real travel material only,
             never a stand-in image. */}
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
-          <ChapterHeading italic>
+          <ChapterHeading as='h3' italic>
             And then, back to the fun.
           </ChapterHeading>
           <Paragraphs
@@ -1253,7 +1269,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Playa de Las Teresitas</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             The beach? Nice. The day? So much better.
           </ChapterHeading>
           <Paragraphs
@@ -1286,7 +1302,7 @@ export default function TenerifePage() {
             beach people.": no eyebrow, no photo needed to make the point,
             kept understated on purpose. */}
         <Reveal delay={0.1} className='mt-12 md:mt-14 max-w-xl mx-auto text-center'>
-          <ChapterHeading italic>Somehow, we stayed all afternoon.</ChapterHeading>
+          <ChapterHeading as='h3' italic>Somehow, we stayed all afternoon.</ChapterHeading>
           <Paragraphs
             className='mt-5 text-center'
             items={[
@@ -1386,7 +1402,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Los Gigantes · Sailing</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             Three hours very well spent.
           </ChapterHeading>
           <Paragraphs
@@ -1505,7 +1521,7 @@ export default function TenerifePage() {
             page. */}
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
           <Eyebrow>Then, the cliffs</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             Now I understood the name.
           </ChapterHeading>
           <Paragraphs
@@ -1544,7 +1560,7 @@ export default function TenerifePage() {
             clip and the close-up cliff photo rather than a caption on
             either one. */}
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
-          <ChapterHeading italic>The Giants.</ChapterHeading>
+          <ChapterHeading as='h3' italic>The Giants.</ChapterHeading>
         </Reveal>
 
         {/* The strongest still image in this chapter, on purpose: the
@@ -1635,7 +1651,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Mount Teide</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             This landscape got me.
           </ChapterHeading>
           <Paragraphs
@@ -1678,7 +1694,7 @@ export default function TenerifePage() {
             weight as "Going up" below. */}
         <Reveal delay={0.1} className='mt-10 md:mt-12 max-w-xl mx-auto text-center'>
           <Eyebrow>One thing I didn&apos;t know</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             The cable car isn&apos;t the summit.
           </ChapterHeading>
           <Paragraphs
@@ -1725,7 +1741,7 @@ export default function TenerifePage() {
             ChapterHeading + Paragraphs weight as "Then, the cliffs". */}
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
           <Eyebrow>Going up</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             We got lucky.
           </ChapterHeading>
           <Paragraphs
@@ -1862,7 +1878,7 @@ export default function TenerifePage() {
             here, on how fascinating the landscape was. */}
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>The landscape</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             I wasn&apos;t ready to leave.
           </ChapterHeading>
           <Paragraphs
@@ -1934,7 +1950,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto text-center'>
           <RouteLabel>Loro Parque</RouteLabel>
-          <ChapterHeading italic className='mt-8 md:mt-10'>
+          <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
             A very different day in Tenerife.
           </ChapterHeading>
           <Paragraphs
@@ -1970,7 +1986,7 @@ export default function TenerifePage() {
             to us that day, not a claim about how the shows generally work. */}
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
           <Eyebrow>The Shows</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             We hadn't checked the show times.
           </ChapterHeading>
           <Paragraphs
@@ -2015,7 +2031,7 @@ export default function TenerifePage() {
             the park. */}
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>Mixed Feelings</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             This is where I&apos;m still a little torn.
           </ChapterHeading>
           <Paragraphs
@@ -2039,7 +2055,7 @@ export default function TenerifePage() {
             optimizer pathologically slow for a photo this large. */}
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>My Favourite?</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             The gorilla. Easily.
           </ChapterHeading>
         </Reveal>
@@ -2067,7 +2083,7 @@ export default function TenerifePage() {
             this day was for the writer. */}
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>Final Verdict</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             I&apos;m glad we went.
           </ChapterHeading>
           <Paragraphs
@@ -2121,7 +2137,7 @@ export default function TenerifePage() {
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-xl mx-auto text-center'>
           <Eyebrow>One Last Stop</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             Playa de las Américas.
           </ChapterHeading>
           <Paragraphs
@@ -2144,7 +2160,7 @@ export default function TenerifePage() {
             published copy. */}
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
           <Eyebrow>Tenerife South</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             Much easier than we&apos;d expected.
           </ChapterHeading>
           <Paragraphs
@@ -2164,7 +2180,7 @@ export default function TenerifePage() {
             the story a conclusion before the practical checklist. */}
         <Reveal delay={0.1} className='mt-16 md:mt-20 max-w-xl mx-auto text-center'>
           <Eyebrow>Looking Back</Eyebrow>
-          <ChapterHeading italic className='mt-3'>
+          <ChapterHeading as='h3' italic className='mt-3'>
             Now I understand why people come all year round.
           </ChapterHeading>
           <Paragraphs

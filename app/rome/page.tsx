@@ -75,19 +75,24 @@ function ChapterHeading({
   children,
   italic = false,
   className = '',
+  as: Tag = 'p',
 }: {
   children: ReactNode;
   italic?: boolean;
   className?: string;
+  // Semantic heading level, independent of the (always identical) visual
+  // size -- defaults to 'p' so every existing call that doesn't pass `as`
+  // renders exactly as before.
+  as?: 'p' | 'h1' | 'h2' | 'h3' | 'h4';
 }) {
   return (
-    <p
+    <Tag
       className={`text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white ${
         italic ? 'italic' : ''
       } ${className}`}
     >
       {children}
-    </p>
+    </Tag>
   );
 }
 
@@ -305,7 +310,7 @@ export default function RomePage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Getting to Rome</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               My first train booking mistake
             </ChapterHeading>
             <Paragraphs
@@ -446,7 +451,7 @@ export default function RomePage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
             <Eyebrow>By Train</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
+            <ChapterHeading as='h3' italic className='mt-3'>
               Travelling to Rome
             </ChapterHeading>
             <Paragraphs
@@ -570,13 +575,22 @@ export default function RomePage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Arriving in Rome</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               Our late-night transfer
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'Our train arrived at Roma Termini at 11:30 PM, and our accommodation was about a 20-minute drive from the city centre.',
+                <>
+                  Our train arrived at Roma Termini at 11:30 PM, and our{' '}
+                  <Link
+                    href='/behind-the-trip/hotels'
+                    className='underline underline-offset-2'
+                  >
+                    accommodation
+                  </Link>{' '}
+                  was about a 20-minute drive from the city centre.
+                </>,
                 "With nine people, children and suitcases, public transport wasn't a practical option at that hour.",
                 'We could have taken several taxis, but I preferred to keep everyone together, so I arranged a private minibus in advance.',
                 'The driver was waiting for us as agreed, and everything went smoothly.',
@@ -618,7 +632,7 @@ export default function RomePage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Getting Around Rome</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               Public transport
             </ChapterHeading>
             <Paragraphs
@@ -634,7 +648,17 @@ export default function RomePage() {
                 </>,
                 "I bought mine in advance through the ATAC app, but couldn't purchase one for my underage daughter through the same process. We had to buy hers from a ticket machine instead.",
                 'What frustrated me most were the ticket scanners. Both digital and physical tickets were frequently rejected by one reader, only to work perfectly at another.',
-                "We experienced similar problems in Paris, while Barcelona's ticketing system worked much more smoothly during our visit.",
+                <>
+                  We experienced similar problems in Paris, while{' '}
+                  <Link
+                    href='/barcelona'
+                    className='underline underline-offset-2'
+                  >
+                    Barcelona
+                  </Link>
+                  &apos;s ticketing system worked much more smoothly during our
+                  visit.
+                </>,
                 'Rome also offers Tap & Go for contactless payment, but for us, the 72-hour ticket was the better option.',
                 'Despite the frustrating scanners, I would choose the same ticket again.',
               ]}
@@ -702,7 +726,7 @@ export default function RomePage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>The Itinerary</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               Three days exploring Rome
             </ChapterHeading>
             <Paragraphs
@@ -861,7 +885,7 @@ export default function RomePage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <ChapterHeading italic>
+            <ChapterHeading as='h3' italic>
               Inside the Vatican &amp; Rome&apos;s Basilicas
             </ChapterHeading>
             <Paragraphs
@@ -946,7 +970,7 @@ export default function RomePage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <ChapterHeading italic>
+            <ChapterHeading as='h3' italic>
               An Audience with the Pope
             </ChapterHeading>
             <Paragraphs
@@ -1065,7 +1089,7 @@ export default function RomePage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='flex flex-col items-center'>
             <Eyebrow>Homeward</Eyebrow>
-            <ChapterHeading italic className='mt-3'>
+            <ChapterHeading as='h3' italic className='mt-3'>
               A Little Panic at Roma Termini
             </ChapterHeading>
             <Paragraphs
@@ -1144,7 +1168,7 @@ export default function RomePage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Final Thoughts</RouteLabel>
-            <ChapterHeading italic className='mt-8 md:mt-10'>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               Would I visit Rome again?
             </ChapterHeading>
             <Paragraphs

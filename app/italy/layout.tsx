@@ -35,6 +35,42 @@ export const metadata: Metadata = {
   },
 };
 
+// BlogPosting structured data -- only verified, already-published facts
+// (title, description, canonical URL, OG image, the Metkish site/brand
+// identity as the Organization author/publisher). No publication date is
+// included: it isn't tracked anywhere, and the trip's own month/year is a
+// different fact from that, so it's deliberately left out rather than
+// guessed.
+const ITALY_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'Italy',
+  description:
+    'Italy · April 2026 — a road trip from Milan to Cinque Terre and Pisa.',
+  image: ['https://www.metkish.com/og/og-italy.jpg'],
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://www.metkish.com/italy',
+  },
+  author: { '@type': 'Organization', name: 'Metkish' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Metkish',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.metkish.com/metkish-logo.png',
+    },
+  },
+};
+
 export default function ItalyLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ITALY_JSON_LD) }}
+      />
+      {children}
+    </>
+  );
 }
