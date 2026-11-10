@@ -155,7 +155,7 @@ export default function WhyViennaSection({
             <Paragraphs
               className='text-center'
               items={[
-                "Not the cheapest parking option, but it's right at the terminal, covered and incredibly convenient with luggage — especially in bad weather. We book online in advance because it's cheaper, with a few extra hours on either side for delays.",
+                "Convenience mattered more than finding the cheapest parking. Car Park 3 is covered and just a short walk from the terminal, which makes travelling with luggage much easier. We reserved our space online in advance and allowed some extra time in case of delays.",
               ]}
             />
           </Reveal>
