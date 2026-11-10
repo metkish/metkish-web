@@ -869,9 +869,12 @@ export default function RomePage() {
           metro breakdown, the crowded replacement bus, the passenger
           covering her ears) has been removed entirely per the user's
           request -- not moved or reused elsewhere. A brief personal
-          observation comparing Rome and Barcelona now closes the
-          sightseeing narrative instead, at the end of the "An Audience
-          with the Pope" section (Day 3), before the return journey. */}
+          observation comparing Rome and Barcelona briefly replaced it
+          here, then was briefly relocated into the "Would I visit Rome
+          again?" conclusion, but the user then reconsidered and asked
+          for the observation to be removed entirely -- it does not
+          appear anywhere on the page now, and should not be re-added
+          without a fresh explicit request. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -1040,21 +1043,6 @@ export default function RomePage() {
             Square.
           </p>
         </Reveal>
-
-        {/* A brief personal observation closing out the sightseeing
-            narrative -- added per the user's request to replace the
-            removed "An Unexpected Transport Problem" beat (Day 2). Plain
-            body text, no heading, a one-off personal impression rather
-            than a generalisation about Italians. */}
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal delay={0.2} className='mt-10 md:mt-12 text-center'>
-            <Paragraphs
-              items={[
-                "One thing I noticed on this trip was the contrast with our recent visit to Barcelona. There, strangers went out of their way to help us, even when we hadn't asked. In Rome, we experienced quite the opposite on several occasions. People seemed less patient, especially with a group of nine travelling together. Of course, these were just our personal experiences, but the difference was noticeable.",
-              ]}
-            />
-          </Reveal>
-        </div>
       </section>
 
       {/* 13B. THE JOURNEY HOME -- re-titled "A Little Panic at Roma
@@ -1147,12 +1135,17 @@ export default function RomePage() {
           earlier already carries that beat), no cost box, no My Tip, no
           map. Rewritten per the user's request to soften the original
           "no desire to return" framing into a more honest, undecided
-          note (open to a future visit with her son, not a Barcelona
-          comparison), while keeping the "Absolutely" recommendation for
-          first-time visitors as the closing line, now bolded in full per
-          the brief. Closes the page (pb-16 md:pb-20), same
-          text->new-chapter rhythm (CHAPTER_GAP_START) as every other
-          chapter transition. */}
+          note (open to a future visit with her son), while keeping the
+          "Absolutely" recommendation for first-time visitors as the
+          closing line, bolded in full per the brief. A Rome/Barcelona
+          people-and-patience observation was briefly added here (moved
+          from its own standalone paragraph at the end of the
+          sightseeing narrative), but the user then reconsidered and
+          asked for it to be removed entirely rather than relocated --
+          it does not appear anywhere on the page and should not be
+          re-added without a fresh explicit request. Closes the page
+          (pb-16 md:pb-20), same text->new-chapter rhythm
+          (CHAPTER_GAP_START) as every other chapter transition. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
