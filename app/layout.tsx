@@ -35,6 +35,16 @@ const poppins = localFont({
   display: "swap",
 });
 
+// preload: false -- Fredoka's only className reference anywhere in the
+// codebase is inside components/ui/scroll-expansion-hero.tsx's
+// mediaSrc-gated branch, and the homepage (its only caller) passes
+// bgImageSrc instead of mediaSrc -- so this family isn't actually
+// rendered on any current page, confirmed against the live homepage
+// HTML. Every page was still forcing its three weights to download via
+// an eager <link rel="preload"> in <head>, competing with each page's
+// own hero image for early bandwidth on mobile, for a font nothing
+// currently paints. Kept loadable (not removed) in case a future
+// mediaSrc call site needs it; display: 'swap' covers that case.
 const fredoka = localFont({
   src: [
     { path: "./fonts/fredoka/fredoka-400.woff2", weight: "400", style: "normal" },
@@ -43,6 +53,7 @@ const fredoka = localFont({
   ],
   variable: "--font-fredoka",
   display: "swap",
+  preload: false,
 });
 
 const playfair = localFont({
@@ -55,6 +66,11 @@ const playfair = localFont({
   display: "swap",
 });
 
+// preload: false -- Caveat is declared/vendored but not currently used
+// by any component's className anywhere in the codebase (verified via a
+// full-repo search). Keep the family available via its CSS variable for
+// future use, just stop forcing an unconditional download of it on every
+// page load.
 const caveat = localFont({
   src: [
     { path: "./fonts/caveat/caveat-600.woff2", weight: "600", style: "normal" },
@@ -62,6 +78,7 @@ const caveat = localFont({
   ],
   variable: "--font-caveat",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {

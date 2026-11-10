@@ -188,6 +188,18 @@ export default function BarcelonaPage() {
           fill
           priority
           sizes='100vw'
+          // Mobile performance fix: this photo's dense stonework/foliage
+          // texture is high-entropy and barely shrinks under format
+          // changes alone (tested directly: WebP q75 ~525KB vs q65
+          // ~480KB for this image), and at the ~1200px-wide srcset entry
+          // a phone actually requests, that single file is the dominant
+          // cost behind this page's mobile LCP. 65 (down from the
+          // default 75) trims that without a perceptible quality loss --
+          // safe specifically here because the flat bg-black/28 wash
+          // below already sits over the whole photo for text legibility,
+          // masking the extra compression. No other image on this site
+          // has its quality lowered.
+          quality={65}
           // The source photo is portrait, so object-fit: cover crops it
           // very differently per breakpoint. On desktop the hero box is
           // far wider than tall, so the image's full width always shows
