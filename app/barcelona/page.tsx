@@ -197,8 +197,10 @@ export default function BarcelonaPage() {
           // default 75) trims that without a perceptible quality loss --
           // safe specifically here because the flat bg-black/28 wash
           // below already sits over the whole photo for text legibility,
-          // masking the extra compression. No other image on this site
-          // has its quality lowered.
+          // masking the extra compression. This was the first hero on
+          // this site to have its quality lowered; Rome and Tenerife's
+          // heroes later got the same treatment once real production
+          // data showed the identical pattern there.
           quality={65}
           // The source photo is portrait, so object-fit: cover crops it
           // very differently per breakpoint. On desktop the hero box is

@@ -254,6 +254,16 @@ export default function TenerifePage() {
           fill
           priority
           sizes='100vw'
+          // Mobile performance fix, same recipe validated on Barcelona's
+          // hero: quality 65 (down from the default 75) measurably trims
+          // this photo's bytes with no perceptible quality loss -- safe
+          // here because the flat bg-black/28 wash below already sits
+          // over the whole photo for text legibility, same as Barcelona/
+          // Rome. The master file itself is already a compact 1800x2400
+          // (well under the 3840px this site's largest responsive size
+          // ever requests), so no resize was needed here -- only the
+          // delivery quality.
+          quality={65}
           className='object-cover object-[30%_40%] md:object-[48%_30%]'
         />
         {/* Readability treatment: one flat, even dark wash across the

@@ -262,6 +262,17 @@ export default function RomePage() {
           fill
           priority
           sizes='100vw'
+          // Mobile performance fix, same recipe validated on Barcelona's
+          // hero: quality 65 (down from the default 75) measurably trims
+          // this photo's bytes at the sizes a phone actually requests,
+          // with no perceptible quality loss -- safe here because the
+          // flat bg-black/28 wash below already sits over the whole
+          // photo for text legibility, same as Barcelona/Tenerife. The
+          // master file (Hero_web.jpeg) was also re-saved at a max width
+          // of 3840px (matching the largest responsive size this site
+          // ever requests) instead of its original ~4280px, which was
+          // larger than any requested size and only added dead weight.
+          quality={65}
           className='object-cover object-[50%_45%] md:object-[50%_40%]'
         />
         <div className='absolute inset-0 bg-black/28' />

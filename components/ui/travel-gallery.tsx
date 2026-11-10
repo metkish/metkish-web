@@ -404,7 +404,19 @@ function Photo({ item, className }: { item: GalleryItem; className: string }) {
         src={item.src}
         alt={item.alt}
         fill
-        sizes='(max-width: 768px) 100vw, 75vw'
+        // Mobile performance fix: this card never actually renders at
+        // 100vw/75vw -- every block above sits inside the gallery's own
+        // `max-w-[100rem] mx-auto px-6 md:px-12` wrapper (see #travels in
+        // app/page.tsx) at `w-full md:w-[70%]`. The old sizes value told
+        // the browser (and Next's responsive image pipeline) this card
+        // could be nearly full-viewport-wide, so it fetched a much larger
+        // srcset entry than the card ever displays -- confirmed directly
+        // against real card dimensions, not a guess. This value mirrors
+        // the real CSS: full viewport width minus the wrapper's 24px/side
+        // mobile padding, or 70% of the (max 1600px, 48px/side-padded)
+        // wrapper from the md breakpoint up. Same displayed pixels, just
+        // the correct srcset entry gets requested.
+        sizes='(min-width: 768px) calc(min(100vw - 96px, 1504px) * 0.7), calc(100vw - 48px)'
         className='object-cover transition-transform duration-300 hover:scale-105'
       />
     </div>

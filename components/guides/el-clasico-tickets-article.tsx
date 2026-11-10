@@ -376,6 +376,7 @@ export default function ElClasicoTicketsArticle() {
               alt='Our view of Spotify Camp Nou from our €899 seats at El Clásico in October 2026.'
               width={5712}
               height={4284}
+              sizes='(min-width: 768px) 768px, 100vw'
               className='w-full h-auto'
               priority
             />
@@ -440,6 +441,7 @@ export default function ElClasicoTicketsArticle() {
                   alt='Our FC Barcelona membership confirmation email, with our name and membership number redacted.'
                   width={651}
                   height={481}
+                  sizes='(min-width: 430px) 430px, 100vw'
                   className='w-full h-auto'
                 />
               </div>
@@ -605,6 +607,7 @@ export default function ElClasicoTicketsArticle() {
                   alt='Our FC Barcelona ticket booking confirmation for four tickets to FC Barcelona vs Real Madrid, with membership numbers redacted.'
                   width={1179}
                   height={1934}
+                  sizes='(min-width: 430px) 430px, 100vw'
                   className='w-full h-auto'
                 />
               </div>
@@ -736,6 +739,7 @@ export default function ElClasicoTicketsArticle() {
                 alt="Price tag showing €194.99 for an official FC Barcelona men's football jersey at the Barça Store."
                 width={2610}
                 height={2480}
+                sizes='(min-width: 430px) 430px, 100vw'
                 className='w-full h-auto'
               />
               <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
@@ -784,6 +788,7 @@ export default function ElClasicoTicketsArticle() {
                 alt='FC Barcelona El Clásico ticket showing our assigned seating section at Spotify Camp Nou.'
                 width={1071}
                 height={845}
+                sizes='(min-width: 672px) 672px, 100vw'
                 className='w-full h-auto'
               />
               <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
@@ -813,6 +818,7 @@ export default function ElClasicoTicketsArticle() {
                 alt='Our empty seats in the corner section at El Clásico, before kick-off.'
                 width={4284}
                 height={5712}
+                sizes='(min-width: 430px) 430px, 100vw'
                 className='w-full h-auto'
               />
             </Reveal>

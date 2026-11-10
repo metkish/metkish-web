@@ -282,7 +282,14 @@ export default function ItalyPage() {
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_on%20the%20road_web.jpeg'
               alt='View through the windscreen approaching Italy on the motorway, road signs for Milano, Venezia and Trieste visible.'
               fill
-              sizes='(min-width: 768px) 538px, 85vw'
+              // Mobile performance fix: this container is 85% of the
+              // page's own content column (100vw minus this section's
+              // px-6 padding), not 85% of the raw viewport -- the old
+              // '85vw' sizes value ignored that padding and made the
+              // browser fetch a noticeably larger srcset entry than this
+              // photo ever displays at. Same fix applied to the other two
+              // flagged photos in this chapter below.
+              sizes='(min-width: 768px) 538px, calc((100vw - 48px) * 0.85)'
               className='object-cover'
             />
           </div>
@@ -332,7 +339,7 @@ export default function ItalyPage() {
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Milano_streets_web.jpeg'
               alt='A quiet Milano street with a flower-covered balcony.'
               fill
-              sizes='(min-width: 768px) 350px, 88vw'
+              sizes='(min-width: 768px) 350px, calc((100vw - 48px) * 0.88)'
               className='object-cover'
             />
           </div>
@@ -435,7 +442,7 @@ export default function ItalyPage() {
               src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Duoma.jpeg'
               alt="Milano's Duomo cathedral, seen from Piazza del Duomo on a Sunday morning."
               fill
-              sizes='(min-width: 768px) 400px, 85vw'
+              sizes='(min-width: 768px) 400px, calc((100vw - 48px) * 0.85)'
               className='object-cover'
             />
           </div>
