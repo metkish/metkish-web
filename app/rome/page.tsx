@@ -402,8 +402,9 @@ export default function RomePage() {
           <Reveal delay={0.3} className='mt-8 md:mt-10 max-w-2xl mx-auto'>
             <InlineTip>
               My tip: Always double-check your exact departure station
-              when booking train tickets. Trieste has several stations,
-              and they are not interchangeable.
+              when booking train tickets. Trieste has more than one train
+              station, so make sure you check the departure station
+              carefully when booking your tickets.
             </InlineTip>
           </Reveal>
         </div>
@@ -1166,7 +1167,7 @@ export default function RomePage() {
                 "After visiting Rome twice, I can't say I'm already dreaming of going back.",
                 "And that's not because Rome isn't worth visiting. Quite the opposite.",
                 "There's so much history here that even if you're not particularly interested in art, architecture or culture, it's difficult not to be impressed. Standing in front of the Pantheon, knowing it's been there for almost 2,000 years, is something extraordinary. And stepping inside to look up at that enormous dome makes it even more impressive.",
-                'But Rome can also be overwhelming. On this visit, the crowds were enormous, and travelling in a group of nine made it harder to really enjoy everything around us.',
+                'Another thing that affected my experience was the attitude of some of the people we encountered. Unfortunately, not everyone was particularly friendly or welcoming, and those small interactions can leave an impression on how you remember a place.',
                 "Of course, every visit is different, and perhaps I'd experience the city differently another time. My son hasn't been to Rome yet, so I wouldn't rule out returning one day.",
                 "But for now, Rome simply isn't a place I feel drawn to revisit.",
                 <strong key='recommend' className='font-semibold text-black dark:text-white'>
