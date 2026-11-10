@@ -176,14 +176,18 @@ export async function generateMetadata({
   }
 
   const description = 'The full story is on its way.';
+  const url = `https://www.metkish.com/behind-the-trip/${t.slug}`;
 
   return {
     title: `${t.kicker} — Metkish`,
     description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       title: `${t.kicker} — Metkish`,
       description,
-      url: `https://metkish.com/behind-the-trip/${t.slug}`,
+      url,
     },
   };
 }

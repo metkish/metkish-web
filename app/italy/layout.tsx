@@ -10,13 +10,13 @@ import type { ReactNode } from 'react';
 // exists) and lose its og-italy.jpg social preview and canonical URL.
 export const metadata: Metadata = {
   title: 'Italy — Metkish',
-  description: 'Italy · Road Trip — the story is on its way.',
+  description: 'Italy · April 2026 — a road trip from Milan to Cinque Terre and Pisa.',
   alternates: {
     canonical: 'https://www.metkish.com/italy',
   },
   openGraph: {
     title: 'Italy — Metkish',
-    description: 'Italy · Road Trip — the story is on its way.',
+    description: 'Italy · April 2026 — a road trip from Milan to Cinque Terre and Pisa.',
     url: 'https://www.metkish.com/italy',
     images: [
       {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Italy — Metkish',
-    description: 'Italy · Road Trip — the story is on its way.',
+    description: 'Italy · April 2026 — a road trip from Milan to Cinque Terre and Pisa.',
     images: ['/og/og-italy.jpg'],
   },
 };
