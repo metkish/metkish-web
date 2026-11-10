@@ -685,6 +685,19 @@ export default function RomePage() {
           paragraphs to three natural ones (the two one-sentence closing
           lines folded together), per the "avoid one-sentence paragraphs"
           rule. */}
+      {/* 10. DAY 1 -- ROME'S FAMOUS LANDMARKS (19 October). A top-level
+          chapter; the three photos are spread naturally through the
+          story rather than grouped at the end, per the brief. The
+          sightseeing overview map that used to sit here (a single-city
+          marker-only map with no real street/river background available,
+          see the removed RomeItineraryMap.tsx) was removed at the
+          user's request -- it read as unfinished, mostly empty beige
+          space with pink dots and labels and no real geographic
+          background, and the page doesn't need it. The "Exploring
+          Historic Rome" sub-heading that used to split this paragraph
+          from the itinerary intro above was removed at the user's
+          request -- both paragraphs now flow one after another under
+          the single "Three days exploring Rome" heading instead. */}
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -696,33 +709,6 @@ export default function RomePage() {
               className='mt-5 text-center'
               items={[
                 "This trip was a little different from what I would normally plan. We were travelling with a parish group, so alongside Rome's famous landmarks, our itinerary included all four major papal basilicas.",
-              ]}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 10. DAY 1 -- ROME'S FAMOUS LANDMARKS (19 October). A top-level
-          chapter; the three photos are spread naturally through the
-          story rather than grouped at the end, per the brief. The
-          sightseeing overview map that used to sit here (a single-city
-          marker-only map with no real street/river background available,
-          see the removed RomeItineraryMap.tsx) was removed at the
-          user's request -- it read as unfinished, mostly empty beige
-          space with pink dots and labels and no real geographic
-          background, and the page doesn't need it. This section now
-          follows "Three days exploring Rome" directly, so it opens with
-          the ordinary text->new-chapter spacing (CHAPTER_GAP_START)
-          instead of the map->content pause it used before. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
-        <div className='max-w-2xl mx-auto text-center'>
-          <Reveal>
-            <ChapterHeading italic>
-              Exploring Historic Rome
-            </ChapterHeading>
-            <Paragraphs
-              className='mt-5 text-center'
-              items={[
                 "We started our first full day at the Basilica of St. John Lateran, the first of the four major papal basilicas on our itinerary. From there, we explored some of Rome's best-known landmarks: the Colosseum, Vittoriano, Trevi Fountain, the Spanish Steps and the Pantheon.",
               ]}
             />
