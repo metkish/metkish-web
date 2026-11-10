@@ -696,7 +696,6 @@ export default function RomePage() {
               className='mt-5 text-center'
               items={[
                 "This trip was a little different from what I would normally plan. We were travelling with a parish group, so alongside Rome's famous landmarks, our itinerary included all four major papal basilicas.",
-                'What I enjoyed much less were the crowds. I had visited Rome before, but this time the number of people around the main attractions was overwhelming.',
               ]}
             />
           </Reveal>
