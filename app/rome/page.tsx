@@ -1150,10 +1150,11 @@ export default function RomePage() {
           note (open to a future visit with her son, not a Barcelona
           comparison), while keeping the "Absolutely" recommendation for
           first-time visitors as the closing line, now bolded in full per
-          the brief. Closes the page (pb-16 md:pb-20), same
+          the brief. Closes the page (pb-[calc(3rem+50px)] md:pb-[calc(3.5rem+50px)],
+          matching the Tenerife/Barcelona footer spacing), same
           text->new-chapter rhythm (CHAPTER_GAP_START) as every other
           chapter transition. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-[calc(3rem+50px)] md:pb-[calc(3.5rem+50px)] bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Final Thoughts</RouteLabel>
