@@ -161,20 +161,40 @@ const CAR_WHEEL_HINTS: [number, number][] = [
   [8.6, 9.1],
   [8.6, 14.9],
 ];
-const TRANSFER_PATHS = [
-  'M4 16 5 10.6a2 2 0 0 1 2-1.6h7.6a2 2 0 0 1 1.9 1.3l1.5 4.2',
-  'M3.5 16h17v2.6h-2v-.4a1 1 0 0 0-1-1h-.4a1 1 0 0 0-1 1v.4H7.9v-.4a1 1 0 0 0-1-1h-.4a1 1 0 0 0-1 1v.4h-2z',
-  'M9.2 9.4V6.8h5.6v2.6',
-];
-const TRANSFER_WHEELS: [number, number][] = [
-  [7, 16.2],
-  [16.5, 16.2],
+// BUS_BODY_PATH -- a clean, minimal, boxy top-down bus silhouette,
+// replacing an earlier thin stroked outline that read as an odd, hard-to-
+// recognise shape at small sizes (its outline was built from open stroke
+// paths, not a filled silhouette, so it didn't match the solid-silhouette
+// language every other vehicle icon on the site uses). Same authoring
+// convention as CAR_BODY_PATH/TRAIN_BODY_PATH: a 24x24 local box, nose-
+// first along +x so rotate(vehicleAngle) always faces the real direction
+// of travel with no extra offset. Proportioned boxier and taller than
+// CAR_BODY_PATH (a bus's straight, squared-off sides, not a car's rounder
+// corners) but shorter than TRAIN_BODY_PATH (a bus is not as long/flat as
+// a train) -- scaled to sit in the same size range as the car icon so it
+// reads as clearly visible without dominating the map. BUS_WINDOW is a
+// single cutout band near the top of the body (same mask technique as
+// CAR_ROOF/TRAIN_WINDOWS -- a real hole revealing whatever is actually
+// underneath, not a flat patch that would mismatch the pink route/marker
+// it rides over), left a touch short of the front nose so that margin
+// reads as the windshield without adding a separate decorative line.
+// BUS_WHEEL_HINTS are two cutout ellipses along the bottom edge, same
+// size/style as CAR_WHEEL_HINTS -- visible wheels are what keeps a boxy
+// top-down silhouette reading as "bus" rather than "train" (the train
+// icon deliberately has none). No other decoration added, per explicit
+// direction to keep the icon minimal.
+const BUS_BODY_PATH =
+  'M 6,8.8 Q 4.3,9 4.3,12 Q 4.3,15 6,15.2 L 18,15.2 Q 19.7,15 19.7,12 Q 19.7,9 18,8.8 Z';
+const BUS_WINDOW = { x: 5.6, y: 9.6, width: 11.4, height: 2, rx: 0.6 };
+const BUS_WHEEL_HINTS: [number, number][] = [
+  [8, 15.2],
+  [16, 15.2],
 ];
 
 // TRAIN_BODY_PATH — a real train icon (added for the Rome page's
 // Trieste Airport -> Venezia Mestre -> Roma Termini leg), distinct from
-// both CAR_BODY_PATH (a passenger car) and the TRANSFER_PATHS/WHEELS
-// shuttle-van icon 'train' mode previously borrowed. Same top-down,
+// both CAR_BODY_PATH (a passenger car) and the BUS_BODY_PATH
+// shuttle/bus icon 'train' mode previously borrowed. Same top-down,
 // solid-silhouette language and the same nose-first-along-+x authoring
 // convention as PLANE_PATH/CAR_BODY_PATH (rotate(vehicleAngle) then
 // always faces the real direction of travel). A long, low, gently
@@ -233,6 +253,7 @@ export default function JourneyMapScene({
   // the wrong (or a since-unmounted) mask.
   const carMaskId = useId();
   const trainMaskId = useId();
+  const busMaskId = useId();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -378,14 +399,25 @@ export default function JourneyMapScene({
         if (!text) return;
         // Default placement (unset on every point except where noted below):
         // text grows to the right of the dot, flipping left only close to a
-        // narrow frame's edge. 'above' is an opt-in alternative for a point
-        // whose incoming route approaches from the side at a shallow angle —
-        // see JourneyPoint.labelPlacement's doc comment for the Loro Parque
-        // case this exists for. Only a point that explicitly sets it takes
-        // this branch; every other point's rendering is unchanged.
-        if (labelPoints[i].labelPlacement === 'above') {
+        // narrow frame's edge. 'above'/'below'/'left' are opt-in
+        // alternatives for a point whose incoming route approaches from the
+        // side at a shallow angle, or (added for Iceland's full-island
+        // road-trip maps) whose real-world neighbour lands only a handful
+        // of screen pixels away at that much wider zoom — see
+        // JourneyPoint.labelPlacement's doc comment. Only a point that
+        // explicitly sets one of these takes that branch; every other
+        // point's rendering (including the existing 'above' case) is
+        // unchanged.
+        const placement = labelPoints[i].labelPlacement;
+        if (placement === 'above') {
           text.style.textAlign = 'center';
           text.style.transform = 'translate(-50%, calc(-100% - 10px))';
+        } else if (placement === 'below') {
+          text.style.textAlign = 'center';
+          text.style.transform = 'translate(-50%, 10px)';
+        } else if (placement === 'left') {
+          text.style.textAlign = 'right';
+          text.style.transform = 'translate(-14px, -50%) translateX(-100%)';
         } else {
           const flip = containerSize.width - left < LABEL_FLIP_MARGIN_PX;
           text.style.textAlign = flip ? 'right' : 'left';
@@ -792,21 +824,21 @@ export default function JourneyMapScene({
               </>
             ) : vehicleMode === 'transfer' ? (
               <>
-                {TRANSFER_PATHS.map((d, i) => (
-                  <path
-                    key={i}
-                    d={d}
-                    fill='none'
-                    stroke={VEHICLE_STROKE}
-                    strokeWidth={1.3}
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    vectorEffect='non-scaling-stroke'
+                <mask id={busMaskId} maskUnits='userSpaceOnUse' x={-4} y={-4} width={32} height={32}>
+                  <path d={BUS_BODY_PATH} fill='white' />
+                  <rect
+                    x={BUS_WINDOW.x}
+                    y={BUS_WINDOW.y}
+                    width={BUS_WINDOW.width}
+                    height={BUS_WINDOW.height}
+                    rx={BUS_WINDOW.rx}
+                    fill='black'
                   />
-                ))}
-                {TRANSFER_WHEELS.map(([cx, cy], i) => (
-                  <circle key={i} cx={cx} cy={cy} r={1.2} fill='none' stroke={VEHICLE_STROKE} strokeWidth={1.3} vectorEffect='non-scaling-stroke' />
-                ))}
+                  {BUS_WHEEL_HINTS.map(([cx, cy], i) => (
+                    <ellipse key={i} cx={cx} cy={cy} rx={0.6} ry={0.32} fill='black' />
+                  ))}
+                </mask>
+                <path d={BUS_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' mask={`url(#${busMaskId})`} />
               </>
             ) : (
               <>

@@ -29,8 +29,15 @@ export interface JourneyPoint {
    * lib/journeys/tenerife.ts for the worked case (its final approach runs
    * almost due east into the marker, so a right-side label overlapped the
    * line on every mobile width, 320-414px, while sitting clear on desktop's
-   * wider frame). The dot's own position never changes either way. */
-  labelPlacement?: 'right' | 'above';
+   * wider frame). 'left' and 'below' are the same idea in the other two
+   * directions, added for Iceland's full-island road-trip maps, where
+   * several real stops land only a handful of screen pixels apart at that
+   * much wider zoom (e.g. Reynisfjara and Vík, ~3km apart in reality) —
+   * spreading a tight cluster's labels across all four sides is the only
+   * way to keep each one legible without moving any point's real
+   * coordinate. The dot's own position never changes, whichever side its
+   * label is told to grow from. */
+  labelPlacement?: 'right' | 'left' | 'above' | 'below';
   /** Marks this point as a secondary/minor waypoint (e.g. a detour stop
    * between two main road-trip bases) rather than a major stop. Unset on
    * every existing point, which keeps the original default marker/label

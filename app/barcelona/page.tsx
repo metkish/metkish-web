@@ -52,8 +52,14 @@ function Reveal({
 // small one-off presentational helper local to each page, same as Reveal/
 // ChapterHeading/Paragraphs above.
 function InlineTip({ children }: { children: ReactNode }) {
+  // text-left is explicit, not inherited: this component is always used
+  // inside a text-center column (every "My tip" box site-wide sat inside
+  // one), which silently center-aligned every tip's text including the
+  // label. Forcing it here, once, at the component itself fixes every
+  // existing usage across Rome/Barcelona/Iceland and any future one,
+  // regardless of what alignment its wrapping container happens to use.
   return (
-    <p className='border-l-2 border-pink-300 dark:border-pink-400/60 pl-4 text-base italic font-[family-name:var(--font-poppins)] font-light text-black/75 dark:text-white/75 leading-relaxed'>
+    <p className='border-l-2 border-pink-300 dark:border-pink-400/60 pl-4 text-left text-base italic font-[family-name:var(--font-poppins)] font-light text-black/75 dark:text-white/75 leading-relaxed'>
       {children}
     </p>
   );
