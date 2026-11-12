@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
-import { ChapterHeading, Eyebrow, Paragraphs, Statement } from '@/components/ui/typography';
+import { ChapterHeading, Eyebrow, Paragraphs } from '@/components/ui/typography';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
 import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 import {
@@ -232,25 +232,17 @@ export default function IcelandPage() {
       />
 
       {/* 3. GETTING THERE -- parking + the outbound/return flight. The
-          page's subtitle sentence opens this first body section (per
-          explicit direction: the hero itself stays byte-identical in
-          shape to every other destination's hero, title + location/date
-          tag only -- the subtitle lives here instead, as the page's own
-          opening line), in the same italic Statement style used elsewhere
-          on the site for a standalone punctuating line. Same map->content
-          pause and CHAPTER_GAP_END close as every other destination's
-          first chapter, since the flight map follows directly after this
+          introductory Statement line that used to open this section
+          ("Five days of waterfalls...") has been removed per explicit
+          direction, so RouteLabel/"Getting There" is now the first
+          element in the section (no delay/margin, matching the sitewide
+          first-Reveal-in-a-section convention). Same map->content pause
+          and CHAPTER_GAP_END close as every other destination's first
+          chapter, since the flight map follows directly after this
           section. */}
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <Statement className='text-2xl md:text-3xl'>
-              Five days of waterfalls, glaciers and landscapes unlike
-              anywhere we&apos;d been before.
-            </Statement>
-          </Reveal>
-
-          <Reveal delay={0.1} className='mt-10 md:mt-12'>
             <RouteLabel>Getting There</RouteLabel>
             <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               A direct flight from Ljubljana
@@ -375,10 +367,12 @@ export default function IcelandPage() {
 
       {/* 6. OUR FIRST IMPRESSIONS OF ICELAND -- organised around places
           and experiences (Perlan, Reykjavík/Sun Voyager, Blue Lagoon),
-          not a day-by-day itinerary -- no "Day 1" label on this heading
-          and no "Day 2"/"Day 3" labels anywhere else on this page, per
-          explicit direction. Each of the three place-subsections gets
-          the same small pink accent line as every other Metkish
+          not a day-by-day itinerary -- this chapter has no heading of
+          its own (removed per explicit direction, so the accommodation
+          section above flows straight into Perlan below) and no
+          "Day 1"/"Day 2"/"Day 3" labels appear anywhere on this page.
+          Each of the three place-subsections gets the same small pink
+          accent line as every other Metkish
           sub-chapter (RouteLabel, see components/journey/annotation-kit)
           -- reused as-is, not a new design. No Perlan photograph exists,
           so that sub-beat is text-only -- no placeholder or stock image.
@@ -405,12 +399,6 @@ export default function IcelandPage() {
       <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <ChapterHeading as='h2' italic>
-              Our First Impressions of Iceland
-            </ChapterHeading>
-          </Reveal>
-
-          <Reveal delay={0.08} className='mt-10 md:mt-12'>
             <RouteLabel>Perlan</RouteLabel>
             <ChapterHeading as='h3' italic className='mt-3'>
               An Unexpected Highlight
@@ -481,10 +469,9 @@ export default function IcelandPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "Later that day, we headed to Blue Lagoon. I know it's one of Iceland's most famous and commercialized attractions, but after visiting it myself, I would still say it's absolutely worth experiencing.",
-                'What fascinated us most was not only the milky-blue geothermal water, but the extraordinary volcanic landscape surrounding the lagoon.',
+                "Later that day, we headed to Blue Lagoon, one of Iceland's most famous attractions. Despite its popularity, I was genuinely impressed by what we experienced.",
+                "What fascinated us most wasn't just the milky-blue geothermal water, but the extraordinary volcanic landscape surrounding the lagoon.",
                 'There had been a volcanic eruption in the area before our visit, and the lava had come remarkably close to the bathing complex. Seeing the contrast between the dark volcanic rock, rising steam and pale-blue water was unforgettable.',
-                'Even though Blue Lagoon is a major tourist attraction, I would definitely recommend including it in a first visit to Iceland.',
               ]}
             />
           </Reveal>
@@ -614,7 +601,6 @@ export default function IcelandPage() {
                 "It's difficult to believe that the water bubbling and flowing through parts of this landscape can reach temperatures of around 100°C.",
                 "The most interesting part was waiting for Strokkur to erupt. You don't know exactly when it's going to happen, so everyone stands watching, phones in hand, hoping to capture the moment.",
                 'And then, suddenly, water shoots high into the air. Some people manage to record it, while others miss the moment completely and have to wait for the next eruption.',
-                'Watching this happen in front of us was a memorable experience, especially for the children.',
               ]}
             />
           </Reveal>
@@ -646,7 +632,7 @@ export default function IcelandPage() {
               items={[
                 "Our final stop was Gullfoss, one of Iceland's most impressive waterfalls.",
                 'What I remember most is the spray from the waterfall. The closer we walked towards it, the more we could feel the water — and we all got a little wet.',
-                'It was an interesting experience to see the power of the waterfall from so close, and a lovely final stop on our Golden Circle excursion.',
+                'Thanks to the sunshine and the mist rising from the waterfall, rainbows appeared everywhere. With the cold Icelandic air around us, the whole scene felt almost magical.',
               ]}
             />
           </Reveal>
