@@ -51,7 +51,7 @@
 import { useMemo } from 'react';
 import type { JourneyMode, JourneyPoint } from '@/lib/journeys/types';
 import { bezierPoint, project, projectSpan, routeCurveAngleAt, routeCurvePoint, screenAngle } from '@/components/journey/geo';
-import { CANARY_PATHS, FOCUS_PATHS, NEIGHBOUR_PATHS, WIDE_EUROPE_PATHS } from '@/components/journey/generated/geography';
+import { AUSTRIA_PATHS, CANARY_PATHS, NEIGHBOUR_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from '@/components/journey/generated/geography';
 import {
   CAR_BODY_PATH,
   CAR_ROOF,
@@ -239,7 +239,7 @@ export default function SocialMapScene({
         {NEIGHBOUR_PATHS.map((d, i) => (
           <path key={`neighbour-${i}`} d={d} fill={MUTED_LAND} opacity={0.76} />
         ))}
-        {FOCUS_PATHS.map((d, i) => (
+        {[...AUSTRIA_PATHS, ...SLOVENIA_PATHS].map((d, i) => (
           <path key={`focus-${i}`} d={d} fill={MUTED_LAND} stroke={MUTED_LINE} strokeWidth={1.6} vectorEffect='non-scaling-stroke' opacity={0.97} />
         ))}
         {CANARY_PATHS.map((d, i) => (

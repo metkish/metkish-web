@@ -223,6 +223,7 @@ export default function ItalyPage() {
           animating from Home toward Milano as it scrolls into view. */}
       <JourneyMapScene
         journey={ITALY_HOME_TO_MILANO_JOURNEY}
+        austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
 
@@ -752,6 +753,7 @@ export default function ItalyPage() {
           than a new page starting. Unchanged from the previous build. */}
       <JourneyMapScene
         journey={ITALY_MILANO_TO_LASPEZIA_JOURNEY}
+        austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
 
@@ -1109,6 +1111,7 @@ export default function ItalyPage() {
           rather than a new page starting. */}
       <JourneyMapScene
         journey={ITALY_LASPEZIA_TO_PISA_JOURNEY}
+        austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
 
@@ -1258,6 +1261,7 @@ export default function ItalyPage() {
           already ended. */}
       <JourneyMapScene
         journey={ITALY_PISA_TO_PESCHIERA_JOURNEY}
+        austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
 
@@ -1460,6 +1464,7 @@ export default function ItalyPage() {
           through as a plain waypoint only -- never marked as a stop. */}
       <JourneyMapScene
         journey={ITALY_PESCHIERA_TO_HOME_JOURNEY}
+        austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
 

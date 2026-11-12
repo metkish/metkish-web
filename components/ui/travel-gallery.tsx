@@ -51,7 +51,7 @@ const tenerife: GalleryItem = {
 // Real Iceland photo.
 const reykjavikPhoto1: GalleryItem = {
   id: 'reykjavik-1',
-  src: '/2025-10%20-%20Iceland_metkish%20page/Iceland_landing%20page.jpeg',
+  src: '/2025-10%20-%20Iceland/Iceland_landing%20page.jpeg',
   alt: 'Reykjavik',
   href: '/iceland',
 };

@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import type { Journey, JourneyLeg, JourneyMode, JourneyPoint } from '@/lib/journeys/types';
 import { bezierPoint, project, projectSpan, screenAngle, routeCurvePoint, routeCurveAngleAt } from './geo';
-import { CANARY_PATHS, FOCUS_PATHS, NEIGHBOUR_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
+import { AUSTRIA_PATHS, CANARY_PATHS, NEIGHBOUR_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
 
 // A hand-drawn, editorial-atlas palette — the same warm neutrals used
 // across the rest of the site, kept deliberately muted so the map reads as
@@ -197,6 +197,16 @@ export interface JourneyMapSceneProps {
    * rendering/animation logic — purely a container-size knob, the camera
    * framing itself is still authored per-leg via JourneyCamera.spanDeg. */
   heightClassName?: string;
+  /** Whether Austria renders with the same precise, stroked FOCUS
+   * treatment as Slovenia (true, the default -- preserves every existing
+   * map's look) or falls back to the plain NEIGHBOUR_PATHS fill, with no
+   * stroke, identical to every other background country (false). Slovenia
+   * itself is never affected by this prop and always renders FOCUS-style,
+   * since home is in Slovenia on every trip. Set this to false only for a
+   * destination whose own journey genuinely never flies out via
+   * Vienna/Graz -- Austria has no business being visually distinguished
+   * from its neighbours on a map that has nothing to do with it. */
+  austriaEmphasis?: boolean;
 }
 
 // A short, self-running cinematic moment — not a scroll-controlled
@@ -215,6 +225,7 @@ export default function JourneyMapScene({
   journey,
   className = '',
   heightClassName = DEFAULT_HEIGHT_CLASSNAME,
+  austriaEmphasis = true,
 }: JourneyMapSceneProps) {
   // Unique per mount (this page puts several JourneyMapScene instances on
   // one page) so each instance's <mask> id below can't collide with
@@ -610,9 +621,11 @@ export default function JourneyMapScene({
           {NEIGHBOUR_PATHS.map((d, i) => (
             <path key={`neighbour-${i}`} d={d} fill={MUTED_LAND} opacity={0.55} />
           ))}
-          {FOCUS_PATHS.map((d, i) => (
+          {/* Slovenia: always precise/FOCUS-style -- home is in Slovenia
+              on every trip, so this detail is relevant on every map. */}
+          {SLOVENIA_PATHS.map((d, i) => (
             <path
-              key={`focus-${i}`}
+              key={`slovenia-${i}`}
               d={d}
               fill={MUTED_LAND}
               stroke={MUTED_LINE}
@@ -621,6 +634,28 @@ export default function JourneyMapScene({
               opacity={0.8}
             />
           ))}
+          {/* Austria: FOCUS-style only when austriaEmphasis is true (the
+              default, preserving every page's existing look). When a
+              destination's own journey never flies out via Vienna/Graz,
+              the page passes austriaEmphasis={false} and Austria instead
+              renders with the exact same plain NEIGHBOUR_PATHS treatment
+              just below -- an ordinary background country, not a second
+              highlighted region. */}
+          {AUSTRIA_PATHS.map((d, i) =>
+            austriaEmphasis ? (
+              <path
+                key={`austria-${i}`}
+                d={d}
+                fill={MUTED_LAND}
+                stroke={MUTED_LINE}
+                strokeWidth={1}
+                vectorEffect='non-scaling-stroke'
+                opacity={0.8}
+              />
+            ) : (
+              <path key={`austria-${i}`} d={d} fill={MUTED_LAND} opacity={0.55} />
+            )
+          )}
           {CANARY_PATHS.map((d, i) => (
             <path
               key={`canary-${i}`}
@@ -639,9 +674,21 @@ export default function JourneyMapScene({
               else. Fill only, no stroke: the patch's own closing edge
               deliberately retraces the existing coastline vertices it
               extends from, so stroking it too would double-draw a line
-              CANARY_PATHS above already drew. */}
+              CANARY_PATHS above already drew.
+              extraLandFill/extraLandStroke let ONE journey override the
+              colour these render with (see that doc comment for why —
+              Iceland/Greenland on the Ljubljana -> Keflavik map, a distant
+              landmass with no surrounding baked coastline rather than a
+              small correction to one). Every journey that doesn't set them
+              — which is every journey except that one — falls through to
+              the exact same MUTED_LAND/MUTED_LINE this always rendered. */}
           {journey.extraLandPatches?.map((d, i) => (
-            <path key={`land-patch-${i}`} d={d} fill={MUTED_LAND} opacity={0.85} />
+            <path
+              key={`land-patch-${i}`}
+              d={d}
+              fill={journey.extraLandFill ?? MUTED_LAND}
+              opacity={journey.extraLandOpacity ?? 0.85}
+            />
           ))}
           {/* The new coastline edge each patch above actually adds —
               stroked, unfilled, drawn once so it reads as part of the same
@@ -651,11 +698,11 @@ export default function JourneyMapScene({
               key={`coastline-stroke-${i}`}
               d={d}
               fill='none'
-              stroke={MUTED_LINE}
+              stroke={journey.extraLandStroke ?? MUTED_LINE}
               strokeWidth={1}
               strokeLinejoin='round'
               vectorEffect='non-scaling-stroke'
-              opacity={0.85}
+              opacity={journey.extraLandOpacity ?? 0.85}
             />
           ))}
 

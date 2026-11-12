@@ -304,6 +304,7 @@ export default function RomePage() {
           as Tenerife's Home->Vienna map, so there's no visible seam. */}
       <JourneyMapScene
         journey={ROME_HOME_TO_TRIESTE_JOURNEY}
+        austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
 
@@ -440,6 +441,7 @@ export default function RomePage() {
           other map on the site. */}
       <JourneyMapScene
         journey={ROME_TRIESTE_TO_ROME_TRAIN_JOURNEY}
+        austriaEmphasis={false}
         heightClassName='h-[460px] sm:h-[560px] md:h-[640px]'
       />
 

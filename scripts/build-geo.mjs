@@ -209,16 +209,32 @@ async function main() {
   for (const f of countriesGeo.features) byCode[f.properties.A3] = f;
 
   // ---- Stage 1: Central Europe (Austria + Slovenia, precise; neighbors, plain) ----
-  const FOCUS = ['AUT', 'SVN'];
+  // Austria and Slovenia are kept as two SEPARATE path arrays (not one
+  // merged FOCUS set) because only Slovenia is unconditionally relevant
+  // on every destination's own Home map (home is in Slovenia, on every
+  // trip). Austria is only relevant for the destinations that actually
+  // fly out via Vienna/Graz -- the consuming components decide, per
+  // journey, whether AUSTRIA_PATHS renders with the same precise
+  // FOCUS-style stroke as Slovenia or falls back to the plain NEIGHBOUR
+  // treatment. See components/journey/JourneyMapScene.tsx's
+  // `austriaEmphasis` prop.
+  const AUSTRIA = ['AUT'];
+  const SLOVENIA = ['SVN'];
   const NEIGHBOURS = ['DEU', 'ITA', 'HRV', 'HUN', 'CHE', 'CZE', 'SVK', 'BIH', 'LIE'];
 
-  const focusPaths = [];
-  for (const code of FOCUS) {
-    const f = byCode[code];
-    if (!f) { console.warn('missing', code); continue; }
-    const rings = significantRings(f.geometry, { minAreaRatio: 0.02, maxRings: 3 });
-    for (const ring of rings) focusPaths.push(ringToPath(ring, 0.012));
+  function focusPathsFor(codes) {
+    const paths = [];
+    for (const code of codes) {
+      const f = byCode[code];
+      if (!f) { console.warn('missing', code); continue; }
+      const rings = significantRings(f.geometry, { minAreaRatio: 0.02, maxRings: 3 });
+      for (const ring of rings) paths.push(ringToPath(ring, 0.012));
+    }
+    return paths;
   }
+
+  const austriaPaths = focusPathsFor(AUSTRIA);
+  const sloveniaPaths = focusPathsFor(SLOVENIA);
 
   const neighbourPaths = [];
   for (const code of NEIGHBOURS) {
@@ -271,7 +287,7 @@ async function main() {
 
   const bytes = (s) => Buffer.byteLength(s, 'utf8');
   console.log('raw pts:', totalRawPts, 'simplified pts:', totalSimplifiedPts);
-  console.log('focus (AUT/SVN) rings:', focusPaths.length);
+  console.log('austria rings:', austriaPaths.length, 'slovenia rings:', sloveniaPaths.length);
   console.log('neighbour rings:', neighbourPaths.length);
   console.log('wide rings:', widePaths.length, 'bytes:', bytes(widePaths.join('')));
   console.log('canary rings:', canaryPaths.length, 'bytes:', bytes(canaryPaths.join('')));
@@ -283,12 +299,19 @@ async function main() {
 // components/journey/geo.ts uses at runtime, then baked into static SVG
 // path strings so nothing map-related ships or runs at request time.
 //
-// FOCUS_PATHS: Austria + Slovenia, precise outline (stage 1 close view).
+// AUSTRIA_PATHS / SLOVENIA_PATHS: precise outlines (stage 1 close view),
+// kept separate so a consumer can render Austria with either the precise
+// FOCUS-style stroke (only for the destinations that actually fly out via
+// Vienna/Graz) or the plain NEIGHBOUR-style fill (every other
+// destination) -- Slovenia is always FOCUS-style, since home is in
+// Slovenia on every trip.
 // NEIGHBOUR_PATHS: surrounding countries' land, plain fill, no stroke.
 // WIDE_EUROPE_PATHS: Europe / Atlantic / North Africa coastline (stage 2).
 // CANARY_PATHS: Canary Islands including Tenerife, fine detail (stage 3).
 
-export const FOCUS_PATHS: string[] = ${JSON.stringify(focusPaths, null, 2)};
+export const AUSTRIA_PATHS: string[] = ${JSON.stringify(austriaPaths, null, 2)};
+
+export const SLOVENIA_PATHS: string[] = ${JSON.stringify(sloveniaPaths, null, 2)};
 
 export const NEIGHBOUR_PATHS: string[] = ${JSON.stringify(neighbourPaths, null, 2)};
 

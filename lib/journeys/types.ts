@@ -127,4 +127,33 @@ export interface Journey {
    * edge deliberately retraces existing coastline vertices; stroking the
    * whole patch shape would double-draw that shared edge. */
   extraCoastlineStrokes?: string[];
+  /** Overrides the fill/stroke colour extraLandPatches/extraCoastlineStrokes
+   * render with for THIS journey only (both default to the shared
+   * MUTED_LAND/MUTED_LINE palette in JourneyMapScene.tsx when unset, so
+   * every existing journey -- Barcelona/Italy/Tenerife's own coastline
+   * patches included -- renders pixel-identically to before). Currently
+   * unset by every journey; kept as a general-purpose hook for a future
+   * patch that genuinely needs its own colour rather than the shared
+   * palette. */
+  extraLandFill?: string;
+  extraLandStroke?: string;
+  /** Overrides the opacity extraLandPatches/extraCoastlineStrokes render
+   * with for THIS journey only (both default to a fixed 0.85 in
+   * JourneyMapScene.tsx when unset, so every existing journey --
+   * Barcelona/Italy/Tenerife's own coastline patches included -- renders
+   * pixel-identically to before).
+   *
+   * Exists for Iceland/Greenland on
+   * ICELAND_LJUBLJANA_TO_KEFLAVIK_JOURNEY in lib/journeys/iceland.ts: an
+   * earlier pass tried making every landmass on that very-wide (spanDeg
+   * 66) map read at the same prominent, clearly-bordered 0.85 opacity,
+   * but that made the map look like a more detailed, more "drawn-in"
+   * style than every other Metkish flight map (compare the Vienna ->
+   * Tenerife flight in lib/journeys/tenerife.ts, which uses none of this
+   * machinery and just lets its distant backdrop render at the shared
+   * WIDE_EUROPE_PATHS default of 0.4). Setting this to 0.4 instead lets
+   * Iceland/Greenland fade to that exact same soft, understated tone --
+   * matching the rest of the site's flight maps -- without touching the
+   * fixed 0.85 every OTHER journey's own coastline patch still uses. */
+  extraLandOpacity?: number;
 }

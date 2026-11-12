@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import type { JourneyPoint } from '@/lib/journeys/types';
 import type { DepartureAirportRoute } from '@/lib/journeys/flights-departure-airports';
 import { project, projectSpan, routeCurvePoint } from './geo';
-import { FOCUS_PATHS, NEIGHBOUR_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
+import { AUSTRIA_PATHS, NEIGHBOUR_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
 
 // A static sibling of JourneyMapScene, for one specific shape of map that
 // engine can't produce: one `home` point fanned out to several airports
@@ -215,7 +215,7 @@ export default function DepartureAirportsMap({
           {NEIGHBOUR_PATHS.map((d, i) => (
             <path key={`neighbour-${i}`} d={d} fill={MUTED_LAND} opacity={0.55} />
           ))}
-          {FOCUS_PATHS.map((d, i) => (
+          {[...AUSTRIA_PATHS, ...SLOVENIA_PATHS].map((d, i) => (
             <path
               key={`focus-${i}`}
               d={d}
