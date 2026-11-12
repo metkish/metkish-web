@@ -8,6 +8,7 @@ import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import { ChapterHeading, Eyebrow, Paragraphs } from '@/components/ui/typography';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
+import { LazyAutoplayVideo } from '@/components/ui/lazy-autoplay-video';
 import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 import {
   ICELAND_HOME_TO_LJUBLJANA_JOURNEY,
@@ -752,14 +753,9 @@ export default function IcelandPage() {
 
         <Reveal delay={0.2} className='mt-8 md:mt-10 max-w-[240px] sm:max-w-xs mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
-            <video
+            <LazyAutoplayVideo
               src='/2025-10%20-%20Iceland/%C3%9Eingvellir%20National%20Park_web.mp4'
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload='auto'
-              aria-label='Walking along the rift at Þingvellir National Park, between the North American and Eurasian tectonic plates.'
+              ariaLabel='Walking along the rift at Þingvellir National Park, between the North American and Eurasian tectonic plates.'
               className='absolute inset-0 h-full w-full object-cover'
             />
           </div>
@@ -785,14 +781,9 @@ export default function IcelandPage() {
 
         <Reveal delay={0.3} className='mt-10 md:mt-12 max-w-[300px] sm:max-w-[400px] md:max-w-[520px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
-            <video
+            <LazyAutoplayVideo
               src='/2025-10%20-%20Iceland/Geysir_web.mp4'
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload='auto'
-              aria-label='The Strokkur geyser erupting, water and steam shooting high into the air at the Geysir geothermal area.'
+              ariaLabel='The Strokkur geyser erupting, water and steam shooting high into the air at the Geysir geothermal area.'
               className='absolute inset-0 h-full w-full object-cover'
             />
           </div>
@@ -817,14 +808,9 @@ export default function IcelandPage() {
 
         <Reveal delay={0.4} className='mt-10 md:mt-12 max-w-3xl mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[16/9]'>
-            <video
+            <LazyAutoplayVideo
               src='/2025-10%20-%20Iceland/Gullfoss_web.mp4'
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload='auto'
-              aria-label='Gullfoss waterfall seen from close by, a wide curtain of water falling into the canyon with a rainbow in the spray.'
+              ariaLabel='Gullfoss waterfall seen from close by, a wide curtain of water falling into the canyon with a rainbow in the spray.'
               className='absolute inset-0 h-full w-full object-cover'
             />
           </div>
@@ -1127,9 +1113,9 @@ export default function IcelandPage() {
                     href='https://www.ferdamalastofa.is/en/news/reynisfjara-recent-changes-due-to-coastal-erosion'
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='underline underline-offset-4 text-black dark:text-white hover:text-black/70 dark:hover:text-white/70'
+                    className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
                   >
-                    official update about these changes
+                    official update about these changes ↗
                   </a>{' '}
                   in February 2026.
                 </>,

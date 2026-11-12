@@ -600,16 +600,7 @@ export default function RomePage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                <>
-                  Our train arrived at Roma Termini at 11:30 PM, and our{' '}
-                  <Link
-                    href='/behind-the-trip/hotels'
-                    className='underline underline-offset-2'
-                  >
-                    accommodation
-                  </Link>{' '}
-                  was about a 20-minute drive from the city centre.
-                </>,
+                'Our train arrived at Roma Termini at 11:30 PM, and our accommodation was about a 20-minute drive from the city centre.',
                 "With nine people, children and suitcases, public transport wasn't a practical option at that hour.",
                 'We could have taken several taxis, but I preferred to keep everyone together, so I arranged a private minibus in advance.',
                 'The driver was waiting for us as agreed, and everything went smoothly.',

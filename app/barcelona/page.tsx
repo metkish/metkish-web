@@ -709,7 +709,7 @@ export default function BarcelonaPage() {
         <Reveal delay={0.3} className='mt-6 md:mt-8 text-center'>
           <Link
             href='/behind-the-trip/el-clasico-tickets'
-            className='inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
+            className='inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
           >
             Read our El Clásico experience →
           </Link>
@@ -1231,7 +1231,7 @@ export default function BarcelonaPage() {
             Curious how we did it? Read{' '}
             <Link
               href='/behind-the-trip/how-we-find-restaurants'
-              className='text-black dark:text-white hover:underline underline-offset-4'
+              className='inline-block text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
             >
               How We Find Restaurants When Travelling →
             </Link>
