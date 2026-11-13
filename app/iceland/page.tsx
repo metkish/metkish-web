@@ -358,6 +358,30 @@ export default function IcelandPage() {
             />
           </Reveal>
 
+          {/* My tip -- encourages independent travel in Iceland, placed
+              right after the agency-choice explanation above and before
+              the flight/parking logistics below, per explicit placement
+              direction. Distinct from the closing reflection's own
+              independent-travel aside further down the page (different
+              angle: this one is forward-looking advice to the reader,
+              that one is a retrospective note about this specific trip)
+              so the two don't repeat each other. */}
+          <Reveal delay={0.1} className='mt-8 md:mt-10'>
+            <InlineTip>
+              My tip: Don&apos;t be afraid to explore Iceland
+              independently. Although we travelled with an agency this
+              time, looking back, I would definitely prefer to organise
+              our next Iceland trip ourselves. Having the freedom to stop
+              whenever a landscape catches your eye, spend more time
+              somewhere you love or simply slow down when you&apos;re
+              tired is something I really missed on this trip. Iceland is
+              a place where the journey between attractions can be just
+              as beautiful as the attractions themselves. Just make sure
+              to plan around Iceland&apos;s unpredictable weather and road
+              conditions.
+            </InlineTip>
+          </Reveal>
+
           {/* Parking fact card -- same quiet practical-information panel
               language used sitewide (no border, no shadow, same corner
               radius, same uppercase label styling, price at the TimeStamp
