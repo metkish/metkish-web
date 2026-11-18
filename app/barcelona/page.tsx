@@ -169,10 +169,10 @@ export default function BarcelonaPage() {
 
       {/* 1. HERO — same full-screen treatment as the Tenerife hero (see
           app/tenerife/page.tsx "1. HERO"): h-[100svh]/[100dvh] photo
-          section, a light dark overlay for text legibility, centered
-          Reveal with title / location-date / italic subtitle, identical
-          typography and spacing. Only the crop differs, since this source
-          photo is portrait (Park Guell) rather than landscape.
+          section, no dark overlay, centered Reveal with title and
+          location-date only (no subtitle), identical typography and
+          spacing. Only the crop differs, since this source photo is
+          portrait (Park Guell) rather than landscape.
           The original photo (Barcelona_hero.jpeg, untouched) is an MPO
           file with an EXIF rotation tag -- the same phone-camera format
           that broke on real mobile devices for several Tenerife photos
@@ -200,13 +200,11 @@ export default function BarcelonaPage() {
           // ~480KB for this image), and at the ~1200px-wide srcset entry
           // a phone actually requests, that single file is the dominant
           // cost behind this page's mobile LCP. 65 (down from the
-          // default 75) trims that without a perceptible quality loss --
-          // safe specifically here because the flat bg-black/28 wash
-          // below already sits over the whole photo for text legibility,
-          // masking the extra compression. This was the first hero on
-          // this site to have its quality lowered; Rome and Tenerife's
-          // heroes later got the same treatment once real production
-          // data showed the identical pattern there.
+          // default 75) trims that without a perceptible quality loss on
+          // this photo. This was the first hero on this site to have its
+          // quality lowered; Rome and Tenerife's heroes later got the
+          // same treatment once real production data showed the
+          // identical pattern there.
           quality={65}
           // The source photo is portrait, so object-fit: cover crops it
           // very differently per breakpoint. On desktop the hero box is
@@ -221,18 +219,11 @@ export default function BarcelonaPage() {
           // repeating arch at the photo's left edge.
           className='object-cover object-[55%_50%] md:object-[50%_35%]'
         />
-        {/* Readability treatment: one flat, even dark wash across the
-            whole photo (below) plus a soft, minimal text-shadow on each
-            line -- no vignette, no gradient patch, no hard-edged outline.
-            An earlier radial-vignette + four-direction outline-shadow
-            version read as harsh, and on Tenerife's plain sky it also left
-            a visible dark rectangle. A full-bleed wash has no edges to
-            show on any background, so it holds up here against this
-            photo's busier stonework too; the soft shadow alone is enough
-            once the whole image is evenly darkened. Keep this in sync with
-            app/tenerife/page.tsx's hero -- same wash strength, same
-            shadow values. */}
-        <div className='absolute inset-0 bg-black/28' />
+        {/* Subtle uniform 10% black overlay, per explicit instruction --
+            a light legibility aid without visibly darkening the photo's
+            natural colour, brightness or crop. Replaces the earlier
+            "no overlay at all" approach on this hero. Keep this in sync with app/tenerife/page.tsx's hero. */}
+        <div className='absolute inset-0 bg-black/10' />
         <div className='relative z-10 h-full flex flex-col items-center justify-center text-center px-6'>
           <Reveal>
             <h1
@@ -250,14 +241,6 @@ export default function BarcelonaPage() {
               }}
             >
               Spain · Catalonia · October 2026
-            </p>
-            <p
-              className='mt-9 max-w-md mx-auto text-lg md:text-xl italic font-[family-name:var(--font-playfair)] text-white/90'
-              style={{
-                textShadow: '0 1px 10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
-              }}
-            >
-              A city that surprised us in more ways than one.
             </p>
           </Reveal>
         </div>

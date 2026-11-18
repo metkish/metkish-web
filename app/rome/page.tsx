@@ -259,8 +259,12 @@ export default function RomePage() {
           on desktop (full width visible, height cropped) it's biased
           slightly above center so the Colosseum's arch tiers stay the
           focal point while more of the plain sky strip and the darker
-          ground-level arcade are trimmed. Same wash + text treatment as
-          Tenerife/Barcelona -- keep these three hero sections in sync. */}
+          ground-level arcade are trimmed. No dark overlay on the photo
+          and no descriptive subtitle -- per the sitewide decision to
+          remove hero overlays/taglines and show only the destination
+          name and location/date, letting each photo's natural colour
+          carry the hero on its own. Same text treatment as Tenerife/
+          Barcelona -- keep these three hero sections in sync. */}
       <section className='relative h-[100svh] md:h-[100dvh] w-full overflow-hidden'>
         <Image
           src='/2026-10%20-%20Italy_Rome/Hero_web.jpeg'
@@ -271,17 +275,19 @@ export default function RomePage() {
           // Mobile performance fix, same recipe validated on Barcelona's
           // hero: quality 65 (down from the default 75) measurably trims
           // this photo's bytes at the sizes a phone actually requests,
-          // with no perceptible quality loss -- safe here because the
-          // flat bg-black/28 wash below already sits over the whole
-          // photo for text legibility, same as Barcelona/Tenerife. The
-          // master file (Hero_web.jpeg) was also re-saved at a max width
-          // of 3840px (matching the largest responsive size this site
-          // ever requests) instead of its original ~4280px, which was
-          // larger than any requested size and only added dead weight.
+          // with no perceptible quality loss on this photo. The master
+          // file (Hero_web.jpeg) was also re-saved at a max width of
+          // 3840px (matching the largest responsive size this site ever
+          // requests) instead of its original ~4280px, which was larger
+          // than any requested size and only added dead weight.
           quality={65}
           className='object-cover object-[50%_45%] md:object-[50%_40%]'
         />
-        <div className='absolute inset-0 bg-black/28' />
+        {/* Subtle uniform 10% black overlay, per explicit instruction --
+            a light legibility aid without visibly darkening the photo's
+            natural colour, brightness or crop. Replaces the earlier
+            "no overlay at all" approach on this hero. */}
+        <div className='absolute inset-0 bg-black/10' />
         <div className='relative z-10 h-full flex flex-col items-center justify-center text-center px-6'>
           <Reveal>
             <h1

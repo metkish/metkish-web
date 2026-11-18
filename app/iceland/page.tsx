@@ -294,13 +294,15 @@ export default function IcelandPage() {
           // Barcelona/Rome/Tenerife's own heroes: quality 65 (down from
           // the default 75) measurably trims this photo's bytes at the
           // sizes a phone actually requests, with no perceptible quality
-          // loss -- safe here for the same reason as those pages, since
-          // the flat bg-black/28 wash below already sits over the whole
-          // photo for text legibility.
+          // loss on this photo.
           quality={65}
           className='object-cover object-[80%_50%] md:object-[50%_38%]'
         />
-        <div className='absolute inset-0 bg-black/28' />
+        {/* Subtle uniform 10% black overlay, per explicit instruction --
+            a light legibility aid without visibly darkening the photo's
+            natural colour, brightness or crop. Replaces the earlier
+            "no overlay at all" approach on this hero. */}
+        <div className='absolute inset-0 bg-black/10' />
         <div className='relative z-10 h-full flex flex-col items-center justify-center text-center px-6'>
           <Reveal>
             <h1
@@ -368,17 +370,9 @@ export default function IcelandPage() {
               so the two don't repeat each other. */}
           <Reveal delay={0.1} className='mt-8 md:mt-10'>
             <InlineTip>
-              My tip: Don&apos;t be afraid to explore Iceland
-              independently. Although we travelled with an agency this
-              time, looking back, I would definitely prefer to organise
-              our next Iceland trip ourselves. Having the freedom to stop
-              whenever a landscape catches your eye, spend more time
-              somewhere you love or simply slow down when you&apos;re
-              tired is something I really missed on this trip. Iceland is
-              a place where the journey between attractions can be just
-              as beautiful as the attractions themselves. Just make sure
-              to plan around Iceland&apos;s unpredictable weather and road
-              conditions.
+              My tip: If I visited Iceland again, I&apos;d rent a car and
+              explore independently. The freedom to stop wherever you
+              want is something I really missed on this trip.
             </InlineTip>
           </Reveal>
 
@@ -1198,11 +1192,9 @@ export default function IcelandPage() {
 
           <Reveal delay={0.68} className='mt-8 md:mt-10'>
             <InlineTip>
-              My tip: Reynisfjara is absolutely worth visiting, but take the
-              safety warnings seriously. Check the warning lights, keep a
-              safe distance from the water and never turn your back on the
-              ocean. The waves can reach much farther up the beach than you
-              expect.
+              My tip: Take the safety warnings at Reynisfjara seriously
+              and never turn your back on the ocean. The waves can reach
+              much farther up the beach than you&apos;d expect.
             </InlineTip>
           </Reveal>
 
@@ -1413,12 +1405,9 @@ export default function IcelandPage() {
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal delay={0.2} className='mt-10 md:mt-12'>
             <InlineTip>
-              My tip: Don&apos;t miss the chance to go up the tower of
-              Hallgrímskirkja. The views over Reykjavík, the ocean and
-              the surrounding mountains are absolutely worth the
-              admission fee. Entry to the church is free, while the
-              tower costs approximately €11 for adults and €1.50 for
-              children aged 7–16 (2026 prices).
+              My tip: Entry to the church is free, but the tower costs
+              around €11 for adults and €1.50 for children aged 7–16
+              (2026 prices) — well worth it for the view.
             </InlineTip>
           </Reveal>
         </div>

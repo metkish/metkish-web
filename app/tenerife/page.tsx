@@ -256,27 +256,19 @@ export default function TenerifePage() {
           sizes='100vw'
           // Mobile performance fix, same recipe validated on Barcelona's
           // hero: quality 65 (down from the default 75) measurably trims
-          // this photo's bytes with no perceptible quality loss -- safe
-          // here because the flat bg-black/28 wash below already sits
-          // over the whole photo for text legibility, same as Barcelona/
-          // Rome. The master file itself is already a compact 1800x2400
+          // this photo's bytes with no perceptible quality loss on this
+          // photo. The master file itself is already a compact 1800x2400
           // (well under the 3840px this site's largest responsive size
           // ever requests), so no resize was needed here -- only the
           // delivery quality.
           quality={65}
           className='object-cover object-[30%_40%] md:object-[48%_30%]'
         />
-        {/* Readability treatment: one flat, even dark wash across the
-            whole photo (below) plus a soft, minimal text-shadow on each
-            line -- no vignette, no gradient patch, no hard-edged outline.
-            An earlier radial-vignette + four-direction outline-shadow
-            version read as harsh and left a visible dark rectangle on this
-            page's plain sky. A full-bleed wash has no edges to show on any
-            background, so it holds up here and on Barcelona's busier photo
-            alike; the soft shadow alone is enough once the whole image is
-            evenly darkened. Keep this in sync with app/barcelona/page.tsx's
-            hero -- same wash strength, same shadow values. */}
-        <div className='absolute inset-0 bg-black/28' />
+        {/* Subtle uniform 10% black overlay, per explicit instruction --
+            a light legibility aid without visibly darkening the photo's
+            natural colour, brightness or crop. Replaces the earlier
+            "no overlay at all" approach on this hero. Keep this in sync with app/barcelona/page.tsx's hero. */}
+        <div className='absolute inset-0 bg-black/10' />
         <div className='relative z-10 h-full flex flex-col items-center justify-center text-center px-6'>
           <Reveal>
             <h1
@@ -294,14 +286,6 @@ export default function TenerifePage() {
               }}
             >
               Spain · Canary Islands · July 2026
-            </p>
-            <p
-              className='mt-9 max-w-md mx-auto text-lg md:text-xl italic font-[family-name:var(--font-playfair)] text-white/90'
-              style={{
-                textShadow: '0 1px 10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
-              }}
-            >
-              An island we could easily come back to.
             </p>
           </Reveal>
         </div>
@@ -1997,7 +1981,7 @@ export default function TenerifePage() {
         <Reveal delay={0.1} className='mt-14 md:mt-16 max-w-xl mx-auto text-center'>
           <Eyebrow>The Shows</Eyebrow>
           <ChapterHeading as='h3' italic className='mt-3'>
-            We hadn't checked the show times.
+            We hadn&apos;t checked the show times.
           </ChapterHeading>
           <Paragraphs
             className='mt-5 text-center'

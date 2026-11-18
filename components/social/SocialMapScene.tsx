@@ -48,7 +48,7 @@
 // keeping the route/dots the strongest element on the frame so the
 // hierarchy stays vehicle+route > labels > geography.
 
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { JourneyMode, JourneyPoint } from '@/lib/journeys/types';
 import { bezierPoint, project, projectSpan, routeCurveAngleAt, routeCurvePoint, screenAngle } from '@/components/journey/geo';
 import { AUSTRIA_PATHS, CANARY_PATHS, NEIGHBOUR_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from '@/components/journey/generated/geography';
@@ -182,10 +182,13 @@ export default function SocialMapScene({
     return `${cx - frame.width / 2} ${cy - frame.height / 2} ${frame.width} ${frame.height}`;
   }, [effectiveCamera.center, frame]);
 
-  const legPoint = (t: number): [number, number] =>
-    leg.route
-      ? routeCurvePoint(leg.route, t, leg.routeLand)
-      : bezierPoint(leg.from.coords, leg.to.coords, leg.curve ?? 0, t);
+  const legPoint = useCallback(
+    (t: number): [number, number] =>
+      leg.route
+        ? routeCurvePoint(leg.route, t, leg.routeLand)
+        : bezierPoint(leg.from.coords, leg.to.coords, leg.curve ?? 0, t),
+    [leg]
+  );
 
   const routeD = useMemo(() => {
     const steps = Math.max(1, Math.round(ROUTE_SAMPLES * clamped));
@@ -193,9 +196,9 @@ export default function SocialMapScene({
     for (let s = 0; s <= steps; s++) coords.push(project(legPoint(s / ROUTE_SAMPLES)));
     if (!coords.length) return '';
     return coords.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(3)},${p[1].toFixed(3)}`).join(' ');
-  }, [clamped, leg]);
+  }, [clamped, legPoint]);
 
-  const vehicleWorld = useMemo(() => project(legPoint(clamped)), [clamped, leg]);
+  const vehicleWorld = useMemo(() => project(legPoint(clamped)), [clamped, legPoint]);
   const vehicleAngle = useMemo(() => {
     const t = Math.min(0.985, clamped);
     if (leg.route) return routeCurveAngleAt(leg.route, t, leg.routeLand);
@@ -208,7 +211,7 @@ export default function SocialMapScene({
     const a = legPoint(Math.max(0, t - eps));
     const b = legPoint(Math.min(1, t + eps));
     return screenAngle(project(a), project(b));
-  }, [clamped, leg]);
+  }, [clamped, leg, legPoint]);
 
   const iconPx = targetPx(ICON_RATIO, CANVAS_WIDTH, ICON_MIN_PX, ICON_MAX_PX);
   const vehicleScale = (iconPx * frame.width) / (24 * CANVAS_WIDTH);

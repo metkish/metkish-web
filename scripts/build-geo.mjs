@@ -285,12 +285,62 @@ async function main() {
     maxRings: 8,
   });
 
+  // ---- Stage 4: Sardinia (fine detail) ----
+  // Originally added only for SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY
+  // (lib/journeys/sardinia.ts) -- a local, zoomed-in coastal route
+  // (Casagliana -> Spiaggia del Principe, spanDeg ~0.4) with no existing
+  // fine-detail dataset to render it against (WIDE_EUROPE_PATHS'
+  // continental-scale simplification is far too coarse at this zoom, same
+  // reason the Canary Islands got their own CANARY_PATHS). The box was
+  // originally sized tightly around just that one route (Olbia through
+  // Costa Smeralda to just past Porto Cervo) and was too narrow for later
+  // Sardinia journeys added in the same file -- most visibly
+  // SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY (center [9.42, 41.09], spanDeg
+  // 1.3), whose camera frame extends past the old box's edges on both the
+  // west and north sides. Because that edge fell inside the visible
+  // viewport, the coarser WIDE_EUROPE_PATHS fallback showing through past
+  // it read as a visible seam / lighter boundary cutting across the map --
+  // the bug reported on review, not a deliberate drawn shape anywhere in
+  // JourneyMapScene.tsx (confirmed: no circle/gradient/mask exists there).
+  //
+  // FIX (this review): widened to generously cover (a) the real Sardinia
+  // mainland + La Maddalena archipelago coastline (actual extent roughly
+  // lng 8.1-9.83, lat 38.86-41.25), and (b) every current Sardinia camera's
+  // rendered viewport at BOTH extremes JourneyMapScene.tsx's computeFrame()
+  // can produce: the wide-aspect branch (width grows with aspect) and the
+  // narrow/mobile branch (height grows up to MAX_HEIGHT_MULTIPLIER = 2.2x
+  // the reference height). Checked against every Sardinia-area camera in
+  // lib/journeys/sardinia.ts (Casagliana->Principe spanDeg 0.4;
+  // Casagliana->Palau spanDeg 1.3; the La Maddalena excursion's
+  // Palau->CSM/CSM->Maddalena/Maddalena-return cameras, spanDeg 0.95-1.0) --
+  // the widest real requirement across all of them is roughly lng
+  // [8.77, 10.07] and lat [40.25, 41.93]. This box clears that with margin
+  // on every side, so a future Sardinia map added at a similar zoom is
+  // unlikely to reopen the same seam, without inventing any coastline data
+  // -- only the clipping window changed; the underlying @geo-maps dataset
+  // and its simplification tolerance are untouched. maxRings raised from
+  // 20 to 30 to match the larger box covering more real coastline features
+  // (La Maddalena's smaller islets, lagoons near Olbia) without dropping
+  // the mainland/major-island rings, which always sort first by area.
+  // (Checked empirically: the box naturally produces 45 rings uncapped --
+  // mainland Sardinia, the La Maddalena archipelago islands, Tavolara/
+  // Molara and smaller coastal islets/lagoon islands -- so maxRings is set
+  // to 50 to keep all of them with a small margin, rather than guessing.)
+  const SARDINIA_BBOX = [7.9, 38.6, 10.3, 42.0];
+  const sardiniaPaths = clippedPaths(earthRingsAll, SARDINIA_BBOX, {
+    pad: 0.1,
+    minArea: 0.00003,
+    tolerance: 0.001,
+    maxRings: 50,
+  });
+
   const bytes = (s) => Buffer.byteLength(s, 'utf8');
   console.log('raw pts:', totalRawPts, 'simplified pts:', totalSimplifiedPts);
   console.log('austria rings:', austriaPaths.length, 'slovenia rings:', sloveniaPaths.length);
   console.log('neighbour rings:', neighbourPaths.length);
   console.log('wide rings:', widePaths.length, 'bytes:', bytes(widePaths.join('')));
   console.log('canary rings:', canaryPaths.length, 'bytes:', bytes(canaryPaths.join('')));
+  console.log('sardinia rings:', sardiniaPaths.length, 'bytes:', bytes(sardiniaPaths.join('')));
 
   const file = `// GENERATED FILE — do not hand-edit.
 // Produced by scripts/build-geo.mjs from @geo-maps (OpenStreetMap /
@@ -308,6 +358,7 @@ async function main() {
 // NEIGHBOUR_PATHS: surrounding countries' land, plain fill, no stroke.
 // WIDE_EUROPE_PATHS: Europe / Atlantic / North Africa coastline (stage 2).
 // CANARY_PATHS: Canary Islands including Tenerife, fine detail (stage 3).
+// SARDINIA_PATHS: north-east Sardinia / Costa Smeralda, fine detail (stage 4).
 
 export const AUSTRIA_PATHS: string[] = ${JSON.stringify(austriaPaths, null, 2)};
 
@@ -318,6 +369,8 @@ export const NEIGHBOUR_PATHS: string[] = ${JSON.stringify(neighbourPaths, null, 
 export const WIDE_EUROPE_PATHS: string[] = ${JSON.stringify(widePaths, null, 2)};
 
 export const CANARY_PATHS: string[] = ${JSON.stringify(canaryPaths, null, 2)};
+
+export const SARDINIA_PATHS: string[] = ${JSON.stringify(sardiniaPaths, null, 2)};
 `;
 
   writeFileSync(join(OUT_DIR, 'geography.ts'), file);

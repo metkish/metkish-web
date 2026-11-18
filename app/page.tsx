@@ -158,12 +158,12 @@ export default function Home() {
           share what worked, what didn&apos;t, and what I&apos;d do
           differently next time.
         </p>
-        <a
+        <Link
           href='/about'
           className='mt-4 inline-flex items-center min-h-11 py-2 text-sm font-[family-name:var(--font-poppins)] font-medium text-black dark:text-white hover:underline underline-offset-4'
         >
           More about me →
-        </a>
+        </Link>
       </section>
 
       <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>
@@ -195,12 +195,12 @@ export default function Home() {
           >
             Behind the Trip
           </a>
-          <a
+          <Link
             href='/about'
             className='inline-flex items-center px-2 text-sm font-[family-name:var(--font-poppins)] uppercase tracking-wide text-white/80 hover:text-white'
           >
             About
-          </a>
+          </Link>
         </nav>
         <a
           href='mailto:info@metkish.com'

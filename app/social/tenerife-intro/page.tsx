@@ -133,9 +133,23 @@ function SmallCaption({ children }: { children: ReactNode }) {
   );
 }
 
+// Shared by this component's lazy useState initializers (progress2/
+// progress3) and its animation effect, so all three agree on the same
+// check without duplicating the matchMedia call.
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && !!window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+}
+
 export default function TenerifeIntroReel() {
-  const [progress2, setProgress2] = useState(0);
-  const [progress3, setProgress3] = useState(0);
+  // Reduced-motion users get the completed end state from the very
+  // first render (via these lazy initializers) rather than a render at
+  // 0 followed immediately by a setState(1) inside the effect below --
+  // same visual result, but without synchronously calling setState from
+  // inside an effect.
+  const [progress2, setProgress2] = useState(() => (prefersReducedMotion() ? 1 : 0));
+  const [progress3, setProgress3] = useState(() => (prefersReducedMotion() ? 1 : 0));
   const [scale, setScale] = useState(0.3);
   const scene1Ref = useRef<HTMLDivElement | null>(null);
   const scene2Ref = useRef<HTMLDivElement | null>(null);
@@ -168,20 +182,16 @@ export default function TenerifeIntroReel() {
     const scene4 = scene4Ref.current;
     if (!scene1 || !scene2 || !scene3 || !scene4) return;
 
-    const reducedMotion =
-      typeof window !== 'undefined' && window.matchMedia
-        ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        : false;
+    const reducedMotion = prefersReducedMotion();
 
     gsap.set([scene1, scene2, scene3, scene4], { opacity: 0 });
 
     if (reducedMotion) {
       // Same philosophy as the production map: someone with reduced
       // motion gets the completed, calm end state directly rather than
-      // the autoplay sequence.
+      // the autoplay sequence. progress2/progress3 are already 1 from
+      // their lazy initializers above, so there's nothing to set here.
       gsap.set(scene4, { opacity: 1 });
-      setProgress2(1);
-      setProgress3(1);
       return;
     }
 

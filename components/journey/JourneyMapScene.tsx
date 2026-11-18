@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import type { Journey, JourneyLeg, JourneyMode, JourneyPoint } from '@/lib/journeys/types';
 import { bezierPoint, project, projectSpan, screenAngle, routeCurvePoint, routeCurveAngleAt } from './geo';
-import { AUSTRIA_PATHS, CANARY_PATHS, NEIGHBOUR_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
+import { AUSTRIA_PATHS, CANARY_PATHS, NEIGHBOUR_PATHS, SARDINIA_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
 
 // A hand-drawn, editorial-atlas palette — the same warm neutrals used
 // across the rest of the site, kept deliberately muted so the map reads as
@@ -208,6 +208,21 @@ const TRAIN_BODY_PATH =
   'M 18.4,10.2 Q 20.3,10.5 20.3,12 Q 20.3,13.5 18.4,13.8 L 4.6,13.8 Q 3.6,13.7 3.6,12 Q 3.6,10.3 4.6,10.2 Z';
 const TRAIN_WINDOWS = { x: 5.2, y: 10.6, width: 13.6, height: 1.3, rx: 0.5 };
 
+// BOAT_BODY_PATH -- a small top-down tour-boat hull (added for the
+// Sardinia page's La Maddalena Archipelago boat excursion, Palau ->
+// Cala Santa Maria -> La Maddalena town -> Palau). Same authoring
+// convention as every other vehicle icon here: a 24x24 local box,
+// nose-first along +x so rotate(vehicleAngle) always faces the real
+// direction of travel with no extra offset. A simple pointed-bow,
+// flat-stern hull silhouette -- immediately reads as "boat" at small
+// sizes, distinct from the car/bus/train bodies' straight, boxy sides.
+// BOAT_CABIN is a single cutout near the stern (same mask technique as
+// CAR_ROOF/TRAIN_WINDOWS/BUS_WINDOW), standing in for a small
+// wheelhouse/cabin; no wheel hints, since a boat has none.
+const BOAT_BODY_PATH =
+  'M 21,12 Q 19.3,9.2 14,9 L 7.5,9 Q 5.2,9.2 5.2,12 Q 5.2,14.8 7.5,15 L 14,15 Q 19.3,14.8 21,12 Z';
+const BOAT_CABIN = { x: 8.6, y: 10, width: 4.6, height: 4, rx: 1 };
+
 export interface JourneyMapSceneProps {
   journey: Journey;
   className?: string;
@@ -254,6 +269,7 @@ export default function JourneyMapScene({
   const carMaskId = useId();
   const trainMaskId = useId();
   const busMaskId = useId();
+  const boatMaskId = useId();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -699,6 +715,25 @@ export default function JourneyMapScene({
               opacity={0.85}
             />
           ))}
+          {/* Sardinia (north-east coast / Costa Smeralda), same fine-detail
+              treatment as CANARY_PATHS above -- see the Stage 4 comment in
+              scripts/build-geo.mjs for why this exists (Casagliana ->
+              Spiaggia del Principe's local coastal map needs real bay/
+              headland shapes, which WIDE_EUROPE_PATHS' continental-scale
+              simplification can't provide). Renders unconditionally, same
+              as every other regional path set -- invisible on any map
+              whose camera isn't framed over Sardinia, zero cost otherwise. */}
+          {SARDINIA_PATHS.map((d, i) => (
+            <path
+              key={`sardinia-${i}`}
+              d={d}
+              fill={MUTED_LAND}
+              stroke={MUTED_LINE}
+              strokeWidth={1}
+              vectorEffect='non-scaling-stroke'
+              opacity={0.85}
+            />
+          ))}
           {/* Optional, opt-in supplemental land shapes for this journey only
               — see the Journey.extraLandPatches doc comment in
               lib/journeys/types.ts. Unset (undefined) for every journey but
@@ -839,6 +874,21 @@ export default function JourneyMapScene({
                   ))}
                 </mask>
                 <path d={BUS_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' mask={`url(#${busMaskId})`} />
+              </>
+            ) : vehicleMode === 'boat' ? (
+              <>
+                <mask id={boatMaskId} maskUnits='userSpaceOnUse' x={-4} y={-4} width={32} height={32}>
+                  <path d={BOAT_BODY_PATH} fill='white' />
+                  <rect
+                    x={BOAT_CABIN.x}
+                    y={BOAT_CABIN.y}
+                    width={BOAT_CABIN.width}
+                    height={BOAT_CABIN.height}
+                    rx={BOAT_CABIN.rx}
+                    fill='black'
+                  />
+                </mask>
+                <path d={BOAT_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' mask={`url(#${boatMaskId})`} />
               </>
             ) : (
               <>

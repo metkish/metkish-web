@@ -159,41 +159,6 @@ function TakeawayList({ items }: { items: string[] }) {
   );
 }
 
-// Elegant placeholder for a photograph that doesn't exist yet. Deliberately
-// reads as "a space held open for a real photo" -- cream background,
-// dashed border, quiet italic label -- never a stock or AI-generated
-// image, never an empty/broken box. role="img" + aria-label carries the
-// same descriptive alt text a real <Image> on this page would get once
-// the photo is added.
-function ImagePlaceholder({
-  caption,
-  aspect = 'aspect-[4/3]',
-  large = false,
-}: {
-  caption: string;
-  aspect?: string;
-  large?: boolean;
-}) {
-  return (
-    <div
-      role='img'
-      aria-label={caption}
-      className={`relative w-full ${aspect} overflow-hidden rounded-[2px] border border-dashed border-black/15 dark:border-white/20 bg-[#f1ebdc]/60 dark:bg-white/[0.03] flex flex-col items-center justify-center text-center px-8`}
-    >
-      <span
-        className={`font-[family-name:var(--font-playfair)] italic text-black/30 dark:text-white/30 ${
-          large ? 'text-3xl md:text-4xl' : 'text-xl md:text-2xl'
-        }`}
-      >
-        Photo coming soon
-      </span>
-      <span className='mt-3 max-w-xs text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/40 dark:text-white/40'>
-        {caption}
-      </span>
-    </div>
-  );
-}
-
 // The elegant price-breakdown treatment the brief asks for, "consistent
 // with the existing Metkish travel pages": the same warm cream card
 // (#f1ebdc / white/[0.04], rounded-[3px]) as every price card on
