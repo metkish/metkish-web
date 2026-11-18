@@ -57,3 +57,9 @@ public/Behind the trip/How to Get El Cla*sico Tickets/
 public/2026-05 - Italy roadtrip/Milan Cinque Terre Pisa/Gardaland_ticket.pdf
 public/2026-05 - Italy roadtrip/Milan Cinque Terre Pisa/Venice_visit.pdf
 public/2026-10 - Barcelona/Barcelona_Montserrat_ticket.jpeg
+
+# Temporary preview-render scratch files (not part of the site) and a
+# corrupted/incomplete duplicate video left behind during editing --
+# neither belongs in the repo.
+.preview-tmp/
+public/2025-07 - Sardinia/Cala Goloritze_web 2.mp4
