@@ -628,13 +628,30 @@ export default function JourneyMapScene({
     // scroll locking, no pinning: this observer only ever starts a
     // timeline: the page keeps scrolling completely normally underneath
     // it, in either direction, at any moment.
+    //
+    // rootMargin shrinks the *effective* viewport this observer measures
+    // against, top and bottom only (left/right untouched -- the map is
+    // full-width, and the issue below is purely about viewport *height*),
+    // before the threshold above is even evaluated. Without it, root
+    // defaults to the actual browser viewport -- on mobile browsers with a
+    // collapsing/dynamic address bar, that viewport's reported height can
+    // be the larger, toolbar-hidden size even while the toolbar is still
+    // on screen (reported: autoplay starting while the map was barely at
+    // the very bottom edge of what was visually on screen, well before it
+    // had been scrolled anywhere near into view -- same behaviour on every
+    // destination page, since this observer config is shared by all of
+    // them). Pulling the observed region in from the top and bottom means
+    // the map has to be substantially inside the *stable, clearly-visible*
+    // vertical band of the screen -- not just technically within a
+    // viewport number that may not match what the visitor can actually see
+    // yet -- before the animation is allowed to start.
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) startAutoplay();
         });
       },
-      { threshold: 0.4 }
+      { threshold: 0.4, rootMargin: '-25% 0px -25% 0px' }
     );
     observer.observe(wrapper);
 
