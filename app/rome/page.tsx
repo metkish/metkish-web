@@ -288,12 +288,31 @@ export default function RomePage() {
             natural colour, brightness or crop. Replaces the earlier
             "no overlay at all" approach on this hero. */}
         <div className='absolute inset-0 bg-black/10' />
+        {/* Soft, localised dark gradient behind the hero text only. It
+            fades to fully transparent well before its own edges, so it
+            never reads as a visible box or hard edge at any screen size,
+            and it does not darken the rest of the photograph. Paired with
+            the tighter text-shadow below for reliable readability over
+            the brightest parts of the image (e.g. Sardinia's pale
+            limestone cliffs). */}
+        <div
+          className='absolute inset-0 flex items-center justify-center pointer-events-none'
+          aria-hidden='true'
+        >
+          <div
+            className='w-[92%] max-w-xl h-[46%] sm:h-[42%] md:h-[38%]'
+            style={{
+              background:
+                'radial-gradient(ellipse 58% 60% at 50% 50%, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 72%)',
+            }}
+          />
+        </div>
         <div className='relative z-10 h-full flex flex-col items-center justify-center text-center px-6'>
           <Reveal>
             <h1
               className='text-5xl sm:text-6xl md:text-7xl font-[family-name:var(--font-playfair)] font-medium tracking-tight text-white'
               style={{
-                textShadow: '0 2px 20px rgba(0,0,0,0.45), 0 1px 6px rgba(0,0,0,0.35)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.75), 0 2px 10px rgba(0,0,0,0.5), 0 4px 24px rgba(0,0,0,0.35)',
               }}
             >
               Rome
@@ -301,7 +320,7 @@ export default function RomePage() {
             <p
               className='mt-5 text-xs sm:text-sm uppercase tracking-[0.22em] font-[family-name:var(--font-poppins)] font-semibold text-white/80'
               style={{
-                textShadow: '0 1px 10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
+                textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 1px 6px rgba(0,0,0,0.55), 0 2px 14px rgba(0,0,0,0.4)',
               }}
             >
               Italy · October 2026
@@ -668,9 +687,9 @@ export default function RomePage() {
                   We experienced similar problems in Paris, while{' '}
                   <Link
                     href='/barcelona'
-                    className='underline underline-offset-2'
+                    className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
                   >
-                    Barcelona
+                    Barcelona →
                   </Link>
                   &apos;s ticketing system worked much more smoothly during our
                   visit.

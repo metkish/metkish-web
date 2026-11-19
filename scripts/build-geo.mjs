@@ -326,7 +326,21 @@ async function main() {
   // mainland Sardinia, the La Maddalena archipelago islands, Tavolara/
   // Molara and smaller coastal islets/lagoon islands -- so maxRings is set
   // to 50 to keep all of them with a small margin, rather than guessing.)
-  const SARDINIA_BBOX = [7.9, 38.6, 10.3, 42.0];
+  // UPDATE (Cala Gonone camera fix): the east edge was widened again,
+  // from 10.3 to 11.0, to cover
+  // SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY's corrected camera
+  // (center [9.59, 40.6326], spanDeg raised 1.05 -> 1.95 so both real
+  // endpoints -- Casagliana at the north and Cala Gonone at the south,
+  // 0.72 degrees of latitude apart -- actually fit in frame with
+  // padding). That journey is tall/narrow (mostly a latitude span, not
+  // a longitude one), so raising spanDeg to cover the needed height
+  // also pushes the frame's East edge out to roughly lng 10.6-10.8 in
+  // realistic nested-map aspect ratios (worked through by hand against
+  // JourneyMapScene.tsx's own computeFrame()). East of lng ~9.7 here is
+  // open Tyrrhenian sea, not missed coastline, so this is pure safety
+  // margin against the same coarse-fallback seam the box was widened
+  // for previously -- not new coastline being revealed.
+  const SARDINIA_BBOX = [7.9, 38.6, 11.0, 42.0];
   const sardiniaPaths = clippedPaths(earthRingsAll, SARDINIA_BBOX, {
     pad: 0.1,
     minArea: 0.00003,

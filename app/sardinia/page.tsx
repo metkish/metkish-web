@@ -6,11 +6,18 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
-import { ChapterHeading, Paragraphs, Statement } from '@/components/ui/typography';
+import { ChapterHeading, Paragraphs } from '@/components/ui/typography';
+import BookedChecklist from '@/components/ui/booked-checklist';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
 import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
 import {
+  SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY,
+  SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY,
+  SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY,
+  SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY,
   SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY,
+  SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY,
+  SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY,
   SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY,
   SARDINIA_HOME_TO_VIENNA_JOURNEY,
   SARDINIA_VIENNA_TO_OLBIA_JOURNEY,
@@ -197,12 +204,31 @@ export default function SardiniaPage() {
             natural colour, brightness or crop. Replaces the earlier
             "no overlay at all" approach on this hero. */}
         <div className='absolute inset-0 bg-black/10' />
+        {/* Soft, localised dark gradient behind the hero text only. It
+            fades to fully transparent well before its own edges, so it
+            never reads as a visible box or hard edge at any screen size,
+            and it does not darken the rest of the photograph. Paired with
+            the tighter text-shadow below for reliable readability over
+            the brightest parts of the image (e.g. Sardinia's pale
+            limestone cliffs). */}
+        <div
+          className='absolute inset-0 flex items-center justify-center pointer-events-none'
+          aria-hidden='true'
+        >
+          <div
+            className='w-[92%] max-w-xl h-[46%] sm:h-[42%] md:h-[38%]'
+            style={{
+              background:
+                'radial-gradient(ellipse 58% 60% at 50% 50%, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 72%)',
+            }}
+          />
+        </div>
         <div className='relative z-10 h-full flex flex-col items-center justify-center text-center px-6'>
           <Reveal>
             <h1
               className='text-5xl sm:text-6xl md:text-7xl font-[family-name:var(--font-playfair)] font-medium tracking-tight text-white'
               style={{
-                textShadow: '0 2px 20px rgba(0,0,0,0.45), 0 1px 6px rgba(0,0,0,0.35)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.75), 0 2px 10px rgba(0,0,0,0.5), 0 4px 24px rgba(0,0,0,0.35)',
               }}
             >
               Sardinia
@@ -210,7 +236,7 @@ export default function SardiniaPage() {
             <p
               className='mt-5 text-xs sm:text-sm uppercase tracking-[0.22em] font-[family-name:var(--font-poppins)] font-semibold text-white/80'
               style={{
-                textShadow: '0 1px 10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
+                textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 1px 6px rgba(0,0,0,0.55), 0 2px 14px rgba(0,0,0,0.4)',
               }}
             >
               Italy · June–July 2025
@@ -244,6 +270,16 @@ export default function SardiniaPage() {
                 'Were they really as beautiful as they looked?',
               ]}
             />
+          </Reveal>
+
+          {/* General pricing note -- added once, near the start of the
+              article, per explicit instruction, so individual price
+              boxes further down no longer need to repeat it. */}
+          <Reveal className='mt-6 md:mt-7 max-w-xl mx-auto'>
+            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+              All prices mentioned are what we paid during our trip in
+              June–July 2025 and may have changed since.
+            </p>
           </Reveal>
         </div>
       </section>
@@ -402,7 +438,21 @@ export default function SardiniaPage() {
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We booked our rental car through billiger-mietwagen.de, with Sunny Cars handling the booking. We picked up the car at Olbia Airport shortly after landing — we had booked a VW Polo or similar, but received a Fiat 600.',
+                <>
+                  We booked our rental car through{' '}
+                  <a
+                    href='https://www.billiger-mietwagen.de/'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
+                  >
+                    billiger-mietwagen.de ↗
+                  </a>
+                  , with Sunny Cars handling the booking. We picked up the
+                  car at Olbia Airport shortly after landing. We had
+                  booked a VW Polo or similar, but received a Fiat 600
+                  that was only three months old.
+                </>,
                 "Our luggage didn't fit in the boot, so we had to place one suitcase on the back seat between the children. It wasn't exactly the most comfortable start to our road trip!",
               ]}
             />
@@ -450,6 +500,34 @@ export default function SardiniaPage() {
               necessarily mean enough space for four people&apos;s
               suitcases.
             </InlineTip>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* PARKING IN SARDINIA -- a short standalone practical-info
+          section inserted immediately after Renting a Car, per explicit
+          instruction. Full chapter-to-chapter rhythm (CHAPTER_GAP_START
+          pairs with the Renting a Car section's own CHAPTER_GAP_END
+          above; this section's own CHAPTER_GAP_END pairs with the Where
+          We Stayed chapter's CHAPTER_GAP_START below). General parking
+          guidance only -- per explicit instruction, individual per-
+          location parking prices/cost boxes were removed from the beach
+          and destination sections elsewhere on this page so this advice
+          isn't repeated. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Sardinia</RouteLabel>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
+              Parking in Sardinia
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'Parking at the beaches we visited was paid, usually costing between €1.50 and €2 per hour.',
+                "For parking in towns and near harbours, I recommend having the EasyPark app installed. It makes paying for parking much more convenient, especially when you're exploring different places by car.",
+              ]}
+            />
           </Reveal>
         </div>
       </section>
@@ -604,27 +682,17 @@ export default function SardiniaPage() {
           content section and the NEXT map -- same token/reasoning as
           "Getting to Sardinia" above -- rather than a page's final-
           section padding.
-          No cumulative cost summary, per explicit scope -- only this
-          section's own parking fact, in the same individual-cost-panel
-          style used elsewhere on the page (Vienna parking, the flight,
-          the rental car), with a small italic note underneath flagging
-          it as a July 2025 price, same aside treatment used for a price
-          caveat elsewhere on the site.
-
-          NOTE: this section's narrative and My Tip have been revised
-          several times per explicit follow-up. Most recently: the main
-          text now covers the vendor-bought beach umbrella (used for the
-          rest of the trip) and keeps the parking price out of the prose
-          entirely (it only lives in the Fact panel below); the My Tip
-          now frames "visit in the morning" as the family's general
-          habit rather than beach-specific advice, and is explicit that
-          we don't know how busy the parking gets later in the day,
-          rather than implying it (photos/layout/Fact panel untouched
-          throughout every revision). */}
+          UPDATE: the individual parking-price Fact panel and its price-
+          caveat note (previously shown right after the paragraphs
+          below) were removed per explicit instruction, since parking
+          cost now lives only in the general "Parking in Sardinia"
+          section after Renting a Car. The paragraphs now flow straight
+          into the photo pair below (mt-10/12), same gap already used
+          sitewide between paragraphs and the next photo. */}
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-16 md:pb-20 bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <RouteLabel>Beaches</RouteLabel>
+            <RouteLabel>Beach</RouteLabel>
             <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               Spiaggia del Principe
             </ChapterHeading>
@@ -632,26 +700,9 @@ export default function SardiniaPage() {
               className='mt-5 text-center'
               items={[
                 'Our first beach stop was Spiaggia del Principe on Costa Smeralda, and what a start! The turquoise water was absolutely stunning. Photos simply don\'t do it justice.',
-                "We visited in the morning and had no trouble parking. There's a small beach bar and vendors selling umbrellas. We bought one and used it throughout our Sardinia trip.",
+                "We visited in the morning and had no trouble parking, although reaching the beach requires a walk from the parking area. There's a small beach bar and vendors selling umbrellas. We bought one and used it throughout our Sardinia trip.",
               ]}
             />
-          </Reveal>
-
-          {/* Same individual-cost-panel language used sitewide (Vienna
-              parking, the flight, the rental car) -- no cumulative total
-              added, per explicit scope. */}
-          <Reveal className='mt-9 md:mt-11 mx-auto max-w-[380px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-7 py-7 md:px-8 md:py-8'>
-            <Fact
-              label='Parking · Spiaggia del Principe'
-              value='€12.50'
-              support={['Per day · 1 July 2025']}
-            />
-          </Reveal>
-          <Reveal className='mt-3 max-w-xl mx-auto'>
-            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              The price we paid on the day — not necessarily the current
-              parking rate.
-            </p>
           </Reveal>
 
           {/* Stacked (one above the other), not side by side -- per
@@ -716,11 +767,12 @@ export default function SardiniaPage() {
 
       {/* 13. GETTING TO PALAU AND PARKING -- map -> content transition.
           Paragraphs are the user's own verbatim account. No parking fee
-          is shown here (unlike Spiaggia del Principe's €12.50) because
-          none was given -- only that paying was slow and EasyPark helped,
-          which stays in the My Tip below rather than as an invented
-          price. Closes with the full chapter-to-chapter rhythm, pairing
-          with the boat-excursion chapter's own CHAPTER_GAP_START next. */}
+          is shown here -- only that paying was slow and EasyPark helped,
+          which is kept as this section's own location-specific anecdote
+          (not a repeat of the general EasyPark advice in the "Parking in
+          Sardinia" section). Closes with the full chapter-to-chapter
+          rhythm, pairing with the boat-excursion chapter's own
+          CHAPTER_GAP_START next. */}
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
@@ -770,12 +822,10 @@ export default function SardiniaPage() {
               panels, so all three excursion price boxes are now
               visually consistent and all use EUR. The booking's
               original USD list price is kept as a small supporting
-              line (context only, not a second total); the separate
-              per-person landing fee is deliberately NOT folded into
-              the EUR total above -- per explicit instruction it was
-              charged separately and wasn't part of the booking price,
-              so it gets its own distinct note below rather than being
-              implied as already included. */}
+              line (context only, not a second total). The separate
+              per-person landing-fee note that used to sit below this
+              panel has been removed per explicit instruction -- the
+              EUR total above is the only figure shown now. */}
           <Reveal className='mt-9 md:mt-11 mx-auto max-w-[460px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-8 py-8 md:px-9 md:py-9 flex flex-col items-center gap-1 text-center'>
             <span className='text-xs uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/45 dark:text-white/45'>
               Viator · La Maddalena Archipelago – 4 Stops Boat Tour
@@ -790,18 +840,6 @@ export default function SardiniaPage() {
             <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
               Originally listed as $302.72 USD
             </span>
-          </Reveal>
-          <Reveal className='mt-3 max-w-xl mx-auto'>
-            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              What we paid for four people in July 2025 — not current
-              tour prices.
-            </p>
-          </Reveal>
-          <Reveal className='mt-2 max-w-xl mx-auto'>
-            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              A further €5 per person landing fee was charged separately
-              on the day and isn&apos;t included in the total above.
-            </p>
           </Reveal>
         </div>
 
@@ -917,8 +955,7 @@ export default function SardiniaPage() {
             follow-up. */}
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal className='mt-16 md:mt-[76px] max-w-xl mx-auto'>
-            <Eyebrow>Sightseeing Only</Eyebrow>
-            <ChapterHeading as='h3' italic className='mt-3'>
+            <ChapterHeading as='h3' italic>
               Passing Spiaggia Rosa
             </ChapterHeading>
             <Paragraphs
@@ -1090,18 +1127,38 @@ export default function SardiniaPage() {
         </div>
       </section>
 
-      {/* 15. SPIAGGIA LISCIA RUJA -- a standalone beach stop, added as a
-          brand new chapter after the La Maddalena excursion (text ->
-          chapter transition, full CHAPTER_GAP_START on top, pairing with
-          the La Maddalena chapter's own CHAPTER_GAP_END above). Text is
-          the user's own verbatim account, kept in the given paragraph
-          breaks. No My Tip box and no parking receipt photo, per
-          explicit scope -- only the Fact panel below for the parking
-          price, same individual-cost-panel language used sitewide
-          (Spiaggia del Principe's own parking fact is the direct
-          template). RouteLabel reuses "Beaches", matching Spiaggia del
-          Principe -- both are standalone single-beach chapters of the
-          same kind, not part of a larger excursion.
+      {/* 15. MAP -- Casagliana Suite Resort -> Spiaggia Liscia Ruja.
+          Moved here, immediately before the Liscia Ruja section's own
+          RouteLabel/heading, per explicit instruction -- same bare
+          JourneyMapScene component, full width and sizing convention as
+          every other route map on the page (Spiaggia del Principe's own
+          map above is the direct template), not nested inside the
+          section's text column. */}
+      <JourneyMapScene
+        journey={SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+        Casagliana Suite Resort → Spiaggia Liscia Ruja
+      </p>
+
+      {/* 15. LISCIA RUJA -- a standalone beach stop, added as a brand new
+          chapter after the La Maddalena excursion. Now a map -> content
+          transition (MAP_TRANSITION_PT on top) rather than text ->
+          chapter, since the route map above now directly precedes this
+          section's own heading, per explicit instruction. Text is the
+          user's own verbatim account, kept in the given paragraph
+          breaks. Heading shortened to "Liscia Ruja" per explicit
+          instruction -- the negative "too commercialised" assessment
+          stays in the body paragraphs only, not repeated in the
+          heading. RouteLabel reuses "Beach" (singular), matching
+          Spiaggia del Principe -- both are standalone single-beach
+          chapters of the same kind, not part of a larger excursion.
+          UPDATE: the individual parking-price Fact panel and its price-
+          caveat note were removed per explicit instruction (parking
+          cost now lives only in the general "Parking in Sardinia"
+          section after Renting a Car). Paragraphs now flow straight
+          into the MAIN PHOTO below.
 
           This is now the page's final section, so its last video block
           below carries the sitewide final-section closing padding
@@ -1109,12 +1166,12 @@ export default function SardiniaPage() {
           the La Maddalena chapter's own My Tip box used to carry)
           instead of the plain CHAPTER_GAP_END used between two mid-page
           chapters. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} bg-[#faf9f6] dark:bg-black`}>
+      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <RouteLabel>Beaches</RouteLabel>
+            <RouteLabel>Beach</RouteLabel>
             <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
-              Spiaggia Liscia Ruja – Too Commercialised for Us
+              Liscia Ruja
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
@@ -1126,23 +1183,6 @@ export default function SardiniaPage() {
             />
           </Reveal>
 
-          {/* Same individual-cost-panel language used sitewide (Vienna
-              parking, the flight, the rental car, Spiaggia del
-              Principe's own parking fact). No receipt photo, per
-              explicit scope. */}
-          <Reveal className='mt-9 md:mt-11 mx-auto max-w-[380px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-7 py-7 md:px-8 md:py-8'>
-            <Fact
-              label='Parking · Spiaggia Liscia Ruja'
-              value='€9.00'
-              support={['3 July 2025']}
-            />
-          </Reveal>
-          <Reveal className='mt-3 max-w-xl mx-auto'>
-            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              This is the price we paid during our visit, not necessarily
-              the current rate.
-            </p>
-          </Reveal>
         </div>
 
         {/* MAIN PHOTO -- same full article width as the page's other
@@ -1261,7 +1301,24 @@ export default function SardiniaPage() {
           same formula the screenshot used to carry here, and the
           Liscia Ruja bar video before that) instead of the plain
           closing spacing used between two mid-page chapters. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} bg-[#faf9f6] dark:bg-black`}>
+      {/* MAP -- Casagliana Suite Resort -> MOYS, Marina di Olbia
+          (Tavolara boat trip). Moved here, immediately before the
+          Tavolara section's own RouteLabel/heading, per explicit
+          instruction -- same bare JourneyMapScene component, full width
+          and sizing convention as every other route map on the page. */}
+      <JourneyMapScene
+        journey={SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+        Casagliana Suite Resort → MOYS, Marina di Olbia
+      </p>
+
+      {/* TAVOLARA -- now a map -> content transition (MAP_TRANSITION_PT
+          on top) rather than text -> chapter, since the route map above
+          now directly precedes this section's own heading, per explicit
+          instruction. */}
+      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Tavolara</RouteLabel>
@@ -1325,12 +1382,6 @@ export default function SardiniaPage() {
             <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
               €72.50 per person
             </span>
-          </Reveal>
-          <Reveal className='mt-3 max-w-xl mx-auto'>
-            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              What we paid for four people in July 2025 — not current
-              tour prices.
-            </p>
           </Reveal>
         </div>
 
@@ -1413,8 +1464,8 @@ export default function SardiniaPage() {
           Tavolara (text -> chapter transition, full CHAPTER_GAP_START
           on top, pairing with that section's own closing padding
           above). Text is the user's own verbatim account, kept in the
-          given paragraph breaks. RouteLabel reuses "Beaches", same
-          convention as Spiaggia del Principe/Liscia Ruja -- this is a
+          given paragraph breaks. RouteLabel reuses "Beach" (singular),
+          same convention as Spiaggia del Principe/Liscia Ruja -- this is a
           beach-stop chapter, not an excursion chapter, so it doesn't
           use a place-name RouteLabel the way Tavolara/Agrisole/Palau
           do.
@@ -1429,28 +1480,46 @@ export default function SardiniaPage() {
           use the standard aspect-ratio-box/object-cover treatment (no
           native-ratio workaround needed, unlike Tavolara's two photos).
 
-          The parking Fact panel has no fixed position given, so it
-          closes the section as a practical note after the narrative,
-          same role as every other price panel on the page -- no
-          receipt photo, per explicit scope. No map, no My Tip box, per
-          explicit scope.
+          UPDATE: the individual parking-price Fact panel and its price-
+          caveat note were removed per explicit instruction (parking
+          cost now lives only in the general "Parking in Sardinia"
+          section after Renting a Car). The closing pb-12/14 that
+          caveat note used to carry has moved onto the paragraphs Reveal
+          above it, so the section still closes with the same gap. No
+          map, no My Tip box, per explicit scope.
 
           This is now the page's final section, so its closing
           disclaimer line carries the sitewide final-section closing
           padding (CHAPTER_GAP_END's own value plus 50px -- the same
           formula the Isola Piana video used to carry) instead of the
           plain closing spacing used between two mid-page chapters. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} bg-[#faf9f6] dark:bg-black`}>
+      {/* MAP -- Casagliana Suite Resort -> La Cinta Beach, San Teodoro.
+          Moved here, immediately before the La Cinta section's own
+          RouteLabel/heading, per explicit instruction -- same bare
+          JourneyMapScene component, full width and sizing convention as
+          every other route map on the page. */}
+      <JourneyMapScene
+        journey={SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY}
+        heightClassName='h-[400px] sm:h-[460px] md:h-[520px]'
+      />
+      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+        Casagliana Suite Resort → La Cinta Beach, San Teodoro
+      </p>
+
+      {/* LA CINTA -- now a map -> content transition (MAP_TRANSITION_PT
+          on top) rather than text -> chapter, since the route map above
+          now directly precedes this section's own heading, per explicit
+          instruction. */}
+      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
-            <RouteLabel>Beaches</RouteLabel>
+            <RouteLabel>Beach</RouteLabel>
             <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
               La Cinta – Beautiful Beach, Unbelievable Crowds
             </ChapterHeading>
             <Paragraphs
               className='mt-5 text-center'
               items={[
-                'We originally planned to visit Cala Brandinchi, but the online reservation process seemed unnecessarily complicated, so we chose La Cinta instead.',
                 'The beach was absolutely beautiful – powdery white sand and warm, shallow turquoise water. It honestly reminded me of the Bahamas.',
               ]}
             />
@@ -1483,7 +1552,7 @@ export default function SardiniaPage() {
             <Paragraphs
               className='text-center'
               items={[
-                "But the crowds were unbelievable! Combined with the intense heat, it was simply too much for us. There's no natural shade, so an umbrella is essential. You can rent sunbeds with umbrellas or buy your own umbrella and beach mat from vendors. Some also offer hair braiding.",
+                "The beach was incredibly crowded, and the intense July heat didn't help. There's no natural shade, so an umbrella is essential. You can rent sunbeds with umbrellas or buy your own umbrella and beach mat from vendors. Some also offer hair braiding.",
               ]}
             />
           </Reveal>
@@ -1516,30 +1585,13 @@ export default function SardiniaPage() {
         </Reveal>
 
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal className='mt-10 md:mt-12'>
+          <Reveal className='mt-10 md:mt-12 pb-12 md:pb-14'>
             <Paragraphs
               className='text-center'
               items={[
-                'La Cinta is undeniably beautiful, but the crowds and intense heat made it one of our least enjoyable beach experiences in Sardinia.',
+                "La Cinta reminded us of the beautiful beaches we'd experienced in the Bahamas. The sand and turquoise water were stunning, but with so many people around, it wasn't quite as relaxing as we'd hoped.",
               ]}
             />
-          </Reveal>
-
-          {/* Same individual-cost-panel language used sitewide (Spiaggia
-              del Principe, Liscia Ruja). No receipt photo, per explicit
-              scope. */}
-          <Reveal className='mt-9 md:mt-11 mx-auto max-w-[380px] rounded-[3px] bg-[#f1ebdc] dark:bg-white/[0.04] px-7 py-7 md:px-8 md:py-8'>
-            <Fact
-              label='Parking · La Cinta'
-              value='€1.50 / hour'
-              support={['July 2025']}
-            />
-          </Reveal>
-          <Reveal className='mt-3 pb-12 md:pb-14 max-w-xl mx-auto'>
-            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              The price we paid at the time – not necessarily the current
-              parking rate.
-            </p>
           </Reveal>
         </div>
       </section>
@@ -1596,7 +1648,24 @@ export default function SardiniaPage() {
           (CHAPTER_GAP_END's own value plus 50px -- the same formula
           La Cinta's disclaimer used to carry) instead of the plain
           closing spacing used between two mid-page chapters. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} bg-[#faf9f6] dark:bg-black`}>
+      {/* MAP -- Casagliana Suite Resort -> Cala Gonone (Gulf of Orosei
+          boat trip). Moved here, immediately before the Gulf of Orosei
+          section's own RouteLabel/heading, per explicit instruction --
+          same bare JourneyMapScene component, full width and sizing
+          convention as every other route map on the page. */}
+      <JourneyMapScene
+        journey={SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY}
+        heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
+      />
+      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+        Casagliana Suite Resort → Cala Gonone (Gulf of Orosei boat trip)
+      </p>
+
+      {/* GULF OF OROSEI -- now a map -> content transition
+          (MAP_TRANSITION_PT on top) rather than text -> chapter, since
+          the route map above now directly precedes this section's own
+          heading, per explicit instruction. */}
+      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
           <Reveal>
             <RouteLabel>Gulf of Orosei</RouteLabel>
@@ -1611,7 +1680,7 @@ export default function SardiniaPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'Another early start, which meant skipping breakfast at our hotel. We drove to Cala Gonone, where our boat trip departed. Arriving early paid off – we found parking near the marina and paid through EasyPark.',
+                'We had an early start and a longer drive to Cala Gonone, so we skipped breakfast at our hotel. Arriving early paid off — we found parking near the marina and paid through EasyPark.',
               ]}
             />
           </Reveal>
@@ -1656,12 +1725,6 @@ export default function SardiniaPage() {
             <span className='mt-4 text-sm font-[family-name:var(--font-poppins)] text-black/60 dark:text-white/60'>
               €88.00 per person
             </span>
-          </Reveal>
-          <Reveal className='mt-3 max-w-xl mx-auto'>
-            <p className='text-sm italic text-center font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-              What we paid for four people in July 2025 — not current
-              tour prices.
-            </p>
           </Reveal>
 
           <Reveal className='mt-10 md:mt-12'>
@@ -1805,43 +1868,394 @@ export default function SardiniaPage() {
             <Paragraphs
               className='text-center'
               items={[
-                'On our way back, we stopped at one more beach, but unexpected rain cut our visit short. Our skipper quickly picked us up and took us back to the harbour.',
+                'On our way back, we enjoyed the beautiful coastline, with our skipper happy to stop wherever we wanted for a swim or a beach visit. We returned to Cala Luna, which was now much busier. Soon, it started raining, and boats began collecting people from the beaches. Back in the harbour, we found the streets flooded after the heavy downpour. Quite an unexpected end to our boat trip!',
               ]}
             />
           </Reveal>
         </div>
       </section>
 
-      {/* CLOSING NOTE -- a short, minimal sign-off for the whole
-          article (not tied to the Gulf of Orosei chapter above it), so
-          it gets its own section rather than being folded into that
-          chapter. Deliberately plain: just the shared Statement +
-          Paragraphs typography primitives already used together this
-          way elsewhere (e.g. the closing line on app/about/page.tsx),
-          no RouteLabel, no card, no coloured box, no new component --
-          per explicit instruction to keep the design consistent with
-          the rest of Metkish and avoid a large coloured box. Full
-          "text -> new chapter" spacing rhythm (CHAPTER_GAP_START) since
-          it follows the previous chapter's final paragraph, and this is
-          now the page's final section, so it carries the sitewide
-          final-section closing padding (CHAPTER_GAP_END's own value
-          plus 50px) -- migrated here from the final beach stop
-          paragraph above, which now uses the plain CHAPTER_GAP_END
-          spacing instead. */}
-      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} bg-[#faf9f6] dark:bg-black`}>
+      {/* COSTA SMERALDA -- Cala Brandinchi (a change of plans, never
+          visited) and Porto Cervo (a day trip we did take), added per
+          explicit instruction. New chapter (full CHAPTER_GAP_START on
+          top, pairing with the Gulf of Orosei chapter's own closing
+          padding above). "Costa Smeralda" is the real name of this
+          stretch of coast covering both places, used as the umbrella
+          RouteLabel rather than inventing a new one; Porto Cervo gets
+          its own Eyebrow + ChapterHeading h3 sub-beat below, same
+          pattern as the La Maddalena Archipelago chapter's own stops.
+          No cost box for Porto Cervo, per explicit instruction -- the
+          garage's posted rate stays as plain prose, same as given. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
         <div className='max-w-2xl mx-auto text-center'>
-          <Reveal className='pb-[calc(3rem+50px)] md:pb-[calc(3.5rem+50px)]'>
-            <Statement className='text-2xl md:text-3xl max-w-xl mx-auto'>
-              More of Sardinia coming soon!
-            </Statement>
+          <Reveal>
+            <RouteLabel>Costa Smeralda</RouteLabel>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
+              Cala Brandinchi – Our Change of Plans
+            </ChapterHeading>
             <Paragraphs
-              className='mt-5 text-center max-w-xl mx-auto'
+              className='mt-5 text-center'
               items={[
-                'More beaches, places and practical tips from our trip are on the way.',
+                'We had planned to visit Cala Brandinchi, but the regular beach reservations were already fully booked. There was another option to reserve beach spots for €80 for our family of four, with access wristbands included.',
+                "Since we usually spend only 2–3 hours at a beach rather than the entire day, we decided it wasn't worth the cost.",
               ]}
             />
           </Reveal>
         </div>
+
+        {/* MAP -- Casagliana Suite Resort -> Porto Cervo. Moved here,
+            immediately before Porto Cervo's own Eyebrow + h3 heading,
+            per explicit instruction -- same bare JourneyMapScene
+            component and sizing convention as every other route map on
+            the page. Porto Cervo is a sub-beat within this shared Costa
+            Smeralda section rather than its own top-level section (left
+            unchanged, per explicit "no unrelated layout changes"
+            instruction), so the wrapper below cancels the section's own
+            px-6/md:px-12 side padding with matching negative margins
+            (-mx-6/md:-mx-12) -- the map still reads edge-to-edge, same
+            as the other five, rather than inset inside the text
+            column. */}
+        <div className='mt-10 md:mt-12 md:-mx-12 -mx-6'>
+          <JourneyMapScene
+            journey={SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY}
+            heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+          />
+          <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Casagliana Suite Resort → Porto Cervo
+          </p>
+        </div>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-10 md:mt-12 max-w-xl mx-auto'>
+            <ChapterHeading as='h3' italic>
+              Porto Cervo
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'The following day, we headed to Porto Cervo and explored Promenade du Port. What impressed me most was how beautifully maintained everything was, from the buildings and gardens to the surrounding streets. It was surprisingly quiet during the day, with hardly anyone around.',
+                "We didn't do any shopping, but we stopped for ice cream. Both the ice cream and parking at the Promenade du Port garage were noticeably more expensive than elsewhere in Sardinia.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* PHOTO 1 -- Porto Cervo.jpeg, the pink building with flowers.
+            Real EXIF orientation is portrait (3:4 once rotated for
+            display, confirmed via the file's own orientation tag), so
+            it's shown in a 3:4 box -- an exact match for its true
+            proportions, not a crop. */}
+        <Reveal className='mt-10 md:mt-12 max-w-md mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2025-07%20-%20Sardinia/Porto%20Cervo.jpeg'
+              alt='A pink building decorated with flowers in Porto Cervo.'
+              fill
+              sizes='(min-width: 1024px) 480px, 100vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            A pink building with flowers, Porto Cervo.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* MAP -- Casagliana Suite Resort -> Porto Istana. Moved here,
+          immediately before the Porto Istana section's own RouteLabel/
+          heading, per explicit instruction -- same bare JourneyMapScene
+          component, full width and sizing convention as every other
+          route map on the page. */}
+      <JourneyMapScene
+        journey={SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY}
+        heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
+      />
+      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+        Casagliana Suite Resort → Porto Istana
+      </p>
+
+      {/* PORTO ISTANA -- the final beach stop of the trip. Now a map ->
+          content transition (MAP_TRANSITION_PT on top) rather than text
+          -> chapter, since the route map above now directly precedes
+          this section's own heading, per explicit instruction. Same
+          "Beach" (singular) RouteLabel convention as the other
+          beach-stop chapters (Spiaggia del Principe, Liscia Ruja, La
+          Cinta). Only
+          one photo, per explicit scope (no earlier Porto Istana photos
+          or parking-screenshot images included).
+          UPDATE: the individual parking-price Fact panel and its rate-
+          caveat note were removed per explicit instruction (parking
+          cost now lives only in the general "Parking in Sardinia"
+          section after Renting a Car). Paragraphs now flow straight
+          into the PHOTO below. */}
+      <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Beach</RouteLabel>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
+              Porto Istana – Beautiful Beach, Mixed Experience
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                'On our last day in Sardinia, we visited Porto Istana. The beach itself is beautiful, with soft sand, shallow water and crystal-clear sea.',
+                "Unfortunately, our experience wasn't quite as lovely. Something kept nipping at us in the water – possibly small fish, although we're not sure. At one point, the wind blew our beach umbrella away, and a nearby beachgoer got quite angry with us.",
+                "Despite how beautiful the beach was, we didn't feel particularly comfortable there and decided not to stay long.",
+              ]}
+            />
+          </Reveal>
+
+        </div>
+
+        {/* PHOTO -- Porto Istana.jpg, the final selected photograph.
+            Real pixel ratio is ~1.1:1 (4737x4281, no EXIF rotation
+            needed) -- not a clean 4:3 or 16:9, so per the same
+            "no-awkward-cropping" convention already used for the
+            Tavolara chapter's own off-ratio photos, this uses native
+            width/height + w-full h-auto (uncropped) instead of an
+            aspect-ratio box. */}
+        <Reveal className='mt-10 md:mt-12 max-w-2xl mx-auto'>
+          <Image
+            src='/2025-07%20-%20Sardinia/Porto%20Istana.jpg'
+            alt='The sandy beach and shallow, crystal-clear water at Porto Istana.'
+            width={4737}
+            height={4281}
+            sizes='(min-width: 1024px) 672px, 100vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Porto Istana, near Olbia.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* MY FINAL THOUGHTS ON SARDINIA -- a closing reflection, added per
+          explicit instruction. Positioned after Porto Istana (the last
+          beach stop chronologically) and before the final "BOOKED BEFORE
+          WE LEFT" checklist section -- NOT the page's final content
+          section (that checklist, added later per explicit instruction,
+          replaced the old "More of Sardinia coming soon!" placeholder
+          that used to close the page).
+          Same RouteLabel + ChapterHeading + Paragraphs pattern as every
+          other Sardinia chapter; "Sardinia" is reused as the eyebrow
+          (rather than a route segment) since this isn't a route chapter,
+          same as the opening "Why Sardinia?" chapter above. Photo -> new
+          chapter spacing on top (CHAPTER_GAP_START, pairing with Porto
+          Istana's own CHAPTER_GAP_END), text -> new chapter spacing on
+          the bottom (CHAPTER_GAP_END, pairing with CLOSING NOTE's own
+          CHAPTER_GAP_START) -- both tokens share the same value, so this
+          reads correctly either way per the site's three-transition-type
+          system. No new map, per explicit instruction.
+          Four photos, each placed directly after the paragraph it
+          illustrates, alternating text/photo the same way the Gulf of
+          Orosei chapter above does -- kept to modest, non-full-width
+          sizes (max-w-xl/max-w-sm, not the max-w-5xl "main photo"
+          treatment used for a chapter's single definitive image) so four
+          photos in one chapter don't make it feel oversized. Sardinia
+          nature.jpeg (clean 4:3, no EXIF rotation) and Sardinia_pizza.jpg
+          (off-ratio ~1.8:1, shown uncropped at native size per the
+          established "no-awkward-cropping" convention) are landscape;
+          Sardinia from air.jpeg (EXIF orientation 6 -- raw pixels are
+          5712x4284 landscape, but the real photo, once rotated for
+          display the way Next/Image's sharp optimiser and every browser
+          already do automatically, is a genuine 4284x5712 portrait shot
+          out of an aircraft window, confirmed by actually viewing the
+          rendered/rotated image, not just trusting the EXIF tag blindly)
+          and Sardinia_trash.jpg (near-square, ~1980x1975, shown uncropped
+          at native size, same off-ratio convention) are both shown
+          narrower accordingly.
+          The food paragraph carries one inline link, same ReactNode-item
+          + <Link> pattern already used for an in-paragraph link elsewhere
+          on the site (app/rome/page.tsx's Barcelona mention) -- not the
+          separate "Curious how we did it?" CTA block used on
+          app/barcelona/page.tsx, since the instruction was to link the
+          exact words "how I use AI to discover restaurants" inline
+          within the paragraph itself. The target URL,
+          /behind-the-trip/how-we-find-restaurants, was found in the
+          project (app/behind-the-trip/[topic]/page.tsx,
+          lib/behind-the-trip.ts, app/sitemap.ts, and this exact link
+          already in use on app/barcelona/page.tsx) rather than invented. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} ${CHAPTER_GAP_END} bg-[#faf9f6] dark:bg-black`}>
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal>
+            <RouteLabel>Sardinia</RouteLabel>
+            <ChapterHeading as='h2' italic className='mt-8 md:mt-10'>
+              My Final Thoughts on Sardinia
+            </ChapterHeading>
+            <Paragraphs
+              className='mt-5 text-center'
+              items={[
+                "Having visited the Seychelles, Maldives and Bahamas, I can confidently say that Sardinia has it all when it comes to beautiful beaches. They're every bit as stunning as the Instagram photos suggest.",
+                'What surprised me from the moment we arrived was the landscape. The enormous granite rocks reminded me so much of the Seychelles, only surrounded by Mediterranean vegetation.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* PHOTO -- Sardinia nature.jpeg, the granite rocks, alongside
+            the paragraph comparing them to the Seychelles. Clean native
+            4:3 (4032x3024, no EXIF rotation), so the standard
+            aspect-[4/3]/object-cover box is an exact match, not a crop. */}
+        <Reveal className='mt-10 md:mt-12 max-w-xl mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[4/3]'>
+            <Image
+              src='/2025-07%20-%20Sardinia/Sardinia%20nature.jpeg'
+              alt='Granite rock formations surrounded by Mediterranean vegetation in Sardinia.'
+              fill
+              sizes='(min-width: 768px) 576px, 100vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Sardinia&apos;s rocky landscape and Mediterranean vegetation.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-10 md:mt-12'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "My biggest recommendation? Explore Sardinia by boat. Some of the most spectacular beaches aren't accessible directly by car, and those that are can get incredibly crowded. La Cinta is a perfect example – absolutely beautiful, but packed with people. After seeing the crowds, I can understand why some beaches have introduced reservation systems.",
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* PHOTO -- Sardinia from air.jpeg, alongside the paragraph about
+            beautiful but crowded beaches. Real display orientation is
+            portrait (EXIF orientation 6 rotates the raw 5712x4284
+            landscape pixels to a true 4284x5712 / 3:4 shot -- confirmed
+            by viewing the actual rotated image, not just the tag), so
+            it's shown narrower, in a 3:4 box. */}
+        <Reveal className='mt-10 md:mt-12 max-w-xs sm:max-w-sm mx-auto'>
+          <div className='relative w-full overflow-hidden rounded-[2px] aspect-[3/4]'>
+            <Image
+              src='/2025-07%20-%20Sardinia/Sardinia%20from%20air.jpeg'
+              alt='An aerial view of La Cinta beach and its turquoise bay, seen from the plane window.'
+              fill
+              sizes='(min-width: 640px) 384px, 100vw'
+              className='object-cover'
+            />
+          </div>
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            La Cinta from above.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-10 md:mt-12'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                <>
+                  When it came to food, we looked for small local places
+                  where we could try traditional Italian and Sardinian
+                  dishes. I&apos;ve also shared{' '}
+                  <Link
+                    href='/behind-the-trip/how-we-find-restaurants'
+                    className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
+                  >
+                    how I use AI to discover restaurants →
+                  </Link>{' '}
+                  while travelling.
+                </>,
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* PHOTO -- Sardinia_pizza.jpg, alongside the paragraph about
+            finding local food. Off-ratio (4967x2765, ~1.8:1, no EXIF
+            rotation) -- not a clean 4:3 or 16:9, so per the established
+            "no-awkward-cropping" convention, shown uncropped at native
+            size instead of forced into an aspect-ratio box. */}
+        <Reveal className='mt-10 md:mt-12 max-w-xl mx-auto'>
+          <Image
+            src='/2025-07%20-%20Sardinia/Sardinia_pizza.jpg'
+            alt='A pizza counter in Sardinia, with several freshly baked pizzas on display.'
+            width={4967}
+            height={2765}
+            sizes='(min-width: 768px) 576px, 100vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            A selection of pizzas at a local takeaway in Sardinia.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-10 md:mt-12'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                'But there was one thing that really disappointed me: the rubbish along the roads. We repeatedly saw piles of waste and entire bags of rubbish dumped by the roadside. It was upsetting to see in such a beautiful destination.',
+              ]}
+            />
+          </Reveal>
+        </div>
+
+        {/* PHOTO -- Sardinia_trash.jpg, alongside the paragraph about
+            roadside rubbish. Near-square (1980x1975, ~1:1, no EXIF
+            rotation) -- not a clean standard ratio, so shown uncropped
+            at native size, same convention as the pizza photo above,
+            narrower to suit its square shape. */}
+        <Reveal className='mt-10 md:mt-12 max-w-xs sm:max-w-sm mx-auto'>
+          <Image
+            src='/2025-07%20-%20Sardinia/Sardinia_trash.jpg'
+            alt='Piles of rubbish dumped along a roadside in Sardinia.'
+            width={1980}
+            height={1975}
+            sizes='(min-width: 640px) 384px, 100vw'
+            className='w-full h-auto rounded-[2px]'
+          />
+          <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
+            Rubbish dumped along a roadside in Sardinia.
+          </p>
+        </Reveal>
+
+        <div className='max-w-2xl mx-auto text-center'>
+          <Reveal className='mt-10 md:mt-12'>
+            <Paragraphs
+              className='text-center'
+              items={[
+                "Despite that, Sardinia genuinely impressed me. You don't have to fly halfway around the world to find incredible beaches – sometimes they're much closer than you think.",
+              ]}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* BOOKED BEFORE WE LEFT -- the same reusable pre-trip checklist
+          component Tenerife and Barcelona use (components/ui/booked-
+          checklist.tsx): centred RouteLabel (pink line + uppercase
+          label), then the component's own small pink-checkmark list --
+          no new styling introduced here, per explicit instruction to
+          reuse the existing component and design. Replaces the old
+          "More of Sardinia coming soon!" closing note entirely -- this
+          is now the page's final content, sitting directly above the
+          footer, the same layout shape as Tenerife's and Barcelona's
+          own closing sections. Top padding is CHAPTER_GAP_START alone
+          (text -> new chapter, following the previous chapter's final
+          paragraph), bottom is the same one-off CHAPTER_GAP_END +50px
+          override Tenerife and Barcelona both use, since this section
+          sits directly against the dark footer rather than another
+          cream section -- byte-identical spacing to both, so the gap
+          above the footer matches across all three pages. */}
+      <section className={`px-6 md:px-12 ${CHAPTER_GAP_START} pb-[calc(3rem+50px)] md:pb-[calc(3.5rem+50px)] bg-[#faf9f6] dark:bg-black`}>
+        <Reveal className='mx-auto'>
+          <BookedChecklist
+            items={[
+              'Flights',
+              'Airport parking in Vienna',
+              'Accommodation',
+              'Car rental',
+              'La Maddalena boat tour',
+              'Tavolara boat trip',
+              'Gulf of Orosei boat trip',
+            ]}
+          />
+        </Reveal>
       </section>
 
       <footer className='flex flex-col items-center px-8 py-10 md:py-12 bg-[#2a2a2a] text-white text-center'>

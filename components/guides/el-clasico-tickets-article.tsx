@@ -75,12 +75,16 @@ function SectionHeading({ children }: { children: ReactNode }) {
   );
 }
 
-// In-section sub-heading. Byte-identical visual style to the site's
-// existing Eyebrow component, rendered as a real <h3> so the article keeps
-// clear, semantic H2/H3 hierarchy for SEO and screen readers.
-function SubHeading({ children }: { children: ReactNode }) {
+// Subsection heading -- the single, consistent H3 style used for every
+// subsection heading across the Behind the Trip articles (a real serif
+// heading, clearly smaller than SectionHeading's H2 scale, keeping clear
+// semantic H2/H3 hierarchy for SEO and screen readers). Byte-identical to
+// hotels-article.tsx's / flights-article.tsx's SubsectionHeading. The
+// small uppercase Poppins label (see Eyebrow below) stays reserved for
+// category labels / minor visual markers, not for standard H3 headings.
+function SubsectionHeading({ children }: { children: ReactNode }) {
   return (
-    <h3 className='mt-10 md:mt-12 text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
+    <h3 className='mt-12 md:mt-14 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
       {children}
     </h3>
   );
@@ -387,7 +391,7 @@ export default function ElClasicoTicketsArticle() {
               />
             </div>
 
-            <SubHeading>How to Become an FC Barcelona Member</SubHeading>
+            <SubsectionHeading>How to Become an FC Barcelona Member</SubsectionHeading>
             <div className='mt-6'>
               <Paragraphs
                 items={[
@@ -423,7 +427,7 @@ export default function ElClasicoTicketsArticle() {
               />
             </div>
 
-            <SubHeading>How Much Does FC Barcelona Membership Cost?</SubHeading>
+            <SubsectionHeading>How Much Does FC Barcelona Membership Cost?</SubsectionHeading>
             <div className='mt-6'>
               <Paragraphs items={['These were the membership prices for July–December 2026:']} />
             </div>
@@ -453,9 +457,9 @@ export default function ElClasicoTicketsArticle() {
                   href={MEMBERSHIP_URL}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='underline underline-offset-4 text-black dark:text-white hover:text-black/70 dark:hover:text-white/70'
+                  className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
                 >
-                  official FC Barcelona membership website
+                  official FC Barcelona membership website ↗
                 </a>
                 .
               </p>
@@ -589,7 +593,7 @@ export default function ElClasicoTicketsArticle() {
               />
             </div>
 
-            <SubHeading>What We Actually Paid for El Clásico</SubHeading>
+            <SubsectionHeading>What We Actually Paid for El Clásico</SubsectionHeading>
             <div className='mt-6'>
               <Paragraphs items={['Here is the exact breakdown from our booking confirmation:']} />
             </div>
@@ -854,9 +858,9 @@ export default function ElClasicoTicketsArticle() {
                   href={EL_CLASICO_REVENUE_SOURCE_URL}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='underline underline-offset-4 text-black dark:text-white hover:text-black/70 dark:hover:text-white/70'
+                  className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
                 >
-                  Mundo Deportivo
+                  Mundo Deportivo ↗
                 </a>{' '}
                 about the record revenue FC Barcelona had generated from the match.
               </p>

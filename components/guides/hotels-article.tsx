@@ -55,23 +55,11 @@ function SectionHeading({ children }: { children: ReactNode }) {
   );
 }
 
-// In-section sub-heading -- byte-identical to el-clasico-tickets-article.tsx's
-// SubHeading (same Eyebrow-style visual treatment, rendered as a real
-// <h3> for genuine heading semantics).
-function SubHeading({ children }: { children: ReactNode }) {
-  return (
-    <h3 className='mt-10 md:mt-12 text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
-      {children}
-    </h3>
-  );
-}
-
-// Subsection heading for a substantial sub-story within a section -- a
-// real serif heading (not a small uppercase label), sized between
-// SectionHeading and the small uppercase SubHeading above. Used only
-// where a sub-heading introduces real narrative weight (a specific stay,
-// with its own run of paragraphs), not a short subdivision like "For
-// City Breaks", which stays a SubHeading.
+// Subsection heading -- the single, consistent H3 style used for every
+// subsection heading across the Behind the Trip articles (a real serif
+// heading, clearly smaller than SectionHeading's H2 scale). The small
+// uppercase Poppins label (see Eyebrow below) stays reserved for
+// category labels / minor visual markers, not for standard H3 headings.
 function SubsectionHeading({ children }: { children: ReactNode }) {
   return (
     <h3 className='mt-12 md:mt-14 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
@@ -325,8 +313,8 @@ export default function HotelsArticle() {
           </div>
           <p className='mt-3 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
             At Roca Nivaria in{' '}
-            <Link href='/tenerife' className='underline underline-offset-2'>
-              Tenerife
+            <Link href='/tenerife' className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'>
+              Tenerife →
             </Link>
             , the pool, surroundings and hotel
             facilities were part of the holiday experience.
@@ -343,8 +331,7 @@ export default function HotelsArticle() {
                 "Fourteen years ago, choosing accommodation was pretty simple for me. I wanted a good location and a low price. The closer to the city centre, the better, and I didn't pay nearly as much attention to guest ratings as I do today.",
                 "I remember looking back at one of those early bookings and discovering that the property had a rating of just 6.9. I wouldn't even consider booking something with that score today.",
                 "Over the years, my priorities have changed. I've stayed in everything from basic apartments to beautiful resorts, made some great choices and had a few disappointing experiences along the way.",
-                'These days, I have a fairly clear system for choosing where we stay.',
-                "It's not about finding the cheapest hotel, and it's definitely not about booking the most luxurious one. It's about finding a place that makes our trip more comfortable and is actually worth what we're paying.",
+                "These days, I have a fairly clear system for choosing where we stay. It's not about finding the cheapest hotel, and it's definitely not about booking the most luxurious one. It's about finding a place that makes our trip more comfortable and is actually worth what we're paying.",
               ]}
             />
           </Reveal>
@@ -357,11 +344,9 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "I've been using Booking.com for years, and it's still my go-to platform for accommodation.",
-                  "If a property isn't listed there, chances are it won't even make it onto my radar.",
+                  "I've been using Booking.com for years, and it's still my go-to platform for accommodation. If a property isn't listed there, chances are it won't even make it onto my radar.",
                   "I've heard plenty of negative stories about Booking.com, but personally, I've never had a bad experience with the platform. I find it incredibly easy to use, and almost everything I need to know about a property is right there.",
-                  'I can compare prices, locations, room types, meal options, cancellation policies and guest reviews without jumping between different websites.',
-                  'I also have Genius status, which gives me access to additional discounts on selected properties.',
+                  'I can compare prices, locations, room types, meal options, cancellation policies and guest reviews without jumping between different websites. I also have Genius status, which gives me access to additional discounts on selected properties.',
                   'Could I sometimes get a better price by booking directly with a hotel? Absolutely. But I rarely do.',
                   'I value having my reservations in one place and being able to manage them easily. For me, that convenience is often worth more than saving a little extra money.',
                 ]}
@@ -385,16 +370,16 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'The first thing I do when searching for accommodation is set the guest rating filter.',
                   <>
-                    Ideally, I&apos;m looking for properties rated{' '}
-                    <Emphasis>9.0 or higher</Emphasis>.
+                    The first thing I do when searching for accommodation
+                    is set the guest rating filter. Ideally, I&apos;m
+                    looking for properties rated{' '}
+                    <Emphasis>9.0 or higher</Emphasis>. I&apos;m sometimes
+                    willing to go as low as 8.6, especially if we only
+                    need somewhere to sleep for a night and won&apos;t be
+                    using any additional facilities.
                   </>,
-                  "I'm sometimes willing to go as low as 8.6, especially if we only need somewhere to sleep for a night and won't be using any additional facilities.",
-                  'But the overall rating is only part of the story.',
-                  'The number of reviews matters just as much.',
-                  'A property rated 9.5 with only 10 reviews doesn’t mean nearly as much to me as one rated 9.0 with hundreds of reviews.',
-                  'As a general rule, I want to see at least 50 reviews. The more, the better.',
+                  'But the overall rating is only part of the story. The number of reviews matters just as much. A property rated 9.5 with only 10 reviews doesn’t mean nearly as much to me as one rated 9.0 with hundreds of reviews. As a general rule, I want to see at least 50 reviews. The more, the better.',
                   "And even then, I don't trust the numbers blindly.",
                 ]}
               />
@@ -404,14 +389,10 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'We once booked an apartment in Croatia with an excellent rating of 9.5.',
-                  'I expected something really special.',
+                  'We once booked an apartment in Croatia with an excellent rating of 9.5. I expected something really special.',
                   'When we arrived, I was honestly shocked. The apartment was pretty average. Yes, it was right by the sea, which was a huge advantage, but the accommodation itself was nowhere near what I had imagined based on that rating.',
-                  'Personally, I would have given it an 8.5 at most.',
-                  'To me, a 9.5 should feel close to flawless — not just a friendly welcome or a great location.',
-                  "But I've learned that people rate accommodation very differently.",
-                  'Someone might give an apartment a perfect score because the owner was friendly, the location was fantastic or they felt they got good value for money.',
-                  "And that's perfectly valid. It just doesn't necessarily mean the property will meet my expectations.",
+                  'Personally, I would have given it an 8.5 at most. To me, a 9.5 should feel close to flawless — not just a friendly welcome or a great location.',
+                  "But I've learned that people rate accommodation very differently. Someone might give an apartment a perfect score because the owner was friendly, the location was fantastic or they felt they got good value for money. And that's perfectly valid. It just doesn't necessarily mean the property will meet my expectations.",
                 ]}
               />
             </div>
@@ -435,12 +416,8 @@ export default function HotelsArticle() {
               <Paragraphs
                 items={[
                   'I never read every single review. But I do spend time looking for the things that could genuinely affect our stay.',
-                  "If someone complains that the pillow was uncomfortable, I don't pay much attention. That's subjective — what bothers one guest might suit someone else just fine.",
-                  'But complaints about basic facilities are a different story.',
-                  "No hot water? Air conditioning that doesn't work? Windows that won't open or close properly?",
-                  'Those are things I take seriously.',
-                  'I also check when the reviews were written. For me, reviews from the past year are the most relevant. A problem from three years ago may have been resolved long ago.',
-                  "And if several recent guests mention the same issue, that's definitely something I want to know before booking.",
+                  "If someone complains that the pillow was uncomfortable, I don't pay much attention. That's subjective — what bothers one guest might suit someone else just fine. But complaints about basic facilities are a different story. No hot water? Air conditioning that doesn't work? Windows that won't open or close properly? Those are things I take seriously.",
+                  "I also check when the reviews were written. For me, reviews from the past year are the most relevant. A problem from three years ago may have been resolved long ago. And if several recent guests mention the same issue, that's definitely something I want to know before booking.",
                 ]}
               />
             </div>
@@ -449,14 +426,9 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'We once stayed at an Austria Trend hotel in Vienna, where I expected a certain standard.',
-                  "When we checked in, the extra bed for one of our children hadn't been prepared.",
-                  'We went to a concert that evening and returned to our room at around 1 a.m., completely exhausted.',
-                  "The bed still wasn't there.",
-                  'Instead of going straight to sleep, we had to find someone at the hotel who could finally arrange it.',
-                  'The hotel had a rating of 8.7.',
-                  "It's a small detail until you're standing in a hotel room in the middle of the night with a tired child who has nowhere to sleep.",
-                  'Experiences like that remind me why I pay attention to the details, not just the overall score.',
+                  "We once stayed at an Austria Trend hotel in Vienna, where I expected a certain standard. When we checked in, the extra bed for one of our children hadn't been prepared.",
+                  "We went to a concert that evening and returned to our room at around 1 a.m., completely exhausted. The bed still wasn't there. Instead of going straight to sleep, we had to find someone at the hotel who could finally arrange it.",
+                  "The hotel had a rating of 8.7. It's a small detail until you're standing in a hotel room in the middle of the night with a tired child who has nowhere to sleep. Experiences like that remind me why I pay attention to the details, not just the overall score.",
                 ]}
               />
             </div>
@@ -470,15 +442,17 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "Once I've narrowed down the properties by rating, the next thing I look at is location.",
-                  'For city breaks, I want to be as central as possible. If staying right in the centre isn’t practical, being close to public transport is essential, preferably a metro station.',
+                  "Once I've narrowed down the properties by rating, the next thing I look at is location. For city breaks, I want to be as central as possible. If staying right in the centre isn’t practical, being close to public transport is essential, preferably a metro station.",
                   <>
                     One of my favourite features on Booking.com is{' '}
-                    <Emphasis>Show on map</Emphasis>.
+                    <Emphasis>Show on map</Emphasis>. Instead of
+                    scrolling through endless listings, I open the map
+                    and see exactly where the available properties are.
+                    I can compare their prices while checking the
+                    distance to the main attractions and metro
+                    stations. It&apos;s such a simple feature, but it
+                    makes choosing the right area much easier.
                   </>,
-                  'Instead of scrolling through endless listings, I open the map and see exactly where the available properties are.',
-                  'I can compare their prices while checking the distance to the main attractions and metro stations.',
-                  "It's such a simple feature, but it makes choosing the right area much easier.",
                 ]}
               />
             </div>
@@ -499,18 +473,15 @@ export default function HotelsArticle() {
                     On our recent trip to{' '}
                     <Link
                       href='/barcelona'
-                      className='underline underline-offset-2'
+                      className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
                     >
-                      Barcelona
+                      Barcelona →
                     </Link>
-                    , we stayed at ICON BCN by Petit Palace.
+                    , we stayed at ICON BCN by Petit Palace. Could I
+                    have found a much cheaper hotel? Definitely. But
+                    the location was fantastic.
                   </>,
-                  'Could I have found a much cheaper hotel? Definitely.',
-                  'But the location was fantastic.',
-                  'We could walk out of the hotel and already be in the part of the city we wanted to explore.',
-                  "I honestly can't imagine having to take public transport into the centre every single morning.",
-                  'And when you’re travelling with children, being able to return to the hotel easily, take a break or drop off shopping bags makes a real difference.',
-                  "For me, that's exactly the kind of convenience worth paying extra for.",
+                  "We could walk out of the hotel and already be in the part of the city we wanted to explore. I honestly can't imagine having to take public transport into the centre every single morning. And when you’re travelling with children, being able to return to the hotel easily, take a break or drop off shopping bags makes a real difference. For me, that's exactly the kind of convenience worth paying extra for.",
                   "Of course, public transport is useful, and we use it whenever we need to. I just don't want every day to begin and end with an unnecessary commute if we can avoid it.",
                 ]}
               />
@@ -525,13 +496,9 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "This might sound unusual, but I don't normally have a strict accommodation budget when I start searching.",
-                  "I prefer to see what's available first.",
-                  "I compare different properties, their locations, facilities and prices. I even look at high-end hotels in the same area, not necessarily because I'm planning to book one, but because it helps me understand the price range.",
-                  'Sometimes the difference between an average hotel and a much nicer one is surprisingly small.',
-                  "Other times, the price difference is enormous, and I know the additional cost simply isn't worth it for our plans.",
-                  "I'm not looking for the cheapest option. I'm looking for the one that makes the most sense.",
-                  'And sometimes that means spending more.',
+                  "This might sound unusual, but I don't normally have a strict accommodation budget when I start searching. I prefer to see what's available first. I compare different properties, their locations, facilities and prices. I even look at high-end hotels in the same area, not necessarily because I'm planning to book one, but because it helps me understand the price range.",
+                  "Sometimes the difference between an average hotel and a much nicer one is surprisingly small. Other times, the price difference is enormous, and I know the additional cost simply isn't worth it for our plans.",
+                  "I'm not looking for the cheapest option. I'm looking for the one that makes the most sense. And sometimes that means spending more.",
                 ]}
               />
             </div>
@@ -550,26 +517,21 @@ export default function HotelsArticle() {
               />
             </div>
 
-            <SubHeading>For City Breaks</SubHeading>
+            <SubsectionHeading>For City Breaks</SubsectionHeading>
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "We're usually out exploring most of the day, so the hotel is mainly somewhere to sleep.",
-                  'Location, cleanliness, comfortable beds and a modern, well-maintained room matter much more to me than additional facilities.',
-                  "I don't need a swimming pool, spa or an impressive list of amenities if we're barely going to use them.",
+                  "We're usually out exploring most of the day, so the hotel is mainly somewhere to sleep. Location, cleanliness, comfortable beds and a modern, well-maintained room matter much more to me than additional facilities. I don't need a swimming pool, spa or an impressive list of amenities if we're barely going to use them.",
                 ]}
               />
             </div>
 
-            <SubHeading>For Longer Holidays</SubHeading>
+            <SubsectionHeading>For Longer Holidays</SubsectionHeading>
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "When we're spending more time at the property, my expectations change.",
-                  'I want a spacious, comfortable room, preferably with a balcony or terrace. A nice pool is a big plus, and the overall atmosphere of the property becomes much more important.',
-                  "I also prefer modern interiors. I'm simply not a fan of outdated rooms and worn furnishings.",
-                  'Travelling as a family of four can make this more challenging. Suitable family rooms aren’t always available, and that can significantly limit our choices.',
-                  'Sometimes the hard part isn’t finding a hotel we like — it’s finding a room that comfortably fits all four of us.',
+                  "When we're spending more time at the property, my expectations change. I want a spacious, comfortable room, preferably with a balcony or terrace. A nice pool is a big plus, and the overall atmosphere of the property becomes much more important. I also prefer modern interiors. I'm simply not a fan of outdated rooms and worn furnishings.",
+                  'Travelling as a family of four can make this more challenging. Suitable family rooms aren’t always available, and that can significantly limit our choices. Sometimes the hard part isn’t finding a hotel we like — it’s finding a room that comfortably fits all four of us.',
                 ]}
               />
             </div>
@@ -583,12 +545,8 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'Most of the time, I prefer discovering new places rather than returning to the same hotel.',
-                  'But there are exceptions.',
-                  "One of them is Petram, a resort just across the Slovenian border in Croatia. We've already stayed there twice, and I'm pretty sure we'll be going back again.",
-                  'Sometimes we don’t need a packed itinerary or a long list of things to see. We just want a relaxing weekend in a beautiful, comfortable place.',
-                  "And on those occasions, I'm happy to spend more on accommodation because the hotel itself is part of the experience.",
-                  'Petram is one of those rare places that makes me want to return, even though I usually prefer trying somewhere new.',
+                  "Most of the time, I prefer discovering new places rather than returning to the same hotel. But there are exceptions. One of them is Petram, a resort just across the Slovenian border in Croatia. We've already stayed there twice, and I'm pretty sure we'll be going back again.",
+                  "Sometimes we don’t need a packed itinerary or a long list of things to see. We just want a relaxing weekend in a beautiful, comfortable place. And on those occasions, I'm happy to spend more on accommodation because the hotel itself is part of the experience. Petram is one of those rare places that makes me want to return, even though I usually prefer trying somewhere new.",
                 ]}
               />
             </div>
@@ -621,15 +579,10 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  'One thing we never book is all-inclusive.',
-                  'The idea of spending our holidays eating at hotel buffets throughout the day just doesn’t appeal to us.',
-                  'We don’t usually choose half-board either.',
-                  'We like having our own schedule, and we often don’t feel like eating a big dinner. I don’t want to plan our day around getting back to the hotel for a meal.',
-                  'What I do appreciate is breakfast.',
-                  "It's convenient to start the day without having to search for somewhere to eat first.",
-                  'After that, we prefer to decide as we go.',
-                  "Maybe we'll have a proper lunch somewhere, grab something quick later or discover a restaurant we'd like to try.",
-                  'That flexibility is part of what we enjoy about travelling.',
+                  'One thing we never book is all-inclusive. The idea of spending our holidays eating at hotel buffets throughout the day just doesn’t appeal to us.',
+                  'We don’t usually choose half-board either. We like having our own schedule, and we often don’t feel like eating a big dinner. I don’t want to plan our day around getting back to the hotel for a meal.',
+                  "What I do appreciate is breakfast. It's convenient to start the day without having to search for somewhere to eat first.",
+                  "After that, we prefer to decide as we go. Maybe we'll have a proper lunch somewhere, grab something quick later or discover a restaurant we'd like to try. That flexibility is part of what we enjoy about travelling.",
                 ]}
               />
             </div>
@@ -643,20 +596,18 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "I start searching for accommodation as soon as I've booked our flights.",
-                  'Even if the trip is months away, I like knowing we already have somewhere to stay.',
                   <>
-                    But there&apos;s one condition:{' '}
+                    I start searching for accommodation as soon as
+                    I&apos;ve booked our flights. Even if the trip is
+                    months away, I like knowing we already have
+                    somewhere to stay. But there&apos;s one condition:{' '}
                     <Emphasis>
                       I always choose a reservation with free cancellation.
                     </Emphasis>
                   </>,
-                  "And just because I've booked something doesn’t mean I've stopped looking.",
-                  'I often continue checking Booking.com, comparing properties and seeing whether anything better becomes available.',
-                  'Sometimes I find a nicer hotel. Sometimes a better location. Sometimes simply a better price.',
-                  'When that happens, I can cancel the original reservation and make a new one, as long as I’m still within the free cancellation period.',
-                  'I love having that flexibility.',
-                  'It means I can secure a good option early without feeling that my decision is final.',
+                  "And just because I've booked something doesn’t mean I've stopped looking. I often continue checking Booking.com, comparing properties and seeing whether anything better becomes available.",
+                  'Sometimes I find a nicer hotel. Sometimes a better location. Sometimes simply a better price. When that happens, I can cancel the original reservation and make a new one, as long as I’m still within the free cancellation period.',
+                  'I love having that flexibility. It means I can secure a good option early without feeling that my decision is final.',
                 ]}
               />
             </div>
@@ -686,19 +637,10 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "And then there's our upcoming trip to Thailand.",
-                  "I've booked a property with a perfect 10.0 rating.",
-                  'Sounds great, right?',
-                  'Except it has only 14 reviews.',
-                  'Normally, that would be a red flag for me. It goes against my usual rule of wanting at least 50 reviews, preferably many more.',
-                  'But this property seems to have everything we’re looking for. The location, the accommodation itself, the facilities and the price all look fantastic.',
-                  'Almost too fantastic.',
-                  "I've spent time researching whether the property is legitimate, checking what information I can find and even communicating with the owner.",
-                  "So far, everything suggests it's real.",
-                  'But I still have that little worry in the back of my mind: what if we arrive in Thailand and discover that something isn’t right?',
-                  "Maybe it'll turn out to be one of our best accommodation finds.",
-                  "Or maybe it'll remind me why I created those rules in the first place.",
-                  "We'll find out in February.",
+                  "And then there's our upcoming trip to Thailand. I've booked a property with a perfect 10.0 rating, but there's one catch: it has only 14 reviews. Normally, that would be a red flag for me, as I prefer properties with at least 50 reviews.",
+                  "Still, this property seems to have everything we're looking for. The location, accommodation, facilities and price all look fantastic. Almost too fantastic.",
+                  "I've spent time researching whether the property is legitimate, checking the information available online and even communicating with the owner. So far, everything suggests it's real, but I still have that little worry in the back of my mind. What if we arrive in Thailand and something isn't right?",
+                  "Maybe it'll turn out to be one of our best accommodation finds, or maybe it'll remind me why I created those rules in the first place. We'll find out in February.",
                 ]}
               />
             </div>
@@ -712,12 +654,9 @@ export default function HotelsArticle() {
             <div className='mt-6'>
               <Paragraphs
                 items={[
-                  "After years of booking hotels and apartments, I've realised that choosing accommodation isn't about finding the perfect property.",
-                  "It's about finding the right one for the trip.",
+                  "After years of booking hotels and apartments, I've realised that choosing accommodation isn't about finding the perfect property. It's about finding the right one for the trip.",
                   "Sometimes that means paying more for a central location. Sometimes it means choosing a simple hotel because we'll only be sleeping there. And sometimes it means spending extra on a beautiful, spacious room because we know we'll actually enjoy being there.",
-                  "I don't need luxury everywhere we go.",
-                  'But I do want a comfortable, well-maintained place that makes our trip easier, not more complicated.',
-                  'And if I can find that at a reasonable price, even better.',
+                  "I don't need luxury everywhere we go. But I do want a comfortable, well-maintained place that makes our trip easier, not more complicated. And if I can find that at a reasonable price, even better.",
                   "That's how I choose where we stay.",
                 ]}
               />

@@ -61,24 +61,12 @@ function SectionHeading({ children }: { children: ReactNode }) {
   );
 }
 
-// In-section sub-heading -- byte-identical to hotels-article.tsx's
-// SubHeading (same Eyebrow-style visual treatment, rendered as a real
-// <h3> for genuine heading semantics). Used for a short subdivision
-// without its own real narrative (e.g. "Checked Luggage").
-function SubHeading({ children }: { children: ReactNode }) {
-  return (
-    <h3 className='mt-10 md:mt-12 text-sm md:text-[0.95rem] uppercase tracking-[0.18em] font-[family-name:var(--font-poppins)] font-semibold text-black/60 dark:text-white/60'>
-      {children}
-    </h3>
-  );
-}
-
-// Subsection heading for a substantial sub-story within a section -- a
-// real serif heading (not a small uppercase label), sized between
-// SectionHeading and the small uppercase SubHeading above. Byte-identical
-// to hotels-article.tsx's SubsectionHeading. Used only where a
-// sub-heading introduces real narrative weight (e.g. "Choosing Our
-// Seats", with its own run of paragraphs and a specific incident).
+// Subsection heading -- the single, consistent H3 style used for every
+// subsection heading across the Behind the Trip articles (a real serif
+// heading, clearly smaller than SectionHeading's H2 scale). Byte-identical
+// to hotels-article.tsx's SubsectionHeading. The small uppercase Poppins
+// label (see Eyebrow below) stays reserved for category labels / minor
+// visual markers, not for standard H3 headings.
 function SubsectionHeading({ children }: { children: ReactNode }) {
   return (
     <h3 className='mt-12 md:mt-14 text-2xl md:text-3xl font-[family-name:var(--font-playfair)] font-medium text-black dark:text-white'>
@@ -363,9 +351,9 @@ export default function FlightsArticle() {
                   <>
                     <Link
                       href='/tenerife'
-                      className='underline underline-offset-2'
+                      className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
                     >
-                      Tenerife
+                      Tenerife →
                     </Link>{' '}
                     is a good example.
                   </>,
@@ -497,7 +485,7 @@ export default function FlightsArticle() {
               />
             </div>
 
-            <SubHeading>My Ideal Flight Times</SubHeading>
+            <SubsectionHeading>My Ideal Flight Times</SubsectionHeading>
             <div className='mt-6'>
               <Paragraphs
                 items={[
@@ -580,7 +568,7 @@ export default function FlightsArticle() {
           </Reveal>
 
           <Reveal className='mt-9 md:mt-11'>
-            <SubHeading>Checked Luggage</SubHeading>
+            <SubsectionHeading>Checked Luggage</SubsectionHeading>
             <div className='mt-6'>
               <Paragraphs
                 items={[

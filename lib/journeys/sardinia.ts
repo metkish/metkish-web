@@ -260,54 +260,6 @@ const PALAU_PARKING: JourneyPoint = {
   showMapLabel: true,
 };
 
-const PALAU_HARBOUR: JourneyPoint = {
-  id: 'palau-harbour',
-  name: 'Palau',
-  sublabel: 'Boat excursion departure',
-  coords: [9.38567, 41.18091],
-  showMapLabel: true,
-};
-
-// Cala Santa Maria -- the excursion's real second beach stop (per the
-// confirmed Delfino Tours itinerary, 2 July 2025). CORRECTED: this cove
-// is on Isola Santa Maria, NOT Caprera (a different, separate island
-// further south near La Maddalena town) -- the underlying coordinate
-// below was already correct for Isola Santa Maria all along (cross-
-// checked via an independent anchorage source that explicitly places
-// "Cala Santa Maria" on "the island of the same name", and via Isola
-// Santa Maria's own published location, just north of Spargi and south
-// of Budelli/Razzoli); only the "Caprera" text label was wrong, and has
-// been fixed here. Real, published anchorage coordinates
-// (41 17' 36"N 9 22' 19"E -> 41.29333, 9.37194).
-const CALA_SANTA_MARIA: JourneyPoint = {
-  id: 'cala-santa-maria',
-  name: 'Cala Santa Maria',
-  sublabel: 'Santa Maria Island',
-  coords: [9.37194, 41.29333],
-  showMapLabel: true,
-};
-
-// Spiaggia Rosa, Budelli -- passed by boat only, never landed on (access
-// is prohibited to protect the island). Real, published coordinates
-// (41.279449, 9.356189).
-const SPIAGGIA_ROSA: JourneyPoint = {
-  id: 'spiaggia-rosa',
-  name: 'Spiaggia Rosa',
-  sublabel: 'Budelli — passed by boat',
-  coords: [9.356189, 41.279449],
-  showMapLabel: true,
-};
-
-// La Maddalena town, Piazza Giuseppe Garibaldi -- the harbourfront square
-// where the excursion's free time/ice cream stop happened. Real, geocoded
-// coordinates (41.21309, 9.40629).
-const LA_MADDALENA_TOWN: JourneyPoint = {
-  id: 'la-maddalena-town',
-  name: 'La Maddalena',
-  coords: [9.40629, 41.21309],
-  showMapLabel: true,
-};
-
 // Casagliana -> Palau (Largo Palau Vecchio parking), the real driving
 // route for the morning of the boat excursion. OSRM-verified
 // (steps=true): Via Sole Ruiu -> SS125 Orientale Sarda -> Rotonda
@@ -375,16 +327,16 @@ const CASAGLIANA_TO_PALAU_ROUTE: [number, number][] = [
 // removed from THIS map -- the pink route ends at the real, OSRM-
 // verified parking location (Largo Palau Vecchio) and nothing else.
 //
-// A later instruction asked to add PALAU_HARBOUR back as a second,
-// separately-labelled marker (via an extra showRoute:false leg) while
+// A later instruction asked to add a second, separately-labelled
+// "Palau Harbour" marker (via an extra showRoute:false leg) while
 // keeping the driving route itself ending at parking. On review, that
 // map looked cluttered/incorrect, so per explicit follow-up correction
 // it has been removed again -- this map shows ONLY two locations
 // (CASAGLIANA and PALAU_PARKING), a single leg, one real OSRM-verified
-// route between them, nothing else. PALAU_HARBOUR stays defined above
-// but is not referenced by this journey at all, same as
-// SARDINIA_MADDALENA_EXCURSION_JOURNEY below (kept for reference, not
-// currently rendered on the page).
+// route between them, nothing else. The separate illustrative Maddalena
+// excursion journey this comment used to reference has since been
+// removed entirely (it was unused dead code), along with its own
+// unused point constants.
 export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-palau',
   initialCamera: { center: [9.42, 41.09], spanDeg: 1.3 },
@@ -407,88 +359,556 @@ export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
   ],
 };
 
-// La Maddalena Archipelago boat excursion -- originally Palau -> Cala
-// Santa Maria -> (passing Spiaggia Rosa) -> La Maddalena town -> return
-// to Palau.
+// Spiaggia Liscia Ruja -- the first of four further Sardinia driving
+// routes added per explicit instruction, based on the user's own
+// GetYourGuide booking documents. Real, published beach location (Costa
+// Smeralda, confirmed via costasmeralda.it's own "Spiaggia Liscia Ruja"
+// place page and multiple independent beach-directory listings for
+// "Spiaggia di Liscia Ruja" in the same stretch of coast north of
+// Casagliana). The destination coordinate below is OSRM's own "arrive"
+// point on the real road serving the beach, the same convention already
+// used for SPIAGGIA_DEL_PRINCIPE above (a real car-accessible point, not
+// an estimated beach-centre guess).
 //
-// STATUS: per explicit instruction, the map rendering this journey has
-// been REMOVED from app/sardinia/page.tsx entirely (not just its
-// caption) -- this export is currently unused on the page. It is left
-// here, unused, rather than deleted outright, since it still encodes
-// real, independently-researched coordinates that may be useful again;
-// if it's ever reinstated, note that the real confirmed itinerary order
-// (per Delfino Tours, 2 July 2025) is actually Cala Corsara (Spargi) ->
-// Spiaggia Rosa (Budelli, passed by) -> Cala Santa Maria -> Porto della
-// Madonna (Budelli natural pools) -> La Maddalena town, which this
-// journey's legs below do NOT yet reflect (they still skip Cala Corsara
-// and Porto della Madonna, and Cala Santa Maria's sublabel was also
-// corrected elsewhere in this file -- see that point's own comment).
+// Researched from OSRM (overview=simplified, geometries=geojson; a
+// separate steps=true request confirmed the real corridor: Via Sole Ruiu
+// -> Strada Statale 125 Orientale Sarda -> Strada Provinciale 73 ->
+// Strada Provinciale 94, the same first stretch shared with
+// CASAGLIANA_TO_PRINCIPE_ROUTE and CASAGLIANA_TO_PORTO_CERVO_ROUTE below,
+// before this route branches off along its own local lane network up to
+// the beach). Per the metkish-route-geometry rule's "no fixed point-count
+// target", every bend OSRM returned is kept.
 //
-// IMPORTANT DISCLOSURE, per explicit instruction not to invent an exact
-// sailing track (kept for reference while this export is unused): this
-// was a simplified, illustrative route, NOT a verified GPS track of the
-// boat's real path. Three of the excursion's stops as originally
-// plotted here -- Cala Santa Maria, Spiaggia Rosa (passed by, not landed
-// on) and La Maddalena town -- have real, independently confirmed
-// coordinates (see each point's own comment above). Two further stops
-// described in the story at the time (a second, crowded beach, and a
-// swimming bay) could not yet be reliably identified, so they were left
-// off this map rather than guessed at -- both have since been
-// identified (Cala Corsara and Porto della Madonna respectively) in the
-// page's own text, though not yet added to this unused journey. There
-// is no OSRM equivalent for open water, so every leg here uses the
-// engine's decorative `curve` bow only, the same honest treatment
-// already used for this file's own flight leg (no `route` array
-// pretending to be real waypoints).
-const PALAU_TO_CSM_CAMERA = { center: [9.42, 41.19] as [number, number], spanDeg: 1.0 };
-const CSM_TO_MADDALENA_CAMERA = { center: [9.39, 41.26] as [number, number], spanDeg: 0.95 };
-const MADDALENA_RETURN_CAMERA = { center: [9.39, 41.2] as [number, number], spanDeg: 1.0 };
+// NOT live-visually verified on either breakpoint in this sandboxed
+// session (same standing limitation noted on every other journey in this
+// file) -- please check both markers sit correctly relative to the
+// coastline and that neither label clips the frame.
+const LISCIA_RUJA: JourneyPoint = {
+  id: 'liscia-ruja',
+  name: 'Spiaggia Liscia Ruja',
+  coords: [9.527903, 41.071754],
+  showMapLabel: true,
+};
 
-export const SARDINIA_MADDALENA_EXCURSION_JOURNEY: Journey = {
-  id: 'sardinia-maddalena-excursion',
-  initialCamera: PALAU_TO_CSM_CAMERA,
+const CASAGLIANA_TO_LISCIA_RUJA_ROUTE: [number, number][] = [
+  CASAGLIANA.coords,
+  [9.456138, 40.995065],
+  [9.455598, 40.994054],
+  [9.462195, 40.994223],
+  [9.467439, 40.991908],
+  [9.480331, 40.989732],
+  [9.485792, 40.984753],
+  [9.485972, 40.983781],
+  [9.483654, 40.983538],
+  [9.483191, 40.982518],
+  [9.488697, 40.982432],
+  [9.491594, 40.978844],
+  [9.494788, 40.979164],
+  [9.499288, 40.982722],
+  [9.500376, 40.992924],
+  [9.505264, 40.998746],
+  [9.504485, 41.005501],
+  [9.501199, 41.01058],
+  [9.513447, 41.019688],
+  [9.51803, 41.025795],
+  [9.51806, 41.029085],
+  [9.519679, 41.030702],
+  [9.516444, 41.037484],
+  [9.518744, 41.044983],
+  [9.516036, 41.052434],
+  [9.518463, 41.055444],
+  [9.518264, 41.057636],
+  [9.521851, 41.05562],
+  [9.526412, 41.057954],
+  [9.525335, 41.060841],
+  [9.528148, 41.061761],
+  [9.52958, 41.064839],
+  [9.527303, 41.068769],
+  LISCIA_RUJA.coords,
+];
+
+// Camera: bounding-box center of the real route (~9.49, 41.03), spanDeg
+// sized the same way as SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY's own
+// local camera above (a comparable-length local hop) -- checked against
+// the current SARDINIA_BBOX (scripts/build-geo.mjs, lng [7.9,10.3] /
+// lat [38.6,42.0]): this camera's own worst-case rendered frame (computed
+// from JourneyMapScene's computeFrame(), across both the narrow-mobile
+// and wide-desktop branches) stays comfortably inside that box on every
+// side, so no coastline-clipping seam is expected and the box itself did
+// not need widening for this journey.
+export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
+  id: 'sardinia-casagliana-to-liscia-ruja',
+  initialCamera: { center: [9.4926, 41.0253], spanDeg: 0.4 },
   legs: [
     {
-      id: 'palau-to-cala-santa-maria',
-      mode: 'boat',
-      from: PALAU_HARBOUR,
-      to: CALA_SANTA_MARIA,
-      camera: PALAU_TO_CSM_CAMERA,
-      curve: -0.2,
-      weight: 3,
+      id: 'casagliana-to-liscia-ruja',
+      mode: 'car',
+      from: CASAGLIANA,
+      to: LISCIA_RUJA,
+      camera: { center: [9.4926, 41.0253], spanDeg: 0.4 },
+      curve: 0,
+      route: CASAGLIANA_TO_LISCIA_RUJA_ROUTE,
+      weight: 4,
       transition: 'ease',
     },
+  ],
+};
+
+// MOYS -- Marina di Olbia Yachting Services, the Tavolara boat trip's
+// real departure marina (Via Piovene 8, 07026 Olbia; mooring A44, per
+// the user's own verified GetYourGuide booking documents). The marina
+// itself is independently confirmed by multiple marina-directory listings
+// (figaronautisme, portbooker, noonsite, marinas.com) under this exact
+// name and in this part of Olbia's harbour. The destination coordinate is
+// OSRM's own "arrive" point on the real road serving the marina.
+//
+// Researched from OSRM (overview=simplified, geometries=geojson; a
+// separate steps=true request confirmed the real corridor: Via Sole Ruiu
+// -> Strada Statale 125 Orientale Sarda -> Strada Statale 125 Olbia
+// Centro -> Strada Maggiore Pietro Bonacossa -> Strada Statale 125 Olbia
+// Sud -> Via Cesare Pavese -> Via Elio Vittorini -> Via Eugenio Montale,
+// the normal route into Olbia town and the harbour district). Per the
+// metkish-route-geometry rule's "no fixed point-count target", every bend
+// OSRM returned is kept.
+//
+// NOT live-visually verified in this sandboxed session -- please check
+// both markers and that neither label clips the frame.
+const MOYS_OLBIA: JourneyPoint = {
+  id: 'moys-olbia',
+  name: 'MOYS — Marina di Olbia',
+  sublabel: 'Tavolara boat trip, mooring A44',
+  coords: [9.528393, 40.917169],
+  showMapLabel: true,
+};
+
+const CASAGLIANA_TO_MOYS_ROUTE: [number, number][] = [
+  CASAGLIANA.coords,
+  [9.456138, 40.995065],
+  [9.455598, 40.994054],
+  [9.462195, 40.994223],
+  [9.467439, 40.991908],
+  [9.480331, 40.989732],
+  [9.485792, 40.984753],
+  [9.485972, 40.983781],
+  [9.483654, 40.983538],
+  [9.483191, 40.982518],
+  [9.488305, 40.982603],
+  [9.491453, 40.979272],
+  [9.490381, 40.974445],
+  [9.491223, 40.965084],
+  [9.498218, 40.957271],
+  [9.508278, 40.934864],
+  [9.507021, 40.925063],
+  [9.501468, 40.919714],
+  [9.502724, 40.912073],
+  [9.508619, 40.909254],
+  [9.521855, 40.908138],
+  [9.522016, 40.910927],
+  [9.524136, 40.911642],
+  [9.526096, 40.915186],
+  [9.528148, 40.915308],
+  MOYS_OLBIA.coords,
+];
+
+// Camera: bounding-box center of the real route (~9.49, 40.95), spanDeg
+// sized the same way as the other local-hop cameras in this file. Checked
+// against the current SARDINIA_BBOX the same way as LISCIA_RUJA's camera
+// above -- comfortably inside it, no widening needed.
+export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
+  id: 'sardinia-casagliana-to-moys',
+  initialCamera: { center: [9.492, 40.9516], spanDeg: 0.35 },
+  legs: [
     {
-      id: 'cala-santa-maria-to-spiaggia-rosa',
-      mode: 'boat',
-      from: CALA_SANTA_MARIA,
-      to: SPIAGGIA_ROSA,
-      camera: CSM_TO_MADDALENA_CAMERA,
-      curve: 0.15,
-      weight: 2,
+      id: 'casagliana-to-moys',
+      mode: 'car',
+      from: CASAGLIANA,
+      to: MOYS_OLBIA,
+      camera: { center: [9.492, 40.9516], spanDeg: 0.35 },
+      curve: 0,
+      route: CASAGLIANA_TO_MOYS_ROUTE,
+      weight: 4,
       transition: 'ease',
     },
-    // Illustrative only -- see the journey's own disclosure above: this
-    // leg's curve stands in for the two unconfirmed stops in between,
-    // not a real track through them.
+  ],
+};
+
+// La Cinta Beach, San Teodoro -- real, well-known beach (confirmed via
+// Sardegna Turismo's own "La Cinta" page and Wikipedia's San Teodoro
+// article, among others). The destination coordinate is OSRM's own
+// "arrive" point on the real beachfront road (Via Antonio Gramsci), the
+// same car-accessible-point convention used throughout this file.
+//
+// Researched from OSRM (overview=simplified, geometries=geojson; a
+// separate steps=true request confirmed the real corridor: Via Sole Ruiu
+// -> SS125 Orientale Sarda -> SS125 Olbia Centro -> Strada Maggiore
+// Pietro Bonacossa -> SS125 Olbia Sud -> Viale Multa Maria -> Viale Don
+// Luigi Sturzo -> Via Nazionale -> Via Nazionale Monte Petrosu -> Via
+// Antonio Gramsci, the normal SS125 corridor south-east from Olbia to San
+// Teodoro). Per the metkish-route-geometry rule's "no fixed point-count
+// target", every bend OSRM returned is kept.
+//
+// NOT live-visually verified in this sandboxed session -- please check
+// both markers and that neither label clips the frame.
+const LA_CINTA: JourneyPoint = {
+  id: 'la-cinta',
+  name: 'La Cinta Beach',
+  sublabel: 'San Teodoro',
+  coords: [9.670205, 40.785055],
+  showMapLabel: true,
+};
+
+const CASAGLIANA_TO_LA_CINTA_ROUTE: [number, number][] = [
+  CASAGLIANA.coords,
+  [9.455598, 40.994054],
+  [9.480331, 40.989732],
+  [9.485792, 40.984753],
+  [9.483191, 40.982518],
+  [9.488305, 40.982603],
+  [9.491453, 40.979272],
+  [9.491223, 40.965084],
+  [9.498218, 40.957271],
+  [9.508278, 40.934864],
+  [9.507021, 40.925063],
+  [9.501468, 40.919714],
+  [9.503814, 40.91113],
+  [9.521686, 40.908131],
+  [9.534961, 40.908892],
+  [9.542447, 40.900509],
+  [9.555433, 40.904284],
+  [9.567356, 40.894471],
+  [9.585694, 40.890408],
+  [9.596228, 40.885056],
+  [9.599439, 40.880702],
+  [9.62749, 40.876859],
+  [9.631701, 40.87255],
+  [9.6395, 40.869965],
+  [9.649256, 40.842189],
+  [9.664388, 40.834179],
+  [9.66025, 40.825162],
+  [9.656427, 40.803837],
+  [9.657434, 40.784594],
+  LA_CINTA.coords,
+];
+
+// Camera: bounding-box center of the real route (~9.56, 40.89), spanDeg
+// opened out further than the short local hops above since this is a
+// longer (~38km) drive -- sized the same proportional way as this file's
+// own Principe/Palau cameras (spanDeg opened out past the route's own
+// bounding box, scaled to the route's real length). Checked against the
+// current SARDINIA_BBOX the same way as LISCIA_RUJA's camera above --
+// comfortably inside it, no widening needed.
+export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
+  id: 'sardinia-casagliana-to-la-cinta',
+  initialCamera: { center: [9.5629, 40.8896], spanDeg: 0.75 },
+  legs: [
     {
-      id: 'spiaggia-rosa-to-maddalena-town',
-      mode: 'boat',
-      from: SPIAGGIA_ROSA,
-      to: LA_MADDALENA_TOWN,
-      camera: CSM_TO_MADDALENA_CAMERA,
-      curve: -0.2,
-      weight: 3,
+      id: 'casagliana-to-la-cinta',
+      mode: 'car',
+      from: CASAGLIANA,
+      to: LA_CINTA,
+      camera: { center: [9.5629, 40.8896], spanDeg: 0.75 },
+      curve: 0,
+      route: CASAGLIANA_TO_LA_CINTA_ROUTE,
+      weight: 4.5,
       transition: 'ease',
     },
+  ],
+};
+
+// Piazza del Porto, Cala Gonone -- the Gulf of Orosei boat trip's real
+// meeting point (Piazza del Porto 1, near Puddu Carburanti, per the
+// user's own verified GetYourGuide booking documents). Independently
+// confirmed as a real Cala Gonone boat-excursion departure point by
+// several current tour listings for Gulf of Orosei trips departing from
+// Cala Gonone. The destination coordinate is OSRM's own "arrive" point
+// on the real harbourfront road.
+//
+// Researched from OSRM (overview=simplified, geometries=geojson; a
+// separate steps=true request confirmed the real corridor as far as it
+// could be read before the response was truncated by its own length --
+// visible road names included SS125 Orientale Sarda, SS131 Diramazione
+// Centrale Nuorese, SP73 Bitti-Sologo, SP38, Via Alfonso Lamarmora, Via
+// Mare, Via Alcide De Gasperi, Via Giosuè Carducci and Viale Enrico
+// Fermi -- the real SS125 corridor south through Siniscola/Orosei and
+// inland over the Baronie hills to Dorgali/Cala Gonone, not an invented
+// shortcut). This is by far the longest of this file's local drives
+// (~118km real road distance for a ~80km straight-line hop -- the
+// SS125 Orientale Sarda through this stretch is a genuinely winding
+// mountain-and-coast road), so per the metkish-route-geometry rule's "no
+// fixed point-count target" every real bend OSRM returned is kept rather
+// than thinned toward a round number.
+//
+// NOT live-visually verified in this sandboxed session -- please check
+// both markers and that neither label clips the frame.
+const CALA_GONONE_PORTO: JourneyPoint = {
+  id: 'cala-gonone-porto',
+  name: 'Piazza del Porto',
+  sublabel: 'Cala Gonone — Gulf of Orosei boat trip',
+  coords: [9.638236, 40.283477],
+  showMapLabel: true,
+};
+
+const CASAGLIANA_TO_CALA_GONONE_ROUTE: [number, number][] = [
+  CASAGLIANA.coords,
+  [9.489362, 40.981889],
+  [9.508221, 40.935095],
+  [9.506418, 40.908135],
+  [9.485144, 40.893343],
+  [9.503999, 40.872533],
+  [9.577523, 40.826774],
+  [9.592735, 40.798947],
+  [9.642808, 40.764763],
+  [9.638772, 40.744572],
+  [9.651096, 40.72914],
+  [9.692545, 40.709639],
+  [9.717833, 40.685003],
+  [9.71265, 40.667724],
+  [9.7223, 40.65331],
+  [9.705231, 40.640067],
+  [9.707297, 40.618506],
+  [9.67123, 40.548994],
+  [9.639075, 40.529116],
+  [9.579678, 40.465367],
+  [9.487109, 40.401142],
+  [9.515764, 40.373295],
+  [9.508677, 40.346579],
+  [9.530607, 40.334418],
+  [9.542209, 40.302843],
+  [9.572065, 40.303166],
+  [9.603923, 40.270523],
+  CALA_GONONE_PORTO.coords,
+];
+
+// Camera: bounding-box center of the real route (~9.59, 40.63).
+//
+// CORRECTION (explicit user report -- both endpoints were off-frame):
+// the earlier spanDeg 1.05 and its comment above were wrong. This drive
+// is dominated by LATITUDE, not longitude -- Casagliana at the north
+// end (lat 40.9947) down to Cala Gonone at the south end (lat 40.2835),
+// a real 0.72-degree span (0.7242 once the route's own southernmost
+// point, lat 40.2705, is counted). JourneyMapScene.tsx's computeFrame()
+// derives this journey's visible HEIGHT, at the wide-aspect branch, as
+// a FIXED spanDeg*LAT_COS/1.7 independent of aspect -- at spanDeg 1.05
+// that full height is only ~0.473 degrees, well under the 0.7242
+// actually needed, so both endpoints (and their labels) fell outside
+// the frame. Re-derived by hand against computeFrame()'s own formula,
+// not guessed: spanDeg 1.95 gives a fixed height of ~0.879 degrees, a
+// comfortable ~21% of padding over the real 0.7242 span. Checked across
+// the realistic aspect range this map now renders at (nested inside its
+// own section, roughly 0.9 on a narrow phone up to ~2.0 on the widest
+// realistic container) and the old full-bleed range up to ~2.3, in both
+// the wide and narrow/capped branches of computeFrame() -- both
+// endpoints stay inside the frame with padding across that whole range.
+//
+// This larger spanDeg also pushes the frame's own east edge out past
+// the old SARDINIA_BBOX (scripts/build-geo.mjs) at the widest aspects --
+// that box's east edge was widened from 10.3 to 11.0 to cover it (see
+// that file's own comment); east of ~9.7 here is open Tyrrhenian sea,
+// not real coastline, so nothing new is being drawn, only clipped later.
+//
+// NOT live-visually verified in this sandboxed session -- please check
+// both markers (and their labels) sit inside the frame with clear
+// padding.
+export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
+  id: 'sardinia-casagliana-to-cala-gonone',
+  initialCamera: { center: [9.59, 40.6326], spanDeg: 1.95 },
+  legs: [
     {
-      id: 'maddalena-town-to-palau',
-      mode: 'boat',
-      from: LA_MADDALENA_TOWN,
-      to: PALAU_HARBOUR,
-      camera: MADDALENA_RETURN_CAMERA,
-      curve: 0.2,
-      weight: 3,
+      id: 'casagliana-to-cala-gonone',
+      mode: 'car',
+      from: CASAGLIANA,
+      to: CALA_GONONE_PORTO,
+      camera: { center: [9.59, 40.6326], spanDeg: 1.95 },
+      curve: 0,
+      route: CASAGLIANA_TO_CALA_GONONE_ROUTE,
+      weight: 5.5,
+      transition: 'ease',
+    },
+  ],
+};
+
+// Promenade du Port, Porto Cervo -- the Porto Cervo day-trip destination
+// (Via Aga Khan 1, Porto Cervo; underground parking entrance at Via
+// Porto Vecchio 1), per explicit instruction and confirmed as a real,
+// well-known Costa Smeralda shopping promenade by costasmeralda.it's own
+// article on it. The destination coordinate is OSRM's own "arrive" point
+// on the real road serving the promenade.
+//
+// Researched from OSRM (overview=simplified, geometries=geojson; a
+// separate steps=true request confirmed the real corridor: Via Sole Ruiu
+// -> SS125 Orientale Sarda -> Strada Provinciale 73 -> Strada Provinciale
+// 94 -> Località Abbiadori -> Strada Provinciale 59 -> Via Porto Cervo ->
+// Via Sa Conca -> Via Cerbiatta -> Traversa Cerbiatta, the same first
+// stretch shared with CASAGLIANA_TO_PRINCIPE_ROUTE and
+// CASAGLIANA_TO_LISCIA_RUJA_ROUTE above before this route continues on
+// into Porto Cervo itself). Per the metkish-route-geometry rule's "no
+// fixed point-count target", every bend OSRM returned is kept.
+//
+// NOT live-visually verified in this sandboxed session -- please check
+// both markers and that neither label clips the frame.
+const PORTO_CERVO_PROMENADE: JourneyPoint = {
+  id: 'porto-cervo-promenade',
+  name: 'Promenade du Port',
+  sublabel: 'Porto Cervo',
+  coords: [9.535411, 41.13287],
+  showMapLabel: true,
+};
+
+const CASAGLIANA_TO_PORTO_CERVO_ROUTE: [number, number][] = [
+  CASAGLIANA.coords,
+  [9.456138, 40.995065],
+  [9.455598, 40.994054],
+  [9.462195, 40.994223],
+  [9.467439, 40.991908],
+  [9.480331, 40.989732],
+  [9.485792, 40.984753],
+  [9.485972, 40.983781],
+  [9.483654, 40.983538],
+  [9.483191, 40.982518],
+  [9.488697, 40.982432],
+  [9.491594, 40.978844],
+  [9.494788, 40.979164],
+  [9.499288, 40.982722],
+  [9.500376, 40.992924],
+  [9.505264, 40.998746],
+  [9.504485, 41.005501],
+  [9.501199, 41.01058],
+  [9.514464, 41.020632],
+  [9.51969, 41.03048],
+  [9.516444, 41.037484],
+  [9.518744, 41.044983],
+  [9.516036, 41.052434],
+  [9.518651, 41.057095],
+  [9.5134, 41.062088],
+  [9.512771, 41.06535],
+  [9.50799, 41.067258],
+  [9.50677, 41.070809],
+  [9.509619, 41.073128],
+  [9.509782, 41.075755],
+  [9.518164, 41.076241],
+  [9.525915, 41.08598],
+  [9.529512, 41.088045],
+  [9.53096, 41.091287],
+  [9.529032, 41.09311],
+  [9.529858, 41.094276],
+  [9.522362, 41.100154],
+  [9.53038, 41.105782],
+  [9.534243, 41.110115],
+  [9.535631, 41.117077],
+  [9.534615, 41.119126],
+  [9.53669, 41.124443],
+  [9.535467, 41.127422],
+  [9.535965, 41.13095],
+  [9.533606, 41.131972],
+  PORTO_CERVO_PROMENADE.coords,
+];
+
+// Camera: bounding-box center of the real route (~9.50, 41.06), spanDeg
+// opened out proportionally more than the short local hops since this
+// drive runs the full length up into Porto Cervo (~26km). Checked against
+// the current SARDINIA_BBOX the same way as every camera above --
+// comfortably inside it, no widening needed.
+export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
+  id: 'sardinia-casagliana-to-porto-cervo',
+  initialCamera: { center: [9.4961, 41.0559], spanDeg: 0.55 },
+  legs: [
+    {
+      id: 'casagliana-to-porto-cervo',
+      mode: 'car',
+      from: CASAGLIANA,
+      to: PORTO_CERVO_PROMENADE,
+      camera: { center: [9.4961, 41.0559], spanDeg: 0.55 },
+      curve: 0,
+      route: CASAGLIANA_TO_PORTO_CERVO_ROUTE,
+      weight: 4.5,
+      transition: 'ease',
+    },
+  ],
+};
+
+// Spiaggia di Porto Istana -- the sixth and final new Sardinia driving
+// route, added per explicit instruction. Real, well-known beach near
+// Olbia (confirmed via Sardegna Turismo's own "Porto Istana" page,
+// spiagge.it's own listings for it, and multiple independent beach
+// guides, all placing it at Localita Costa Corallina, 07026 Olbia).
+// Two independent sources' own published coordinates for the beach
+// (40.894262, 9.61439 and 40.8938063, 9.6148067) agree closely with each
+// other and with OSRM's own "arrive" point below (on Viale Porto Istana,
+// the beach's own access road) -- the same car-accessible-point
+// convention used throughout this file.
+//
+// Researched from OSRM (overview=simplified, geometries=geojson; a
+// separate steps=true request confirmed the real corridor: Via Sole Ruiu
+// -> SS125 Orientale Sarda -> SS125 Olbia Centro -> Strada Maggiore
+// Pietro Bonacossa -> SS125 Olbia Sud -> SS125 Orientale Sarda -> Viale
+// Porto Istana, the normal SS125 corridor north-east out of Olbia town
+// toward Costa Corallina). Per the metkish-route-geometry rule's "no
+// fixed point-count target", every bend OSRM returned is kept.
+//
+// NOT live-visually verified in this sandboxed session -- please check
+// both markers and that neither label clips the frame.
+const PORTO_ISTANA: JourneyPoint = {
+  id: 'porto-istana',
+  name: 'Spiaggia di Porto Istana',
+  sublabel: 'near Olbia',
+  coords: [9.614471, 40.893629],
+  showMapLabel: true,
+};
+
+const CASAGLIANA_TO_PORTO_ISTANA_ROUTE: [number, number][] = [
+  CASAGLIANA.coords,
+  [9.456138, 40.995065],
+  [9.455598, 40.994054],
+  [9.462195, 40.994223],
+  [9.467439, 40.991908],
+  [9.480331, 40.989732],
+  [9.485792, 40.984753],
+  [9.485972, 40.983781],
+  [9.483654, 40.983538],
+  [9.483191, 40.982518],
+  [9.488305, 40.982603],
+  [9.491453, 40.979272],
+  [9.490381, 40.974445],
+  [9.491223, 40.965084],
+  [9.498218, 40.957271],
+  [9.508278, 40.934864],
+  [9.507021, 40.925063],
+  [9.501468, 40.919714],
+  [9.50176, 40.91387],
+  [9.503814, 40.91113],
+  [9.508619, 40.909254],
+  [9.521686, 40.908131],
+  [9.534961, 40.908892],
+  [9.536345, 40.907744],
+  [9.536433, 40.905034],
+  [9.542447, 40.900509],
+  [9.555433, 40.904284],
+  [9.56743, 40.894456],
+  [9.583023, 40.891408],
+  [9.588721, 40.88863],
+  [9.603381, 40.894153],
+  [9.611421, 40.894598],
+  PORTO_ISTANA.coords,
+];
+
+// Camera: bounding-box center of the real route (~9.54, 40.94), spanDeg
+// sized the same proportional way as this file's other mid-length drives
+// (~24km, comparable to Porto Cervo's own ~26km). Checked against the
+// current SARDINIA_BBOX the same way as every camera above --
+// comfortably inside it, no widening needed.
+export const SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY: Journey = {
+  id: 'sardinia-casagliana-to-porto-istana',
+  initialCamera: { center: [9.535, 40.9418], spanDeg: 0.5 },
+  legs: [
+    {
+      id: 'casagliana-to-porto-istana',
+      mode: 'car',
+      from: CASAGLIANA,
+      to: PORTO_ISTANA,
+      camera: { center: [9.535, 40.9418], spanDeg: 0.5 },
+      curve: 0,
+      route: CASAGLIANA_TO_PORTO_ISTANA_ROUTE,
+      weight: 4,
       transition: 'ease',
     },
   ],

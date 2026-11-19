@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: 'https://www.metkish.com/barcelona',
     images: [
       {
-        url: '/og/og-home.jpg',
+        url: '/og/og-barcelona.jpg',
         width: 1200,
         height: 630,
         alt: 'Barcelona — Metkish',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: 'Barcelona — Metkish',
     description:
       'Spain · Catalonia · October 2026 — a city that surprised us in more ways than one.',
-    images: ['/og/og-home.jpg'],
+    images: ['/og/og-barcelona.jpg'],
   },
 };
 
@@ -46,7 +46,7 @@ const BARCELONA_JSON_LD = {
   headline: 'Barcelona',
   description:
     'Spain · Catalonia · October 2026 — a city that surprised us in more ways than one.',
-  image: ['https://www.metkish.com/og/og-home.jpg'],
+  image: ['https://www.metkish.com/og/og-barcelona.jpg'],
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': 'https://www.metkish.com/barcelona',

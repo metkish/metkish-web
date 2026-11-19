@@ -6,20 +6,17 @@ import type { ReactNode } from 'react';
 // scroll listeners for the header and the journey map) -- same reason
 // every other destination page has one of these.
 //
-// This page is still a first-pass scaffold (hero + Home->Vienna map only,
-// no written story yet), so -- same as the dynamic "coming soon" stub's
-// own metadata (app/[destination]/page.tsx) -- it's kept out of Google's
-// index for now (`index: false`) while staying crawlable (`follow: true`)
-// so internal link equity still flows. Flip `index` to true once the page
-// has real content worth surfacing in search. No BlogPosting JSON-LD yet
-// either, for the same reason -- add it alongside the first real content
-// chapter, following Tenerife's own layout.tsx as the pattern.
+// The article is now complete (full written story, all chapters, photos,
+// videos and maps), so this page is indexable like every other finished
+// destination page -- the earlier noindex scaffold state (and its
+// placeholder "travel story is on its way" copy) no longer applies.
 const TITLE = 'Sardinia — Metkish';
-// Same neutral, truthful phrasing the dynamic stub already uses
-// site-wide for a destination with no published story yet -- reused
-// here verbatim rather than inventing new marketing copy for a page
-// that, right now, genuinely has no story to describe.
-const DESCRIPTION = 'The Sardinia travel story is on its way.';
+// Same "Country · Month Year" convention used by every other finished
+// destination page's description (see app/tenerife/layout.tsx,
+// app/barcelona/layout.tsx, app/rome/layout.tsx, app/italy/layout.tsx) --
+// reusing the real dates/location already shown in the page's own hero
+// tag line rather than inventing new descriptive copy.
+const DESCRIPTION = 'Italy · June–July 2025.';
 const URL = 'https://www.metkish.com/sardinia';
 // Already generated from the real Sardinia cover photo used in the
 // homepage's My Travels gallery (see public/og/ for how these are
@@ -31,10 +28,6 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: URL,
-  },
-  robots: {
-    index: false,
-    follow: true,
   },
   openGraph: {
     title: TITLE,
@@ -57,6 +50,42 @@ export const metadata: Metadata = {
   },
 };
 
+// BlogPosting structured data -- same pattern as
+// app/tenerife/layout.tsx's TENERIFE_JSON_LD: only verified,
+// already-published facts (title, description, canonical URL, OG image,
+// the Metkish site/brand identity as the Organization author/publisher).
+// No publication date is included: it isn't tracked anywhere, and the
+// trip's own month/year is a different fact from that, so it's
+// deliberately left out rather than guessed.
+const SARDINIA_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'Sardinia',
+  description: DESCRIPTION,
+  image: ['https://www.metkish.com/og/og-sardinia.jpg'],
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': URL,
+  },
+  author: { '@type': 'Organization', name: 'Metkish' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Metkish',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.metkish.com/metkish-logo.png',
+    },
+  },
+};
+
 export default function SardiniaLayout({ children }: { children: ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(SARDINIA_JSON_LD) }}
+      />
+      {children}
+    </>
+  );
 }

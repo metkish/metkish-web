@@ -676,7 +676,7 @@ export default function ItalyPage() {
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[240px] sm:max-w-xs md:max-w-md mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
             <video
-              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/SanSiro.mp4'
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/SanSiro_web.mp4'
               autoPlay
               muted
               loop
@@ -1164,7 +1164,7 @@ export default function ItalyPage() {
         <Reveal delay={0.1} className='mt-12 md:mt-16 max-w-[300px] sm:max-w-[400px] md:max-w-[520px] mx-auto'>
           <div className='relative w-full overflow-hidden rounded-[2px] aspect-[9/16]'>
             <video
-              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Pisa_tower.mp4'
+              src='/2026-05%20-%20Italy%20roadtrip/Milan%20Cinque%20Terre%20Pisa/Pisa_tower_web.mp4'
               autoPlay
               muted
               loop
@@ -1298,9 +1298,9 @@ export default function ItalyPage() {
                   For us, the{' '}
                   <Link
                     href='/behind-the-trip/hotels'
-                    className='underline underline-offset-2'
+                    className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
                   >
-                    location
+                    location →
                   </Link>{' '}
                   was perfect.
                 </>,

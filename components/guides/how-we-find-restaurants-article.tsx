@@ -219,9 +219,9 @@ export default function HowWeFindRestaurantsArticle() {
               During our recent trip to{' '}
               <Link
                 href='/barcelona'
-                className='underline underline-offset-2'
+                className='text-pink-500 dark:text-pink-300 no-underline decoration-pink-500/50 dark:decoration-pink-300/50 underline-offset-4 hover:underline transition-colors'
               >
-                Barcelona
+                Barcelona →
               </Link>
               , we tried something
               different. Instead of researching restaurants in advance, we

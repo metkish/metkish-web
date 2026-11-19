@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/rome', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/iceland', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/barcelona', changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/sardinia', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/behind-the-trip/hotels', changeFrequency: 'yearly', priority: 0.5 },
     { path: '/behind-the-trip/flights', changeFrequency: 'yearly', priority: 0.5 },
     { path: '/behind-the-trip/el-clasico-tickets', changeFrequency: 'yearly', priority: 0.5 },
