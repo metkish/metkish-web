@@ -1138,9 +1138,6 @@ export default function SardiniaPage() {
         journey={SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
-      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-        Casagliana Suite Resort → Spiaggia Liscia Ruja
-      </p>
 
       {/* 15. LISCIA RUJA -- a standalone beach stop, added as a brand new
           chapter after the La Maddalena excursion. Now a map -> content
@@ -1310,9 +1307,6 @@ export default function SardiniaPage() {
         journey={SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
-      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-        Casagliana Suite Resort → MOYS, Marina di Olbia
-      </p>
 
       {/* TAVOLARA -- now a map -> content transition (MAP_TRANSITION_PT
           on top) rather than text -> chapter, since the route map above
@@ -1502,9 +1496,6 @@ export default function SardiniaPage() {
         journey={SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY}
         heightClassName='h-[400px] sm:h-[460px] md:h-[520px]'
       />
-      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-        Casagliana Suite Resort → La Cinta Beach, San Teodoro
-      </p>
 
       {/* LA CINTA -- now a map -> content transition (MAP_TRANSITION_PT
           on top) rather than text -> chapter, since the route map above
@@ -1657,9 +1648,6 @@ export default function SardiniaPage() {
         journey={SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
       />
-      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-        Casagliana Suite Resort → Cala Gonone (Gulf of Orosei boat trip)
-      </p>
 
       {/* GULF OF OROSEI -- now a map -> content transition
           (MAP_TRANSITION_PT on top) rather than text -> chapter, since
@@ -1920,9 +1908,6 @@ export default function SardiniaPage() {
             journey={SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY}
             heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
           />
-          <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-            Casagliana Suite Resort → Porto Cervo
-          </p>
         </div>
 
         <div className='max-w-2xl mx-auto text-center'>
@@ -1970,9 +1955,6 @@ export default function SardiniaPage() {
         journey={SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
-      <p className='mt-3 px-6 text-center text-sm italic font-[family-name:var(--font-poppins)] text-black/55 dark:text-white/55'>
-        Casagliana Suite Resort → Porto Istana
-      </p>
 
       {/* PORTO ISTANA -- the final beach stop of the trip. Now a map ->
           content transition (MAP_TRANSITION_PT on top) rather than text

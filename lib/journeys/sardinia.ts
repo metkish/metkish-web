@@ -365,6 +365,7 @@ export const SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY: Journey = {
   // See the coastline-safety-patches comment above
   // SHARED_OLBIA_GAP_PRINCIPE_SOURCE.
   extraLandPatches: [SHARED_OLBIA_GAP_PRINCIPE_PATCH, PRINCIPE_BEACH_PATCH],
+  extraCoastlineStrokes: [SHARED_OLBIA_GAP_PRINCIPE_PATCH, PRINCIPE_BEACH_PATCH],
   legs: [
     {
       id: 'casagliana-to-principe',
@@ -401,7 +402,6 @@ export const SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY: Journey = {
 const PALAU_PARKING: JourneyPoint = {
   id: 'palau-parking',
   name: 'Palau',
-  sublabel: 'Harbour parking',
   coords: [9.38241, 41.18364],
   showMapLabel: true,
 };
@@ -488,6 +488,7 @@ export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
   initialCamera: { center: [9.42, 41.09], spanDeg: 1.3 },
   // See the coastline-safety-patches comment above PALAU_PORT_SOURCE.
   extraLandPatches: [PALAU_PORT_PATCH],
+  extraCoastlineStrokes: [PALAU_PORT_PATCH],
   legs: [
     {
       id: 'casagliana-to-palau',
@@ -534,7 +535,7 @@ export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
 // coastline and that neither label clips the frame.
 const LISCIA_RUJA: JourneyPoint = {
   id: 'liscia-ruja',
-  name: 'Spiaggia Liscia Ruja',
+  name: 'Liscia Ruja',
   coords: [9.527903, 41.071754],
   showMapLabel: true,
 };
@@ -591,6 +592,7 @@ export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
   // See the coastline-safety-patches comment above
   // SHARED_OLBIA_GAP_LISCIA_RUJA_SOURCE.
   extraLandPatches: [SHARED_OLBIA_GAP_LISCIA_RUJA_PATCH],
+  extraCoastlineStrokes: [SHARED_OLBIA_GAP_LISCIA_RUJA_PATCH],
   legs: [
     {
       id: 'casagliana-to-liscia-ruja',
@@ -628,8 +630,7 @@ export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
 // both markers and that neither label clips the frame.
 const MOYS_OLBIA: JourneyPoint = {
   id: 'moys-olbia',
-  name: 'MOYS — Marina di Olbia',
-  sublabel: 'Tavolara boat trip, mooring A44',
+  name: 'Olbia',
   coords: [9.528393, 40.917169],
   showMapLabel: true,
 };
@@ -672,6 +673,7 @@ export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
   initialCamera: { center: [9.492, 40.9516], spanDeg: 0.35 },
   // See the coastline-safety-patches comment above MOYS_OLBIA_GAP_SOURCE.
   extraLandPatches: [MOYS_OLBIA_GAP_PATCH],
+  extraCoastlineStrokes: [MOYS_OLBIA_GAP_PATCH],
   legs: [
     {
       id: 'casagliana-to-moys',
@@ -708,7 +710,6 @@ export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
 const LA_CINTA: JourneyPoint = {
   id: 'la-cinta',
   name: 'La Cinta Beach',
-  sublabel: 'San Teodoro',
   coords: [9.670205, 40.785055],
   showMapLabel: true,
 };
@@ -759,6 +760,7 @@ export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
   // See the coastline-safety-patches comment above
   // LA_CINTA_OLBIA_GAP_SOURCE / LA_CINTA_BEACH_SOURCE.
   extraLandPatches: [LA_CINTA_OLBIA_GAP_PATCH, LA_CINTA_BEACH_PATCH],
+  extraCoastlineStrokes: [LA_CINTA_OLBIA_GAP_PATCH, LA_CINTA_BEACH_PATCH],
   legs: [
     {
       id: 'casagliana-to-la-cinta',
@@ -802,8 +804,7 @@ export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
 // both markers and that neither label clips the frame.
 const CALA_GONONE_PORTO: JourneyPoint = {
   id: 'cala-gonone-porto',
-  name: 'Piazza del Porto',
-  sublabel: 'Cala Gonone — Gulf of Orosei boat trip',
+  name: 'Cala Gonone',
   coords: [9.638236, 40.283477],
   showMapLabel: true,
 };
@@ -874,6 +875,7 @@ export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
   initialCamera: { center: [9.59, 40.6326], spanDeg: 1.95 },
   // See the coastline-safety-patches comment above CALA_GONONE_START_SOURCE.
   extraLandPatches: [CALA_GONONE_START_PATCH],
+  extraCoastlineStrokes: [CALA_GONONE_START_PATCH],
   legs: [
     {
       id: 'casagliana-to-cala-gonone',
@@ -911,8 +913,7 @@ export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
 // both markers and that neither label clips the frame.
 const PORTO_CERVO_PROMENADE: JourneyPoint = {
   id: 'porto-cervo-promenade',
-  name: 'Promenade du Port',
-  sublabel: 'Porto Cervo',
+  name: 'Porto Cervo',
   coords: [9.535411, 41.13287],
   showMapLabel: true,
 };
@@ -981,6 +982,11 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
     PORTO_CERVO_APPROACH_1_PATCH,
     PORTO_CERVO_APPROACH_2_PATCH,
   ],
+  extraCoastlineStrokes: [
+    SHARED_OLBIA_GAP_PORTO_CERVO_PATCH,
+    PORTO_CERVO_APPROACH_1_PATCH,
+    PORTO_CERVO_APPROACH_2_PATCH,
+  ],
   legs: [
     {
       id: 'casagliana-to-porto-cervo',
@@ -1025,8 +1031,7 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
 // both markers and that neither label clips the frame.
 const PORTO_ISTANA: JourneyPoint = {
   id: 'porto-istana',
-  name: 'Spiaggia di Porto Istana',
-  sublabel: 'near Olbia',
+  name: 'Porto Istana',
   coords: [9.614471, 40.893629],
   showMapLabel: true,
 };
@@ -1077,6 +1082,7 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY: Journey = {
   initialCamera: { center: [9.535, 40.9418], spanDeg: 0.5 },
   // See the coastline-safety-patches comment above PORTO_ISTANA_OLBIA_GAP_SOURCE.
   extraLandPatches: [PORTO_ISTANA_OLBIA_GAP_PATCH],
+  extraCoastlineStrokes: [PORTO_ISTANA_OLBIA_GAP_PATCH],
   legs: [
     {
       id: 'casagliana-to-porto-istana',
