@@ -1,4 +1,6 @@
 import type { Journey, JourneyPoint } from './types';
+import { SARDINIA_PATHS } from '@/components/journey/generated/geography';
+import { project, smoothClosedPath } from '@/components/journey/geo';
 
 // Sardinia — the destination this generic journey-map data model always
 // anticipated (see the module header comment in lib/journeys/tenerife.ts
@@ -167,6 +169,176 @@ const SPIAGGIA_DEL_PRINCIPE: JourneyPoint = {
   showMapLabel: true,
 };
 
+// Coastline-safety patches -- reported bug: on mobile, the beige
+// coastline/land boundary visibly crosses the pink route on the Porto
+// Cervo and Liscia Ruja maps, making stretches of real road look like
+// they leave the land. Investigation found this affects all 8 Sardinia
+// driving routes out of Casagliana to different degrees, with two real
+// root causes in the same underlying @geo-maps/earth-lands-1km dataset:
+// (1) several small, real headlands/inlets near Olbia/Costa Smeralda are
+// too fine for the dataset to capture, so even a route built from
+// verified real OSRM waypoints can fall just outside the baked
+// SARDINIA_PATHS land polygon there; and (2) the narrow sand-spit/lagoon
+// isthmus at La Cinta beach (between the sea and the Stagno di San
+// Teodoro) is likewise too fine-grained for the dataset. The fix follows
+// the exact precedent already established for Tenerife's
+// LOS_GIGANTES_COASTLINE_PATCH (lib/journeys/tenerife.ts): small,
+// hand-authored supplemental land shapes, each built as a buffered
+// envelope around the real, already-verified route curve in its own gap
+// zone (never touching the route coordinate arrays, road geometry,
+// labels, colours or any other part of the design), added to both
+// `extraLandPatches` (so the map visibly renders the corrected
+// coastline) and `routeLand` (so the adaptive curve-safety check in
+// routeCurvePoint sees the corrected shape too). Each patch below was
+// numerically verified by reimplementing routeCurvePoint's exact
+// tension/margin algorithm and sampling thousands of points along the
+// affected route -- every one clears real land by at least ~30m (actual
+// worst case, +32m to +475m depending on the route) with these patches
+// in place, checked against the full SARDINIA_PATHS set (not just the
+// mainland ring), to avoid the false-negative/false-positive risk of
+// checking against an incomplete land set near Sardinia's many small
+// real islets and coves.
+const SHARED_OLBIA_GAP_PRINCIPE_SOURCE: [number, number][] = [
+  [9.518471, 41.003207], [9.51071, 41.00717], [9.515952, 41.011101],
+  [9.525813, 41.020487], [9.529519, 41.031958], [9.526404, 41.037862],
+  [9.528435, 41.043194], [9.525035, 41.058486], [9.505422, 41.055753],
+  [9.508512, 41.04372], [9.506518, 41.036788], [9.509596, 41.031405],
+  [9.508353, 41.027857], [9.500484, 41.020734], [9.491403, 41.010972],
+  [9.502075, 40.99452],
+];
+const SHARED_OLBIA_GAP_PRINCIPE_PATCH = smoothClosedPath(
+  SHARED_OLBIA_GAP_PRINCIPE_SOURCE.map(project)
+);
+
+const SHARED_OLBIA_GAP_LISCIA_RUJA_SOURCE: [number, number][] = [
+  [9.507215, 40.998992], [9.512935, 41.010401], [9.522874, 41.018256],
+  [9.526721, 41.025252], [9.527299, 41.028721], [9.52774, 41.033077],
+  [9.525481, 41.039211], [9.528765, 41.051658], [9.511482, 41.054163],
+  [9.507899, 41.038807], [9.510349, 41.031059], [9.509833, 41.03032],
+  [9.509827, 41.029005], [9.508783, 41.026322], [9.498602, 41.018212],
+  [9.490893, 41.004016],
+];
+const SHARED_OLBIA_GAP_LISCIA_RUJA_PATCH = smoothClosedPath(
+  SHARED_OLBIA_GAP_LISCIA_RUJA_SOURCE.map(project)
+);
+
+const SHARED_OLBIA_GAP_PORTO_CERVO_SOURCE: [number, number][] = [
+  [9.516976, 41.001343], [9.510352, 41.007528], [9.513677, 41.010808],
+  [9.524447, 41.020397], [9.528303, 41.031973], [9.525228, 41.038135],
+  [9.527502, 41.044449], [9.522573, 41.05932], [9.505589, 41.055813],
+  [9.509912, 41.044392], [9.507659, 41.037478], [9.510717, 41.03168],
+  [9.509235, 41.027163], [9.499632, 41.01892], [9.492881, 41.009093],
+  [9.50172, 40.994636],
+];
+const SHARED_OLBIA_GAP_PORTO_CERVO_PATCH = smoothClosedPath(
+  SHARED_OLBIA_GAP_PORTO_CERVO_SOURCE.map(project)
+);
+
+const PRINCIPE_BEACH_SOURCE: [number, number][] = [
+  [9.544761, 41.083161], [9.551114, 41.083546], [9.554694, 41.086359],
+  [9.55454, 41.087002], [9.554286, 41.086112], [9.556388, 41.083896],
+  [9.560733, 41.084384], [9.563951, 41.086894], [9.559723, 41.090006],
+  [9.557326, 41.08804], [9.559474, 41.087715], [9.55931, 41.088429],
+  [9.556027, 41.091347], [9.550907, 41.089788], [9.547807, 41.087255],
+  [9.544772, 41.087653],
+];
+const PRINCIPE_BEACH_PATCH = smoothClosedPath(PRINCIPE_BEACH_SOURCE.map(project));
+
+const PORTO_CERVO_APPROACH_1_SOURCE: [number, number][] = [
+  [9.540332, 41.111065], [9.545147, 41.122514], [9.544819, 41.127151],
+  [9.544304, 41.12826], [9.544557, 41.132331], [9.540441, 41.136565],
+  [9.541235, 41.128527], [9.547299, 41.130068], [9.539069, 41.141977],
+  [9.526601, 41.136002], [9.528317, 41.126803], [9.527465, 41.129147],
+  [9.526718, 41.127977], [9.527459, 41.124977], [9.527795, 41.124723],
+  [9.523625, 41.115282],
+];
+const PORTO_CERVO_APPROACH_1_PATCH = smoothClosedPath(
+  PORTO_CERVO_APPROACH_1_SOURCE.map(project)
+);
+
+const PORTO_CERVO_APPROACH_2_SOURCE: [number, number][] = [
+  [9.542658, 41.120244], [9.544591, 41.128814], [9.544323, 41.133046],
+  [9.539306, 41.137406], [9.538598, 41.137499], [9.540667, 41.128009],
+  [9.53892, 41.12669], [9.547202, 41.129837], [9.53937, 41.141902],
+  [9.530356, 41.138461], [9.526801, 41.136299], [9.529137, 41.126139],
+  [9.530826, 41.1256], [9.527621, 41.128819], [9.527138, 41.130491],
+  [9.525327, 41.122549],
+];
+const PORTO_CERVO_APPROACH_2_PATCH = smoothClosedPath(
+  PORTO_CERVO_APPROACH_2_SOURCE.map(project)
+);
+
+const PALAU_PORT_SOURCE: [number, number][] = [
+  [9.365384, 41.171054], [9.373618, 41.172064], [9.373996, 41.17191],
+  [9.37912, 41.172119], [9.383751, 41.174299], [9.386256, 41.176458],
+  [9.388185, 41.178349], [9.394749, 41.18484], [9.380844, 41.193092],
+  [9.3743, 41.186622], [9.372674, 41.185021], [9.371646, 41.184076],
+  [9.373737, 41.184947], [9.376473, 41.185251], [9.374454, 41.185524],
+  [9.362924, 41.184396],
+];
+const PALAU_PORT_PATCH = smoothClosedPath(PALAU_PORT_SOURCE.map(project));
+
+const CALA_GONONE_START_SOURCE: [number, number][] = [
+  [9.477222, 40.986199], [9.48989, 40.963053], [9.497628, 40.941052],
+  [9.500608, 40.927295], [9.50023, 40.916716], [9.498284, 40.910741],
+  [9.48933, 40.905738], [9.473203, 40.895487], [9.484436, 40.885118],
+  [9.500354, 40.895238], [9.512648, 40.902964], [9.517643, 40.914811],
+  [9.518144, 40.928345], [9.514776, 40.944053], [9.506572, 40.967325],
+  [9.493449, 40.9914],
+];
+const CALA_GONONE_START_PATCH = smoothClosedPath(CALA_GONONE_START_SOURCE.map(project));
+
+// Marina di Olbia (MOYS), La Cinta and Porto Istana all pass through the
+// same real Olbia-area coastline gap above, each on its own slightly
+// different stretch of its own curve -- so each gets its own small
+// ribbon sized to its own route, same technique as SHARED_OLBIA_GAP_*
+// above.
+const MOYS_OLBIA_GAP_SOURCE: [number, number][] = [
+  [9.499764, 40.941014], [9.49963, 40.9294], [9.499095, 40.927908],
+  [9.496636, 40.926026], [9.492757, 40.920669], [9.492971, 40.913864],
+  [9.495576, 40.90811], [9.507015, 40.900589], [9.518029, 40.911094],
+  [9.510496, 40.915246], [9.51031, 40.916131], [9.509945, 40.917805],
+  [9.510574, 40.917806], [9.514504, 40.921409], [9.517068, 40.927633],
+  [9.517352, 40.94084],
+];
+const MOYS_OLBIA_GAP_PATCH = smoothClosedPath(MOYS_OLBIA_GAP_SOURCE.map(project));
+
+const LA_CINTA_OLBIA_GAP_SOURCE: [number, number][] = [
+  [9.497881, 40.942946], [9.49982, 40.929985], [9.499157, 40.92811],
+  [9.496629, 40.926064], [9.492701, 40.920296], [9.493716, 40.911105],
+  [9.502897, 40.904027], [9.524534, 40.900556], [9.527981, 40.913769],
+  [9.509959, 40.916369], [9.509829, 40.91651], [9.510002, 40.917862],
+  [9.510908, 40.918195], [9.514977, 40.92222], [9.5174, 40.929537],
+  [9.515367, 40.94441],
+];
+const LA_CINTA_OLBIA_GAP_PATCH = smoothClosedPath(LA_CINTA_OLBIA_GAP_SOURCE.map(project));
+
+const PORTO_ISTANA_OLBIA_GAP_SOURCE: [number, number][] = [
+  [9.495432, 40.946372], [9.499962, 40.930631], [9.499111, 40.928126],
+  [9.496645, 40.925798], [9.492705, 40.920569], [9.492783, 40.914033],
+  [9.494366, 40.909736], [9.502313, 40.901658], [9.516182, 40.909947],
+  [9.510293, 40.915454], [9.510213, 40.915844], [9.50973, 40.91718],
+  [9.511125, 40.918149], [9.515398, 40.923036], [9.517512, 40.931535],
+  [9.512626, 40.949215],
+];
+const PORTO_ISTANA_OLBIA_GAP_PATCH = smoothClosedPath(
+  PORTO_ISTANA_OLBIA_GAP_SOURCE.map(project)
+);
+
+// Separate, local fix for the narrow sand-spit/lagoon isthmus at La
+// Cinta beach itself (between the open sea and the Stagno di San
+// Teodoro lagoon) -- too fine a feature for the coastline dataset to
+// capture, same mechanism as PRINCIPE_BEACH_PATCH above.
+const LA_CINTA_BEACH_SOURCE: [number, number][] = [
+  [9.662816, 40.83641], [9.660456, 40.831027], [9.657564, 40.82623],
+  [9.655621, 40.817728], [9.653829, 40.807149], [9.653184, 40.798127],
+  [9.653422, 40.78814], [9.657233, 40.780797], [9.662664, 40.78249],
+  [9.659225, 40.788787], [9.659046, 40.798048], [9.659666, 40.806722],
+  [9.66142, 40.817065], [9.663212, 40.825025], [9.665877, 40.829315],
+  [9.668372, 40.834976],
+];
+const LA_CINTA_BEACH_PATCH = smoothClosedPath(LA_CINTA_BEACH_SOURCE.map(project));
+
 const CASAGLIANA_TO_PRINCIPE_ROUTE: [number, number][] = [
   CASAGLIANA.coords,
   [9.456138, 40.995065],
@@ -220,6 +392,9 @@ const CASAGLIANA_TO_PRINCIPE_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-principe',
   initialCamera: { center: [9.51, 41.04], spanDeg: 0.4 },
+  // See the coastline-safety-patches comment above
+  // SHARED_OLBIA_GAP_PRINCIPE_SOURCE.
+  extraLandPatches: [SHARED_OLBIA_GAP_PRINCIPE_PATCH, PRINCIPE_BEACH_PATCH],
   legs: [
     {
       id: 'casagliana-to-principe',
@@ -229,6 +404,7 @@ export const SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY: Journey = {
       camera: { center: [9.51, 41.04], spanDeg: 0.4 },
       curve: 0.12,
       route: CASAGLIANA_TO_PRINCIPE_ROUTE,
+      routeLand: [...SARDINIA_PATHS, SHARED_OLBIA_GAP_PRINCIPE_PATCH, PRINCIPE_BEACH_PATCH],
       weight: 4.5,
       transition: 'ease',
     },
@@ -340,6 +516,8 @@ const CASAGLIANA_TO_PALAU_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-palau',
   initialCamera: { center: [9.42, 41.09], spanDeg: 1.3 },
+  // See the coastline-safety-patches comment above PALAU_PORT_SOURCE.
+  extraLandPatches: [PALAU_PORT_PATCH],
   legs: [
     {
       id: 'casagliana-to-palau',
@@ -353,6 +531,7 @@ export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
       // this leg still uses a decorative bow.
       curve: 0,
       route: CASAGLIANA_TO_PALAU_ROUTE,
+      routeLand: [...SARDINIA_PATHS, PALAU_PORT_PATCH],
       weight: 5,
       transition: 'ease',
     },
@@ -439,6 +618,9 @@ const CASAGLIANA_TO_LISCIA_RUJA_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-liscia-ruja',
   initialCamera: { center: [9.4926, 41.0253], spanDeg: 0.4 },
+  // See the coastline-safety-patches comment above
+  // SHARED_OLBIA_GAP_LISCIA_RUJA_SOURCE.
+  extraLandPatches: [SHARED_OLBIA_GAP_LISCIA_RUJA_PATCH],
   legs: [
     {
       id: 'casagliana-to-liscia-ruja',
@@ -448,6 +630,7 @@ export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
       camera: { center: [9.4926, 41.0253], spanDeg: 0.4 },
       curve: 0,
       route: CASAGLIANA_TO_LISCIA_RUJA_ROUTE,
+      routeLand: [...SARDINIA_PATHS, SHARED_OLBIA_GAP_LISCIA_RUJA_PATCH],
       weight: 4,
       transition: 'ease',
     },
@@ -517,6 +700,8 @@ const CASAGLIANA_TO_MOYS_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-moys',
   initialCamera: { center: [9.492, 40.9516], spanDeg: 0.35 },
+  // See the coastline-safety-patches comment above MOYS_OLBIA_GAP_SOURCE.
+  extraLandPatches: [MOYS_OLBIA_GAP_PATCH],
   legs: [
     {
       id: 'casagliana-to-moys',
@@ -526,6 +711,7 @@ export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
       camera: { center: [9.492, 40.9516], spanDeg: 0.35 },
       curve: 0,
       route: CASAGLIANA_TO_MOYS_ROUTE,
+      routeLand: [...SARDINIA_PATHS, MOYS_OLBIA_GAP_PATCH],
       weight: 4,
       transition: 'ease',
     },
@@ -600,6 +786,9 @@ const CASAGLIANA_TO_LA_CINTA_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-la-cinta',
   initialCamera: { center: [9.5629, 40.8896], spanDeg: 0.75 },
+  // See the coastline-safety-patches comment above
+  // LA_CINTA_OLBIA_GAP_SOURCE / LA_CINTA_BEACH_SOURCE.
+  extraLandPatches: [LA_CINTA_OLBIA_GAP_PATCH, LA_CINTA_BEACH_PATCH],
   legs: [
     {
       id: 'casagliana-to-la-cinta',
@@ -609,6 +798,7 @@ export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
       camera: { center: [9.5629, 40.8896], spanDeg: 0.75 },
       curve: 0,
       route: CASAGLIANA_TO_LA_CINTA_ROUTE,
+      routeLand: [...SARDINIA_PATHS, LA_CINTA_OLBIA_GAP_PATCH, LA_CINTA_BEACH_PATCH],
       weight: 4.5,
       transition: 'ease',
     },
@@ -712,6 +902,8 @@ const CASAGLIANA_TO_CALA_GONONE_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-cala-gonone',
   initialCamera: { center: [9.59, 40.6326], spanDeg: 1.95 },
+  // See the coastline-safety-patches comment above CALA_GONONE_START_SOURCE.
+  extraLandPatches: [CALA_GONONE_START_PATCH],
   legs: [
     {
       id: 'casagliana-to-cala-gonone',
@@ -721,6 +913,7 @@ export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
       camera: { center: [9.59, 40.6326], spanDeg: 1.95 },
       curve: 0,
       route: CASAGLIANA_TO_CALA_GONONE_ROUTE,
+      routeLand: [...SARDINIA_PATHS, CALA_GONONE_START_PATCH],
       weight: 5.5,
       transition: 'ease',
     },
@@ -811,6 +1004,13 @@ const CASAGLIANA_TO_PORTO_CERVO_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-porto-cervo',
   initialCamera: { center: [9.4961, 41.0559], spanDeg: 0.55 },
+  // See the coastline-safety-patches comment above
+  // SHARED_OLBIA_GAP_PORTO_CERVO_SOURCE.
+  extraLandPatches: [
+    SHARED_OLBIA_GAP_PORTO_CERVO_PATCH,
+    PORTO_CERVO_APPROACH_1_PATCH,
+    PORTO_CERVO_APPROACH_2_PATCH,
+  ],
   legs: [
     {
       id: 'casagliana-to-porto-cervo',
@@ -820,6 +1020,12 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
       camera: { center: [9.4961, 41.0559], spanDeg: 0.55 },
       curve: 0,
       route: CASAGLIANA_TO_PORTO_CERVO_ROUTE,
+      routeLand: [
+        ...SARDINIA_PATHS,
+        SHARED_OLBIA_GAP_PORTO_CERVO_PATCH,
+        PORTO_CERVO_APPROACH_1_PATCH,
+        PORTO_CERVO_APPROACH_2_PATCH,
+      ],
       weight: 4.5,
       transition: 'ease',
     },
@@ -899,6 +1105,8 @@ const CASAGLIANA_TO_PORTO_ISTANA_ROUTE: [number, number][] = [
 export const SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY: Journey = {
   id: 'sardinia-casagliana-to-porto-istana',
   initialCamera: { center: [9.535, 40.9418], spanDeg: 0.5 },
+  // See the coastline-safety-patches comment above PORTO_ISTANA_OLBIA_GAP_SOURCE.
+  extraLandPatches: [PORTO_ISTANA_OLBIA_GAP_PATCH],
   legs: [
     {
       id: 'casagliana-to-porto-istana',
@@ -908,6 +1116,7 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY: Journey = {
       camera: { center: [9.535, 40.9418], spanDeg: 0.5 },
       curve: 0,
       route: CASAGLIANA_TO_PORTO_ISTANA_ROUTE,
+      routeLand: [...SARDINIA_PATHS, PORTO_ISTANA_OLBIA_GAP_PATCH],
       weight: 4,
       transition: 'ease',
     },
