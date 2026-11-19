@@ -826,18 +826,18 @@ export default function JourneyMapScene({
               ref={(el) => {
                 labelTextRefs.current[i] = el;
               }}
-              className='absolute left-0 top-0 flex flex-col leading-tight whitespace-nowrap font-[family-name:var(--font-poppins)]'
+              className='absolute left-0 top-0 flex flex-col leading-tight whitespace-normal max-w-[34vw] md:max-w-none md:whitespace-nowrap font-[family-name:var(--font-poppins)]'
             >
               <span
                 className={
                   p.markerSize === 'small'
-                    ? 'text-[0.55rem] uppercase tracking-[0.14em] font-medium text-black/55'
-                    : 'text-[0.65rem] uppercase tracking-[0.16em] font-semibold text-black/70'
+                    ? 'text-[0.44rem] md:text-[0.55rem] uppercase tracking-[0.1em] md:tracking-[0.14em] font-medium text-black/55'
+                    : 'text-[0.52rem] md:text-[0.65rem] uppercase tracking-[0.12em] md:tracking-[0.16em] font-semibold text-black/70'
                 }
               >
                 {p.name}
               </span>
-              {p.sublabel && <span className='text-[0.6rem] text-black/45'>{p.sublabel}</span>}
+              {p.sublabel && <span className='text-[0.48rem] md:text-[0.6rem] text-black/45'>{p.sublabel}</span>}
             </span>
           </div>
         ))}
