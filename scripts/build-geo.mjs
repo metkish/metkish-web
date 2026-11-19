@@ -8,7 +8,30 @@
 //
 // Run with: node scripts/build-geo.mjs
 // Requires (dev-only, uninstalled again afterward):
-//   npm install --no-save @geo-maps/earth-lands-1km @geo-maps/countries-land-1km
+//   npm install --no-save @geo-maps/earth-lands-1km @geo-maps/countries-land-1km @geo-maps/earth-lands-10m
+//
+// Sardinia (stage 4 below) additionally uses @geo-maps/earth-lands-10m --
+// a 10m-resolution real coastline dataset (same OSM/Natural-Earth lineage
+// as earth-lands-1km, just far less simplified at the source) -- instead
+// of the 1km dataset every other stage uses. Root-cause fix for a
+// reported bug: small, real headlands/inlets near Olbia/Costa Smeralda
+// and the La Cinta sand-spit/lagoon isthmus were too fine for 1km-
+// resolution source data to capture at all, so even a correctly-clipped,
+// lightly-simplified SARDINIA_PATHS had real gaps there -- not a
+// simplification-tolerance problem, a source-resolution one. An earlier
+// pass worked around this with hand-authored "coastline patch" shapes
+// (buffered envelopes drawn around the route curves themselves, not
+// sourced from any real dataset) -- exactly the kind of invented
+// geography this file's own design intentionally avoids everywhere else
+// (see the Journey.extraLandPatches doc comment in lib/journeys/
+// types.ts: "sourced the same way the base coastline was ... never
+// hand-drawn"), and it showed: reviewed screenshots found visible
+// artificial loops/circles/fragments that don't match the real
+// coastline. Switching the SOURCE data for just this one stage to 10m
+// resolution, scoped only to Sardinia's own bbox, fixes the actual
+// problem -- real small coastal features are now present in the
+// generated path data -- so lib/journeys/sardinia.ts no longer needs any
+// hand-authored patches at all.
 
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -204,6 +227,10 @@ function pathsForRings(rings, tolerance) {
 async function main() {
   const countriesGeo = (await import('@geo-maps/countries-land-1km/map.geo.json', { with: { type: 'json' } })).default;
   const earthGeo = (await import('@geo-maps/earth-lands-1km/map.geo.json', { with: { type: 'json' } })).default;
+  // Finer-resolution real coastline source, used only for Sardinia's own
+  // stage below (see the file-header comment) -- every other stage keeps
+  // using the 1km dataset above, untouched.
+  const earthGeoFine = (await import('@geo-maps/earth-lands-10m/map.geo.json', { with: { type: 'json' } })).default;
 
   const byCode = {};
   for (const f of countriesGeo.features) byCode[f.properties.A3] = f;
@@ -247,6 +274,10 @@ async function main() {
   // earth-lands-1km is a top-level GeometryCollection wrapping one big
   // MultiPolygon of all land on earth.
   const earthRingsAll = earthGeo.geometries.flatMap((g) => geometryRings(g));
+  // Same structure, 10m-resolution source -- only ever read inside
+  // Sardinia's own clippedPaths() call below, so this far-larger ring set
+  // never touches any other stage's output.
+  const earthRingsAllFine = earthGeoFine.geometries.flatMap((g) => geometryRings(g));
 
   // Clips each ring to a (padded) bbox before doing anything else, then
   // simplifies just the clipped result. This is what keeps a ring the
@@ -340,12 +371,45 @@ async function main() {
   // open Tyrrhenian sea, not missed coastline, so this is pure safety
   // margin against the same coarse-fallback seam the box was widened
   // for previously -- not new coastline being revealed.
+  // UPDATE (this review): switched the SOURCE rings for this stage from
+  // earthRingsAll (1km) to earthRingsAllFine (10m, see file header) --
+  // the bbox, minArea and maxRings below are UNCHANGED from the 1km
+  // version; only the source resolution and the simplification tolerance
+  // changed. This matters: a harbour breakwater or a beach's sand-spit
+  // isn't its own separate small ring -- it's a real indentation in the
+  // edge of the MAINLAND ring (or a real island's own ring), which is
+  // already far larger than any area filter here would ever drop. What
+  // the 1km dataset actually did wrong was describe that one huge ring
+  // with 1km-spaced vertices, so a real indentation smaller than ~1km
+  // simply had no vertex to record it and the boundary cut straight
+  // across. Reading the SAME ring from 10m-resolution source data gives
+  // it far denser real vertices, so those real indentations now show up
+  // as part of its own shape -- no extra small rings needed.
+  //
+  // (First attempt at this fix tried a drastically lower minArea --
+  // 0.0000005 -- instead, on the theory that small real features needed
+  // their own small rings. Checked visually and that was wrong: it let
+  // through dozens of sub-pixel artifact slivers (4-point rings, ~150m x
+  // 170m bbox each, scattered across the whole box including areas
+  // nowhere near any Sardinia camera) that rendered as visible
+  // disconnected specks/fragments -- not an improvement, a new instance
+  // of the exact bug being fixed. Reverted minArea and maxRings to their
+  // original 1km-stage values; only the source dataset and tolerance
+  // below are different from before.)
+  //
+  // tolerance dropped from 0.001 to 0.00015 to use the finer source's
+  // real detail rather than smoothing it back away. At minArea 0.00003,
+  // this bbox's 10m source has 82 real rings (vs. the old 1km source,
+  // where the maxRings cap of 50 was already binding) -- maxRings raised
+  // to 90 to keep all 82 with a small margin (La Maddalena archipelago,
+  // Tavolara/Molara, every other real islet at this area threshold),
+  // checked empirically, not guessed.
   const SARDINIA_BBOX = [7.9, 38.6, 11.0, 42.0];
-  const sardiniaPaths = clippedPaths(earthRingsAll, SARDINIA_BBOX, {
+  const sardiniaPaths = clippedPaths(earthRingsAllFine, SARDINIA_BBOX, {
     pad: 0.1,
     minArea: 0.00003,
-    tolerance: 0.001,
-    maxRings: 50,
+    tolerance: 0.00015,
+    maxRings: 90,
   });
 
   const bytes = (s) => Buffer.byteLength(s, 'utf8');
