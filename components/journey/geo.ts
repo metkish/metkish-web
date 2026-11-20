@@ -116,13 +116,24 @@ export function catmullRomPoint(
   ];
 }
 
+const parseLandRingCache = new Map<string, [number, number][]>();
+const landRingsCache = new WeakMap<string[], [number, number][][]>();
+
 /** Parses one of the generated/geography.ts SVG path strings (already in
  * this module's projected world-unit space) back into a plain ring of
- * points, for ray-casting. */
+ * points, for ray-casting. Memoized by the source string: a route's
+ * animation calls this (indirectly, via routeCurvePoint) up to thousands
+ * of times per rendered frame with the exact same static path strings
+ * every time, so the parsed result is cached rather than re-run through
+ * the regex scan on every call. Pure caching change — output is
+ * identical to the unmemoized version for the same input string. */
 export function parseLandRing(pathStr: string): [number, number][] {
+  const cached = parseLandRingCache.get(pathStr);
+  if (cached) return cached;
   const nums = (pathStr.match(/-?\d+\.?\d*/g) ?? []).map(Number);
   const ring: [number, number][] = [];
   for (let i = 0; i + 1 < nums.length; i += 2) ring.push([nums[i], nums[i + 1]]);
+  parseLandRingCache.set(pathStr, ring);
   return ring;
 }
 
@@ -209,7 +220,16 @@ export function routeCurvePoint(
   const { lowTension, highTension, safetyMargin } = { ...ROUTE_SAFETY_DEFAULTS, ...opts };
   const low = catmullRomPoint(points, t, lowTension);
   if (!land || land.length === 0) return low;
-  const rings = land.map(parseLandRing);
+  // Memoized per `land` array reference too: the same routeLand array
+  // object is passed in on every call for a given leg's animation, so
+  // caching the mapped rings array by that reference avoids re-running
+  // .map() (and the per-string cache lookups) on every sample of every
+  // frame. Falls back to a fresh map on first use for a given array.
+  let rings = landRingsCache.get(land);
+  if (!rings) {
+    rings = land.map(parseLandRing);
+    landRingsCache.set(land, rings);
+  }
   if (marginAgainstLand(project(low), rings) >= safetyMargin) return low;
   const high = catmullRomPoint(points, t, highTension);
   if (marginAgainstLand(project(high), rings) < safetyMargin) return high;

@@ -245,7 +245,10 @@ export const SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY: Journey = {
       camera: { center: [9.51, 41.04], spanDeg: 0.4 },
       curve: 0.12,
       route: CASAGLIANA_TO_PRINCIPE_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 16 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       weight: 4.5,
       transition: 'ease',
     },
@@ -369,7 +372,10 @@ export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
       // this leg still uses a decorative bow.
       curve: 0,
       route: CASAGLIANA_TO_PALAU_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 19 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[1], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[10], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[43], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       weight: 5,
       transition: 'ease',
     },
@@ -465,7 +471,10 @@ export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
       camera: { center: [9.4926, 41.0253], spanDeg: 0.4 },
       curve: 0,
       route: CASAGLIANA_TO_LISCIA_RUJA_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 15 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       weight: 4,
       transition: 'ease',
     },
@@ -543,7 +552,10 @@ export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
       camera: { center: [9.492, 40.9516], spanDeg: 0.35 },
       curve: 0,
       route: CASAGLIANA_TO_MOYS_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 12 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       weight: 4,
       transition: 'ease',
     },
@@ -626,7 +638,10 @@ export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
       camera: { center: [9.5629, 40.8896], spanDeg: 0.75 },
       curve: 0,
       route: CASAGLIANA_TO_LA_CINTA_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 15 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[23], SARDINIA_PATHS[30], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
       weight: 4.5,
       transition: 'ease',
     },
@@ -738,7 +753,10 @@ export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
       camera: { center: [9.59, 40.6326], spanDeg: 1.95 },
       curve: 0,
       route: CASAGLIANA_TO_CALA_GONONE_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 18 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[23], SARDINIA_PATHS[30], SARDINIA_PATHS[31], SARDINIA_PATHS[41], SARDINIA_PATHS[47], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
       weight: 5.5,
       transition: 'ease',
     },
@@ -837,7 +855,10 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
       camera: { center: [9.4961, 41.0559], spanDeg: 0.55 },
       curve: 0,
       route: CASAGLIANA_TO_PORTO_CERVO_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 18 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[1], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[43], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       weight: 4.5,
       transition: 'ease',
     },
@@ -925,7 +946,10 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY: Journey = {
       camera: { center: [9.535, 40.9418], spanDeg: 0.5 },
       curve: 0,
       route: CASAGLIANA_TO_PORTO_ISTANA_ROUTE,
-      routeLand: [...SARDINIA_PATHS],
+      // Scoped to the 14 SARDINIA_PATHS rings geometrically near this
+      // specific route (verified byte-identical rendered geometry against the full
+      // 82-ring set before this change shipped — see sardinia-performance-audit.md).
+      routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[30], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
       weight: 4,
       transition: 'ease',
     },
