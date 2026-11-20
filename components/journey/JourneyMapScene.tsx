@@ -928,8 +928,46 @@ export default function JourneyMapScene({
     // at all (see ensureLegCached above) -- it only computes and caches
     // point arrays, so there is zero risk of it ever leaving the route's
     // `d` attribute in a prematurely-revealed or inconsistent state.
+    //
+    // BUT: every JourneyMapScene instance on a page mounts (and so
+    // schedules this same idle warm-up) at essentially the same time,
+    // at page load -- not when each one actually scrolls into view. A
+    // routeLand leg's own live computation (buildLegCache's fallback,
+    // when routeCacheDataRef.current doesn't have it yet) is the one
+    // genuinely expensive path here -- several hundred ms of synchronous
+    // main-thread work per leg (the coastline land-safety bisection).
+    // On Safari specifically, scheduleIdle's fallback is a flat
+    // `setTimeout(cb, 200)` (see scheduleIdle above), not real idle time
+    // at all -- it does not wait for the shared destination route-cache
+    // fetch (hundreds of KB over a real mobile connection) to have any
+    // realistic chance of completing. The result: on first page load,
+    // every routeLand-bearing instance's idle warm-up fires within the
+    // same ~200ms window, each finding the cache not ready yet and each
+    // falling back to the expensive live path -- several of these
+    // several-hundred-ms blocks landing back-to-back on the main thread
+    // right as the visitor starts scrolling. That main-thread pile-up,
+    // not anything specific to the leg that happens to be on screen when
+    // it hits, is what the stutter/freeze/vehicle-desync reports traced
+    // back to: every previous fix here (precomputing the cache, fetching
+    // it as JSON, gating *autoplay start* on it with routeCacheReadyRef,
+    // arc-length resampling) left this specific call site untouched,
+    // since none of them changed when this one runs.
+    //
+    // So: only do the speculative warm-up here when it's actually free
+    // (no routeLand, or the precomputed cache has already arrived) --
+    // otherwise skip it entirely. This does NOT remove the safety net:
+    // render()'s own ensureLegCached call (gated behind
+    // routeCacheReadyRef + startAutoplayWhenReady's retry loop further
+    // down) still builds this leg's cache, live if truly necessary, the
+    // moment autoplay actually needs it -- by which point the visitor
+    // has had to scroll this far, giving the fetch far more real-world
+    // time to land than 200ms after page load ever could.
     if (!reducedMotion && legRanges.length > 0) {
       scheduleIdle(() => {
+        const leg0 = legRanges[0].leg;
+        if (leg0.routeLand && !routeCacheDataRef.current?.[`${journey.id}::${leg0.id}`]) {
+          return;
+        }
         const legPoint0 = (i: number, t: number): [number, number] => {
           const l = legRanges[i].leg;
           return l.route
@@ -1039,17 +1077,28 @@ export default function JourneyMapScene({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             startAutoplayWhenReady();
-            // Resume a tween paused while this map was scrolled out of
+            // Resume tweens paused while this map was scrolled out of
             // view (see the else branch). No-op the very first time,
-            // since startAutoplay hasn't assigned playTween yet.
+            // since startAutoplay hasn't assigned playTween yet, and
+            // whenever there's no camera transition in flight.
             playTween?.resume();
+            cameraTween?.resume();
           } else {
             // Stop driving onUpdate (and therefore render()) entirely
             // while offscreen, instead of letting the tween keep running
             // "in the background" as the original design intentionally
             // did -- the one deliberate behaviour change here, requested
-            // explicitly so offscreen maps stop consuming CPU.
+            // explicitly so offscreen maps stop consuming CPU. Originally
+            // only paused playTween; cameraTween (the brief per-leg
+            // camera pan/zoom, see render() above) was left out, so a
+            // map scrolled away mid-leg-transition kept running that
+            // tween's own onUpdate -- more DOM writes, on an instance the
+            // visitor isn't even looking at, for up to its own ~1.3-1.9s
+            // duration -- for no benefit, and exactly while the visitor
+            // is scrolling, i.e. when competing for the main thread
+            // matters most.
             playTween?.pause();
+            cameraTween?.pause();
           }
         });
       },

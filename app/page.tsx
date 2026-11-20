@@ -15,8 +15,21 @@ const LOGO_SRC = '/metkish-logo.png';
 export default function Home() {
   const [pastHero, setPastHero] = useState(false);
 
+  // The root layout's <html> carries Tailwind's `scroll-smooth` class
+  // (scroll-behavior: smooth) site-wide, for the one place that WANTS it
+  // -- the "back to top" button below, a real user-triggered smooth
+  // scroll. A plain `window.scrollTo(0, 0)` has no explicit `behavior`,
+  // so it silently inherits that same CSS property: on a client-side
+  // <Link> navigation (which, unlike a hard reload, does not reset
+  // scroll position itself) this animated a visible scroll-up from
+  // wherever the previous page had been scrolled to, every time this
+  // page mounted -- most noticeable, and most reported, after tapping
+  // the logo from far down a long destination page. `behavior: 'instant'`
+  // forces this specific reset to be immediate regardless of that CSS
+  // property, leaving scroll-smooth itself untouched for the button
+  // below and any other real, user-initiated smooth scroll.
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
 
   useEffect(() => {
