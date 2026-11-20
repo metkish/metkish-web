@@ -377,18 +377,39 @@ export default function JourneyMapScene({
   // waits for the IntersectionObserver below plus, usually, the visitor
   // scrolling this far down the page -- so the main render effect's
   // buildLegCache almost always finds routeCacheDataRef.current already
-  // populated by the time it's needed. If it isn't yet (slow network, or
-  // the map is near the top of the page), buildLegCache's existing
-  // fallback just computes that leg live, exactly as it always did.
+  // populated by the time it's needed.
+  //
+  // routeCacheReadyRef below exists for the case where it ISN'T yet --
+  // a slower mobile connection, or a visitor who scrolls fast enough to
+  // reach a routeLand leg before its destination's cache JSON has
+  // finished downloading. Autoplay (see startAutoplayWhenReady further
+  // down) waits on this flag instead of starting blind: without it,
+  // render()'s first call to ensureLegCached for that leg would fall
+  // back to computing it live -- up to several hundred milliseconds of
+  // synchronous main-thread work for a routeLand leg -- in the middle of
+  // an already-running GSAP tick, which is what the stutter/vehicle-
+  // disappearing reports traced back to. Bounded by routeCacheReadyTimeoutMs
+  // so a genuinely failed fetch doesn't block the map forever; past that
+  // bound buildLegCache's live-fallback still runs exactly as before,
+  // just no longer in the common case.
   const routeCacheDataRef = useRef<Record<string, [number, number][]> | null>(null);
+  const routeCacheReadyRef = useRef(!routeCacheUrl);
   useEffect(() => {
     if (!routeCacheUrl) return;
     let cancelled = false;
+    const routeCacheReadyTimeoutMs = 5000;
+    const timeoutId = window.setTimeout(() => {
+      routeCacheReadyRef.current = true;
+    }, routeCacheReadyTimeoutMs);
     fetchRouteCache(routeCacheUrl).then((data) => {
-      if (!cancelled && data) routeCacheDataRef.current = data;
+      if (cancelled) return;
+      if (data) routeCacheDataRef.current = data;
+      routeCacheReadyRef.current = true;
+      window.clearTimeout(timeoutId);
     });
     return () => {
       cancelled = true;
+      window.clearTimeout(timeoutId);
     };
   }, [routeCacheUrl]);
 
@@ -966,11 +987,26 @@ export default function JourneyMapScene({
     // vertical band of the screen -- not just technically within a
     // viewport number that may not match what the visitor can actually see
     // yet -- before the animation is allowed to start.
+    // Waits for routeCacheReadyRef (see above) before actually calling
+    // startAutoplay, retrying on a short timer rather than blocking
+    // anything -- the retry is cheap (one ref read) and bounded by the
+    // same routeCacheReadyTimeoutMs ceiling the fetch effect already
+    // enforces, so this never waits meaningfully longer than that.
+    let autoplayRetryId: number | null = null;
+    const startAutoplayWhenReady = () => {
+      if (hasPlayedRef.current) return;
+      if (!routeCacheReadyRef.current) {
+        autoplayRetryId = window.setTimeout(startAutoplayWhenReady, 100);
+        return;
+      }
+      startAutoplay();
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            startAutoplay();
+            startAutoplayWhenReady();
             // Resume a tween paused while this map was scrolled out of
             // view (see the else branch). No-op the very first time,
             // since startAutoplay hasn't assigned playTween yet.
@@ -991,6 +1027,7 @@ export default function JourneyMapScene({
 
     return () => {
       observer.disconnect();
+      if (autoplayRetryId !== null) window.clearTimeout(autoplayRetryId);
       playTween?.kill();
       cameraTween?.kill();
       resizeObserver.disconnect();
