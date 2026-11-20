@@ -359,124 +359,87 @@ export default function JourneyMapScene({
     // an O(samples-so-far) cost PER FRAME, growing throughout the
     // animation.
     //
-    // Below, each leg's full-resolution point array (and cumulative
-    // on-screen arc length) is computed ONCE -- lazily, the first time
-    // that leg becomes relevant -- and cached. The static SVG path is
-    // appended to (once per leg, not per frame) and the pink route is then
-    // revealed by animating stroke-dashoffset, a single cheap numeric
-    // attribute write per frame, instead of rebuilding `d`. This produces
-    // mathematically identical output to the old per-frame rebuild (same
-    // legPoint() calls, same ROUTE_SAMPLES grid, same 5-decimal
-    // precision) -- it is purely a *when it's computed* change, not a
-    // *what's computed* change.
+    // Below, each leg's full-resolution point array is computed ONCE --
+    // lazily, the first time that leg becomes relevant -- and cached.
+    // render() still grows the `d` attribute every frame as the route is
+    // "drawn as it travels" (so it needs no stroke-dasharray/dashoffset
+    // support at all -- the undrawn remainder of the route simply isn't
+    // in the path yet, which is universally reliable across every SVG
+    // engine, mobile included), but that per-frame work is now just
+    // reading already-computed points out of the cache and formatting
+    // them into a string -- no trigonometry, no coastline-safety
+    // checks, no routeCurvePoint calls. A once-per-leg step folds every
+    // leg that's now fully in the past into a cached prefix string, so a
+    // multi-leg journey never re-walks legs it has already finished
+    // drawing. This produces mathematically identical output to the old
+    // per-frame rebuild (same legPoint() calls, same ROUTE_SAMPLES grid,
+    // same 5-decimal precision) -- it is purely a *when the expensive
+    // part is computed* change, not a *what's computed* change.
+    //
+    // (An earlier version of this cache revealed the route via
+    // stroke-dasharray/stroke-dashoffset instead of growing `d` directly,
+    // to avoid touching `d` every frame. That is a well-supported SVG
+    // feature, but it turned out not to render reliably on every mobile
+    // engine actually in use -- confirmed by a live report of the route
+    // showing fully drawn immediately with the vehicle then animating
+    // along an already-finished line, i.e. dashoffset having no visible
+    // effect. Slicing the precomputed points array into `d` directly
+    // sidesteps that risk entirely, at the cost of a per-frame string
+    // build that is still vastly cheaper than the original per-frame
+    // geometry recomputation it replaced.)
     interface LegGeometryCache {
       points: [number, number][]; // projected points, index 0..ROUTE_SAMPLES
-      cumLen: number[]; // cumulative on-screen length up to each point
-      totalLen: number;
     }
     const legCaches: (LegGeometryCache | null)[] = legRanges.map(() => null);
-    const legBaseLength: number[] = legRanges.map(() => 0);
-    let pathD = '';
-    let totalAppendedLength = 0;
-    let highestBuiltLegIndex = -1;
+    let highestCachedLegIndex = -1;
 
     const buildLegCache = (
       i: number,
       legPointFn: (i: number, t: number) => [number, number]
     ): LegGeometryCache => {
       const points: [number, number][] = new Array(ROUTE_SAMPLES + 1);
-      const cumLen: number[] = new Array(ROUTE_SAMPLES + 1);
-      points[0] = project(legPointFn(i, 0));
-      cumLen[0] = 0;
-      for (let s = 1; s <= ROUTE_SAMPLES; s++) {
-        const p = project(legPointFn(i, s / ROUTE_SAMPLES));
-        points[s] = p;
-        const prev = points[s - 1];
-        cumLen[s] = cumLen[s - 1] + Math.hypot(p[0] - prev[0], p[1] - prev[1]);
+      for (let s = 0; s <= ROUTE_SAMPLES; s++) {
+        points[s] = project(legPointFn(i, s / ROUTE_SAMPLES));
       }
-      return { points, cumLen, totalLen: cumLen[ROUTE_SAMPLES] };
+      return { points };
     };
 
-    // Ensures every leg up to and including `i` has been cached and, for
-    // any leg with showRoute !== false, appended to the single
-    // concatenated SVG path (matching the old code's behaviour of joining
-    // every drawn leg's points into one continuous polyline/path, 'M' only
-    // for the very first point overall and 'L' for every other point,
-    // including the join between legs). Legs only ever become relevant in
-    // increasing index order over a single tween's lifetime, so once a leg
-    // is built it never needs rebuilding -- this call is an O(1) no-op on
-    // every frame except the rare frame where a new leg first becomes
-    // active.
-    const ensureLegBuilt = (i: number, legPointFn: (i: number, t: number) => [number, number]) => {
-      if (i <= highestBuiltLegIndex) return;
-      let changed = false;
-      for (let j = highestBuiltLegIndex + 1; j <= i; j++) {
-        legBaseLength[j] = totalAppendedLength;
+    // Pure computation, no DOM writes whatsoever -- safe to call well
+    // before the animation starts (see the idle pre-warm below) with
+    // zero risk of ever leaving the route's `d` attribute in an
+    // inconsistent or prematurely-revealed state. Legs only ever become
+    // relevant in increasing index order over a single tween's lifetime,
+    // so once a leg is cached it never needs rebuilding.
+    const ensureLegCached = (i: number, legPointFn: (i: number, t: number) => [number, number]) => {
+      for (let j = highestCachedLegIndex + 1; j <= i; j++) {
+        const leg = legRanges[j].leg;
+        if (leg.showRoute !== false) legCaches[j] = buildLegCache(j, legPointFn);
+      }
+      if (i > highestCachedLegIndex) highestCachedLegIndex = i;
+    };
+
+    // The `d` for every leg strictly BEFORE the currently active one,
+    // folded in once -- the first time render() moves past that leg --
+    // by reading its already-cached points (no recomputation). render()
+    // appends the active leg's own partial contribution to this every
+    // frame, but only up to its current progress, so the undrawn
+    // remainder of the route never exists in the path data at all.
+    let completedPrefixD = '';
+    let completedThroughLegIndex = -1;
+
+    const foldCompletedLegsUpTo = (legIndex: number) => {
+      for (let j = completedThroughLegIndex + 1; j < legIndex; j++) {
         const leg = legRanges[j].leg;
         if (leg.showRoute === false) continue;
-        const cache = buildLegCache(j, legPointFn);
-        legCaches[j] = cache;
-        const isFirstLegEver = pathD === '';
+        const cache = legCaches[j];
+        if (!cache) continue;
+        const isFirstEver = completedPrefixD === '';
         const segment = cache.points
-          .map((p, s) => `${isFirstLegEver && s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
+          .map((p, s) => `${isFirstEver && s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
           .join(' ');
-        pathD = pathD === '' ? segment : `${pathD} ${segment}`;
-        totalAppendedLength += cache.totalLen;
-        changed = true;
+        completedPrefixD = completedPrefixD === '' ? segment : `${completedPrefixD} ${segment}`;
       }
-      highestBuiltLegIndex = i;
-      if (changed) {
-        routeGlowRef.current?.setAttribute('d', pathD);
-        routeLineRef.current?.setAttribute('d', pathD);
-        // stroke-dasharray and stroke-dashoffset are always written
-        // TOGETHER, as a pair, via the element's CSSOM `style` property
-        // (not setAttribute) -- see below for why both of those matter.
-        //
-        // Mobile-only bug this fixes: this function can run well before
-        // the first animation frame, via the idle-time pre-warm below,
-        // completely independently of render()'s own dashoffset write
-        // (which only happens once the tween is actually ticking). If
-        // stroke-dasharray were set here without an explicit matching
-        // stroke-dashoffset, the attribute would be absent and default to
-        // 0 per the SVG spec -- and with dasharray equal to the path's
-        // *entire* length, a dashoffset of 0 paints one giant solid dash
-        // covering the whole path, i.e. the full pink route rendered
-        // immediately, fully visible, with the car then animating along
-        // an already-finished line. That's exactly the bug reported:
-        // confirmed live on production, where an unplayed map's line
-        // path had stroke-dasharray set and stroke-dashoffset entirely
-        // absent. It can happen on any browser, but mobile hits it far
-        // more reliably than desktop: Safari and many mobile WebViews
-        // don't support (or schedule very differently from Chrome
-        // desktop's) requestIdleCallback, and a map's height is a much
-        // larger fraction of a phone's viewport, so there's a much wider
-        // scroll window where a visitor can see a map sitting in this
-        // "fully drawn, not yet playing" state before the
-        // IntersectionObserver's threshold actually fires. Writing
-        // dashoffset = totalAppendedLength ("fully hidden") here, every
-        // time dasharray changes, removes that window outright -- and
-        // when this function is instead called from render() itself
-        // (the normal per-frame path), render()'s own dashoffset write
-        // immediately afterward overwrites this with the real value in
-        // the very same tick, so this is a pure safety default with no
-        // effect on the already-correct desktop behaviour.
-        //
-        // Using `.style` (not `setAttribute`) for both keeps them on the
-        // same footing: an inline style always wins over a presentation
-        // attribute, so if dasharray went through one and dashoffset
-        // through the other, whichever used `.style` would permanently
-        // shadow the other's later attribute updates. Driving both
-        // through `.style` is also the standard, well-tested pattern for
-        // animated SVG stroke-dash reveals across browsers/engines.
-        if (routeGlowRef.current) {
-          routeGlowRef.current.style.strokeDasharray = `${totalAppendedLength}`;
-          routeGlowRef.current.style.strokeDashoffset = `${totalAppendedLength}`;
-        }
-        if (routeLineRef.current) {
-          routeLineRef.current.style.strokeDasharray = `${totalAppendedLength}`;
-          routeLineRef.current.style.strokeDashoffset = `${totalAppendedLength}`;
-        }
-      }
+      if (legIndex - 1 > completedThroughLegIndex) completedThroughLegIndex = legIndex - 1;
     };
 
     // requestIdleCallback (Safari fallback: setTimeout) so the first
@@ -657,24 +620,35 @@ export default function JourneyMapScene({
           : bezierPoint(l.from.coords, l.to.coords, l.curve ?? 0, t);
       };
 
-      ensureLegBuilt(legIndex, legPoint);
+      ensureLegCached(legIndex, legPoint);
+      foldCompletedLegsUpTo(legIndex);
 
+      // Build this frame's `d` from already-cached, already-computed
+      // points only: the completed-legs prefix (folded in once, above --
+      // never rewalked here) plus a plain slice of the active leg's own
+      // cached points up to its current progress. There is no
+      // stroke-dasharray/stroke-dashoffset involved -- the undrawn
+      // remainder of the route simply isn't present in the path data at
+      // all yet, which every SVG engine draws correctly, including real
+      // mobile browsers (dash-based reveal was tried first and proved
+      // unreliable there for a path this long -- see the comment above
+      // LegGeometryCache).
+      let frameD = completedPrefixD;
       if (leg.showRoute !== false) {
-        // The full path for every leg up to and including this one was
-        // already written to the `d` attribute once, in ensureLegBuilt.
-        // Progressive "drawing as it travels" is done with
-        // stroke-dashoffset, which the compositor can animate essentially
-        // for free -- no per-frame geometry work at all.
         const cache = legCaches[legIndex];
         if (cache) {
           const stepsF = ROUTE_SAMPLES * localProgress;
           const steps = Math.min(ROUTE_SAMPLES, Math.max(1, Math.round(stepsF)));
-          const revealLength = legBaseLength[legIndex] + cache.cumLen[steps];
-          const dashoffset = totalAppendedLength - revealLength;
-          if (routeGlowRef.current) routeGlowRef.current.style.strokeDashoffset = `${dashoffset}`;
-          if (routeLineRef.current) routeLineRef.current.style.strokeDashoffset = `${dashoffset}`;
+          const isFirstEver = frameD === '';
+          const segment = cache.points
+            .slice(0, steps + 1)
+            .map((p, s) => `${isFirstEver && s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
+            .join(' ');
+          frameD = frameD === '' ? segment : `${frameD} ${segment}`;
         }
       }
+      if (routeGlowRef.current) routeGlowRef.current.setAttribute('d', frameD);
+      if (routeLineRef.current) routeLineRef.current.setAttribute('d', frameD);
 
       if (leg.showRoute === false) {
         vehicleWorld = project(leg.from.coords);
@@ -735,7 +709,10 @@ export default function JourneyMapScene({
     // Warm the first leg's route-geometry cache during browser idle time,
     // after initial paint -- not as part of it -- so the common
     // below-the-fold case has no synchronous hitch even at the moment
-    // autoplay's IntersectionObserver fires (see ensureLegBuilt above).
+    // autoplay's IntersectionObserver fires. This performs NO DOM writes
+    // at all (see ensureLegCached above) -- it only computes and caches
+    // point arrays, so there is zero risk of it ever leaving the route's
+    // `d` attribute in a prematurely-revealed or inconsistent state.
     if (!reducedMotion && legRanges.length > 0) {
       scheduleIdle(() => {
         const legPoint0 = (i: number, t: number): [number, number] => {
@@ -744,7 +721,7 @@ export default function JourneyMapScene({
             ? routeCurvePoint(l.route, t, l.routeLand)
             : bezierPoint(l.from.coords, l.to.coords, l.curve ?? 0, t);
         };
-        ensureLegBuilt(0, legPoint0);
+        ensureLegCached(0, legPoint0);
       });
     }
 
