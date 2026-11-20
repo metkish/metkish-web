@@ -289,6 +289,7 @@ export default function SardiniaPage() {
           own Home->Vienna map (same geography, same camera framing). */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_HOME_TO_VIENNA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -352,6 +353,7 @@ export default function SardiniaPage() {
           breakpoints. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_VIENNA_TO_OLBIA_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[580px]'
       />
@@ -674,6 +676,7 @@ export default function SardiniaPage() {
           Vienna map above. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -765,6 +768,7 @@ export default function SardiniaPage() {
           the wrong way for a walk). */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
       />
@@ -1140,6 +1144,7 @@ export default function SardiniaPage() {
           section's text column. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -1310,6 +1315,7 @@ export default function SardiniaPage() {
           and sizing convention as every other route map on the page. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -1500,6 +1506,7 @@ export default function SardiniaPage() {
           every other route map on the page. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY}
         heightClassName='h-[400px] sm:h-[460px] md:h-[520px]'
       />
@@ -1653,6 +1660,7 @@ export default function SardiniaPage() {
           convention as every other route map on the page. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
       />
@@ -1914,6 +1922,7 @@ export default function SardiniaPage() {
         <div className='mt-10 md:mt-12 md:-mx-12 -mx-6'>
           <JourneyMapScene
             routeCacheUrl="/route-cache/sardinia.json"
+            region="sardinia"
             journey={SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY}
             heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
           />
@@ -1962,6 +1971,7 @@ export default function SardiniaPage() {
           route map on the page. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/sardinia.json"
+        region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />

@@ -10,9 +10,24 @@ import {
   screenAngle,
   routeCurvePoint,
   routeCurveAngleAt,
+  resampleByArcLength,
   ROUTE_SAMPLES,
 } from './geo';
 import { AUSTRIA_PATHS, CANARY_PATHS, NEIGHBOUR_PATHS, SARDINIA_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
+
+// Per-destination fine-detail coastline, keyed by the new `region` prop
+// below. Both arrays stay statically imported here exactly as before
+// (this file is already a shared dependency of every destination page,
+// so that import cost is unavoidable and unchanged) -- what changes is
+// that a page whose own destination doesn't need a given region's
+// close-up coastline no longer renders it as live SVG <path> elements at
+// all. See the `region` prop doc comment for why this existed
+// unconditionally before and why that was a real (not just theoretical)
+// per-page DOM cost.
+const REGION_FINE_DETAIL_PATHS: Record<'canary' | 'sardinia', string[]> = {
+  canary: CANARY_PATHS,
+  sardinia: SARDINIA_PATHS,
+};
 
 // A hand-drawn, editorial-atlas palette — the same warm neutrals used
 // across the rest of the site, kept deliberately muted so the map reads as
@@ -260,6 +275,22 @@ export interface JourneyMapSceneProps {
    * missing/failed fetch (or a leg not present in the response) falls
    * back to computing that leg live exactly as before. */
   routeCacheUrl?: string;
+  /** Which destination's close-up, fine-detail coastline (bays, headlands
+   * -- the real local shapes WIDE_EUROPE_PATHS' continental-scale
+   * simplification can't provide) this map renders, in addition to the
+   * always-on background layers (wide Europe, neighbours, Slovenia,
+   * Austria). Previously CANARY_PATHS and SARDINIA_PATHS both rendered
+   * unconditionally on every single JourneyMapScene instance on every
+   * destination page, regardless of whether that destination's maps ever
+   * showed that region -- e.g. Sardinia's 82-path, 73KB coastline was
+   * being rendered on all 10 of Tenerife's map instances, 820 entirely
+   * invisible <path> elements that still had to be mounted and later
+   * torn down. Leave unset for a destination whose maps never zoom into
+   * either region (Italy, Barcelona, Rome, Iceland) -- nothing extra
+   * renders. Set to 'canary' (Tenerife) or 'sardinia' (Sardinia) to get
+   * exactly the same close-up coastline those maps always had, just no
+   * longer paid for by every other destination's pages too. */
+  region?: 'canary' | 'sardinia';
 }
 
 // Fetches and caches a destination's precomputed route-geometry JSON,
@@ -309,6 +340,7 @@ export default function JourneyMapScene({
   heightClassName = DEFAULT_HEIGHT_CLASSNAME,
   austriaEmphasis = true,
   routeCacheUrl,
+  region,
 }: JourneyMapSceneProps) {
   // Unique per mount (this page puts several JourneyMapScene instances on
   // one page) so each instance's <mask> id below can't collide with
@@ -523,11 +555,11 @@ export default function JourneyMapScene({
       if (precomputed && precomputed.length === ROUTE_SAMPLES + 1) {
         return { points: precomputed };
       }
-      const points: [number, number][] = new Array(ROUTE_SAMPLES + 1);
+      const rawPoints: [number, number][] = new Array(ROUTE_SAMPLES + 1);
       for (let s = 0; s <= ROUTE_SAMPLES; s++) {
-        points[s] = project(legPointFn(i, s / ROUTE_SAMPLES));
+        rawPoints[s] = project(legPointFn(i, s / ROUTE_SAMPLES));
       }
-      return { points };
+      return { points: resampleByArcLength(rawPoints) };
     };
 
     // Pure computation, no DOM writes whatsoever -- safe to call well
@@ -1093,28 +1125,20 @@ export default function JourneyMapScene({
               <path key={`austria-${i}`} d={d} fill={MUTED_LAND} opacity={0.55} />
             )
           )}
-          {CANARY_PATHS.map((d, i) => (
+          {/* Canary Islands (Tenerife) or Sardinia (north-east coast /
+              Costa Smeralda) close-up coastline -- see the Stage 4 comment
+              in scripts/build-geo.mjs for why this fine detail exists
+              (e.g. Casagliana -> Spiaggia del Principe's local coastal map
+              needs real bay/headland shapes, which WIDE_EUROPE_PATHS'
+              continental-scale simplification can't provide). Only the
+              one region this page's `region` prop names renders at all --
+              see that prop's doc comment above for why this used to
+              render BOTH regions unconditionally on every destination's
+              maps and why that was a real per-page DOM cost, not just
+              invisible-and-free. */}
+          {(region ? REGION_FINE_DETAIL_PATHS[region] : []).map((d, i) => (
             <path
-              key={`canary-${i}`}
-              d={d}
-              fill={MUTED_LAND}
-              stroke={MUTED_LINE}
-              strokeWidth={1}
-              vectorEffect='non-scaling-stroke'
-              opacity={0.85}
-            />
-          ))}
-          {/* Sardinia (north-east coast / Costa Smeralda), same fine-detail
-              treatment as CANARY_PATHS above -- see the Stage 4 comment in
-              scripts/build-geo.mjs for why this exists (Casagliana ->
-              Spiaggia del Principe's local coastal map needs real bay/
-              headland shapes, which WIDE_EUROPE_PATHS' continental-scale
-              simplification can't provide). Renders unconditionally, same
-              as every other regional path set -- invisible on any map
-              whose camera isn't framed over Sardinia, zero cost otherwise. */}
-          {SARDINIA_PATHS.map((d, i) => (
-            <path
-              key={`sardinia-${i}`}
+              key={`region-${i}`}
               d={d}
               fill={MUTED_LAND}
               stroke={MUTED_LINE}
@@ -1130,7 +1154,7 @@ export default function JourneyMapScene({
               else. Fill only, no stroke: the patch's own closing edge
               deliberately retraces the existing coastline vertices it
               extends from, so stroking it too would double-draw a line
-              CANARY_PATHS above already drew.
+              the region fine-detail block above already drew.
               extraLandFill/extraLandStroke let ONE journey override the
               colour these render with (see that doc comment for why —
               Iceland/Greenland on the Ljubljana -> Keflavik map, a distant

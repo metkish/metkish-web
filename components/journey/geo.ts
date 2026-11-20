@@ -116,6 +116,63 @@ export function catmullRomPoint(
   ];
 }
 
+/** Resamples an ordered point list so consecutive output points are
+ * evenly spaced by actual on-screen (projected) distance along the
+ * curve, instead of by whatever spacing the input happened to have.
+ *
+ * routeCurvePoint below samples a leg's real-waypoint curve evenly in
+ * its Catmull-Rom parameter `t` (0..1 across however many real
+ * waypoints that leg has) -- not evenly by distance. For a leg whose
+ * real route legitimately packs many waypoints into a short stretch
+ * (a hairpin, a backtrack -- see the metkish-route-geometry rule on
+ * preserving those) and few over a long straight one, equal-`t`
+ * sampling produces wildly uneven screen-space spacing: dozens of
+ * samples can land on nearly the same point through the dense
+ * stretch (the vehicle appears to freeze) while a handful of samples
+ * cover a long straight (the vehicle appears to jump). Measured on
+ * the real Tenerife route-cache: home-to-vienna (no real hairpins)
+ * has a 2.2x max/mean step ratio and zero zero-length steps;
+ * roca-nivaria-to-duque has a 45x ratio and 207 of 2000 steps at
+ * (effectively) zero distance -- this is what the stutter/freeze/
+ * vehicle-disappearing reports on driving routes traced back to, not
+ * a performance or caching issue (every architecture change up to
+ * this one only touched how an already-computed point list gets
+ * drawn or cached, never how those points are spaced, so none of
+ * them could have fixed this).
+ *
+ * This runs AFTER the curve (including any routeLand safety
+ * adjustment) is fully computed, purely re-indexing the same points
+ * along the same path -- it changes nothing about the route's shape,
+ * coastline safety, or geography, only how evenly animation progress
+ * maps to screen position. */
+export function resampleByArcLength(points: [number, number][]): [number, number][] {
+  const n = points.length;
+  if (n < 3) return points;
+  const cum = new Array<number>(n);
+  cum[0] = 0;
+  for (let i = 1; i < n; i++) {
+    const dx = points[i][0] - points[i - 1][0];
+    const dy = points[i][1] - points[i - 1][1];
+    cum[i] = cum[i - 1] + Math.hypot(dx, dy);
+  }
+  const total = cum[n - 1];
+  if (total <= 0) return points; // degenerate (from === to) leg: nothing to space out
+  const out: [number, number][] = new Array(n);
+  out[0] = points[0];
+  out[n - 1] = points[n - 1];
+  let seg = 0;
+  for (let k = 1; k < n - 1; k++) {
+    const target = (total * k) / (n - 1);
+    while (seg < n - 2 && cum[seg + 1] < target) seg++;
+    const segLen = cum[seg + 1] - cum[seg];
+    const frac = segLen > 0 ? (target - cum[seg]) / segLen : 0;
+    const a = points[seg];
+    const b = points[seg + 1];
+    out[k] = [a[0] + (b[0] - a[0]) * frac, a[1] + (b[1] - a[1]) * frac];
+  }
+  return out;
+}
+
 const parseLandRingCache = new Map<string, [number, number][]>();
 const landRingsCache = new WeakMap<string[], [number, number][][]>();
 

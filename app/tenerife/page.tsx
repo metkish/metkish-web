@@ -321,6 +321,7 @@ export default function TenerifePage() {
           the flight is a separate map further down. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_HOME_TO_VIENNA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -390,6 +391,7 @@ export default function TenerifePage() {
           since it carries the wide Europe/Atlantic leg. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_VIENNA_TO_TENERIFE_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[580px]'
       />
@@ -672,6 +674,7 @@ export default function TenerifePage() {
           on top of it now sit as simple in-flow content just underneath. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_TRANSFER_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -969,6 +972,7 @@ export default function TenerifePage() {
           shows actually needs. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_ROCA_TO_DUQUE_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1090,6 +1094,7 @@ export default function TenerifePage() {
           visual weight than the drive itself needs. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_ROCA_TO_SIAM_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1270,6 +1275,7 @@ export default function TenerifePage() {
           animation) identical. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_ROCA_TO_TERESITAS_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />
@@ -1399,6 +1405,7 @@ export default function TenerifePage() {
           journey on this page — only the geometry and camera differ. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1630,6 +1637,7 @@ export default function TenerifePage() {
           this page — only the geometry and camera differ. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_ROCA_TO_TEIDE_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1940,6 +1948,7 @@ export default function TenerifePage() {
           logic touched — only this map's own frame height. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_ROCA_TO_LORO_PARQUE_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />
@@ -2139,6 +2148,7 @@ export default function TenerifePage() {
           geometry and camera differ. Does not touch any other map/route. */}
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
+        region="canary"
         journey={TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />

@@ -61,7 +61,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { bezierPoint, project, routeCurvePoint, ROUTE_SAMPLES } from '../components/journey/geo';
+import { bezierPoint, project, routeCurvePoint, resampleByArcLength, ROUTE_SAMPLES } from '../components/journey/geo';
 import type { Journey, JourneyLeg } from '../lib/journeys/types';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -110,11 +110,14 @@ async function main() {
     for (const journey of journeys) {
       for (const leg of journey.legs) {
         if (leg.showRoute === false) continue;
-        const points: [number, number][] = new Array(ROUTE_SAMPLES + 1);
+        const rawPoints: [number, number][] = new Array(ROUTE_SAMPLES + 1);
         for (let s = 0; s <= ROUTE_SAMPLES; s++) {
-          const p = project(legPoint(leg, s / ROUTE_SAMPLES));
-          points[s] = [roundCoord(p[0]), roundCoord(p[1])];
+          rawPoints[s] = project(legPoint(leg, s / ROUTE_SAMPLES));
         }
+        const evenPoints = resampleByArcLength(rawPoints);
+        const points: [number, number][] = evenPoints.map(
+          (p) => [roundCoord(p[0]), roundCoord(p[1])] as [number, number],
+        );
         cache[`${journey.id}::${leg.id}`] = points;
         legCount++;
       }
