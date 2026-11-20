@@ -63,3 +63,9 @@ public/2026-10 - Barcelona/Barcelona_Montserrat_ticket.jpeg
 # neither belongs in the repo.
 .preview-tmp/
 public/2025-07 - Sardinia/Cala Goloritze_web 2.mp4
+
+# Precomputed route-geometry JSON, regenerated before every build by the
+# "prebuild" script (scripts/generate-route-cache.ts) -- see that file's
+# header comment. Not committed: it's large, purely derived from
+# lib/journeys/*.ts, and would just go stale/bloat history otherwise.
+public/route-cache/

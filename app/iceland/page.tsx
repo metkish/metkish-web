@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
-import { ICELAND_ROUTE_CACHE } from '@/components/journey/generated/route-cache-iceland';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import { ChapterHeading, Eyebrow, Paragraphs } from '@/components/ui/typography';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
@@ -350,7 +349,7 @@ export default function IcelandPage() {
           Sits directly against the hero's bottom edge with zero gap, same
           as every other destination's own first map. */}
       <JourneyMapScene
-        routeCache={ICELAND_ROUTE_CACHE}
+        routeCacheUrl="/route-cache/iceland.json"
         journey={ICELAND_HOME_TO_LJUBLJANA_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
@@ -468,7 +467,7 @@ export default function IcelandPage() {
           "fly in, hold on arrival" shape as every other flight map on the
           site. Sits directly against the previous section with zero gap. */}
       <JourneyMapScene
-        routeCache={ICELAND_ROUTE_CACHE}
+        routeCacheUrl="/route-cache/iceland.json"
         journey={ICELAND_LJUBLJANA_TO_KEFLAVIK_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[420px] sm:h-[480px] md:h-[580px]'
@@ -538,7 +537,7 @@ export default function IcelandPage() {
           not a new style, just this page's existing caption treatment
           applied under a map for the first time. */}
       <JourneyMapScene
-        routeCache={ICELAND_ROUTE_CACHE}
+        routeCacheUrl="/route-cache/iceland.json"
         journey={ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
@@ -745,7 +744,7 @@ export default function IcelandPage() {
           explicit direction to label the bus icon "Organised
           excursion". */}
       <JourneyMapScene
-        routeCache={ICELAND_ROUTE_CACHE}
+        routeCacheUrl="/route-cache/iceland.json"
         journey={ICELAND_GOLDEN_CIRCLE_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
@@ -932,7 +931,7 @@ export default function IcelandPage() {
           organised excursion, not a self-driven rental car, so the
           caption below uses the suggested wording directly. */}
       <JourneyMapScene
-        routeCache={ICELAND_ROUTE_CACHE}
+        routeCacheUrl="/route-cache/iceland.json"
         journey={ICELAND_SOUTH_COAST_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'

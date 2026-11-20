@@ -241,16 +241,50 @@ export interface JourneyMapSceneProps {
    * Vienna/Graz -- Austria has no business being visually distinguished
    * from its neighbours on a map that has nothing to do with it. */
   austriaEmphasis?: boolean;
-  /** Build-time-precomputed, already-projected points for this journey's
-   * legs (see scripts/generate-route-cache.ts and the comment on
-   * buildLegCache below), keyed by `${journey.id}::${leg.id}`. A leg with
-   * `routeLand` land-safety checking can take hundreds of milliseconds to
-   * sample live in a visitor's browser; this lets a destination page hand
-   * over the already-computed result instead, so building that leg's
-   * cache becomes a plain lookup. Optional, and purely an optimization:
-   * any leg missing from it (or not yet regenerated after a route edit)
-   * falls back to computing it live exactly as before. */
-  routeCache?: Record<string, [number, number][]>;
+  /** URL of this destination's build-time-precomputed route-geometry
+   * JSON (see scripts/generate-route-cache.ts), e.g. "/route-cache/tenerife".
+   * A leg with `routeLand` land-safety checking can take hundreds of
+   * milliseconds to sample live in a visitor's browser; this lets
+   * JourneyMapScene fetch the already-computed result instead (once per
+   * destination per page load, shared across every JourneyMapScene
+   * instance on that page -- see routeCacheFetchCache below), so building
+   * that leg's cache becomes a plain lookup. Deliberately a URL fetched at
+   * runtime rather than data imported directly: every destination page is
+   * a Client Component, so importing the precomputed array directly would
+   * bake it into THAT PAGE'S OWN JS bundle, which Next's <Link> then
+   * prefetches as soon as a link to it scrolls into view anywhere on the
+   * site (e.g. the home page's travel gallery) -- silently downloading
+   * megabytes of route geometry nobody asked for yet. A plain fetch()
+   * here is invisible to Link prefetch and only ever happens on this
+   * destination's own page. Optional, and purely an optimization: a
+   * missing/failed fetch (or a leg not present in the response) falls
+   * back to computing that leg live exactly as before. */
+  routeCacheUrl?: string;
+}
+
+// Fetches and caches a destination's precomputed route-geometry JSON,
+// keyed by its URL, so multiple <JourneyMapScene> instances for the same
+// destination on one page (every page here renders several) share a
+// single network request instead of each fetching it independently.
+// Module-level (not per-component-instance) so the cache survives
+// remounts within the same page session. Never throws: a network error
+// or malformed response resolves to null, which buildLegCache below
+// treats exactly like "not precomputed" and falls back to live
+// computation for that leg -- the fetch is purely an optimization, never
+// a correctness dependency.
+const routeCacheFetchCache = new Map<
+  string,
+  Promise<Record<string, [number, number][]> | null>
+>();
+function fetchRouteCache(url: string): Promise<Record<string, [number, number][]> | null> {
+  let pending = routeCacheFetchCache.get(url);
+  if (!pending) {
+    pending = fetch(url)
+      .then((res) => (res.ok ? (res.json() as Promise<Record<string, [number, number][]>>) : null))
+      .catch(() => null);
+    routeCacheFetchCache.set(url, pending);
+  }
+  return pending;
 }
 
 // A short, self-running cinematic moment — not a scroll-controlled
@@ -274,7 +308,7 @@ export default function JourneyMapScene({
   className = '',
   heightClassName = DEFAULT_HEIGHT_CLASSNAME,
   austriaEmphasis = true,
-  routeCache,
+  routeCacheUrl,
 }: JourneyMapSceneProps) {
   // Unique per mount (this page puts several JourneyMapScene instances on
   // one page) so each instance's <mask> id below can't collide with
@@ -337,6 +371,26 @@ export default function JourneyMapScene({
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
   }, []);
+
+  // Starts the (deduped, see fetchRouteCache) fetch as soon as this scene
+  // mounts -- well before autoplay can actually start, since that still
+  // waits for the IntersectionObserver below plus, usually, the visitor
+  // scrolling this far down the page -- so the main render effect's
+  // buildLegCache almost always finds routeCacheDataRef.current already
+  // populated by the time it's needed. If it isn't yet (slow network, or
+  // the map is near the top of the page), buildLegCache's existing
+  // fallback just computes that leg live, exactly as it always did.
+  const routeCacheDataRef = useRef<Record<string, [number, number][]> | null>(null);
+  useEffect(() => {
+    if (!routeCacheUrl) return;
+    let cancelled = false;
+    fetchRouteCache(routeCacheUrl).then((data) => {
+      if (!cancelled && data) routeCacheDataRef.current = data;
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [routeCacheUrl]);
 
   const legRanges = useMemo(() => computeLegRanges(journey.legs), [journey]);
   const labelPoints = useMemo(() => findLabelPoints(journey.legs), [journey]);
@@ -437,12 +491,14 @@ export default function JourneyMapScene({
     ): LegGeometryCache => {
       // A leg whose routeLand land-safety checking makes it expensive
       // (see scripts/generate-route-cache.ts) was precomputed at build
-      // time and handed in via the routeCache prop -- use it directly,
-      // with zero sampling work, when it's present and the right shape.
-      // Anything missing (not yet regenerated, or genuinely absent)
-      // falls back to the exact same live computation this always did.
+      // time and is fetched (see routeCacheDataRef above) from this
+      // destination's route-cache JSON -- use it directly, with zero
+      // sampling work, when it's present and the right shape. Anything
+      // missing (fetch not finished yet, not regenerated, or genuinely
+      // absent) falls back to the exact same live computation this
+      // always did.
       const leg = legRanges[i].leg;
-      const precomputed = routeCache?.[`${journey.id}::${leg.id}`];
+      const precomputed = routeCacheDataRef.current?.[`${journey.id}::${leg.id}`];
       if (precomputed && precomputed.length === ROUTE_SAMPLES + 1) {
         return { points: precomputed };
       }

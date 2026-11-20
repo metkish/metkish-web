@@ -3,14 +3,14 @@
 // "prebuild" script in package.json)
 //
 // Precomputes, for every leg of every Journey in every destination module
-// listed in ./destinationModules, the exact same ROUTE_SAMPLES+1
-// already-projected points JourneyMapScene's own buildLegCache() would
-// compute live in a visitor's browser — using the literal same functions
-// (routeCurvePoint / bezierPoint / project) and the same shared
-// ROUTE_SAMPLES constant from components/journey/geo.ts, so the output is
-// mathematically identical to what the component has always drawn. The
-// only thing this changes is WHEN that computation happens: once here at
-// build time, instead of once per visitor per leg in their own browser.
+// listed below, the exact same ROUTE_SAMPLES+1 already-projected points
+// JourneyMapScene's own buildLegCache() would compute live in a visitor's
+// browser — using the literal same functions (routeCurvePoint /
+// bezierPoint / project) and the same shared ROUTE_SAMPLES constant from
+// components/journey/geo.ts, so the output is mathematically identical to
+// what the component has always drawn. The only thing this changes is
+// WHEN that computation happens: once here at build time, instead of
+// once per visitor per leg in their own browser.
 //
 // This matters because a leg with `routeLand` (coastline-aware land-
 // safety sampling — see the big comment on routeCurvePoint in geo.ts)
@@ -27,36 +27,57 @@
 // `route` with no `routeLand`, which were never slow enough to trigger
 // this and is why only SOME maps on a page showed the problem).
 //
-// Each destination module gets its own generated output file
-// (components/journey/generated/route-cache-<slug>.ts) so Next.js's
-// per-route code splitting keeps one destination's cache out of every
-// OTHER destination's page bundle — a destination page passes its own
-// file's export to JourneyMapScene as the `routeCache` prop. Adding a new
-// destination: add it to DESTINATION_MODULES_WITH_SLUGS below (and to
-// ./destinationModules if it should also be route-validated), then wire
-// that destination's page.tsx to import and pass its generated cache —
-// see any existing destination page for the pattern.
+// WHY STATIC JSON UNDER public/ — NOT a TS module imported by page.tsx:
+// an earlier version of this generator wrote one generated .ts module per
+// destination and had each destination's page.tsx `import` its cache
+// directly. That worked (every routeLand leg really did become a 0ms
+// lookup) but silently created a much worse problem: every destination
+// page.tsx here is a Client Component, so that import baked the entire
+// precomputed array (120KB-636KB of source per destination) straight into
+// that PAGE'S OWN JavaScript bundle. Next.js's <Link> prefetches a linked
+// page's full bundle as soon as the link scrolls into view — so simply
+// landing on the home page (whose travel gallery links to every
+// destination) silently triggered multi-megabyte background downloads of
+// route geometry nobody was about to look at yet, which is what actually
+// made the home page (and navigation generally) slow to load on mobile.
+// Writing this data as plain static JSON under public/route-cache/ instead,
+// fetched on demand by JourneyMapScene itself (see its routeCacheUrl prop
+// and the module-level fetch cache next to it), keeps it completely out
+// of every page's JS bundle and out of Link's prefetch entirely: it's an
+// ordinary cacheable network request that only happens on a destination's
+// own page, only once per page load (shared across every JourneyMapScene
+// on that page), and is fired as early as each one mounts rather than
+// waiting for scroll.
+//
+// Each destination gets its own JSON file (public/route-cache/<slug>.json)
+// for the same reason the old per-destination .ts files existed: so one
+// destination's data is never fetched by a visitor who never opens that
+// destination's page. Adding a new destination: add it to
+// DESTINATION_MODULES_WITH_SLUGS below (and to ./destinationModules if it
+// should also be route-validated), then set that destination's page.tsx's
+// <JourneyMapScene routeCacheUrl="/route-cache/<slug>"> — see any existing
+// destination page for the pattern.
 
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bezierPoint, project, routeCurvePoint, ROUTE_SAMPLES } from '../components/journey/geo';
 import type { Journey, JourneyLeg } from '../lib/journeys/types';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUT_DIR = join(__dirname, '..', 'components', 'journey', 'generated');
+const OUT_DIR = join(__dirname, '..', 'public', 'route-cache');
 
-// { module path (relative to this script), output slug, generated const
-// name }. Every destination that renders <JourneyMapScene> belongs here,
-// whether or not it happens to use routeLand today — a future route edit
-// on any of its legs should never have to remember to add it here first.
-const DESTINATION_MODULES_WITH_SLUGS: { mod: string; slug: string; constName: string }[] = [
-  { mod: '../lib/journeys/tenerife', slug: 'tenerife', constName: 'TENERIFE_ROUTE_CACHE' },
-  { mod: '../lib/journeys/italy', slug: 'italy', constName: 'ITALY_ROUTE_CACHE' },
-  { mod: '../lib/journeys/barcelona', slug: 'barcelona', constName: 'BARCELONA_ROUTE_CACHE' },
-  { mod: '../lib/journeys/rome', slug: 'rome', constName: 'ROME_ROUTE_CACHE' },
-  { mod: '../lib/journeys/iceland', slug: 'iceland', constName: 'ICELAND_ROUTE_CACHE' },
-  { mod: '../lib/journeys/sardinia', slug: 'sardinia', constName: 'SARDINIA_ROUTE_CACHE' },
+// { module path (relative to this script), output slug }. Every
+// destination that renders <JourneyMapScene> belongs here, whether or not
+// it happens to use routeLand today — a future route edit on any of its
+// legs should never have to remember to add it here first.
+const DESTINATION_MODULES_WITH_SLUGS: { mod: string; slug: string }[] = [
+  { mod: '../lib/journeys/tenerife', slug: 'tenerife' },
+  { mod: '../lib/journeys/italy', slug: 'italy' },
+  { mod: '../lib/journeys/barcelona', slug: 'barcelona' },
+  { mod: '../lib/journeys/rome', slug: 'rome' },
+  { mod: '../lib/journeys/iceland', slug: 'iceland' },
+  { mod: '../lib/journeys/sardinia', slug: 'sardinia' },
 ];
 
 function legPoint(leg: JourneyLeg, t: number): [number, number] {
@@ -74,7 +95,9 @@ function roundCoord(n: number): number {
 }
 
 async function main() {
-  for (const { mod, slug, constName } of DESTINATION_MODULES_WITH_SLUGS) {
+  mkdirSync(OUT_DIR, { recursive: true });
+
+  for (const { mod, slug } of DESTINATION_MODULES_WITH_SLUGS) {
     const imported = await import(mod);
     const journeys: Journey[] = Object.values(imported).filter(
       (v: unknown): v is Journey =>
@@ -97,28 +120,10 @@ async function main() {
       }
     }
 
-    const entries = Object.entries(cache)
-      .map(([key, points]) => `  ${JSON.stringify(key)}: ${JSON.stringify(points)},`)
-      .join('\n');
-
-    const file = `// GENERATED FILE — do not edit by hand.
-// Produced by scripts/generate-route-cache.ts from ${mod}.ts — re-run
-// \`npx tsx scripts/generate-route-cache.ts\` (or \`npm run build\`, which
-// does this automatically) after changing any route/routeLand data in
-// that file, so this stays in sync with it.
-//
-// Already-projected [x, y] points for every leg that draws a route,
-// keyed by \`\${journey.id}::\${leg.id}\`, at the exact same ROUTE_SAMPLES
-// resolution and sampling functions JourneyMapScene's own buildLegCache()
-// uses live — see scripts/generate-route-cache.ts for why this exists.
-export const ${constName}: Record<string, [number, number][]> = {
-${entries}
-};
-`;
-
-    const outPath = join(OUT_DIR, `route-cache-${slug}.ts`);
-    writeFileSync(outPath, file);
-    console.log('wrote', outPath, `(${legCount} legs)`, `${(file.length / 1024).toFixed(0)}KB`);
+    const json = JSON.stringify(cache);
+    const outPath = join(OUT_DIR, `${slug}.json`);
+    writeFileSync(outPath, json);
+    console.log('wrote', outPath, `(${legCount} legs)`, `${(json.length / 1024).toFixed(0)}KB`);
   }
 }
 
