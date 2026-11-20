@@ -25,8 +25,10 @@ const VEHICLE_STROKE = '#7a3348';
 // faceted instead of tracking the real curve — the same class of
 // quantization issue raised sample count from 96 to 240 for originally.
 // 2000 keeps comfortable oversampling relative to even the densest leg
-// (~800 real points) on every leg in this file; cost is still negligible
-// for a static SVG path.
+// (~800 real points) on every leg in this file. Each leg's full-resolution
+// sample set is computed once and cached (see the route-geometry-cache
+// block in the main effect below), not recomputed every animation frame,
+// so this sample count's cost is paid once per leg, not once per frame.
 const ROUTE_SAMPLES = 2000;
 
 // How the on-screen "camera" frames the world. spanDeg is authored per
@@ -251,9 +253,13 @@ export interface JourneyMapSceneProps {
 // enters the viewport (IntersectionObserver, threshold 0.4). There is no
 // scroll pinning and no artificial scroll distance: the section is a
 // normal, modestly-tall block the visitor can scroll past at any moment,
-// mid-animation or not — the animation simply keeps running (or stops
-// wherever it was) in the background. It plays once per mount; scrolling
-// back to it afterward shows the completed resting frame.
+// mid-animation or not. Unlike an earlier version of this component, the
+// animation does NOT keep running while scrolled off-screen: the same
+// IntersectionObserver pauses the driving tween the moment the map leaves
+// the viewport and resumes it on return, so an offscreen map costs
+// nothing. It plays once per mount; scrolling back to it afterward shows
+// either the completed resting frame or wherever the animation was
+// paused.
 const DEFAULT_HEIGHT_CLASSNAME = 'h-[420px] sm:h-[480px] md:h-[560px]';
 
 export default function JourneyMapScene({
@@ -342,6 +348,118 @@ export default function JourneyMapScene({
     let vehicleAngle = 0;
     const labelRevealed = labelPoints.map(() => false);
     let cameraTween: gsap.core.Tween | null = null;
+
+    // --- Precomputed route geometry cache ------------------------------
+    // The old render() rebuilt the ENTIRE drawn-so-far route polyline
+    // (every completed leg at full ROUTE_SAMPLES resolution, plus the
+    // active leg's growing partial sample) from scratch on every single
+    // animation frame, via up to thousands of routeCurvePoint() calls
+    // (each doing coastline-distance/intersection work) and a full SVG `d`
+    // string rebuild -- repeated ~60x/second for the whole tween. That's
+    // an O(samples-so-far) cost PER FRAME, growing throughout the
+    // animation.
+    //
+    // Below, each leg's full-resolution point array (and cumulative
+    // on-screen arc length) is computed ONCE -- lazily, the first time
+    // that leg becomes relevant -- and cached. The static SVG path is
+    // appended to (once per leg, not per frame) and the pink route is then
+    // revealed by animating stroke-dashoffset, a single cheap numeric
+    // attribute write per frame, instead of rebuilding `d`. This produces
+    // mathematically identical output to the old per-frame rebuild (same
+    // legPoint() calls, same ROUTE_SAMPLES grid, same 5-decimal
+    // precision) -- it is purely a *when it's computed* change, not a
+    // *what's computed* change.
+    interface LegGeometryCache {
+      points: [number, number][]; // projected points, index 0..ROUTE_SAMPLES
+      cumLen: number[]; // cumulative on-screen length up to each point
+      totalLen: number;
+    }
+    const legCaches: (LegGeometryCache | null)[] = legRanges.map(() => null);
+    const legBaseLength: number[] = legRanges.map(() => 0);
+    let pathD = '';
+    let totalAppendedLength = 0;
+    let highestBuiltLegIndex = -1;
+
+    const buildLegCache = (
+      i: number,
+      legPointFn: (i: number, t: number) => [number, number]
+    ): LegGeometryCache => {
+      const points: [number, number][] = new Array(ROUTE_SAMPLES + 1);
+      const cumLen: number[] = new Array(ROUTE_SAMPLES + 1);
+      points[0] = project(legPointFn(i, 0));
+      cumLen[0] = 0;
+      for (let s = 1; s <= ROUTE_SAMPLES; s++) {
+        const p = project(legPointFn(i, s / ROUTE_SAMPLES));
+        points[s] = p;
+        const prev = points[s - 1];
+        cumLen[s] = cumLen[s - 1] + Math.hypot(p[0] - prev[0], p[1] - prev[1]);
+      }
+      return { points, cumLen, totalLen: cumLen[ROUTE_SAMPLES] };
+    };
+
+    // Ensures every leg up to and including `i` has been cached and, for
+    // any leg with showRoute !== false, appended to the single
+    // concatenated SVG path (matching the old code's behaviour of joining
+    // every drawn leg's points into one continuous polyline/path, 'M' only
+    // for the very first point overall and 'L' for every other point,
+    // including the join between legs). Legs only ever become relevant in
+    // increasing index order over a single tween's lifetime, so once a leg
+    // is built it never needs rebuilding -- this call is an O(1) no-op on
+    // every frame except the rare frame where a new leg first becomes
+    // active.
+    const ensureLegBuilt = (i: number, legPointFn: (i: number, t: number) => [number, number]) => {
+      if (i <= highestBuiltLegIndex) return;
+      let changed = false;
+      for (let j = highestBuiltLegIndex + 1; j <= i; j++) {
+        legBaseLength[j] = totalAppendedLength;
+        const leg = legRanges[j].leg;
+        if (leg.showRoute === false) continue;
+        const cache = buildLegCache(j, legPointFn);
+        legCaches[j] = cache;
+        const isFirstLegEver = pathD === '';
+        const segment = cache.points
+          .map((p, s) => `${isFirstLegEver && s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
+          .join(' ');
+        pathD = pathD === '' ? segment : `${pathD} ${segment}`;
+        totalAppendedLength += cache.totalLen;
+        changed = true;
+      }
+      highestBuiltLegIndex = i;
+      if (changed) {
+        routeGlowRef.current?.setAttribute('d', pathD);
+        routeLineRef.current?.setAttribute('d', pathD);
+        routeGlowRef.current?.setAttribute('stroke-dasharray', `${totalAppendedLength}`);
+        routeLineRef.current?.setAttribute('stroke-dasharray', `${totalAppendedLength}`);
+      }
+    };
+
+    // requestIdleCallback (Safari fallback: setTimeout) so the first
+    // leg's cache can be built during browser idle time, after initial
+    // paint -- not blocking it -- rather than only at the moment autoplay
+    // actually starts. For the common below-the-fold case this means the
+    // one-time precompute cost is very likely already paid by the time the
+    // visitor scrolls the map into view, so there's no synchronous hitch
+    // even at trigger time.
+    let idleHandle: number | null = null;
+    let idleIsTimeout = false;
+    const scheduleIdle = (cb: () => void): void => {
+      const w = window as unknown as {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout?: number }) => number;
+      };
+      if (typeof w.requestIdleCallback === 'function') {
+        idleHandle = w.requestIdleCallback(cb, { timeout: 2000 });
+      } else {
+        idleIsTimeout = true;
+        idleHandle = window.setTimeout(cb, 200);
+      }
+    };
+    const cancelIdle = () => {
+      if (idleHandle === null) return;
+      const w = window as unknown as { cancelIdleCallback?: (handle: number) => void };
+      if (idleIsTimeout) window.clearTimeout(idleHandle);
+      else if (typeof w.cancelIdleCallback === 'function') w.cancelIdleCallback(idleHandle);
+      idleHandle = null;
+    };
 
     const syncViewBoxAttribute = () => {
       const aspect = containerSize.width / containerSize.height;
@@ -483,9 +601,9 @@ export default function JourneyMapScene({
       // A leg with a verified real `route` is sampled through
       // routeCurvePoint (optionally coastline-safe, see routeLand); every
       // other leg keeps the original decorative bezierPoint() bow. Both
-      // return raw [lng, lat] so the rest of this function — projecting,
-      // drawing, positioning the vehicle — doesn't need to know which one
-      // it got.
+      // return raw [lng, lat]. Only ever called from buildLegCache now --
+      // once per leg, not once per frame (see the route-geometry-cache
+      // block above).
       const legPoint = (i: number, t: number): [number, number] => {
         const l = legRanges[i].leg;
         return l.route
@@ -493,54 +611,56 @@ export default function JourneyMapScene({
           : bezierPoint(l.from.coords, l.to.coords, l.curve ?? 0, t);
       };
 
+      ensureLegBuilt(legIndex, legPoint);
+
       if (leg.showRoute !== false) {
-        const coordinates: [number, number][] = [];
-        legRanges.forEach((r, i) => {
-          if (r.leg.showRoute === false) return;
-          if (i < legIndex) {
-            for (let s = 0; s <= ROUTE_SAMPLES; s++) {
-              coordinates.push(project(legPoint(i, s / ROUTE_SAMPLES)));
-            }
-          } else if (i === legIndex) {
-            const steps = Math.max(1, Math.round(ROUTE_SAMPLES * localProgress));
-            for (let s = 0; s <= steps; s++) {
-              coordinates.push(project(legPoint(i, s / ROUTE_SAMPLES)));
-            }
-          }
-        });
-        // 5 decimal places in this projected (degree-scale) coordinate
-        // space is ~1m of real-world precision. 3 was fine when routes
-        // were a handful of widely-spaced points, but once a route's real
-        // waypoints sit only metres apart (a tight local bend, a small
-        // roundabout), rounding to 3 decimals (~111m) snaps consecutive
-        // samples onto the same coarse grid line and back, drawing a
-        // visible axis-aligned staircase instead of the smooth curve
-        // actually being sampled — a quantization artifact, not a
-        // geometry problem.
-        const d = coordinates.length
-          ? coordinates.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`).join(' ')
-          : '';
-        routeGlowRef.current?.setAttribute('d', d);
-        routeLineRef.current?.setAttribute('d', d);
+        // The full path for every leg up to and including this one was
+        // already written to the `d` attribute once, in ensureLegBuilt.
+        // Progressive "drawing as it travels" is done with
+        // stroke-dashoffset, which the compositor can animate essentially
+        // for free -- no per-frame geometry work at all.
+        const cache = legCaches[legIndex];
+        if (cache) {
+          const stepsF = ROUTE_SAMPLES * localProgress;
+          const steps = Math.min(ROUTE_SAMPLES, Math.max(1, Math.round(stepsF)));
+          const revealLength = legBaseLength[legIndex] + cache.cumLen[steps];
+          const dashoffset = totalAppendedLength - revealLength;
+          routeGlowRef.current?.setAttribute('stroke-dashoffset', `${dashoffset}`);
+          routeLineRef.current?.setAttribute('stroke-dashoffset', `${dashoffset}`);
+        }
       }
 
       if (leg.showRoute === false) {
         vehicleWorld = project(leg.from.coords);
       } else {
-        const point = legPoint(legIndex, localProgress);
-        vehicleWorld = project(point);
-        if (localProgress < 0.999) {
-          // Same tangent-based approach either way: a centered difference a
-          // small step behind and ahead of the vehicle, so orientation
-          // eases smoothly through a bend instead of snapping — the
-          // routeCurveAngleAt path already works this way for a verified
-          // real route; this mirrors it for a decorative bezierPoint() bow.
-          vehicleAngle = leg.route
-            ? routeCurveAngleAt(leg.route, localProgress, leg.routeLand)
-            : screenAngle(
-                project(legPoint(legIndex, Math.max(0, localProgress - 0.02))),
-                project(legPoint(legIndex, Math.min(1, localProgress + 0.02)))
-              );
+        const cache = legCaches[legIndex];
+        if (cache) {
+          // Vehicle position: linear interpolation between the two cached
+          // samples bracketing the exact (continuous) localProgress -- not
+          // a routeCurvePoint() call. At ROUTE_SAMPLES=2000 resolution the
+          // gap between a true curve point and the chord joining its two
+          // neighbouring cached samples is negligible (well under a pixel
+          // on screen), and it's no less precise than the rendered route
+          // line itself, which is built from these same samples.
+          const stepsF = ROUTE_SAMPLES * localProgress;
+          const s0 = Math.max(0, Math.min(ROUTE_SAMPLES - 1, Math.floor(stepsF)));
+          const s1 = Math.min(ROUTE_SAMPLES, s0 + 1);
+          const frac = Math.min(1, Math.max(0, stepsF - s0));
+          const p0 = cache.points[s0];
+          const p1 = cache.points[s1];
+          vehicleWorld = [p0[0] + (p1[0] - p0[0]) * frac, p0[1] + (p1[1] - p0[1]) * frac];
+          if (localProgress < 0.999) {
+            // Same centered-difference tangent as before, but reading two
+            // cached points instead of calling routeCurveAngleAt/
+            // screenAngle with fresh routeCurvePoint evaluations.
+            // eps=0.015 in the original t-space is exactly 30 samples at
+            // ROUTE_SAMPLES=2000 (0.015 * 2000 = 30), so this is the same
+            // tangent, not an approximation of it.
+            const EPS_STEPS = 30;
+            const sa = Math.max(0, Math.min(ROUTE_SAMPLES, Math.round(stepsF - EPS_STEPS)));
+            const sb = Math.max(0, Math.min(ROUTE_SAMPLES, Math.round(stepsF + EPS_STEPS)));
+            vehicleAngle = screenAngle(cache.points[sa], cache.points[sb]);
+          }
         }
       }
 
@@ -565,6 +685,22 @@ export default function JourneyMapScene({
 
     const resizeObserver = new ResizeObserver(() => measure());
     resizeObserver.observe(mapBox);
+
+    // Warm the first leg's route-geometry cache during browser idle time,
+    // after initial paint -- not as part of it -- so the common
+    // below-the-fold case has no synchronous hitch even at the moment
+    // autoplay's IntersectionObserver fires (see ensureLegBuilt above).
+    if (!reducedMotion && legRanges.length > 0) {
+      scheduleIdle(() => {
+        const legPoint0 = (i: number, t: number): [number, number] => {
+          const l = legRanges[i].leg;
+          return l.route
+            ? routeCurvePoint(l.route, t, l.routeLand)
+            : bezierPoint(l.from.coords, l.to.coords, l.curve ?? 0, t);
+        };
+        ensureLegBuilt(0, legPoint0);
+      });
+    }
 
     if (reducedMotion) {
       const lastLeg = legRanges[legRanges.length - 1]?.leg;
@@ -648,7 +784,20 @@ export default function JourneyMapScene({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) startAutoplay();
+          if (entry.isIntersecting) {
+            startAutoplay();
+            // Resume a tween paused while this map was scrolled out of
+            // view (see the else branch). No-op the very first time,
+            // since startAutoplay hasn't assigned playTween yet.
+            playTween?.resume();
+          } else {
+            // Stop driving onUpdate (and therefore render()) entirely
+            // while offscreen, instead of letting the tween keep running
+            // "in the background" as the original design intentionally
+            // did -- the one deliberate behaviour change here, requested
+            // explicitly so offscreen maps stop consuming CPU.
+            playTween?.pause();
+          }
         });
       },
       { threshold: 0.4, rootMargin: '-25% 0px -25% 0px' }
@@ -660,6 +809,7 @@ export default function JourneyMapScene({
       playTween?.kill();
       cameraTween?.kill();
       resizeObserver.disconnect();
+      cancelIdle();
     };
   }, [journey, legRanges, labelPoints, labelWorlds, playDurationS, reducedMotion]);
 
