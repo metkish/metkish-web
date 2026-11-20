@@ -284,6 +284,15 @@ export default function JourneyMapScene({
   const vehicleSvgRef = useRef<SVGSVGElement | null>(null);
   const routeGlowRef = useRef<SVGPathElement | null>(null);
   const routeLineRef = useRef<SVGPathElement | null>(null);
+  // The active leg's own in-progress reveal is written to a SEPARATE pair
+  // of path elements every frame (see the render() block that fills them,
+  // and the comment above LegGeometryCache) so only the still-growing
+  // tail of the route is rewritten per frame -- not the full history of
+  // every already-completed leg. routeGlowRef/routeLineRef above instead
+  // hold that completed-so-far history and are only rewritten once per
+  // leg transition.
+  const activeRouteGlowRef = useRef<SVGPathElement | null>(null);
+  const activeRouteLineRef = useRef<SVGPathElement | null>(null);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Separate from labelRefs: the *dot* sits on labelRefs (transformed to
@@ -361,22 +370,45 @@ export default function JourneyMapScene({
     //
     // Below, each leg's full-resolution point array is computed ONCE --
     // lazily, the first time that leg becomes relevant -- and cached.
-    // render() still grows the `d` attribute every frame as the route is
-    // "drawn as it travels" (so it needs no stroke-dasharray/dashoffset
-    // support at all -- the undrawn remainder of the route simply isn't
-    // in the path yet, which is universally reliable across every SVG
-    // engine, mobile included), but that per-frame work is now just
-    // reading already-computed points out of the cache and formatting
-    // them into a string -- no trigonometry, no coastline-safety
-    // checks, no routeCurvePoint calls. A once-per-leg step folds every
-    // leg that's now fully in the past into a cached prefix string, so a
-    // multi-leg journey never re-walks legs it has already finished
-    // drawing. This produces mathematically identical output to the old
-    // per-frame rebuild (same legPoint() calls, same ROUTE_SAMPLES grid,
-    // same 5-decimal precision) -- it is purely a *when the expensive
-    // part is computed* change, not a *what's computed* change.
+    // render() still grows the drawn route's `d` attribute(s) as the
+    // route is "drawn as it travels" (so it needs no stroke-dasharray/
+    // dashoffset support at all -- the undrawn remainder of the route
+    // simply isn't in the path yet, which is universally reliable across
+    // every SVG engine, mobile included), but that per-frame work is now
+    // just reading already-computed points out of the cache and
+    // formatting them into a string -- no trigonometry, no
+    // coastline-safety checks, no routeCurvePoint calls. This produces
+    // mathematically identical output to the old per-frame rebuild (same
+    // legPoint() calls, same ROUTE_SAMPLES grid, same 5-decimal
+    // precision) -- it is purely a *when the expensive part is computed*
+    // change, not a *what's computed* change.
     //
-    // (An earlier version of this cache revealed the route via
+    // The revealed route is actually TWO separate path elements (see
+    // routeGlowRef/routeLineRef vs activeRouteGlowRef/activeRouteLineRef
+    // in the JSX below), not one:
+    //   - routeGlowRef/routeLineRef hold every leg that's already fully
+    //     finished, folded in once per leg transition by
+    //     foldCompletedLegsUpTo -- a multi-leg journey never re-walks or
+    //     re-writes legs it has already finished drawing.
+    //   - activeRouteGlowRef/activeRouteLineRef hold only the CURRENTLY
+    //     active leg's own in-progress reveal, grown incrementally: each
+    //     frame appends only the handful of points newly passed since the
+    //     previous frame, rather than re-slicing and rewriting that leg's
+    //     entire points-so-far every frame.
+    // The two elements are visually indistinguishable (same color/width,
+    // and the active path's first point is always the past path's exact
+    // last point) but splitting them keeps the common per-frame cost down
+    // to a few dozen characters instead of however many thousands the
+    // route has grown to so far. An earlier version wrote one
+    // accumulated `d` for the whole route every frame; on real mobile
+    // hardware that full-string rewrite (twice a frame, for glow and
+    // line) was heavy enough to occasionally stall the main thread long
+    // enough to visibly skip a frame of the vehicle icon's own mask
+    // compositing, i.e. the vehicle appearing to flicker/disappear for an
+    // instant -- this split removes that cost from the common frame
+    // entirely.
+    //
+    // (An earlier version still before that revealed the route via
     // stroke-dasharray/stroke-dashoffset instead of growing `d` directly,
     // to avoid touching `d` every frame. That is a well-supported SVG
     // feature, but it turned out not to render reliably on every mobile
@@ -384,9 +416,7 @@ export default function JourneyMapScene({
     // showing fully drawn immediately with the vehicle then animating
     // along an already-finished line, i.e. dashoffset having no visible
     // effect. Slicing the precomputed points array into `d` directly
-    // sidesteps that risk entirely, at the cost of a per-frame string
-    // build that is still vastly cheaper than the original per-frame
-    // geometry recomputation it replaced.)
+    // sidesteps that risk entirely.)
     interface LegGeometryCache {
       points: [number, number][]; // projected points, index 0..ROUTE_SAMPLES
     }
@@ -427,7 +457,13 @@ export default function JourneyMapScene({
     let completedPrefixD = '';
     let completedThroughLegIndex = -1;
 
-    const foldCompletedLegsUpTo = (legIndex: number) => {
+    // Returns true only on the (rare) frame where a leg actually just got
+    // folded in, so the caller only has to rewrite the completed-legs
+    // path element on that frame -- never on every frame, which is the
+    // whole point of keeping this separate from the active leg's own
+    // path element below.
+    const foldCompletedLegsUpTo = (legIndex: number): boolean => {
+      let changed = false;
       for (let j = completedThroughLegIndex + 1; j < legIndex; j++) {
         const leg = legRanges[j].leg;
         if (leg.showRoute === false) continue;
@@ -438,9 +474,19 @@ export default function JourneyMapScene({
           .map((p, s) => `${isFirstEver && s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
           .join(' ');
         completedPrefixD = completedPrefixD === '' ? segment : `${completedPrefixD} ${segment}`;
+        changed = true;
       }
       if (legIndex - 1 > completedThroughLegIndex) completedThroughLegIndex = legIndex - 1;
+      return changed;
     };
+
+    // The active leg's own incrementally-grown partial `d`, kept separate
+    // from completedPrefixD above so a frame only ever appends the few
+    // points newly revealed since the previous frame -- not the whole
+    // route so far. Reset whenever the active leg changes.
+    let activeRouteLegIndex = -1;
+    let activeRoutePartialD = '';
+    let activeRouteDrawnSteps = -1;
 
     // requestIdleCallback (Safari fallback: setTimeout) so the first
     // leg's cache can be built during browser idle time, after initial
@@ -496,8 +542,12 @@ export default function JourneyMapScene({
     const applyRouteStrokeWidth = () => {
       const linePx = targetPx(ROUTE_LINE_RATIO, containerSize.width, ROUTE_LINE_MIN_PX, ROUTE_LINE_MAX_PX);
       const glowPx = targetPx(ROUTE_GLOW_RATIO, containerSize.width, ROUTE_GLOW_MIN_PX, ROUTE_GLOW_MAX_PX);
-      routeLineRef.current?.setAttribute('stroke-width', String((linePx * currentFrame.width) / containerSize.width));
-      routeGlowRef.current?.setAttribute('stroke-width', String((glowPx * currentFrame.width) / containerSize.width));
+      const lineWidth = String((linePx * currentFrame.width) / containerSize.width);
+      const glowWidth = String((glowPx * currentFrame.width) / containerSize.width);
+      routeLineRef.current?.setAttribute('stroke-width', lineWidth);
+      routeGlowRef.current?.setAttribute('stroke-width', glowWidth);
+      activeRouteLineRef.current?.setAttribute('stroke-width', lineWidth);
+      activeRouteGlowRef.current?.setAttribute('stroke-width', glowWidth);
     };
 
     // Labels default to sitting right of their point; but a point that
@@ -621,34 +671,71 @@ export default function JourneyMapScene({
       };
 
       ensureLegCached(legIndex, legPoint);
-      foldCompletedLegsUpTo(legIndex);
 
-      // Build this frame's `d` from already-cached, already-computed
-      // points only: the completed-legs prefix (folded in once, above --
-      // never rewalked here) plus a plain slice of the active leg's own
-      // cached points up to its current progress. There is no
+      // Only the (rare) frame where a leg actually just finished rewrites
+      // the completed-legs path element -- every other frame this is a
+      // no-op, so the cost of carrying a long multi-leg history around
+      // never shows up in the common per-frame cost at all.
+      if (foldCompletedLegsUpTo(legIndex)) {
+        if (routeGlowRef.current) routeGlowRef.current.setAttribute('d', completedPrefixD);
+        if (routeLineRef.current) routeLineRef.current.setAttribute('d', completedPrefixD);
+      }
+
+      // The active leg's own reveal lives in a SEPARATE path element,
+      // grown incrementally: each frame appends only the points newly
+      // passed since the previous frame (almost always a handful, since
+      // ROUTE_SAMPLES=2000 resolves far finer than one frame's worth of
+      // progress) instead of re-slicing and rewriting the whole leg's
+      // points-so-far every frame. There is still no
       // stroke-dasharray/stroke-dashoffset involved -- the undrawn
       // remainder of the route simply isn't present in the path data at
       // all yet, which every SVG engine draws correctly, including real
-      // mobile browsers (dash-based reveal was tried first and proved
-      // unreliable there for a path this long -- see the comment above
-      // LegGeometryCache).
-      let frameD = completedPrefixD;
-      if (leg.showRoute !== false) {
+      // mobile browsers (see the comment above LegGeometryCache for why
+      // both this and dash-based reveal were tried and rejected).
+      if (leg.showRoute === false) {
+        activeRouteLegIndex = -1;
+        activeRoutePartialD = '';
+        activeRouteDrawnSteps = -1;
+        if (activeRouteGlowRef.current) activeRouteGlowRef.current.setAttribute('d', '');
+        if (activeRouteLineRef.current) activeRouteLineRef.current.setAttribute('d', '');
+      } else {
+        if (legIndex !== activeRouteLegIndex) {
+          activeRouteLegIndex = legIndex;
+          activeRoutePartialD = '';
+          activeRouteDrawnSteps = -1;
+        }
         const cache = legCaches[legIndex];
         if (cache) {
           const stepsF = ROUTE_SAMPLES * localProgress;
           const steps = Math.min(ROUTE_SAMPLES, Math.max(1, Math.round(stepsF)));
-          const isFirstEver = frameD === '';
-          const segment = cache.points
-            .slice(0, steps + 1)
-            .map((p, s) => `${isFirstEver && s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
-            .join(' ');
-          frameD = frameD === '' ? segment : `${frameD} ${segment}`;
+          if (steps > activeRouteDrawnSteps) {
+            const newPoints = cache.points
+              .slice(activeRouteDrawnSteps + 1, steps + 1)
+              .map((p, s) => {
+                const isVeryFirstPoint = activeRouteDrawnSteps === -1 && s === 0;
+                return `${isVeryFirstPoint ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`;
+              })
+              .join(' ');
+            activeRoutePartialD = activeRoutePartialD === '' ? newPoints : `${activeRoutePartialD} ${newPoints}`;
+            activeRouteDrawnSteps = steps;
+            if (activeRouteGlowRef.current) activeRouteGlowRef.current.setAttribute('d', activeRoutePartialD);
+            if (activeRouteLineRef.current) activeRouteLineRef.current.setAttribute('d', activeRoutePartialD);
+          } else if (steps < activeRouteDrawnSteps) {
+            // Defensive only -- progress is expected to be monotonic
+            // within a leg, but if it ever isn't, rebuild the partial
+            // path from the cache rather than leaving stale points drawn
+            // past the vehicle.
+            const rebuilt = cache.points
+              .slice(0, steps + 1)
+              .map((p, s) => `${s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
+              .join(' ');
+            activeRoutePartialD = rebuilt;
+            activeRouteDrawnSteps = steps;
+            if (activeRouteGlowRef.current) activeRouteGlowRef.current.setAttribute('d', activeRoutePartialD);
+            if (activeRouteLineRef.current) activeRouteLineRef.current.setAttribute('d', activeRoutePartialD);
+          }
         }
       }
-      if (routeGlowRef.current) routeGlowRef.current.setAttribute('d', frameD);
-      if (routeLineRef.current) routeLineRef.current.setAttribute('d', frameD);
 
       if (leg.showRoute === false) {
         vehicleWorld = project(leg.from.coords);
@@ -964,7 +1051,9 @@ export default function JourneyMapScene({
           ))}
 
           <path ref={routeGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
+          <path ref={activeRouteGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
           <path ref={routeLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
+          <path ref={activeRouteLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
         </svg>
 
         {labelPoints.map((p, i) => (
