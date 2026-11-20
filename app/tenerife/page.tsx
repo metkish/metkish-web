@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
+import { TENERIFE_ROUTE_CACHE } from '@/components/journey/generated/route-cache-tenerife';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import BookedChecklist from '@/components/ui/booked-checklist';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
@@ -320,6 +321,7 @@ export default function TenerifePage() {
           seam. This map now represents only the drive to Vienna Airport;
           the flight is a separate map further down. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_HOME_TO_VIENNA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -388,6 +390,7 @@ export default function TenerifePage() {
           page have changed. Sized taller than the Home->Vienna map above
           since it carries the wide Europe/Atlantic leg. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_VIENNA_TO_TENERIFE_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[580px]'
       />
@@ -669,6 +672,7 @@ export default function TenerifePage() {
           label and arrival timestamp that used to be timed overlay cards
           on top of it now sit as simple in-flow content just underneath. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_TRANSFER_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -965,6 +969,7 @@ export default function TenerifePage() {
           verified route, no more visual weight than the short drive it
           shows actually needs. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_ROCA_TO_DUQUE_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1085,6 +1090,7 @@ export default function TenerifePage() {
           real verified route (see lib/journeys/tenerife.ts), no more
           visual weight than the drive itself needs. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_ROCA_TO_SIAM_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1264,6 +1270,7 @@ export default function TenerifePage() {
           treatment (warm cream map, pink route, car icon, typography,
           animation) identical. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_ROCA_TO_TERESITAS_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />
@@ -1392,6 +1399,7 @@ export default function TenerifePage() {
           route, car icon, typography and animation as every other car
           journey on this page — only the geometry and camera differ. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1622,6 +1630,7 @@ export default function TenerifePage() {
           icon, typography and animation as every other car journey on
           this page — only the geometry and camera differ. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_ROCA_TO_TEIDE_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
@@ -1931,6 +1940,7 @@ export default function TenerifePage() {
           scale. No route, coordinate, marker, label-placement or animation
           logic touched — only this map's own frame height. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_ROCA_TO_LORO_PARQUE_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />
@@ -2129,6 +2139,7 @@ export default function TenerifePage() {
           animation as every other car journey on this page — only the
           geometry and camera differ. Does not touch any other map/route. */}
       <JourneyMapScene
+        routeCache={TENERIFE_ROUTE_CACHE}
         journey={TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />

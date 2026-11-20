@@ -262,6 +262,27 @@ export function routeCurveAngleAt(
   return screenAngle(project(a), project(b));
 }
 
+// Sample count per leg for the drawn route polyline. Raised again from
+// 240 now that the Tenerife South/Duque/Siam legs carry the real, close
+// to full-precision OSRM point count (hundreds of real waypoints per leg,
+// per the metkish-route-geometry project rule's "prioritise real geometry
+// over low point count") rather than a hand-thinned handful. At 240
+// samples the ratio of drawn samples to real points on those legs would
+// again drop low enough that the polyline between samples reads as
+// faceted instead of tracking the real curve — the same class of
+// quantization issue raised sample count from 96 to 240 for originally.
+// 2000 keeps comfortable oversampling relative to even the densest leg
+// (~800 real points) on every leg. Each leg's full-resolution sample set
+// is computed once and cached — see JourneyMapScene's own
+// route-geometry-cache block, and scripts/generate-route-cache.ts, which
+// does this same sampling at build time for any leg whose `routeLand`
+// land-safety checking makes it too expensive to compute live without
+// risking a visible stall — not recomputed every animation frame, so
+// this sample count's cost is paid once per leg, not once per frame, and
+// (for a routeLand leg) ideally once at build time rather than once per
+// visitor.
+export const ROUTE_SAMPLES = 2000;
+
 /** Builds a soft, organic closed path through a polygon's points by
  * drawing quadratic curves through consecutive midpoints, instead of
  * straight polygon edges — used for the map's illustrative land and

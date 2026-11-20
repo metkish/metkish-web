@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
+import { ITALY_ROUTE_CACHE } from '@/components/journey/generated/route-cache-italy';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import BookedChecklist from '@/components/ui/booked-checklist';
 import {
@@ -222,6 +223,7 @@ export default function ItalyPage() {
           TRIP title as part of the same opening beat, with the car
           animating from Home toward Milano as it scrolls into view. */}
       <JourneyMapScene
+        routeCache={ITALY_ROUTE_CACHE}
         journey={ITALY_HOME_TO_MILANO_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
@@ -752,6 +754,7 @@ export default function ItalyPage() {
           section, so this reads as the same journey continuing rather
           than a new page starting. Unchanged from the previous build. */}
       <JourneyMapScene
+        routeCache={ITALY_ROUTE_CACHE}
         journey={ITALY_MILANO_TO_LASPEZIA_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
@@ -1110,6 +1113,7 @@ export default function ItalyPage() {
           so this reads as the next leg of the same continuing journey
           rather than a new page starting. */}
       <JourneyMapScene
+        routeCache={ITALY_ROUTE_CACHE}
         journey={ITALY_LASPEZIA_TO_PISA_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
@@ -1260,6 +1264,7 @@ export default function ItalyPage() {
           this just continues the same page from where that chapter
           already ended. */}
       <JourneyMapScene
+        routeCache={ITALY_ROUTE_CACHE}
         journey={ITALY_PISA_TO_PESCHIERA_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
@@ -1463,6 +1468,7 @@ export default function ItalyPage() {
           on this page sits between stages. Venice/Mestre is passed
           through as a plain waypoint only -- never marked as a stop. */}
       <JourneyMapScene
+        routeCache={ITALY_ROUTE_CACHE}
         journey={ITALY_PESCHIERA_TO_HOME_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'

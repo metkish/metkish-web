@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
+import { SARDINIA_ROUTE_CACHE } from '@/components/journey/generated/route-cache-sardinia';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import { ChapterHeading, Paragraphs } from '@/components/ui/typography';
 import BookedChecklist from '@/components/ui/booked-checklist';
@@ -288,6 +289,7 @@ export default function SardiniaPage() {
           animation/system and the same sizing as every other destination's
           own Home->Vienna map (same geography, same camera framing). */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_HOME_TO_VIENNA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -350,6 +352,7 @@ export default function SardiniaPage() {
           note on its camera framing not yet being live-tuned on both
           breakpoints. */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_VIENNA_TO_OLBIA_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[580px]'
       />
@@ -671,6 +674,7 @@ export default function SardiniaPage() {
           beach-centre point). Same local car-map sizing as the Home ->
           Vienna map above. */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -761,6 +765,7 @@ export default function SardiniaPage() {
           against, and OSRM's own *driving* route for that stretch loops
           the wrong way for a walk). */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
       />
@@ -1135,6 +1140,7 @@ export default function SardiniaPage() {
           map above is the direct template), not nested inside the
           section's text column. */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -1304,6 +1310,7 @@ export default function SardiniaPage() {
           instruction -- same bare JourneyMapScene component, full width
           and sizing convention as every other route map on the page. */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />
@@ -1493,6 +1500,7 @@ export default function SardiniaPage() {
           JourneyMapScene component, full width and sizing convention as
           every other route map on the page. */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY}
         heightClassName='h-[400px] sm:h-[460px] md:h-[520px]'
       />
@@ -1645,6 +1653,7 @@ export default function SardiniaPage() {
           same bare JourneyMapScene component, full width and sizing
           convention as every other route map on the page. */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[560px]'
       />
@@ -1905,6 +1914,7 @@ export default function SardiniaPage() {
             column. */}
         <div className='mt-10 md:mt-12 md:-mx-12 -mx-6'>
           <JourneyMapScene
+            routeCache={SARDINIA_ROUTE_CACHE}
             journey={SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY}
             heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
           />
@@ -1952,6 +1962,7 @@ export default function SardiniaPage() {
           component, full width and sizing convention as every other
           route map on the page. */}
       <JourneyMapScene
+        routeCache={SARDINIA_ROUTE_CACHE}
         journey={SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
       />

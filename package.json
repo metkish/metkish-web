@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx scripts/generate-route-cache.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "validate:routes": "tsx scripts/validate-journey-routes.ts"
+    "validate:routes": "tsx scripts/validate-journey-routes.ts",
+    "generate:route-cache": "tsx scripts/generate-route-cache.ts"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

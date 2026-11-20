@@ -3,7 +3,15 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import type { Journey, JourneyLeg, JourneyMode, JourneyPoint } from '@/lib/journeys/types';
-import { bezierPoint, project, projectSpan, screenAngle, routeCurvePoint, routeCurveAngleAt } from './geo';
+import {
+  bezierPoint,
+  project,
+  projectSpan,
+  screenAngle,
+  routeCurvePoint,
+  routeCurveAngleAt,
+  ROUTE_SAMPLES,
+} from './geo';
 import { AUSTRIA_PATHS, CANARY_PATHS, NEIGHBOUR_PATHS, SARDINIA_PATHS, SLOVENIA_PATHS, WIDE_EUROPE_PATHS } from './generated/geography';
 
 // A hand-drawn, editorial-atlas palette — the same warm neutrals used
@@ -15,21 +23,10 @@ const MUTED_LINE = '#ddd0b8';
 const ROUTE_PINK = '#e8639f';
 const VEHICLE_STROKE = '#7a3348';
 
-// Sample count per leg for the drawn route polyline. Raised again from
-// 240 now that the Tenerife South/Duque/Siam legs carry the real, close
-// to full-precision OSRM point count (hundreds of real waypoints per leg,
-// per the metkish-route-geometry project rule's "prioritise real geometry
-// over low point count") rather than a hand-thinned handful. At 240
-// samples the ratio of drawn samples to real points on those legs would
-// again drop low enough that the polyline between samples reads as
-// faceted instead of tracking the real curve — the same class of
-// quantization issue raised sample count from 96 to 240 for originally.
-// 2000 keeps comfortable oversampling relative to even the densest leg
-// (~800 real points) on every leg in this file. Each leg's full-resolution
-// sample set is computed once and cached (see the route-geometry-cache
-// block in the main effect below), not recomputed every animation frame,
-// so this sample count's cost is paid once per leg, not once per frame.
-const ROUTE_SAMPLES = 2000;
+// ROUTE_SAMPLES (sample count per leg for the drawn route polyline) now
+// lives in ./geo, shared with scripts/generate-route-cache.ts so the
+// build-time cache and this component always sample at the identical
+// resolution — see the comment on it there.
 
 // How the on-screen "camera" frames the world. spanDeg is authored per
 // leg (degrees of longitude wide, at a reference aspect ratio); the actual
@@ -244,6 +241,16 @@ export interface JourneyMapSceneProps {
    * Vienna/Graz -- Austria has no business being visually distinguished
    * from its neighbours on a map that has nothing to do with it. */
   austriaEmphasis?: boolean;
+  /** Build-time-precomputed, already-projected points for this journey's
+   * legs (see scripts/generate-route-cache.ts and the comment on
+   * buildLegCache below), keyed by `${journey.id}::${leg.id}`. A leg with
+   * `routeLand` land-safety checking can take hundreds of milliseconds to
+   * sample live in a visitor's browser; this lets a destination page hand
+   * over the already-computed result instead, so building that leg's
+   * cache becomes a plain lookup. Optional, and purely an optimization:
+   * any leg missing from it (or not yet regenerated after a route edit)
+   * falls back to computing it live exactly as before. */
+  routeCache?: Record<string, [number, number][]>;
 }
 
 // A short, self-running cinematic moment — not a scroll-controlled
@@ -267,6 +274,7 @@ export default function JourneyMapScene({
   className = '',
   heightClassName = DEFAULT_HEIGHT_CLASSNAME,
   austriaEmphasis = true,
+  routeCache,
 }: JourneyMapSceneProps) {
   // Unique per mount (this page puts several JourneyMapScene instances on
   // one page) so each instance's <mask> id below can't collide with
@@ -427,6 +435,17 @@ export default function JourneyMapScene({
       i: number,
       legPointFn: (i: number, t: number) => [number, number]
     ): LegGeometryCache => {
+      // A leg whose routeLand land-safety checking makes it expensive
+      // (see scripts/generate-route-cache.ts) was precomputed at build
+      // time and handed in via the routeCache prop -- use it directly,
+      // with zero sampling work, when it's present and the right shape.
+      // Anything missing (not yet regenerated, or genuinely absent)
+      // falls back to the exact same live computation this always did.
+      const leg = legRanges[i].leg;
+      const precomputed = routeCache?.[`${journey.id}::${leg.id}`];
+      if (precomputed && precomputed.length === ROUTE_SAMPLES + 1) {
+        return { points: precomputed };
+      }
       const points: [number, number][] = new Array(ROUTE_SAMPLES + 1);
       for (let s = 0; s <= ROUTE_SAMPLES; s++) {
         points[s] = project(legPointFn(i, s / ROUTE_SAMPLES));

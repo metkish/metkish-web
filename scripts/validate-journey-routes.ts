@@ -21,8 +21,7 @@ import {
   summarizeRoute,
 } from '../lib/journeys/routeValidation';
 import type { Journey } from '../lib/journeys/types';
-
-const DESTINATION_MODULES = ['../lib/journeys/tenerife', '../lib/journeys/italy', '../lib/journeys/barcelona', '../lib/journeys/rome', '../lib/journeys/iceland', '../lib/journeys/sardinia'];
+import { DESTINATION_MODULES } from './destinationModules';
 
 async function main() {
   let sawFailure = false;

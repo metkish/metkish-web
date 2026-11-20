@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
+import { ROME_ROUTE_CACHE } from '@/components/journey/generated/route-cache-rome';
 import { RouteLabel, TimeStamp } from '@/components/journey/annotation-kit';
 import { InstagramIcon, PinterestIcon } from '@/components/ui/social-icons';
 import { INSTAGRAM_URL, PINTEREST_URL } from '@/lib/social-links';
@@ -334,6 +335,7 @@ export default function RomePage() {
           Sits directly against the hero's bottom edge with zero gap, same
           as Tenerife's Home->Vienna map, so there's no visible seam. */}
       <JourneyMapScene
+        routeCache={ROME_ROUTE_CACHE}
         journey={ROME_HOME_TO_TRIESTE_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[380px] sm:h-[440px] md:h-[500px]'
@@ -471,6 +473,7 @@ export default function RomePage() {
           the previous section with zero gap, same convention as every
           other map on the site. */}
       <JourneyMapScene
+        routeCache={ROME_ROUTE_CACHE}
         journey={ROME_TRIESTE_TO_ROME_TRAIN_JOURNEY}
         austriaEmphasis={false}
         heightClassName='h-[460px] sm:h-[560px] md:h-[640px]'
