@@ -428,8 +428,54 @@ export default function JourneyMapScene({
       if (changed) {
         routeGlowRef.current?.setAttribute('d', pathD);
         routeLineRef.current?.setAttribute('d', pathD);
-        routeGlowRef.current?.setAttribute('stroke-dasharray', `${totalAppendedLength}`);
-        routeLineRef.current?.setAttribute('stroke-dasharray', `${totalAppendedLength}`);
+        // stroke-dasharray and stroke-dashoffset are always written
+        // TOGETHER, as a pair, via the element's CSSOM `style` property
+        // (not setAttribute) -- see below for why both of those matter.
+        //
+        // Mobile-only bug this fixes: this function can run well before
+        // the first animation frame, via the idle-time pre-warm below,
+        // completely independently of render()'s own dashoffset write
+        // (which only happens once the tween is actually ticking). If
+        // stroke-dasharray were set here without an explicit matching
+        // stroke-dashoffset, the attribute would be absent and default to
+        // 0 per the SVG spec -- and with dasharray equal to the path's
+        // *entire* length, a dashoffset of 0 paints one giant solid dash
+        // covering the whole path, i.e. the full pink route rendered
+        // immediately, fully visible, with the car then animating along
+        // an already-finished line. That's exactly the bug reported:
+        // confirmed live on production, where an unplayed map's line
+        // path had stroke-dasharray set and stroke-dashoffset entirely
+        // absent. It can happen on any browser, but mobile hits it far
+        // more reliably than desktop: Safari and many mobile WebViews
+        // don't support (or schedule very differently from Chrome
+        // desktop's) requestIdleCallback, and a map's height is a much
+        // larger fraction of a phone's viewport, so there's a much wider
+        // scroll window where a visitor can see a map sitting in this
+        // "fully drawn, not yet playing" state before the
+        // IntersectionObserver's threshold actually fires. Writing
+        // dashoffset = totalAppendedLength ("fully hidden") here, every
+        // time dasharray changes, removes that window outright -- and
+        // when this function is instead called from render() itself
+        // (the normal per-frame path), render()'s own dashoffset write
+        // immediately afterward overwrites this with the real value in
+        // the very same tick, so this is a pure safety default with no
+        // effect on the already-correct desktop behaviour.
+        //
+        // Using `.style` (not `setAttribute`) for both keeps them on the
+        // same footing: an inline style always wins over a presentation
+        // attribute, so if dasharray went through one and dashoffset
+        // through the other, whichever used `.style` would permanently
+        // shadow the other's later attribute updates. Driving both
+        // through `.style` is also the standard, well-tested pattern for
+        // animated SVG stroke-dash reveals across browsers/engines.
+        if (routeGlowRef.current) {
+          routeGlowRef.current.style.strokeDasharray = `${totalAppendedLength}`;
+          routeGlowRef.current.style.strokeDashoffset = `${totalAppendedLength}`;
+        }
+        if (routeLineRef.current) {
+          routeLineRef.current.style.strokeDasharray = `${totalAppendedLength}`;
+          routeLineRef.current.style.strokeDashoffset = `${totalAppendedLength}`;
+        }
       }
     };
 
@@ -625,8 +671,8 @@ export default function JourneyMapScene({
           const steps = Math.min(ROUTE_SAMPLES, Math.max(1, Math.round(stepsF)));
           const revealLength = legBaseLength[legIndex] + cache.cumLen[steps];
           const dashoffset = totalAppendedLength - revealLength;
-          routeGlowRef.current?.setAttribute('stroke-dashoffset', `${dashoffset}`);
-          routeLineRef.current?.setAttribute('stroke-dashoffset', `${dashoffset}`);
+          if (routeGlowRef.current) routeGlowRef.current.style.strokeDashoffset = `${dashoffset}`;
+          if (routeLineRef.current) routeLineRef.current.style.strokeDashoffset = `${dashoffset}`;
         }
       }
 
