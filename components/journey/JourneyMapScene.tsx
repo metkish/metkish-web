@@ -368,6 +368,9 @@ export default function JourneyMapScene({
   const activeRouteGlowRef = useRef<SVGPathElement | null>(null);
   const activeRouteLineRef = useRef<SVGPathElement | null>(null);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
+  // TEMPORARY DIAGNOSTIC (on-screen, not console) -- vehicle-disappearing
+  // investigation. Not for commit. Scoped to one journey only.
+  const diagHudRef = useRef<HTMLDivElement | null>(null);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Separate from labelRefs: the *dot* sits on labelRefs (transformed to
   // the exact projected coordinate, no offset — see the coordinate-system
@@ -902,6 +905,36 @@ export default function JourneyMapScene({
       updateVehicleTransform();
       applyRouteStrokeWidth();
       updateLabelScreenPos();
+
+      // TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) --
+      // vehicle-disappearing investigation. Not for commit. Gated to one
+      // specific journey so it never affects any other instance on the
+      // page.
+      if (journey.id === 'sardinia-casagliana-to-principe') {
+        const hud = diagHudRef.current;
+        if (hud) {
+          const w = window as unknown as { __vdiagFrame?: number };
+          w.__vdiagFrame = (w.__vdiagFrame ?? 0) + 1;
+          if (w.__vdiagFrame % 6 === 0) {
+            const g = vehicleGroupRef.current;
+            const rect = g?.getBoundingClientRect();
+            const svgRect = vehicleSvgRef.current?.getBoundingClientRect();
+            hud.textContent =
+              'frame ' + w.__vdiagFrame +
+              ' leg=' + legIndex +
+              ' lp=' + localProgress.toFixed(3) +
+              '\nattr=' + (g?.getAttribute('transform') ?? 'null') +
+              '\nbbox: x=' + (rect ? rect.x.toFixed(0) : '?') +
+              ' y=' + (rect ? rect.y.toFixed(0) : '?') +
+              ' w=' + (rect ? rect.width.toFixed(1) : '?') +
+              ' h=' + (rect ? rect.height.toFixed(1) : '?') +
+              '\nsvgRect: w=' + (svgRect ? svgRect.width.toFixed(0) : '?') +
+              ' h=' + (svgRect ? svgRect.height.toFixed(0) : '?') +
+              '\ninDom=' + (g ? document.contains(g) : false) +
+              ' t=' + Math.round(performance.now());
+          }
+        }
+      }
     };
 
     const measure = () => {
@@ -1396,6 +1429,28 @@ export default function JourneyMapScene({
           </g>
         </svg>
       </div>
+      {journey.id === 'sardinia-casagliana-to-principe' && (
+        <div
+          ref={diagHudRef}
+          style={{
+            position: 'absolute',
+            bottom: 4,
+            left: 4,
+            right: 4,
+            fontSize: 10,
+            lineHeight: 1.4,
+            fontFamily: 'monospace',
+            color: '#fff',
+            background: 'rgba(0,0,0,0.75)',
+            padding: '4px 6px',
+            borderRadius: 4,
+            zIndex: 50,
+            pointerEvents: 'none',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-all',
+          }}
+        />
+      )}
     </div>
   );
 }
