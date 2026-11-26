@@ -1302,6 +1302,15 @@ export default function JourneyMapScene({
           ref={vehicleSvgRef}
           className='absolute inset-0 w-full h-full pointer-events-none'
           preserveAspectRatio='xMidYMid slice'
+          // Forces its own persistent compositing layer rather than
+          // relying on the browser's own promotion heuristics. Confirmed
+          // on a real device (via a temporary on-screen readout) that the
+          // vehicle's computed position/size/DOM presence are correct at
+          // the exact moment it visually disappears -- this is a pure
+          // paint/compositing failure, not a logic or geometry bug, so
+          // the fix lives entirely here, in how this one layer is
+          // composited. No visual, timing, or geometry change.
+          style={{ transform: 'translateZ(0)', willChange: 'transform' }}
         >
           <g ref={vehicleGroupRef}>
             {vehicleMode === 'plane' ? (
