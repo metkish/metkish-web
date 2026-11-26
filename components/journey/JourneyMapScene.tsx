@@ -447,7 +447,22 @@ export default function JourneyMapScene({
 
   const legRanges = useMemo(() => computeLegRanges(journey.legs), [journey]);
   const labelPoints = useMemo(() => findLabelPoints(journey.legs), [journey]);
-  const labelWorlds = useMemo(() => labelPoints.map((p) => project(p.coords)), [labelPoints]);
+  // A fixed per-journey reference point (this journey's starting camera
+  // center, projected) subtracted from every projected coordinate this
+  // component ever writes into an SVG attribute. See the long comment on
+  // its use inside the main effect below for why -- in short, it keeps
+  // every number actually fed to the renderer small, avoiding a real
+  // floating-point precision failure confirmed live on a real device.
+  // Journey-stable (not per-leg), so it never shifts mid-animation.
+  const mapOrigin = useMemo(() => project(journey.initialCamera.center), [journey]);
+  const labelWorlds = useMemo(
+    () =>
+      labelPoints.map((p) => {
+        const w = project(p.coords);
+        return [w[0] - mapOrigin[0], w[1] - mapOrigin[1]] as [number, number];
+      }),
+    [labelPoints, mapOrigin]
+  );
   const playDurationS = useMemo(() => totalDurationSeconds(journey.legs), [journey]);
 
   useEffect(() => {
@@ -464,10 +479,32 @@ export default function JourneyMapScene({
     const containerSize = { width: 1200, height: 700 };
     let currentFrame: Frame = computeFrame(viewBoxProxy.spanDeg, containerSize.width / containerSize.height);
 
+    // Every projected (world-unit) coordinate this effect writes into an
+    // SVG attribute -- viewBox, the route's growing `d`, the vehicle's
+    // transform -- is shifted by mapOrigin (computed above) before being
+    // formatted into a string. project() returns large-magnitude raw
+    // coordinates (tens, not units), and a tightly-zoomed leg's large
+    // screen-space scale factor combined with those large coordinates
+    // produces a viewBox-to-screen transform whose translate lands in the
+    // tens/hundreds of thousands -- confirmed live, via a real device's
+    // getScreenCTM(), during this investigation. That forces every single
+    // frame's render to subtract two huge, nearly-equal numbers to recover
+    // a small on-screen position, which is exactly what every "vehicle
+    // freezes/disappears mid-leg" and "the whole route vanishes" report
+    // traced back to -- not a logic or geometry bug, a numeric-precision
+    // one. Subtracting mapOrigin up front keeps every number this effect
+    // ever writes small and well-conditioned, with zero visual change
+    // (the same constant is folded into viewBox itself, so it cancels out
+    // exactly). The static coastline/background paths are handled
+    // separately, by one compensating <g> wrapping them in the JSX below,
+    // since they're painted once rather than every frame and were never
+    // at risk of this.
+    const toLocal = (w: [number, number]): [number, number] => [w[0] - mapOrigin[0], w[1] - mapOrigin[1]];
+
     let activeLegIndex = -1;
     let activeMode: JourneyMode = journey.legs[0]?.mode ?? 'car';
-    let vehicleWorld: [number, number] = project(
-      journey.legs[0]?.from.coords ?? journey.initialCamera.center
+    let vehicleWorld: [number, number] = toLocal(
+      project(journey.legs[0]?.from.coords ?? journey.initialCamera.center)
     );
     let vehicleAngle = 0;
     const labelRevealed = labelPoints.map(() => false);
@@ -553,11 +590,11 @@ export default function JourneyMapScene({
       const leg = legRanges[i].leg;
       const precomputed = routeCacheDataRef.current?.[`${journey.id}::${leg.id}`];
       if (precomputed && precomputed.length === ROUTE_SAMPLES + 1) {
-        return { points: precomputed };
+        return { points: precomputed.map(toLocal) };
       }
       const rawPoints: [number, number][] = new Array(ROUTE_SAMPLES + 1);
       for (let s = 0; s <= ROUTE_SAMPLES; s++) {
-        rawPoints[s] = project(legPointFn(i, s / ROUTE_SAMPLES));
+        rawPoints[s] = toLocal(project(legPointFn(i, s / ROUTE_SAMPLES)));
       }
       return { points: resampleByArcLength(rawPoints) };
     };
@@ -647,7 +684,7 @@ export default function JourneyMapScene({
     const syncViewBoxAttribute = () => {
       const aspect = containerSize.width / containerSize.height;
       currentFrame = computeFrame(viewBoxProxy.spanDeg, aspect);
-      const [cx, cy] = project([viewBoxProxy.lng, viewBoxProxy.lat]);
+      const [cx, cy] = toLocal(project([viewBoxProxy.lng, viewBoxProxy.lat]));
       const vb = `${cx - currentFrame.width / 2} ${cy - currentFrame.height / 2} ${currentFrame.width} ${currentFrame.height}`;
       svg.setAttribute('viewBox', vb);
       // The vehicle-only overlay svg (see its JSX below) shares this exact
@@ -695,8 +732,9 @@ export default function JourneyMapScene({
     // readability (and flips side near a narrow frame's edge); a label may
     // never be made to fit by moving the marker.
     const updateLabelScreenPos = () => {
-      const vbX = project([viewBoxProxy.lng, viewBoxProxy.lat])[0] - currentFrame.width / 2;
-      const vbY = project([viewBoxProxy.lng, viewBoxProxy.lat])[1] - currentFrame.height / 2;
+      const [vbCx, vbCy] = toLocal(project([viewBoxProxy.lng, viewBoxProxy.lat]));
+      const vbX = vbCx - currentFrame.width / 2;
+      const vbY = vbCy - currentFrame.height / 2;
       labelWorlds.forEach((world, i) => {
         const label = labelRefs.current[i];
         if (!label) return;
@@ -866,7 +904,7 @@ export default function JourneyMapScene({
       }
 
       if (leg.showRoute === false) {
-        vehicleWorld = project(leg.from.coords);
+        vehicleWorld = toLocal(project(leg.from.coords));
       } else {
         const cache = legCaches[legIndex];
         if (cache) {
@@ -999,7 +1037,7 @@ export default function JourneyMapScene({
       // positioned by a frame it isn't actually inside, which would blow
       // out the page's scrollable width for anyone with reduced motion on.
       if (lastLeg) {
-        const [fcx, fcy] = project([viewBoxProxy.lng, viewBoxProxy.lat]);
+        const [fcx, fcy] = toLocal(project([viewBoxProxy.lng, viewBoxProxy.lat]));
         const fMinX = fcx - currentFrame.width / 2;
         const fMaxX = fcx + currentFrame.width / 2;
         const fMinY = fcy - currentFrame.height / 2;
@@ -1114,7 +1152,7 @@ export default function JourneyMapScene({
       resizeObserver.disconnect();
       cancelIdle();
     };
-  }, [journey, legRanges, labelPoints, labelWorlds, playDurationS, reducedMotion]);
+  }, [journey, legRanges, labelPoints, labelWorlds, playDurationS, reducedMotion, mapOrigin]);
 
   return (
     <div
@@ -1127,6 +1165,14 @@ export default function JourneyMapScene({
           className='absolute inset-0 w-full h-full'
           preserveAspectRatio='xMidYMid slice'
         >
+          {/* Compensates for mapOrigin (see the main effect above): these
+              background/coastline paths are static, pre-baked absolute
+              world-unit coordinates that are never rewritten per frame, so
+              they're left completely untouched -- this single translate is
+              all that's needed to keep them aligned with the shifted
+              viewBox/route/vehicle coordinate system used everywhere else
+              in this component. */}
+          <g transform={`translate(${-mapOrigin[0]} ${-mapOrigin[1]})`}>
           <rect x={-500} y={-300} width={1000} height={600} fill={MUTED_BACKGROUND} />
           {/* Real coastline/border data, baked at build time from OpenStreetMap
               land geometry (see scripts/build-geo.mjs) — layered coarse-to-fine
@@ -1234,6 +1280,7 @@ export default function JourneyMapScene({
               opacity={journey.extraLandOpacity ?? 0.85}
             />
           ))}
+          </g>
 
           <path ref={routeGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
           <path ref={activeRouteGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
