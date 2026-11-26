@@ -389,12 +389,14 @@ export default function TenerifePage() {
           before; only its own separate map instance and its place in the
           page have changed. Sized taller than the Home->Vienna map above
           since it carries the wide Europe/Atlantic leg. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_VIENNA_TO_TENERIFE_JOURNEY}
         heightClassName='h-[420px] sm:h-[480px] md:h-[580px]'
       />
+      )}
 
       {/* 5. FLIGHT CONTENT — the Ryanair fare, the price perspective, the
           flight facts, and the non-reclining-seat story, all together
@@ -672,12 +674,14 @@ export default function TenerifePage() {
           more. Same short autoplay treatment as the map above; the route
           label and arrival timestamp that used to be timed overlay cards
           on top of it now sit as simple in-flow content just underneath. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_TRANSFER_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
+      )}
 
       <section className={`px-6 md:px-12 ${MAP_TRANSITION_PT} pb-14 md:pb-16 bg-[#faf9f6] dark:bg-black`}>
         <Reveal className='max-w-2xl mx-auto flex flex-col items-center gap-6'>
@@ -1092,12 +1096,14 @@ export default function TenerifePage() {
           treatment as the two car-journey maps above: short height, a
           real verified route (see lib/journeys/tenerife.ts), no more
           visual weight than the drive itself needs. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_ROCA_TO_SIAM_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
+      )}
 
       {/* 19. SIAM PARK — a proper new chapter (RouteLabel), map -> content
           transition uses MAP_TRANSITION_PT like every other map->chapter
@@ -1273,12 +1279,14 @@ export default function TenerifePage() {
           rather than a local-hop height — while keeping every other visual
           treatment (warm cream map, pink route, car icon, typography,
           animation) identical. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_ROCA_TO_TERESITAS_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />
+      )}
 
       {/* 21. PLAYA DE LAS TERESITAS — deliberately the shortest chapter on
           the page: a proper chapter marker, a short opening beat, a small
@@ -1403,12 +1411,14 @@ export default function TenerifePage() {
           street the Los Gigantes marina sits on. Same warm cream map, pink
           route, car icon, typography and animation as every other car
           journey on this page — only the geometry and camera differ. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
+      )}
 
       {/* 23. LOS GIGANTES · SAILING — the next day's chapter: booking the
           Third Element trip, the sailboat itself and the practical facts,
@@ -1635,12 +1645,14 @@ export default function TenerifePage() {
           data completely untouched. Same warm cream map, pink route, car
           icon, typography and animation as every other car journey on
           this page — only the geometry and camera differ. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_ROCA_TO_TEIDE_JOURNEY}
         heightClassName='h-[340px] sm:h-[380px] md:h-[440px]'
       />
+      )}
 
       {/* 25. MOUNT TEIDE — the volcanic-highlands chapter, deliberately
           different in feel from Los Gigantes: less about the activity
@@ -1946,12 +1958,14 @@ export default function TenerifePage() {
           to Teresitas' own height since the two routes are comparable in
           scale. No route, coordinate, marker, label-placement or animation
           logic touched — only this map's own frame height. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_ROCA_TO_LORO_PARQUE_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />
+      )}
 
       {/* 27. LORO PARQUE — the trip's last chapter, deliberately lower-key
           than Mount Teide before it: a personal, slightly mixed account of
@@ -2146,12 +2160,14 @@ export default function TenerifePage() {
           Same warm cream map, pink route, car icon, typography and
           animation as every other car journey on this page — only the
           geometry and camera differ. Does not touch any other map/route. */}
+      {false && (
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
         region="canary"
         journey={TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY}
         heightClassName='h-[380px] sm:h-[440px] md:h-[520px]'
       />
+      )}
 
       {/* 29. THE FINAL DAY — two small closing beats (a brief last stop in
           Playa de las Américas on the way to the airport, then the rental-
