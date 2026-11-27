@@ -1060,6 +1060,12 @@ export default function JourneyMapScene({
     };
 
     measure();
+    // See forceSvgRepaint's own comment above: nudges the very first paint
+    // too, not just post-tween completions -- a single-leg map whose
+    // initialCamera already matches its one leg's camera (no cameraTween
+    // ever runs) would otherwise never receive any corrective repaint at
+    // all until a full autoplay pass completes uninterrupted.
+    forceSvgRepaint(svgRef.current);
 
     const resizeObserver = new ResizeObserver(() => measure());
     resizeObserver.observe(mapBox);
@@ -1240,6 +1246,12 @@ export default function JourneyMapScene({
             // whenever there's no camera transition in flight.
             playTween?.resume();
             cameraTween?.resume();
+            // Same nudge as the initial measure() above and the two
+            // onComplete handlers below, applied at the one remaining
+            // moment none of those cover: the map becoming visible again
+            // (first time or re-entering after a scroll-away) while no
+            // tween is in flight to ever reach onComplete on its own.
+            forceSvgRepaint(svgRef.current);
           } else {
             // Stop driving onUpdate (and therefore render()) entirely
             // while offscreen, instead of letting the tween keep running

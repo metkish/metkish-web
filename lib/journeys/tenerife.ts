@@ -1333,15 +1333,20 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
 // so the map opens already on the right frame rather than panning in.
 export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
   id: 'tenerife-roca-to-duque',
-  // TEST ONLY -- spanDeg back to its real production value (0.13).
-  // Zoom was tested extensively and conclusively ruled out as a factor
-  // (the bug occurred at 0.13, 0.6, and was unconfirmable either way at
-  // 1.5/9 purely because the view was too distant to judge -- never
-  // actually shown to be fixed by any zoom level). The variable now
-  // under test is real-waypoint DENSITY (points per unit real distance)
-  // -- see ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST above: user's own
-  // observation was that long, sparse routes (Home->Vienna, Teresitas)
-  // work, while short, dense local routes (this one, Transfer) don't.
+  // Zoom was tested extensively and conclusively ruled out as a factor in
+  // the Safari white-patch/missing-bottom investigation (the bug occurred
+  // at 0.13, 0.6, and was unconfirmable either way at 1.5/9 purely because
+  // the view was too distant to judge). Real-waypoint density was also
+  // tested (see ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST below, still used
+  // by the separate /test-map-isolated diagnostic page only) and did not
+  // fix it either --
+  // deployed to this exact journey while under test, it did not stop the
+  // bug on the user's own real devices, so it is reverted here to the
+  // real, verified route. The actual fix that was missing: this is a
+  // single-leg journey whose initialCamera already matches the one leg's
+  // camera, so no cameraTween ever ran to trigger the existing
+  // forceSvgRepaint nudge -- see the new nudges on initial measure() and
+  // on IntersectionObserver entry in JourneyMapScene.tsx.
   initialCamera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
   legs: [
     {
@@ -1351,7 +1356,7 @@ export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
       to: PLAYA_DEL_DUQUE,
       camera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
       curve: 0.15,
-      route: ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST, // TEST ONLY
+      route: ROCA_NIVARIA_TO_DUQUE_ROUTE,
       // Restored (was temporarily removed in an earlier test on this
       // branch to test routeLand itself as a variable -- that test's
       // result: removing it did NOT stop the bug, so it was never the
