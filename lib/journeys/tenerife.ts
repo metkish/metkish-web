@@ -1299,19 +1299,18 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
 // so the map opens already on the right frame rather than panning in.
 export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
   id: 'tenerife-roca-to-duque',
-  // TEST ONLY -- spanDeg temporarily widened from 0.13 to 1.5 (moderately
-  // wider, ~11x -- 9 like Home->Vienna made the route too small to judge
-  // visually) to test whether close-in zoom itself is implicated in the
-  // vehicle/route-disappearing bug, while keeping the route visible
-  // enough to actually watch it happen or not.
-  initialCamera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
+  // TEST ONLY -- spanDeg temporarily at 0.6 (was 0.13; 1.5 looked like it
+  // might stop the bug but was too distant on a phone screen to judge
+  // confidently) -- a closer, clearly visible zoom for a more legible
+  // confirmation.
+  initialCamera: { center: [-16.754, 28.1115], spanDeg: 0.6 },
   legs: [
     {
       id: 'roca-nivaria-to-duque',
       mode: 'car',
       from: ROCA_NIVARIA,
       to: PLAYA_DEL_DUQUE,
-      camera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
+      camera: { center: [-16.754, 28.1115], spanDeg: 0.6 },
       curve: 0.15,
       route: ROCA_NIVARIA_TO_DUQUE_ROUTE,
       // TEST ONLY -- temporarily removed to test whether building this
