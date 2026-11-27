@@ -1412,10 +1412,21 @@ export default function JourneyMapScene({
           ))}
           </g>
 
-          <path ref={routeGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
-          <path ref={activeRouteGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
-          <path ref={routeLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
-          <path ref={activeRouteLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
+          {/* TEST -- forcing each route path onto its own GPU
+              compositing layer, same general idea already applied to
+              vehicleSvgRef below (which did NOT fix the vehicle's own
+              disappearing bug) -- but placed directly on the element
+              whose coordinates are tiny real-world-unit numbers under a
+              very large viewBox CTM (a tightly-zoomed leg like Duque),
+              rather than on an ancestor. Pure rendering hint, zero
+              visual/geometry change -- if this doesn't help either, it
+              rules out "promote this specific layer" as a fix at any
+              level and points away from a compositing explanation
+              entirely. */}
+          <path ref={routeGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
+          <path ref={activeRouteGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
+          <path ref={routeLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
+          <path ref={activeRouteLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
         </svg>
 
         {labelPoints.map((p, i) => (
@@ -1489,7 +1500,19 @@ export default function JourneyMapScene({
           // composited. No visual, timing, or geometry change.
           style={{ transform: 'translateZ(0)', willChange: 'transform' }}
         >
-          <g ref={vehicleGroupRef}>
+          {/* TEST -- same compositing-layer hint, placed directly on
+              THIS element (not just the ancestor vehicleSvgRef below,
+              which already has it and did not fix this). This is the
+              exact element whose `transform` attribute gets set every
+              frame to translate(...) rotate(...) scale(verySmallNumber)
+              translate(-12 -12) -- the one concrete anomalous number
+              found in the on-device HUD this session (scale as low as
+              0.000195 on Duque's tight production zoom, ~100x smaller
+              than the same leg's icon would need at Home->Vienna's wide
+              zoom). Forcing a layer boundary exactly here, where that
+              extreme composed value is introduced, is the most precisely
+              targeted version of this idea tried so far. */}
+          <g ref={vehicleGroupRef} style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
             {vehicleMode === 'plane' ? (
               <path d={PLANE_PATH} fill={VEHICLE_STROKE} stroke='none' />
             ) : vehicleMode === 'train' ? (
