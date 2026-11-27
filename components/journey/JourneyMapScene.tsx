@@ -377,6 +377,11 @@ export default function JourneyMapScene({
   // leg transition.
   const activeRouteGlowRef = useRef<SVGPathElement | null>(null);
   const activeRouteLineRef = useRef<SVGPathElement | null>(null);
+  // The overlay svg activeRouteGlowRef/activeRouteLineRef now live in --
+  // see the long comment on the route-drawing block in the main effect
+  // for why. Its viewBox must track containerSize (plain CSS pixels, not
+  // degree-space), kept in sync from syncViewBoxAttribute() below.
+  const activeRoutePxSvgRef = useRef<SVGSVGElement | null>(null);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
   // TEMPORARY DIAGNOSTIC (on-screen, not console) -- measures, on the real
   // device, whether a routeLand leg's geometry actually comes from the
@@ -743,6 +748,12 @@ export default function JourneyMapScene({
       svg.setAttribute('viewBox', vb);
       // The vehicle no longer shares this viewBox at all -- see
       // updateVehicleTransform below.
+      // Nor does the active route line/glow overlay -- plain CSS pixels,
+      // not degree-space, so its viewBox is just the container's own
+      // measured pixel size (only actually changes on resize, but this is
+      // cheap enough to re-set on every camera-tween frame too rather than
+      // adding a second code path just to skip it).
+      activeRoutePxSvgRef.current?.setAttribute('viewBox', `0 0 ${containerSize.width} ${containerSize.height}`);
     };
 
     // FOUND AND FIXED (the real root cause, not the earlier CSS/SVG
@@ -794,12 +805,19 @@ export default function JourneyMapScene({
     const applyRouteStrokeWidth = () => {
       const linePx = targetPx(ROUTE_LINE_RATIO, containerSize.width, ROUTE_LINE_MIN_PX, ROUTE_LINE_MAX_PX);
       const glowPx = targetPx(ROUTE_GLOW_RATIO, containerSize.width, ROUTE_GLOW_MIN_PX, ROUTE_GLOW_MAX_PX);
+      // routeLineRef/routeGlowRef (completed legs) still live in the
+      // degree-space main SVG, so their stroke-width must still be
+      // pre-scaled by this frame's viewBox-to-pixel ratio for the CTM to
+      // undo back to the intended on-screen width.
       const lineWidth = String((linePx * currentFrame.width) / containerSize.width);
       const glowWidth = String((glowPx * currentFrame.width) / containerSize.width);
       routeLineRef.current?.setAttribute('stroke-width', lineWidth);
       routeGlowRef.current?.setAttribute('stroke-width', glowWidth);
-      activeRouteLineRef.current?.setAttribute('stroke-width', lineWidth);
-      activeRouteGlowRef.current?.setAttribute('stroke-width', glowWidth);
+      // activeRouteLineRef/activeRouteGlowRef now live in the plain
+      // CSS-pixel overlay SVG (see the JSX below) -- no CTM to undo, so
+      // the intended pixel width is written directly.
+      activeRouteLineRef.current?.setAttribute('stroke-width', String(linePx));
+      activeRouteGlowRef.current?.setAttribute('stroke-width', String(glowPx));
     };
 
     // Labels default to sitting right of their point; but a point that
@@ -976,33 +994,52 @@ export default function JourneyMapScene({
           const stepsF = ROUTE_SAMPLES * localProgress;
           const steps = Math.min(ROUTE_SAMPLES, Math.max(1, Math.round(stepsF)));
           if (steps !== activeRouteDrawnSteps) {
-            // FOUND AND FIXED (the white-box/"mezikanje" flash): this used
-            // to APPEND only the newly-passed points to the end of the
-            // existing `d` string each frame, on the theory that it's
-            // cheaper than rebuilding the whole thing. Confirmed live
-            // (screen recording + the on-screen HUD) that this specific
-            // leg's route line can intermittently vanish behind a sharp,
-            // axis-aligned white rectangle for a few frames, even while
-            // the HUD's own read-back shows a perfectly valid, non-empty,
-            // non-NaN `d` and fully visible CSS at that exact moment --
-            // the same "DOM says fine, paint doesn't match" signature the
-            // vehicle bug had. A tightly-zoomed leg's huge viewBox-to-
-            // pixel CTM (see the comment on mapOrigin above) makes this
-            // the prime suspect: some browsers compute a dirty/repaint
-            // rectangle from only the newly-appended path commands when a
-            // `d` attribute is extended rather than replaced, and at this
-            // scale that incremental-union rectangle can come out wrong,
-            // leaving a stale, unpainted patch exactly where new geometry
-            // was added. Rewriting the full `d` string from scratch every
-            // time `steps` changes makes every frame's attribute write
-            // look like entirely new content, not an extension of the
-            // old one, which sidesteps that incremental dirty-rect path
-            // entirely. ROUTE_SAMPLES is capped at 2000, so a full rebuild
-            // every frame is still cheap -- this was a dirty-rect
-            // correctness bug to avoid, not a real performance bottleneck.
+            // FOUND AND FIXED, round 2 (the white-box/"mezikanje" flash):
+            // round 1 switched this block from incrementally appending to
+            // the `d` string, to rebuilding it from scratch every frame,
+            // on the theory that extending `d` was producing a bad
+            // dirty-rect repaint union. Verified live, with a reliable
+            // repro (slow the leg's gsap tween ~30x via a performance.now
+            // override so every intermediate state can actually be
+            // inspected, instead of hoping a phone video happens to catch
+            // the right split second): the full-rebuild version STILL
+            // failed to paint -- same signature as before, valid `d`/
+            // opacity/display/visibility read back from the DOM, nothing
+            // drawn on screen, until an unrelated repaint (e.g. a scroll)
+            // forced the browser to redraw it correctly. That rules out
+            // "how the `d` attribute gets written" as the cause entirely.
+            // What's left, confirmed by that same repro: this path lives
+            // directly in the main map SVG's degree-space coordinate
+            // system (tiny local-unit numbers like -0.01722) under that
+            // SVG's own huge viewBox-to-pixel CTM on a tightly-zoomed leg
+            // -- the EXACT combination already proven (see the vehicle
+            // fix above) to make this browser intermittently fail to
+            // rasterize content at all, independent of what's being drawn
+            // or how often. The real fix is the same one that fixed the
+            // vehicle: stop drawing this path inside that extreme-CTM
+            // coordinate system. activeRouteGlowRef/activeRouteLineRef now
+            // live in a separate overlay SVG (see the JSX below) whose
+            // viewBox is plain CSS pixels (0 0 containerSize.width
+            // containerSize.height) -- ordinary, non-extreme numbers no
+            // matter how tightly the leg is zoomed -- so every point is
+            // converted to this frame's screen-pixel position (the same
+            // vbX/vbY-from-viewBoxProxy conversion updateVehicleTransform/
+            // updateLabelScreenPos already use) before being written into
+            // `d`, instead of writing raw local-unit coordinates and
+            // leaving the SVG's own CTM to scale them up.
+            const [vbCx, vbCy] = toLocal(project([viewBoxProxy.lng, viewBoxProxy.lat]));
+            const vbX = vbCx - currentFrame.width / 2;
+            const vbY = vbCy - currentFrame.height / 2;
+            const toPx = (p: [number, number]): [number, number] => [
+              ((p[0] - vbX) / currentFrame.width) * containerSize.width,
+              ((p[1] - vbY) / currentFrame.height) * containerSize.height,
+            ];
             const rebuilt = cache.points
               .slice(0, steps + 1)
-              .map((p, s) => `${s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
+              .map((p, s) => {
+                const [px, py] = toPx(p);
+                return `${s === 0 ? 'M' : 'L'} ${px.toFixed(2)},${py.toFixed(2)}`;
+              })
               .join(' ');
             activeRoutePartialD = rebuilt;
             activeRouteDrawnSteps = steps;
@@ -1485,9 +1522,30 @@ export default function JourneyMapScene({
               level and points away from a compositing explanation
               entirely. */}
           <path ref={routeGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
-          <path ref={activeRouteGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
           <path ref={routeLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
-          <path ref={activeRouteLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} style={{ willChange: 'transform', transform: 'translateZ(0)' }} />
+        </svg>
+
+        {/* FOUND AND FIXED (round 2 of the white-box/"mezikanje" flash):
+            the active (currently-animating) leg's own route line/glow used
+            to live in the main SVG above, in the same tiny-local-unit,
+            huge-viewBox-CTM coordinate system as the static coastline --
+            confirmed live (see the long comment on the route-drawing block
+            in the main effect above) that drawing inside that extreme CTM
+            is itself what intermittently fails to rasterize, regardless of
+            how often or how the `d` attribute is rewritten. This overlay
+            SVG instead uses a plain, ordinary CSS-pixel viewBox (0 0
+            containerSize.width containerSize.height) -- exactly the same
+            fix already proven for the vehicle icon (see updateVehicleTransform
+            above): every route point is converted to this frame's actual
+            on-screen pixel position in JS before being written into `d`,
+            so the SVG here never has to apply any extreme scale itself. */}
+        <svg
+          ref={activeRoutePxSvgRef}
+          className='absolute inset-0 w-full h-full pointer-events-none'
+          preserveAspectRatio='none'
+        >
+          <path ref={activeRouteGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
+          <path ref={activeRouteLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
         </svg>
 
         {labelPoints.map((p, i) => (
