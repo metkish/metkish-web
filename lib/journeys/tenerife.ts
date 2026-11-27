@@ -1299,18 +1299,20 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
 // so the map opens already on the right frame rather than panning in.
 export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
   id: 'tenerife-roca-to-duque',
-  // TEST ONLY -- spanDeg temporarily at 0.6 (was 0.13; 1.5 looked like it
-  // might stop the bug but was too distant on a phone screen to judge
-  // confidently) -- a closer, clearly visible zoom for a more legible
-  // confirmation.
-  initialCamera: { center: [-16.754, 28.1115], spanDeg: 0.6 },
+  // TEST ONLY -- spanDeg back at 1.5 for an independent re-confirmation.
+  // 0.6 was confirmed to break EVERY reload, deterministically (not a
+  // timing fluke), and cross-browser/cross-device -- now re-testing 1.5
+  // the same rigorous way (multiple reloads, same config) to see if it
+  // is ALSO deterministic, before drawing any conclusion about zoom's
+  // causal role.
+  initialCamera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
   legs: [
     {
       id: 'roca-nivaria-to-duque',
       mode: 'car',
       from: ROCA_NIVARIA,
       to: PLAYA_DEL_DUQUE,
-      camera: { center: [-16.754, 28.1115], spanDeg: 0.6 },
+      camera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
       curve: 0.15,
       route: ROCA_NIVARIA_TO_DUQUE_ROUTE,
       // TEST ONLY -- temporarily removed to test whether building this
