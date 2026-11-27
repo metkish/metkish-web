@@ -383,15 +383,6 @@ export default function JourneyMapScene({
   // degree-space), kept in sync from syncViewBoxAttribute() below.
   const activeRoutePxSvgRef = useRef<SVGSVGElement | null>(null);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
-  // TEMPORARY DIAGNOSTIC (on-screen, not console) -- measures, on the real
-  // device, whether a routeLand leg's geometry actually comes from the
-  // build-time cache or falls back to live computation, and whether any
-  // single render() call ever actually blocks the main thread long enough
-  // to explain the vehicle freeze/disappear reports. Not for commit.
-  // Scoped (see the gate in render() and in the JSX below) to only
-  // journeys that have at least one routeLand leg, so it never appears on
-  // the two confirmed-working maps.
-  const diagHudRef = useRef<HTMLDivElement | null>(null);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Separate from labelRefs: the *dot* sits on labelRefs (transformed to
   // the exact projected coordinate, no offset — see the coordinate-system
@@ -534,26 +525,6 @@ export default function JourneyMapScene({
     const labelRevealed = labelPoints.map(() => false);
     let cameraTween: gsap.core.Tween | null = null;
 
-    // TEMPORARY DIAGNOSTIC -- see diagHudRef above. Measures real wall-clock
-    // gaps between consecutive render() calls (GSAP's ease:'none' proxy
-    // tween calls this every rAF tick, so a healthy gap is ~16ms/60fps or
-    // ~33ms/30fps); a genuine main-thread stall -- live routeLand
-    // computation, a huge `d` string rewrite, anything else -- would show
-    // up here as a one-off large gap, independent of and in addition to
-    // the cache-hit/live-fallback timing captured in legCacheMeta below.
-    // Widened (TEST ONLY) to also cover the fresh-rebuild Duque test
-    // journey, which deliberately has NO routeLand (it mirrors
-    // Home-Vienna exactly) -- so this diagnostic, previously gated to
-    // routeLand journeys only, would otherwise never show for it even
-    // though it reproduces the bug (confirmed via screen recording: the
-    // vehicle never appears at all, the whole run, on that journey).
-    const diagHasRouteLand =
-      journey.legs.some((l) => l.routeLand) || journey.id === 'tenerife-duque-fresh-rebuild-test';
-    let diagLastRenderAt = performance.now();
-    let diagMaxStallMs = 0;
-    let diagMaxStallAtMs = -1;
-    let diagFrameCount = 0;
-
     // --- Precomputed route geometry cache ------------------------------
     // The old render() rebuilt the ENTIRE drawn-so-far route polyline
     // (every completed leg at full ROUTE_SAMPLES resolution, plus the
@@ -619,17 +590,6 @@ export default function JourneyMapScene({
     const legCaches: (LegGeometryCache | null)[] = legRanges.map(() => null);
     let highestCachedLegIndex = -1;
 
-    // TEMPORARY DIAGNOSTIC -- see diagHudRef above. Records, per leg,
-    // whether buildLegCache below actually found and used the build-time
-    // cache or fell back to live computation, and (for a live build) how
-    // long that computation actually took on this real device.
-    interface DiagLegCacheMeta {
-      source: 'cache' | 'live';
-      ms: number;
-      hasRouteLand: boolean;
-    }
-    const diagLegCacheMeta: (DiagLegCacheMeta | null)[] = legRanges.map(() => null);
-
     const buildLegCache = (
       i: number,
       legPointFn: (i: number, t: number) => [number, number]
@@ -645,16 +605,13 @@ export default function JourneyMapScene({
       const leg = legRanges[i].leg;
       const precomputed = routeCacheDataRef.current?.[`${journey.id}::${leg.id}`];
       if (precomputed && precomputed.length === ROUTE_SAMPLES + 1) {
-        diagLegCacheMeta[i] = { source: 'cache', ms: 0, hasRouteLand: !!leg.routeLand };
         return { points: precomputed.map(toLocal) };
       }
-      const diagT0 = performance.now();
       const rawPoints: [number, number][] = new Array(ROUTE_SAMPLES + 1);
       for (let s = 0; s <= ROUTE_SAMPLES; s++) {
         rawPoints[s] = toLocal(project(legPointFn(i, s / ROUTE_SAMPLES)));
       }
       const resampled = resampleByArcLength(rawPoints);
-      diagLegCacheMeta[i] = { source: 'live', ms: performance.now() - diagT0, hasRouteLand: !!leg.routeLand };
       return { points: resampled };
     };
 
@@ -897,21 +854,22 @@ export default function JourneyMapScene({
       updateLabelScreenPos();
     };
 
-    const render = (raw: number) => {
-      // TEMPORARY DIAGNOSTIC -- see diagHudRef above. Runs first, before
-      // any of this leg's own logic, so it measures the actual gap since
-      // the previous render() call regardless of what (if anything) stole
-      // main-thread time in between -- a stall anywhere (this leg's own
-      // cache build, a DOM write, anything else on the page) shows up here.
-      diagFrameCount++;
-      const diagNow = performance.now();
-      const diagGap = diagNow - diagLastRenderAt;
-      if (diagGap > diagMaxStallMs) {
-        diagMaxStallMs = diagGap;
-        diagMaxStallAtMs = diagNow;
-      }
-      diagLastRenderAt = diagNow;
+    // Forces the browser to discard and rebuild the paint for an SVG subtree.
+    // Under this component's extreme degree-space-to-pixel CTM, static
+    // background/coastline content has been observed to intermittently fail
+    // to rasterize correctly after a viewBox attribute rewrite (the same
+    // paint-failure class already fixed for the vehicle transform and the
+    // active route line). A plain display toggle forces a synchronous
+    // reflow/repaint without altering any visual output once restored.
+    const forceSvgRepaint = (el: SVGSVGElement | null) => {
+      if (!el) return;
+      const prevDisplay = el.style.display;
+      el.style.display = 'none';
+      void (el as unknown as HTMLElement).offsetHeight;
+      el.style.display = prevDisplay;
+    };
 
+    const render = (raw: number) => {
       const clamped = clamp01(raw);
       let legIndex = legRanges.findIndex((r) => clamped >= r.start && clamped <= r.end);
       if (legIndex === -1) legIndex = legRanges.length - 1;
@@ -930,6 +888,7 @@ export default function JourneyMapScene({
           duration: leg.transition === 'fly' ? 1.9 : 1.3,
           ease: 'power2.inOut',
           onUpdate: onCameraTweenUpdate,
+          onComplete: () => forceSvgRepaint(svgRef.current),
         });
         if (leg.mode !== activeMode) {
           activeMode = leg.mode;
@@ -1086,88 +1045,6 @@ export default function JourneyMapScene({
       updateVehicleTransform();
       applyRouteStrokeWidth();
       updateLabelScreenPos();
-
-      // TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- see
-      // diagHudRef above. Only ever renders for a journey that has at
-      // least one routeLand leg, so it's never shown on the two confirmed-
-      // working maps. Throttled to every 6th frame for the routine
-      // readout, but force an immediate update the moment a new worst
-      // stall is recorded so that specific frame isn't missed.
-      if (diagHasRouteLand) {
-        const hud = diagHudRef.current;
-        if (hud) {
-          const justStalled = diagGap === diagMaxStallMs && diagGap > 20;
-          if (diagFrameCount % 6 === 0 || justStalled) {
-            const meta = diagLegCacheMeta[legIndex];
-            hud.textContent =
-              'journey=' + journey.id +
-              ' leg=' + leg.id + (leg.routeLand ? ' [routeLand]' : '') +
-              '\nframe=' + diagFrameCount +
-              ' gap=' + diagGap.toFixed(1) + 'ms' +
-              (justStalled ? '  <-- NEW MAX STALL' : '') +
-              '\ncache=' + (meta ? meta.source : '?') +
-              (meta && meta.source === 'live' ? ' (' + meta.ms.toFixed(1) + 'ms to build)' : '') +
-              '\nmaxStall=' + diagMaxStallMs.toFixed(1) + 'ms' +
-              (diagMaxStallAtMs >= 0 ? ' @t=' + diagMaxStallAtMs.toFixed(0) : '') +
-              '\nlp=' + localProgress.toFixed(3) + ' t=' + Math.round(performance.now());
-
-            // TEMPORARY DIAGNOSTIC -- direct read-back of the vehicle's
-            // own live DOM state, every time the HUD text updates (not
-            // just on a stall). Answers, independent of any stall/cache
-            // question: is the vehicle group's own transform/bbox/DOM
-            // presence actually correct at this exact moment, even while
-            // it's visually frozen or gone? (A getBoundingClientRect() is
-            // purely geometric -- it reports nonzero size even when an
-            // SVG mask reference has failed to resolve and the element is
-            // painting as fully clipped, so this can't by itself rule a
-            // broken mask in or out -- see the two decoy icons below for
-            // that half of the question.)
-            const vg = vehicleGroupRef.current;
-            const vgRect = vg?.getBoundingClientRect();
-            const vWrap = vehicleWrapperRef.current;
-            const vIcon = vehicleSvgRef.current;
-            hud.textContent +=
-              '\nvWrapper transform=' + (vWrap?.style.transform ?? 'null') +
-              '\nvIcon transform=' + (vIcon?.style.transform ?? 'null') +
-              ' size=' + (vIcon?.style.width ?? '?') + 'x' + (vIcon?.style.height ?? '?') +
-              '\nvGroup bbox: w=' + (vgRect ? vgRect.width.toFixed(1) : '?') +
-              ' h=' + (vgRect ? vgRect.height.toFixed(1) : '?') +
-              ' x=' + (vgRect ? vgRect.x.toFixed(0) : '?') +
-              ' y=' + (vgRect ? vgRect.y.toFixed(0) : '?') +
-              '\nvGroup inDom=' + (vg ? document.contains(vg) : false);
-
-            // TEMPORARY DIAGNOSTIC -- round 2: the vehicle's own transform
-            // read as numerically valid in round 1, yet it (and/or the
-            // route line) still visually disappeared. This round checks
-            // the two things NOT yet checked: (a) is the route line's own
-            // `d` attribute actually populated with valid-looking data
-            // right now, not empty/truncated/NaN-containing, and (b) is
-            // anything via CSS (not SVG attributes) making any of these
-            // elements invisible -- opacity, display, visibility -- on
-            // the wrapper, the map box, the main svg, the route line, or
-            // the vehicle group itself. Pure read-back, no DOM writes.
-            const mainSvgEl = svgRef.current;
-            const routeLineEl = activeRouteLineRef.current;
-            const dAttr = routeLineEl?.getAttribute('d') ?? '';
-            const cs = (el: Element | null) => {
-              if (!el) return 'null';
-              const s = getComputedStyle(el);
-              return `op=${s.opacity} disp=${s.display} vis=${s.visibility}`;
-            };
-            hud.textContent +=
-              '\nmainSvg viewBox=' + (mainSvgEl?.getAttribute('viewBox') ?? 'null') +
-              '\nrouteLine d: len=' + dAttr.length +
-              ' head="' + dAttr.slice(0, 40) + '"' +
-              ' tail="' + dAttr.slice(-40) + '"' +
-              ' hasNaN=' + /NaN/.test(dAttr) +
-              '\nwrapper css: ' + cs(wrapperRef.current) +
-              '\nmapBox css: ' + cs(mapBoxRef.current) +
-              '\nmainSvg css: ' + cs(mainSvgEl) +
-              '\nrouteLine css: ' + cs(routeLineEl) +
-              '\nvGroup css: ' + cs(vg);
-          }
-        }
-      }
     };
 
     const measure = () => {
@@ -1609,8 +1486,7 @@ export default function JourneyMapScene({
             shown this bug. */}
         <div ref={vehicleWrapperRef} className='absolute left-0 top-0 pointer-events-none'>
           {/* Fixed, ordinary viewBox -- the icon's own native local
-              space, matching the two static decoy icons below and never
-              rewritten per frame. Only width/height (the current target
+              space, never rewritten per frame. Only width/height (the current target
               pixel size) and the CSS transform (center + rotate) change
               per frame, both completely ordinary SVG/CSS sizing -- not an
               imperative transform attribute fighting a huge ancestor
@@ -1706,72 +1582,6 @@ export default function JourneyMapScene({
           </svg>
         </div>
       </div>
-      {/* TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- two
-          small, fixed-position decoy car icons, always drawn at a static
-          screen location (not moved or re-transformed by anything this
-          component does per frame), one WITH the exact same mask the real
-          vehicle uses (same carMaskId, reused by reference) and one with
-          no mask at all. A getBoundingClientRect() read-back (see the HUD
-          text above) can't tell a broken mask reference apart from a
-          correctly-masked-but-empty element -- both report the path's own
-          geometric bbox either way. This pair can: if the real vehicle on
-          the map disappears while the MASKED decoy here also disappears
-          (and the unmasked one stays visible), that's the mask. If both
-          decoys stay visible the whole time regardless, that rules the
-          mask out entirely. Not for commit; only for mode 'car' (both
-          test-page journeys are car legs). */}
-      {(journey.legs.some((l) => l.routeLand) || journey.id === 'tenerife-duque-fresh-rebuild-test') && vehicleMode === 'car' && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 4,
-            left: 4,
-            display: 'flex',
-            gap: 8,
-            zIndex: 51,
-            pointerEvents: 'none',
-          }}
-        >
-          <div style={{ background: 'rgba(0,0,0,0.75)', borderRadius: 4, padding: 2 }}>
-            <svg width={28} height={28} viewBox='-4 -4 32 32'>
-              <path d={CAR_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' mask={`url(#${carMaskId})`} />
-            </svg>
-            <div style={{ color: '#fff', fontFamily: 'monospace', fontSize: 8, textAlign: 'center' }}>masked</div>
-          </div>
-          <div style={{ background: 'rgba(0,0,0,0.75)', borderRadius: 4, padding: 2 }}>
-            <svg width={28} height={28} viewBox='-4 -4 32 32'>
-              <path d={CAR_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' />
-            </svg>
-            <div style={{ color: '#fff', fontFamily: 'monospace', fontSize: 8, textAlign: 'center' }}>unmasked</div>
-          </div>
-        </div>
-      )}
-      {/* TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- see
-          diagHudRef above. Not for commit. Only for a journey with at
-          least one routeLand leg -- never shown on the two confirmed-
-          working maps (Home->Vienna, Vienna->Tenerife), which have none. */}
-      {(journey.legs.some((l) => l.routeLand) || journey.id === 'tenerife-duque-fresh-rebuild-test') && (
-        <div
-          ref={diagHudRef}
-          style={{
-            position: 'absolute',
-            bottom: 4,
-            left: 4,
-            right: 4,
-            fontSize: 10,
-            lineHeight: 1.4,
-            fontFamily: 'monospace',
-            color: '#fff',
-            background: 'rgba(0,0,0,0.75)',
-            padding: '4px 6px',
-            borderRadius: 4,
-            zIndex: 50,
-            pointerEvents: 'none',
-            whiteSpace: 'pre-wrap',
-            wordBreak: 'break-all',
-          }}
-        />
-      )}
     </div>
   );
 }
