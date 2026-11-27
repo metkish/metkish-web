@@ -1037,6 +1037,36 @@ export default function JourneyMapScene({
               ' y=' + (vgRect ? vgRect.y.toFixed(0) : '?') +
               '\nvGroup inDom=' + (vg ? document.contains(vg) : false) +
               ' vehicleSvg viewBox=' + (vehicleSvgRef.current?.getAttribute('viewBox') ?? 'null');
+
+            // TEMPORARY DIAGNOSTIC -- round 2: the vehicle's own transform
+            // read as numerically valid in round 1, yet it (and/or the
+            // route line) still visually disappeared. This round checks
+            // the two things NOT yet checked: (a) is the route line's own
+            // `d` attribute actually populated with valid-looking data
+            // right now, not empty/truncated/NaN-containing, and (b) is
+            // anything via CSS (not SVG attributes) making any of these
+            // elements invisible -- opacity, display, visibility -- on
+            // the wrapper, the map box, the main svg, the route line, or
+            // the vehicle group itself. Pure read-back, no DOM writes.
+            const mainSvgEl = svgRef.current;
+            const routeLineEl = activeRouteLineRef.current;
+            const dAttr = routeLineEl?.getAttribute('d') ?? '';
+            const cs = (el: Element | null) => {
+              if (!el) return 'null';
+              const s = getComputedStyle(el);
+              return `op=${s.opacity} disp=${s.display} vis=${s.visibility}`;
+            };
+            hud.textContent +=
+              '\nmainSvg viewBox=' + (mainSvgEl?.getAttribute('viewBox') ?? 'null') +
+              '\nrouteLine d: len=' + dAttr.length +
+              ' head="' + dAttr.slice(0, 40) + '"' +
+              ' tail="' + dAttr.slice(-40) + '"' +
+              ' hasNaN=' + /NaN/.test(dAttr) +
+              '\nwrapper css: ' + cs(wrapperRef.current) +
+              '\nmapBox css: ' + cs(mapBoxRef.current) +
+              '\nmainSvg css: ' + cs(mainSvgEl) +
+              '\nrouteLine css: ' + cs(routeLineEl) +
+              '\nvGroup css: ' + cs(vg);
           }
         }
       }
