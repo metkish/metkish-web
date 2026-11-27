@@ -24,7 +24,7 @@ export default function TestMapIsolatedPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#faf9f6', padding: '24px 16px' }}>
       <p style={{ fontFamily: 'sans-serif', fontSize: 14, color: '#666', marginBottom: 16 }}>
-        Map 1 of 3 -- FRESH REBUILD, same shape as Home-&gt;Vienna, Duque's real data.
+        Map 1 of 4 -- FRESH REBUILD, same shape as Home-&gt;Vienna, Duque's real data.
       </p>
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
@@ -34,7 +34,7 @@ export default function TestMapIsolatedPage() {
       />
       <div style={{ height: '40vh' }} />
       <p style={{ fontFamily: 'sans-serif', fontSize: 14, color: '#666', marginBottom: 16 }}>
-        Map 2 of 3 -- the original (repeatedly-edited) Tenerife Roca Nivaria to Playa del Duque.
+        Map 2 of 4 -- the original (repeatedly-edited) Tenerife Roca Nivaria to Playa del Duque.
       </p>
       <JourneyMapScene
         routeCacheUrl="/route-cache/tenerife.json"
@@ -44,7 +44,7 @@ export default function TestMapIsolatedPage() {
       />
       <div style={{ height: '40vh' }} />
       <p style={{ fontFamily: 'sans-serif', fontSize: 14, color: '#666', marginBottom: 16 }}>
-        Map 3 of 3 -- Sardinia, Casagliana to Principe (same real data that
+        Map 3 of 4 -- Sardinia, Casagliana to Principe (same real data that
         passed cleanly as a plain HTML/JS test earlier).
       </p>
       <JourneyMapScene

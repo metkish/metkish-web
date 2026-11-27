@@ -29,6 +29,57 @@ const REGION_FINE_DETAIL_PATHS: Record<'canary' | 'sardinia', string[]> = {
   sardinia: SARDINIA_PATHS,
 };
 
+// CONFIRMED ROOT CAUSE, continued (see WIDE_LAYERS_HIDE_BELOW_SPANDEG's
+// own long comment in the main effect below for the full story): hiding
+// the four wide/coarse layers fixed the controlled Iceland test, but the
+// user's own real-device retest afterward showed Playa del Duque and Los
+// Gigantes STILL broken -- the one layer that ALSO stayed rendered,
+// unconditionally, at every zoom on a Tenerife/Sardinia map, is this one.
+// CANARY_PATHS/SARDINIA_PATHS each bundle EVERY ring in their region's own
+// bbox (eight separate Canary islands; several separate Sardinian
+// stretches) into one array that always renders in full regardless of
+// which single island or stretch the camera is actually looking at --
+// so a Los Gigantes close-up still carries La Palma/Gran Canaria/etc.'s
+// own, much farther-away coordinates in the very same SVG, the same
+// huge-content-extent-next-to-a-tiny-viewBox situation that broke the
+// wide layers, just at a smaller scale. Unlike the wide layers, this one
+// can't simply be hidden below a zoom threshold -- it's the whole reason
+// this layer exists at that exact zoom. Instead, each ring is culled
+// individually: parsed once (at module load) into its own bounding box,
+// then shown or hidden per camera frame based on whether that one ring's
+// box actually intersects what's currently in view (see the per-frame
+// toggle in syncViewBoxAttribute below) -- the island actually being
+// shown always renders; every other island in the same array doesn't.
+function parsePathBBox(d: string): [number, number, number, number] {
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  const re = /(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(d))) {
+    const x = parseFloat(m[1]);
+    const y = parseFloat(m[2]);
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
+  }
+  return [minX, minY, maxX, maxY];
+}
+
+const REGION_PATH_BBOXES: Record<'canary' | 'sardinia', [number, number, number, number][]> = {
+  canary: CANARY_PATHS.map(parsePathBBox),
+  sardinia: SARDINIA_PATHS.map(parsePathBBox),
+};
+
+function bboxesIntersect(
+  a: [number, number, number, number],
+  b: [number, number, number, number]
+): boolean {
+  return a[0] <= b[2] && a[2] >= b[0] && a[1] <= b[3] && a[3] >= b[1];
+}
+
 // A hand-drawn, editorial-atlas palette — the same warm neutrals used
 // across the rest of the site, kept deliberately muted so the map reads as
 // illustration rather than a navigation tool.
@@ -386,6 +437,10 @@ export default function JourneyMapScene({
   // SLOVENIA_PATHS/AUSTRIA_PATHS) -- see its hide/show toggle in
   // syncViewBoxAttribute below for why this exists.
   const wideLayersGroupRef = useRef<SVGGElement | null>(null);
+  // Parallel to REGION_FINE_DETAIL_PATHS[region] / REGION_PATH_BBOXES[region]
+  // for the region this instance actually renders -- see the per-frame
+  // cull in syncViewBoxAttribute below.
+  const regionPathRefs = useRef<(SVGPathElement | null)[]>([]);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Separate from labelRefs: the *dot* sits on labelRefs (transformed to
@@ -747,6 +802,26 @@ export default function JourneyMapScene({
       if (wideLayersGroupRef.current) {
         wideLayersGroupRef.current.style.display =
           viewBoxProxy.spanDeg < WIDE_LAYERS_HIDE_BELOW_SPANDEG ? 'none' : '';
+      }
+      // Per-ring cull for this region's own fine-detail layer -- see
+      // REGION_PATH_BBOXES' long comment above. Generous padding (half
+      // the current frame's own width/height again on every side) so a
+      // ring doesn't pop in/out right at the frame edge during a pan.
+      if (region) {
+        const bboxes = REGION_PATH_BBOXES[region];
+        const padX = currentFrame.width * 0.5;
+        const padY = currentFrame.height * 0.5;
+        const viewBBox: [number, number, number, number] = [
+          cx - currentFrame.width / 2 - padX,
+          cy - currentFrame.height / 2 - padY,
+          cx + currentFrame.width / 2 + padX,
+          cy + currentFrame.height / 2 + padY,
+        ];
+        regionPathRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const b = bboxes[i];
+          el.style.display = b && bboxesIntersect(b, viewBBox) ? '' : 'none';
+        });
       }
     };
 
@@ -1417,6 +1492,9 @@ export default function JourneyMapScene({
           {(region ? REGION_FINE_DETAIL_PATHS[region] : []).map((d, i) => (
             <path
               key={`region-${i}`}
+              ref={(el) => {
+                regionPathRefs.current[i] = el;
+              }}
               d={d}
               fill={MUTED_LAND}
               stroke={MUTED_LINE}
