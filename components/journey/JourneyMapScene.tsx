@@ -368,6 +368,15 @@ export default function JourneyMapScene({
   const activeRouteGlowRef = useRef<SVGPathElement | null>(null);
   const activeRouteLineRef = useRef<SVGPathElement | null>(null);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
+  // TEMPORARY DIAGNOSTIC (on-screen, not console) -- measures, on the real
+  // device, whether a routeLand leg's geometry actually comes from the
+  // build-time cache or falls back to live computation, and whether any
+  // single render() call ever actually blocks the main thread long enough
+  // to explain the vehicle freeze/disappear reports. Not for commit.
+  // Scoped (see the gate in render() and in the JSX below) to only
+  // journeys that have at least one routeLand leg, so it never appears on
+  // the two confirmed-working maps.
+  const diagHudRef = useRef<HTMLDivElement | null>(null);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Separate from labelRefs: the *dot* sits on labelRefs (transformed to
   // the exact projected coordinate, no offset — see the coordinate-system
@@ -510,6 +519,19 @@ export default function JourneyMapScene({
     const labelRevealed = labelPoints.map(() => false);
     let cameraTween: gsap.core.Tween | null = null;
 
+    // TEMPORARY DIAGNOSTIC -- see diagHudRef above. Measures real wall-clock
+    // gaps between consecutive render() calls (GSAP's ease:'none' proxy
+    // tween calls this every rAF tick, so a healthy gap is ~16ms/60fps or
+    // ~33ms/30fps); a genuine main-thread stall -- live routeLand
+    // computation, a huge `d` string rewrite, anything else -- would show
+    // up here as a one-off large gap, independent of and in addition to
+    // the cache-hit/live-fallback timing captured in legCacheMeta below.
+    const diagHasRouteLand = journey.legs.some((l) => l.routeLand);
+    let diagLastRenderAt = performance.now();
+    let diagMaxStallMs = 0;
+    let diagMaxStallAtMs = -1;
+    let diagFrameCount = 0;
+
     // --- Precomputed route geometry cache ------------------------------
     // The old render() rebuilt the ENTIRE drawn-so-far route polyline
     // (every completed leg at full ROUTE_SAMPLES resolution, plus the
@@ -575,6 +597,17 @@ export default function JourneyMapScene({
     const legCaches: (LegGeometryCache | null)[] = legRanges.map(() => null);
     let highestCachedLegIndex = -1;
 
+    // TEMPORARY DIAGNOSTIC -- see diagHudRef above. Records, per leg,
+    // whether buildLegCache below actually found and used the build-time
+    // cache or fell back to live computation, and (for a live build) how
+    // long that computation actually took on this real device.
+    interface DiagLegCacheMeta {
+      source: 'cache' | 'live';
+      ms: number;
+      hasRouteLand: boolean;
+    }
+    const diagLegCacheMeta: (DiagLegCacheMeta | null)[] = legRanges.map(() => null);
+
     const buildLegCache = (
       i: number,
       legPointFn: (i: number, t: number) => [number, number]
@@ -590,13 +623,17 @@ export default function JourneyMapScene({
       const leg = legRanges[i].leg;
       const precomputed = routeCacheDataRef.current?.[`${journey.id}::${leg.id}`];
       if (precomputed && precomputed.length === ROUTE_SAMPLES + 1) {
+        diagLegCacheMeta[i] = { source: 'cache', ms: 0, hasRouteLand: !!leg.routeLand };
         return { points: precomputed.map(toLocal) };
       }
+      const diagT0 = performance.now();
       const rawPoints: [number, number][] = new Array(ROUTE_SAMPLES + 1);
       for (let s = 0; s <= ROUTE_SAMPLES; s++) {
         rawPoints[s] = toLocal(project(legPointFn(i, s / ROUTE_SAMPLES)));
       }
-      return { points: resampleByArcLength(rawPoints) };
+      const resampled = resampleByArcLength(rawPoints);
+      diagLegCacheMeta[i] = { source: 'live', ms: performance.now() - diagT0, hasRouteLand: !!leg.routeLand };
+      return { points: resampled };
     };
 
     // Pure computation, no DOM writes whatsoever -- safe to call well
@@ -793,6 +830,20 @@ export default function JourneyMapScene({
     };
 
     const render = (raw: number) => {
+      // TEMPORARY DIAGNOSTIC -- see diagHudRef above. Runs first, before
+      // any of this leg's own logic, so it measures the actual gap since
+      // the previous render() call regardless of what (if anything) stole
+      // main-thread time in between -- a stall anywhere (this leg's own
+      // cache build, a DOM write, anything else on the page) shows up here.
+      diagFrameCount++;
+      const diagNow = performance.now();
+      const diagGap = diagNow - diagLastRenderAt;
+      if (diagGap > diagMaxStallMs) {
+        diagMaxStallMs = diagGap;
+        diagMaxStallAtMs = diagNow;
+      }
+      diagLastRenderAt = diagNow;
+
       const clamped = clamp01(raw);
       let legIndex = legRanges.findIndex((r) => clamped >= r.start && clamped <= r.end);
       if (legIndex === -1) legIndex = legRanges.length - 1;
@@ -940,6 +991,33 @@ export default function JourneyMapScene({
       updateVehicleTransform();
       applyRouteStrokeWidth();
       updateLabelScreenPos();
+
+      // TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- see
+      // diagHudRef above. Only ever renders for a journey that has at
+      // least one routeLand leg, so it's never shown on the two confirmed-
+      // working maps. Throttled to every 6th frame for the routine
+      // readout, but force an immediate update the moment a new worst
+      // stall is recorded so that specific frame isn't missed.
+      if (diagHasRouteLand) {
+        const hud = diagHudRef.current;
+        if (hud) {
+          const justStalled = diagGap === diagMaxStallMs && diagGap > 20;
+          if (diagFrameCount % 6 === 0 || justStalled) {
+            const meta = diagLegCacheMeta[legIndex];
+            hud.textContent =
+              'journey=' + journey.id +
+              ' leg=' + leg.id + (leg.routeLand ? ' [routeLand]' : '') +
+              '\nframe=' + diagFrameCount +
+              ' gap=' + diagGap.toFixed(1) + 'ms' +
+              (justStalled ? '  <-- NEW MAX STALL' : '') +
+              '\ncache=' + (meta ? meta.source : '?') +
+              (meta && meta.source === 'live' ? ' (' + meta.ms.toFixed(1) + 'ms to build)' : '') +
+              '\nmaxStall=' + diagMaxStallMs.toFixed(1) + 'ms' +
+              (diagMaxStallAtMs >= 0 ? ' @t=' + diagMaxStallAtMs.toFixed(0) : '') +
+              '\nlp=' + localProgress.toFixed(3) + ' t=' + Math.round(performance.now());
+          }
+        }
+      }
     };
 
     const measure = () => {
@@ -1452,6 +1530,32 @@ export default function JourneyMapScene({
           </g>
         </svg>
       </div>
+      {/* TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- see
+          diagHudRef above. Not for commit. Only for a journey with at
+          least one routeLand leg -- never shown on the two confirmed-
+          working maps (Home->Vienna, Vienna->Tenerife), which have none. */}
+      {journey.legs.some((l) => l.routeLand) && (
+        <div
+          ref={diagHudRef}
+          style={{
+            position: 'absolute',
+            bottom: 4,
+            left: 4,
+            right: 4,
+            fontSize: 10,
+            lineHeight: 1.4,
+            fontFamily: 'monospace',
+            color: '#fff',
+            background: 'rgba(0,0,0,0.75)',
+            padding: '4px 6px',
+            borderRadius: 4,
+            zIndex: 50,
+            pointerEvents: 'none',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-all',
+          }}
+        />
+      )}
     </div>
   );
 }
