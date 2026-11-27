@@ -1299,20 +1299,19 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
 // so the map opens already on the right frame rather than panning in.
 export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
   id: 'tenerife-roca-to-duque',
-  // TEST ONLY -- spanDeg temporarily widened from 0.13 to 9 (matching
-  // Home->Vienna's own zoom level) to test whether the extreme close-in
-  // zoom itself -- not routeLand, already ruled out -- is implicated in
-  // the vehicle/route-disappearing bug. Visually this zooms the frame
-  // WAY out from the intended tight local view; not a real fix candidate
-  // on its own, purely diagnostic.
-  initialCamera: { center: [-16.754, 28.1115], spanDeg: 9 },
+  // TEST ONLY -- spanDeg temporarily widened from 0.13 to 1.5 (moderately
+  // wider, ~11x -- 9 like Home->Vienna made the route too small to judge
+  // visually) to test whether close-in zoom itself is implicated in the
+  // vehicle/route-disappearing bug, while keeping the route visible
+  // enough to actually watch it happen or not.
+  initialCamera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
   legs: [
     {
       id: 'roca-nivaria-to-duque',
       mode: 'car',
       from: ROCA_NIVARIA,
       to: PLAYA_DEL_DUQUE,
-      camera: { center: [-16.754, 28.1115], spanDeg: 9 },
+      camera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
       curve: 0.15,
       route: ROCA_NIVARIA_TO_DUQUE_ROUTE,
       // TEST ONLY -- temporarily removed to test whether building this
