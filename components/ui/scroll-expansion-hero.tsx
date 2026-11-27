@@ -224,7 +224,7 @@ const ScrollExpandMedia = ({
                 loop
                 playsInline
                 preload='auto'
-                className='w-screen h-screen object-cover'
+                className='w-screen h-[100svh] md:h-[100dvh] object-cover'
               />
             ) : (
               <Image
@@ -232,7 +232,7 @@ const ScrollExpandMedia = ({
                 alt='Background'
                 width={1920}
                 height={1080}
-                className='w-screen h-screen'
+                className='w-screen h-[100svh] md:h-[100dvh]'
                 style={{
                   objectFit: 'cover',
                   objectPosition: 'center',
