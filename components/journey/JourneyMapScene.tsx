@@ -1507,19 +1507,22 @@ export default function JourneyMapScene({
           // composited. No visual, timing, or geometry change.
           style={{ transform: 'translateZ(0)', willChange: 'transform' }}
         >
-          {/* TEST -- same compositing-layer hint, placed directly on
-              THIS element (not just the ancestor vehicleSvgRef below,
-              which already has it and did not fix this). This is the
-              exact element whose `transform` attribute gets set every
-              frame to translate(...) rotate(...) scale(verySmallNumber)
-              translate(-12 -12) -- the one concrete anomalous number
-              found in the on-device HUD this session (scale as low as
-              0.000195 on Duque's tight production zoom, ~100x smaller
-              than the same leg's icon would need at Home->Vienna's wide
-              zoom). Forcing a layer boundary exactly here, where that
-              extreme composed value is introduced, is the most precisely
-              targeted version of this idea tried so far. */}
-          <g ref={vehicleGroupRef} style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
+          {/* FOUND AND FIXED: this element previously also carried
+              style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+              as part of an earlier (unsuccessful) compositing-layer test.
+              That was the actual bug. updateVehicleTransform() sets this
+              exact element's SVG `transform` ATTRIBUTE every frame
+              (translate(...) rotate(...) scale(...) translate(-12 -12)).
+              A CSS `transform` property on the same element always wins
+              over an SVG transform attribute, so the real, JS-computed
+              transform was being silently discarded and the vehicle
+              rendered at its raw, untransformed 24-unit size/position --
+              confirmed via on-device HUD readout showing an impossible
+              bbox (tens of thousands of px, far outside the viewport).
+              Do not add a CSS `transform` style to this element again;
+              willChange alone (no transform) is safe if GPU promotion is
+              ever needed here. */}
+          <g ref={vehicleGroupRef}>
             {vehicleMode === 'plane' ? (
               <path d={PLANE_PATH} fill={VEHICLE_STROKE} stroke='none' />
             ) : vehicleMode === 'train' ? (
