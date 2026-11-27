@@ -77,6 +77,40 @@ export const ICELAND_HOME_TO_LJUBLJANA_JOURNEY: Journey = {
   ],
 };
 
+// =========================================================================
+// DIAGNOSTIC ONLY -- not used on any real page, only on /test-map-isolated.
+// Literal clone of ICELAND_HOME_TO_LJUBLJANA_JOURNEY above (same id/leg id,
+// so it hits the exact same precomputed route-cache entry -- zero live
+// routeCurvePoint cost, zero geometry difference) with ONLY camera.spanDeg
+// forced down to 0.15, matching Playa del Duque's real production zoom.
+// Purpose: isolate viewBox-to-pixel CTM scale as the single variable,
+// using route/geometry data that is proven to render correctly everywhere
+// else, on a journey that has never once been reported broken. If the
+// white-patch/missing-bottom bug appears HERE too, that proves it is a
+// pure CTM-scale rendering bug (nothing to do with Tenerife/Sardinia's own
+// route data, routeLand, or point density, all three already separately
+// tested). If it does NOT appear here, that rules out raw CTM scale as
+// sufficient on its own and points back at something specific to the
+// Tenerife/Sardinia maps (their region fine-detail coastline layer, their
+// routeLand usage, or something else not yet isolated).
+export const ICELAND_HOME_TO_LJUBLJANA_TIGHT_ZOOM_TEST: Journey = {
+  id: 'iceland-home-to-ljubljana',
+  initialCamera: { center: [15.1, 46.55], spanDeg: 0.15 },
+  legs: [
+    {
+      id: 'home-to-ljubljana',
+      mode: 'car',
+      from: HOME,
+      to: LJUBLJANA_AIRPORT,
+      camera: { center: [15.1, 46.55], spanDeg: 0.15 },
+      curve: 0.1,
+      route: HOME_TO_LJUBLJANA_ROUTE,
+      weight: 3.5,
+      transition: 'ease',
+    },
+  ],
+};
+
 // ---------------------------------------------------------------------
 // Ljubljana Airport -> (flight) -> Keflavík International Airport, the
 // real 17 October 2025 direct charter flight. Reuses the same

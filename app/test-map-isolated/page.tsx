@@ -18,6 +18,7 @@
 import JourneyMapScene from '@/components/journey/JourneyMapScene';
 import { TENERIFE_DUQUE_FRESH_REBUILD_TEST, TENERIFE_ROCA_TO_DUQUE_JOURNEY } from '@/lib/journeys/tenerife';
 import { SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY } from '@/lib/journeys/sardinia';
+import { ICELAND_HOME_TO_LJUBLJANA_TIGHT_ZOOM_TEST } from '@/lib/journeys/iceland';
 
 export default function TestMapIsolatedPage() {
   return (
@@ -50,6 +51,17 @@ export default function TestMapIsolatedPage() {
         routeCacheUrl="/route-cache/sardinia.json"
         region="sardinia"
         journey={SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY}
+        heightClassName="h-[340px] sm:h-[380px] md:h-[440px]"
+      />
+      <div style={{ height: '40vh' }} />
+      <p style={{ fontFamily: 'sans-serif', fontSize: 14, color: '#666', marginBottom: 16 }}>
+        Map 4 of 4 -- Iceland Home-&gt;Ljubljana, the EXACT real, always-working
+        route/geometry, with ONLY camera.spanDeg forced down to 0.15
+        (Duque's real zoom). Isolates CTM scale alone as the variable.
+      </p>
+      <JourneyMapScene
+        routeCacheUrl="/route-cache/iceland.json"
+        journey={ICELAND_HOME_TO_LJUBLJANA_TIGHT_ZOOM_TEST}
         heightClassName="h-[340px] sm:h-[380px] md:h-[440px]"
       />
       <div style={{ height: '60vh' }} />
