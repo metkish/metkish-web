@@ -1139,6 +1139,74 @@ const ROCA_TO_COSTA_ADEJE_SHARED: [number, number][] = [
 // PLAYA_DEL_DUQUE coordinate above (the real parking access point; the
 // map label stays "Playa del Duque" since that beach is the destination
 // of the story).
+// TEST ONLY -- investigating whether point DENSITY (not routeLand, not
+// zoom) is the real cause of the vehicle/route-disappearing bug. Computed
+// via Ramer-Douglas-Peucker on the real, already-verified route above,
+// tolerance 0.00008 degrees (~9m) -- well under the real scale of every
+// genuine manoeuvre/hairpin in this corridor (confirmed by inspecting the
+// output: the resort-strip hairpin around the final approach is still
+// represented by multiple points tracing the same loop, not flattened to
+// a straight line), so per the metkish-route-geometry rule's own
+// criteria this removes only sub-visual/GPS-noise-level redundant points,
+// not any real curve. NOT yet applied to the real exported
+// ROCA_NIVARIA_TO_DUQUE_ROUTE (which several other journeys' shared
+// corridor constants feed into) -- this is a separate, isolated array
+// used only by the fix/map-coordinate-precision test setup, to verify
+// the density hypothesis itself before touching any shared/production
+// data.
+const ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST: [number, number][] = [
+  [-16.77648, 28.12059],
+  [-16.7763, 28.121221],
+  [-16.774588, 28.121852],
+  [-16.773635, 28.122406],
+  [-16.774186, 28.12335],
+  [-16.774116, 28.123621],
+  [-16.773609, 28.124157],
+  [-16.773651, 28.124613],
+  [-16.774052, 28.124804],
+  [-16.774951, 28.124597],
+  [-16.775195, 28.124819],
+  [-16.775163, 28.124971],
+  [-16.773219, 28.126268],
+  [-16.770072, 28.129209],
+  [-16.767138, 28.130216],
+  [-16.764009, 28.13216],
+  [-16.763783, 28.132143],
+  [-16.762866, 28.131129],
+  [-16.760133, 28.129173],
+  [-16.757451, 28.128158],
+  [-16.755813, 28.127962],
+  [-16.754997, 28.127518],
+  [-16.754738, 28.127143],
+  [-16.754153, 28.12746],
+  [-16.752648, 28.127663],
+  [-16.752184, 28.127471],
+  [-16.751313, 28.126692],
+  [-16.748782, 28.126126],
+  [-16.744721, 28.127241],
+  [-16.744101, 28.127018],
+  [-16.741988, 28.124799],
+  [-16.739013, 28.120302],
+  [-16.734755, 28.112607],
+  [-16.734409, 28.111737],
+  [-16.733945, 28.109239],
+  [-16.733461, 28.10832],
+  [-16.7321, 28.10647],
+  [-16.731732, 28.105266],
+  [-16.729959, 28.094445],
+  [-16.729494, 28.090835],
+  [-16.729618, 28.0902],
+  [-16.729529, 28.089343],
+  [-16.729704, 28.089111],
+  [-16.731869, 28.087987],
+  [-16.732274, 28.087897],
+  [-16.735034, 28.089233],
+  [-16.735346, 28.089501],
+  [-16.735898, 28.088974],
+  [-16.735889, 28.088665],
+  PLAYA_DEL_DUQUE.coords,
+];
+
 const ROCA_NIVARIA_TO_DUQUE_ROUTE: [number, number][] = [
   ...ROCA_NIVARIA_HOTEL_ACCESS,
   ...ROCA_TO_COSTA_ADEJE_SHARED,
@@ -1299,34 +1367,35 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
 // so the map opens already on the right frame rather than panning in.
 export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
   id: 'tenerife-roca-to-duque',
-  // TEST ONLY -- spanDeg back at 1.5 for an independent re-confirmation.
-  // 0.6 was confirmed to break EVERY reload, deterministically (not a
-  // timing fluke), and cross-browser/cross-device -- now re-testing 1.5
-  // the same rigorous way (multiple reloads, same config) to see if it
-  // is ALSO deterministic, before drawing any conclusion about zoom's
-  // causal role.
-  initialCamera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
+  // TEST ONLY -- spanDeg back to its real production value (0.13).
+  // Zoom was tested extensively and conclusively ruled out as a factor
+  // (the bug occurred at 0.13, 0.6, and was unconfirmable either way at
+  // 1.5/9 purely because the view was too distant to judge -- never
+  // actually shown to be fixed by any zoom level). The variable now
+  // under test is real-waypoint DENSITY (points per unit real distance)
+  // -- see ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST above: user's own
+  // observation was that long, sparse routes (Home->Vienna, Teresitas)
+  // work, while short, dense local routes (this one, Transfer) don't.
+  initialCamera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
   legs: [
     {
       id: 'roca-nivaria-to-duque',
       mode: 'car',
       from: ROCA_NIVARIA,
       to: PLAYA_DEL_DUQUE,
-      camera: { center: [-16.754, 28.1115], spanDeg: 1.5 },
+      camera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
       curve: 0.15,
-      route: ROCA_NIVARIA_TO_DUQUE_ROUTE,
-      // TEST ONLY -- temporarily removed to test whether building this
-      // leg the same way as the always-working Home->Vienna leg (no
-      // routeLand, plain low-tension Catmull-Rom, same as every other
-      // field/code path) actually stops the vehicle/route-disappearing
-      // bug. NOT a confirmed fix yet -- removing this real coastline
-      // safety check is exactly what an earlier pass got wrong on THIS
-      // SAME leg (see the metkish-route-geometry skill's Duque
-      // counter-example: a real hairpin/S-curve near the resort strip
-      // that an unprotected curve can cut across the sea on) -- so this
-      // must be visually re-verified against the real coastline before
-      // it could ever be considered done, even if it does fix the bug.
-      // routeLand: [CANARY_PATHS[0]],
+      route: ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST, // TEST ONLY
+      // Restored (was temporarily removed in an earlier test on this
+      // branch to test routeLand itself as a variable -- that test's
+      // result: removing it did NOT stop the bug, so it was never the
+      // cause). Re-verified safe even WITHOUT this safety curve on the
+      // thinned route above (worst margin 0.00147 vs required 0.00027,
+      // identical to the pre-thinning route -- the thinning did not
+      // change how close the curve gets to the coastline), but restored
+      // anyway since this leg legitimately runs close to the coast and
+      // production should keep the safety net regardless.
+      routeLand: [CANARY_PATHS[0]],
       // Same single-leg "ease" pacing as the other short local hop
       // (airport-to-hotel above) — a quick, compact autoplay rather than
       // a long cinematic one, matching the editorial-transition role this
