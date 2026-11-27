@@ -1175,6 +1175,20 @@ export default function JourneyMapScene({
         duration: playDurationS,
         ease: 'none',
         onUpdate: () => render(proxy.p),
+        // Same forced-repaint nudge as each leg's own cameraTween above,
+        // but for the resting state the visitor actually ends up looking
+        // at: reported (real on-device screenshots, Tenerife this time --
+        // Roca Nivaria -> Playa del Duque and -> Playa de las Américas)
+        // as a white/pale rectangle persisting over the background after
+        // the whole animation has settled, i.e. a paint failure that
+        // happened sometime AFTER that leg's own cameraTween already
+        // completed and fired its own nudge (route-line drawing and
+        // vehicle movement keep writing to the DOM for a while after the
+        // camera itself stops moving). One more nudge once the entire
+        // autoplay timeline finishes guarantees the final, settled frame
+        // -- the one most likely to be screenshotted -- is repainted
+        // correctly, regardless of when exactly the glitch happened.
+        onComplete: () => forceSvgRepaint(svgRef.current),
       });
     };
 

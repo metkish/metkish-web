@@ -72,6 +72,18 @@ function bboxIntersects(a, b) {
   return a[0] <= b[2] && a[2] >= b[0] && a[1] <= b[3] && a[3] >= b[1];
 }
 
+function padBBox([minX, minY, maxX, maxY], pad) {
+  return [minX - pad, minY - pad, maxX + pad, maxY + pad];
+}
+
+// True when `inner`'s entire extent sits inside `outer` -- used to drop a
+// whole ring (not just clip it) from the wide/coarse layer when a
+// per-region fine-detail layer already covers it at much better accuracy
+// (see clippedPaths' excludeBBoxes option below).
+function bboxFullyInside(inner, outer) {
+  return inner[0] >= outer[0] && inner[2] <= outer[2] && inner[1] >= outer[1] && inner[3] <= outer[3];
+}
+
 // Sutherland-Hodgman polygon clipping against an axis-aligned rectangle.
 // Needed because "ring's bbox overlaps our region" is not the same as
 // "ring is actually near our region" — a huge ring (e.g. the entire
@@ -284,9 +296,11 @@ async function main() {
   // size of "the entire African coastline" from ever reaching the
   // simplifier or the output for a small target window like the Canary
   // Islands — only the portion actually inside the window survives.
-  function clippedPaths(rings, bbox, { pad = 0, minArea = 0, tolerance, maxRings = 40 }) {
+  function clippedPaths(rings, bbox, { pad = 0, minArea = 0, tolerance, maxRings = 40, excludeBBoxes = [] }) {
     const padded = [bbox[0] - pad, bbox[1] - pad, bbox[2] + pad, bbox[3] + pad];
-    const candidates = ringsInBBox(rings, padded);
+    const candidates = ringsInBBox(rings, padded).filter(
+      (r) => !excludeBBoxes.some((ex) => bboxFullyInside(ringBBox(r), ex))
+    );
     const clipped = candidates
       .map((r) => clipRingToBBox(r, padded))
       .filter((r) => r.length >= 3)
@@ -298,17 +312,35 @@ async function main() {
     return pathsForRings(clipped, tolerance);
   }
 
+  // Per-region fine-detail bboxes, hoisted above Stage 2 so the wide/
+  // coarse layer below can exclude exactly the area each one covers --
+  // see the excludeBBoxes comment on widePaths just below.
+  const CANARY_BBOX = [-18.3, 27.5, -13.3, 29.5];
+  const SARDINIA_BBOX = [7.9, 38.6, 11.0, 42.0];
+
   // ---- Stage 2: wide Europe / Atlantic / North Africa (real coastline) ----
+  // excludeBBoxes drops Tenerife/Canary and Sardinia's own (much cruder,
+  // tolerance 0.12) island rings from this layer entirely, rather than
+  // letting them render stacked underneath that region's fine-detail
+  // layer (CANARY_PATHS/SARDINIA_PATHS below). Two independently-
+  // simplified outlines of the same island never land on exactly the
+  // same coastline, so stacking both produced a visible seam: lighter
+  // (wide-only, opacity 0.4) where the coarse shape didn't reach as far
+  // as the real coast, darker (both layers' opacity combined) where they
+  // overlapped -- reported live as pale patches and an oddly jagged
+  // double coastline on the Tenerife and Sardinia maps. Each excluded box
+  // is padded to match that region's own clippedPaths() pad below, so the
+  // dropped area and the fine-detail area line up exactly with no gap.
   const WIDE_BBOX = [-26, 14, 26, 56]; // [minLng, minLat, maxLng, maxLat]
   const widePaths = clippedPaths(earthRingsAll, WIDE_BBOX, {
     pad: 1,
     minArea: 0.08,
     tolerance: 0.12,
     maxRings: 30,
+    excludeBBoxes: [padBBox(CANARY_BBOX, 0.05), padBBox(SARDINIA_BBOX, 0.1)],
   });
 
   // ---- Stage 3: Canary Islands / Tenerife (fine detail) ----
-  const CANARY_BBOX = [-18.3, 27.5, -13.3, 29.5];
   const canaryPaths = clippedPaths(earthRingsAll, CANARY_BBOX, {
     pad: 0.05,
     minArea: 0.0003,
@@ -404,7 +436,6 @@ async function main() {
   // to 90 to keep all 82 with a small margin (La Maddalena archipelago,
   // Tavolara/Molara, every other real islet at this area threshold),
   // checked empirically, not guessed.
-  const SARDINIA_BBOX = [7.9, 38.6, 11.0, 42.0];
   const sardiniaPaths = clippedPaths(earthRingsAllFine, SARDINIA_BBOX, {
     pad: 0.1,
     minArea: 0.00003,
