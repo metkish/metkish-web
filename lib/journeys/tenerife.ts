@@ -1309,7 +1309,18 @@ export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
       camera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
       curve: 0.15,
       route: ROCA_NIVARIA_TO_DUQUE_ROUTE,
-      routeLand: [CANARY_PATHS[0]],
+      // TEST ONLY -- temporarily removed to test whether building this
+      // leg the same way as the always-working Home->Vienna leg (no
+      // routeLand, plain low-tension Catmull-Rom, same as every other
+      // field/code path) actually stops the vehicle/route-disappearing
+      // bug. NOT a confirmed fix yet -- removing this real coastline
+      // safety check is exactly what an earlier pass got wrong on THIS
+      // SAME leg (see the metkish-route-geometry skill's Duque
+      // counter-example: a real hairpin/S-curve near the resort strip
+      // that an unprotected curve can cut across the sea on) -- so this
+      // must be visually re-verified against the real coastline before
+      // it could ever be considered done, even if it does fix the bug.
+      // routeLand: [CANARY_PATHS[0]],
       // Same single-leg "ease" pacing as the other short local hop
       // (airport-to-hotel above) — a quick, compact autoplay rather than
       // a long cinematic one, matching the editorial-transition role this
@@ -1793,16 +1804,6 @@ const ROCA_NIVARIA_TO_TERESITAS_ROUTE: [number, number][] = [
 // comfortably inside the frame with real margin on every side (not edge to
 // edge) at this map's actual render aspect — verified live, not just by
 // the numbers, per the metkish-route-geometry rule.
-//
-// KNOWN VALIDATOR FALSE POSITIVE: `npm run validate:routes` reports a
-// hard FAIL on-land for this route's final approach (t≈1.0, right by
-// the destination itself). Playa de Las Teresitas is a real beach
-// literally at the coastline, so the route's last stretch sits very
-// close to the land/sea boundary by design — the validator's generic
-// on-land margin check isn't tuned for a destination that IS the
-// shoreline. Visually reviewed live on the rendered map and confirmed
-// correct; left unchanged. Re-check visually again if this route's
-// points are ever edited.
 export const TENERIFE_ROCA_TO_TERESITAS_JOURNEY: Journey = {
   id: 'tenerife-roca-to-teresitas',
   initialCamera: { center: [-16.48, 28.28], spanDeg: 1.35 },
@@ -2062,15 +2063,6 @@ const ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE: [number, number][] = [
 // comfortably inside the frame with real margin on every side at this
 // map's actual render aspect — verified live, per the metkish-route-
 // geometry rule.
-//
-// KNOWN VALIDATOR FALSE POSITIVE: `npm run validate:routes` reports a
-// hard FAIL on-land for this route's final approach (t≈1.0, right by
-// the marina itself). Los Gigantes marina sits directly on the
-// waterfront, so the route's last stretch is naturally very close to
-// the land/sea boundary — same shoreline-destination case as the
-// Teresitas route above, not a real geometry error. Visually reviewed
-// live on the rendered map and confirmed correct; left unchanged.
-// Re-check visually again if this route's points are ever edited.
 export const TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY: Journey = {
   id: 'tenerife-roca-to-los-gigantes',
   initialCamera: { center: [-16.81, 28.185], spanDeg: 0.42 },
