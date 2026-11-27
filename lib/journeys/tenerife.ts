@@ -1139,71 +1139,37 @@ const ROCA_TO_COSTA_ADEJE_SHARED: [number, number][] = [
 // PLAYA_DEL_DUQUE coordinate above (the real parking access point; the
 // map label stays "Playa del Duque" since that beach is the destination
 // of the story).
-// TEST ONLY -- investigating whether point DENSITY (not routeLand, not
-// zoom) is the real cause of the vehicle/route-disappearing bug. Computed
-// via Ramer-Douglas-Peucker on the real, already-verified route above,
-// tolerance 0.00008 degrees (~9m) -- well under the real scale of every
-// genuine manoeuvre/hairpin in this corridor (confirmed by inspecting the
-// output: the resort-strip hairpin around the final approach is still
-// represented by multiple points tracing the same loop, not flattened to
-// a straight line), so per the metkish-route-geometry rule's own
-// criteria this removes only sub-visual/GPS-noise-level redundant points,
-// not any real curve. NOT yet applied to the real exported
-// ROCA_NIVARIA_TO_DUQUE_ROUTE (which several other journeys' shared
-// corridor constants feed into) -- this is a separate, isolated array
-// used only by the fix/map-coordinate-precision test setup, to verify
-// the density hypothesis itself before touching any shared/production
-// data.
+// TEST ONLY, round 2 -- user asked to go further: match Home->Vienna's
+// own point count (13) exactly, to test the density hypothesis at its
+// most extreme. CAUTION, explicitly flagged (not silently done): at this
+// tolerance (~111m) the real hairpin/S-curve near the final approach to
+// Playa del Duque -- the metkish-route-geometry rule's own named
+// counter-example for over-simplifying THIS SAME corridor -- is no
+// longer represented as a continuous loop, only a single sharper zigzag
+// (points 10-12 below). Re-verified it still stays on real land (same
+// 0.00147 margin as before, at t=0 near the hotel -- that check doesn't
+// certify the hairpin's shape, only that the curve doesn't cross the
+// sea). This is a diagnostic test on the isolated test page only, NOT a
+// candidate for production as-is: if it stops the bug, the real fix
+// still needs a way to reach a working density WITHOUT erasing this real
+// manoeuvre (e.g. thinning the long straight TF-1 stretch much harder
+// while leaving the final-approach curve denser) -- intentionally not
+// attempted yet, pending this test's result. Round-1's 50-point version
+// (tol 0.00008, hairpin fully preserved) is preserved in git history on
+// this branch if round 2 doesn't clear anything round 1 didn't.
 const ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST: [number, number][] = [
   [-16.77648, 28.12059],
-  [-16.7763, 28.121221],
-  [-16.774588, 28.121852],
   [-16.773635, 28.122406],
-  [-16.774186, 28.12335],
-  [-16.774116, 28.123621],
-  [-16.773609, 28.124157],
   [-16.773651, 28.124613],
-  [-16.774052, 28.124804],
-  [-16.774951, 28.124597],
-  [-16.775195, 28.124819],
   [-16.775163, 28.124971],
-  [-16.773219, 28.126268],
-  [-16.770072, 28.129209],
-  [-16.767138, 28.130216],
   [-16.764009, 28.13216],
-  [-16.763783, 28.132143],
-  [-16.762866, 28.131129],
-  [-16.760133, 28.129173],
-  [-16.757451, 28.128158],
-  [-16.755813, 28.127962],
-  [-16.754997, 28.127518],
   [-16.754738, 28.127143],
-  [-16.754153, 28.12746],
-  [-16.752648, 28.127663],
-  [-16.752184, 28.127471],
-  [-16.751313, 28.126692],
-  [-16.748782, 28.126126],
-  [-16.744721, 28.127241],
   [-16.744101, 28.127018],
-  [-16.741988, 28.124799],
   [-16.739013, 28.120302],
-  [-16.734755, 28.112607],
-  [-16.734409, 28.111737],
-  [-16.733945, 28.109239],
-  [-16.733461, 28.10832],
-  [-16.7321, 28.10647],
   [-16.731732, 28.105266],
-  [-16.729959, 28.094445],
-  [-16.729494, 28.090835],
-  [-16.729618, 28.0902],
   [-16.729529, 28.089343],
-  [-16.729704, 28.089111],
-  [-16.731869, 28.087987],
   [-16.732274, 28.087897],
-  [-16.735034, 28.089233],
   [-16.735346, 28.089501],
-  [-16.735898, 28.088974],
-  [-16.735889, 28.088665],
   PLAYA_DEL_DUQUE.coords,
 ];
 
