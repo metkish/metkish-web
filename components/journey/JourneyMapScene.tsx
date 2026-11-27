@@ -353,8 +353,18 @@ export default function JourneyMapScene({
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
-  // A second, separate <svg> holding only the vehicle — see its JSX
-  // below for why the vehicle can't just live in the main svg above.
+  // The vehicle no longer lives in the main svg's degree-space viewBox at
+  // all (see the long comment on vehicleWrapperRef below for why). This
+  // div is positioned in plain CSS pixels every frame, exactly like a
+  // label wrapper -- the same mechanism that has never once shown this
+  // bug across the whole engagement.
+  const vehicleWrapperRef = useRef<HTMLDivElement | null>(null);
+  // The vehicle's own small icon svg, nested inside vehicleWrapperRef. Its
+  // viewBox is a FIXED constant ('-4 -4 32 32', the icon's native local
+  // space) -- never rewritten per frame. Only its CSS width/height
+  // (actual target pixel size) and its CSS transform (center + rotate)
+  // change per frame, both ordinary, everyday SVG sizing -- not the
+  // tiny-scale-attribute-times-huge-viewBox trick this replaces.
   const vehicleSvgRef = useRef<SVGSVGElement | null>(null);
   const routeGlowRef = useRef<SVGPathElement | null>(null);
   const routeLineRef = useRef<SVGPathElement | null>(null);
@@ -731,21 +741,54 @@ export default function JourneyMapScene({
       const [cx, cy] = toLocal(project([viewBoxProxy.lng, viewBoxProxy.lat]));
       const vb = `${cx - currentFrame.width / 2} ${cy - currentFrame.height / 2} ${currentFrame.width} ${currentFrame.height}`;
       svg.setAttribute('viewBox', vb);
-      // The vehicle-only overlay svg (see its JSX below) shares this exact
-      // viewBox so the vehicle keeps landing on the same projected
-      // position as the route/markers in the main svg beneath it.
-      vehicleSvgRef.current?.setAttribute('viewBox', vb);
+      // The vehicle no longer shares this viewBox at all -- see
+      // updateVehicleTransform below.
     };
 
+    // FOUND AND FIXED (the real root cause, not the earlier CSS/SVG
+    // transform-attribute conflict, which was a separate, self-inflicted
+    // bug already fixed above vehicleWrapperRef's declaration). The old
+    // version of this function set an SVG `transform` ATTRIBUTE on
+    // vehicleGroupRef every frame: translate(worldCoords) rotate(angle)
+    // scale(s) translate(-12 -12), sharing the main map's degree-space
+    // viewBox. On a tightly-zoomed leg (small spanDeg, e.g. Duque's 0.13)
+    // that `s` is a genuinely tiny number (~0.00015, confirmed live via
+    // the on-device HUD) -- not because anything is wrong, but because
+    // the formula deliberately cancels the huge viewBox-to-pixel CTM a
+    // tight zoom produces, to keep the vehicle's FINAL on-screen size
+    // constant regardless of zoom. Labels and markers never hit this:
+    // they're positioned in plain CSS pixels (see updateLabelScreenPos),
+    // never via an SVG scale() this extreme composed with a huge ancestor
+    // viewBox. Confirmed live (headless + real device) that this specific
+    // combination intermittently rasterizes as either a near-zero-size
+    // or an absurdly-oversized box -- a real paint bug, not a geometry
+    // mistake, and the one this whole investigation was chasing.
+    //
+    // Fix: stop asking the SVG transform system to cancel a huge CTM with
+    // a tiny scale() at all. Position the vehicle exactly like a label --
+    // a wrapper div moved with a plain CSS pixel translate() -- and give
+    // the icon itself a FIXED, ordinary viewBox ('-4 -4 32 32', see the
+    // JSX below) sized directly in CSS pixels via width/height. Rotation
+    // is a CSS rotate() on that same icon element, which rotates around
+    // its own visual center by default -- no translate(-12 -12) needed.
     const updateVehicleTransform = () => {
-      const g = vehicleGroupRef.current;
-      if (!g) return;
+      const wrapper = vehicleWrapperRef.current;
+      const icon = vehicleSvgRef.current;
+      if (!wrapper || !icon) return;
       const px = targetPx(ICON_RATIO, containerSize.width, ICON_MIN_PX, ICON_MAX_PX);
-      const scale = (px * currentFrame.width) / (24 * containerSize.width);
-      g.setAttribute(
-        'transform',
-        `translate(${vehicleWorld[0]} ${vehicleWorld[1]}) rotate(${vehicleAngle}) scale(${scale}) translate(-12 -12)`
-      );
+      // Same vbX/vbY-from-viewBoxProxy math as updateLabelScreenPos below
+      // -- the single source of truth for "where does a world coordinate
+      // land in this frame's CSS pixel box" that labels already use
+      // without ever exhibiting this bug.
+      const [vbCx, vbCy] = toLocal(project([viewBoxProxy.lng, viewBoxProxy.lat]));
+      const vbX = vbCx - currentFrame.width / 2;
+      const vbY = vbCy - currentFrame.height / 2;
+      const left = ((vehicleWorld[0] - vbX) / currentFrame.width) * containerSize.width;
+      const top = ((vehicleWorld[1] - vbY) / currentFrame.height) * containerSize.height;
+      wrapper.style.transform = `translate(${left.toFixed(2)}px, ${top.toFixed(2)}px)`;
+      icon.style.width = `${px}px`;
+      icon.style.height = `${px}px`;
+      icon.style.transform = `translate(-50%, -50%) rotate(${vehicleAngle.toFixed(2)}deg)`;
     };
 
     const applyRouteStrokeWidth = () => {
@@ -1036,14 +1079,17 @@ export default function JourneyMapScene({
             // that half of the question.)
             const vg = vehicleGroupRef.current;
             const vgRect = vg?.getBoundingClientRect();
+            const vWrap = vehicleWrapperRef.current;
+            const vIcon = vehicleSvgRef.current;
             hud.textContent +=
-              '\nvGroup transform=' + (vg?.getAttribute('transform') ?? 'null') +
+              '\nvWrapper transform=' + (vWrap?.style.transform ?? 'null') +
+              '\nvIcon transform=' + (vIcon?.style.transform ?? 'null') +
+              ' size=' + (vIcon?.style.width ?? '?') + 'x' + (vIcon?.style.height ?? '?') +
               '\nvGroup bbox: w=' + (vgRect ? vgRect.width.toFixed(1) : '?') +
               ' h=' + (vgRect ? vgRect.height.toFixed(1) : '?') +
               ' x=' + (vgRect ? vgRect.x.toFixed(0) : '?') +
               ' y=' + (vgRect ? vgRect.y.toFixed(0) : '?') +
-              '\nvGroup inDom=' + (vg ? document.contains(vg) : false) +
-              ' vehicleSvg viewBox=' + (vehicleSvgRef.current?.getAttribute('viewBox') ?? 'null');
+              '\nvGroup inDom=' + (vg ? document.contains(vg) : false);
 
             // TEMPORARY DIAGNOSTIC -- round 2: the vehicle's own transform
             // read as numerically valid in round 1, yet it (and/or the
@@ -1484,44 +1530,26 @@ export default function JourneyMapScene({
           </div>
         ))}
 
-        {/* The vehicle lives in its own overlay svg, stacked after (so on
-            top of) the label markers above — a separate element rather
-            than a z-index on the main svg, because that main svg also
-            carries the map's opaque background/land fills: raising the
-            whole thing would bury the labels behind them instead of just
-            lifting the vehicle above a marker dot. This one shares the
-            main svg's exact viewBox (kept in sync in syncViewBoxAttribute
-            above) so the vehicle still lands on the same projected
-            position, and is otherwise fully transparent/click-through. */}
-        <svg
-          ref={vehicleSvgRef}
-          className='absolute inset-0 w-full h-full pointer-events-none'
-          preserveAspectRatio='xMidYMid slice'
-          // Forces its own persistent compositing layer rather than
-          // relying on the browser's own promotion heuristics. Confirmed
-          // on a real device (via a temporary on-screen readout) that the
-          // vehicle's computed position/size/DOM presence are correct at
-          // the exact moment it visually disappears -- this is a pure
-          // paint/compositing failure, not a logic or geometry bug, so
-          // the fix lives entirely here, in how this one layer is
-          // composited. No visual, timing, or geometry change.
-          style={{ transform: 'translateZ(0)', willChange: 'transform' }}
-        >
-          {/* FOUND AND FIXED: this element previously also carried
-              style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-              as part of an earlier (unsuccessful) compositing-layer test.
-              That was the actual bug. updateVehicleTransform() sets this
-              exact element's SVG `transform` ATTRIBUTE every frame
-              (translate(...) rotate(...) scale(...) translate(-12 -12)).
-              A CSS `transform` property on the same element always wins
-              over an SVG transform attribute, so the real, JS-computed
-              transform was being silently discarded and the vehicle
-              rendered at its raw, untransformed 24-unit size/position --
-              confirmed via on-device HUD readout showing an impossible
-              bbox (tens of thousands of px, far outside the viewport).
-              Do not add a CSS `transform` style to this element again;
-              willChange alone (no transform) is safe if GPU promotion is
-              ever needed here. */}
+        {/* FOUND AND FIXED (the real root cause -- see the long comment
+            on updateVehicleTransform). The vehicle used to live in a
+            second full-size overlay svg sharing the main map's degree-
+            space viewBox, positioned via an SVG transform attribute whose
+            scale() became a genuinely tiny number on a tightly-zoomed leg
+            -- confirmed, live, to sometimes rasterize as a near-zero or
+            an absurdly oversized box. Now it's a plain, absolutely
+            positioned wrapper div, moved with a CSS pixel translate()
+            exactly like a label wrapper (see updateLabelScreenPos) --
+            the one mechanism in this whole component that has never once
+            shown this bug. */}
+        <div ref={vehicleWrapperRef} className='absolute left-0 top-0 pointer-events-none'>
+          {/* Fixed, ordinary viewBox -- the icon's own native local
+              space, matching the two static decoy icons below and never
+              rewritten per frame. Only width/height (the current target
+              pixel size) and the CSS transform (center + rotate) change
+              per frame, both completely ordinary SVG/CSS sizing -- not an
+              imperative transform attribute fighting a huge ancestor
+              viewBox. */}
+          <svg ref={vehicleSvgRef} viewBox='-4 -4 32 32' width={ICON_MIN_PX} height={ICON_MIN_PX} className='absolute left-0 top-0'>
           <g ref={vehicleGroupRef}>
             {vehicleMode === 'plane' ? (
               <path d={PLANE_PATH} fill={VEHICLE_STROKE} stroke='none' />
@@ -1588,13 +1616,9 @@ export default function JourneyMapScene({
                     correct regardless of what that is. */}
                 {/* Explicit mask region (rather than the SVG default of
                     -10%/120% of the current viewport) because maskUnits is
-                    userSpaceOnUse and this <g>'s enclosing viewBox is set
-                    imperatively in JS and changes every frame during the
-                    camera pan — a percentage of a viewBox that size can
-                    resolve to a region nowhere near the car's own 24x24
-                    local space, which clipped the whole car invisible.
-                    -4..28 comfortably covers the 24x24 icon in its own,
-                    untransformed coordinate system regardless of viewBox. */}
+                    userSpaceOnUse -- -4..28 comfortably covers the 24x24
+                    icon in its own local space, matching this svg's own
+                    fixed viewBox above. */}
                 <mask id={carMaskId} maskUnits='userSpaceOnUse' x={-4} y={-4} width={32} height={32}>
                   <path d={CAR_BODY_PATH} fill='white' />
                   <rect
@@ -1613,7 +1637,8 @@ export default function JourneyMapScene({
               </>
             )}
           </g>
-        </svg>
+          </svg>
+        </div>
       </div>
       {/* TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- two
           small, fixed-position decoy car icons, always drawn at a static
