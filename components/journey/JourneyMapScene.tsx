@@ -526,7 +526,14 @@ export default function JourneyMapScene({
     // computation, a huge `d` string rewrite, anything else -- would show
     // up here as a one-off large gap, independent of and in addition to
     // the cache-hit/live-fallback timing captured in legCacheMeta below.
-    const diagHasRouteLand = journey.legs.some((l) => l.routeLand);
+    // Widened (TEST ONLY) to also cover the fresh-rebuild Duque test
+    // journey, which deliberately has NO routeLand (it mirrors
+    // Home-Vienna exactly) -- so this diagnostic, previously gated to
+    // routeLand journeys only, would otherwise never show for it even
+    // though it reproduces the bug (confirmed via screen recording: the
+    // vehicle never appears at all, the whole run, on that journey).
+    const diagHasRouteLand =
+      journey.legs.some((l) => l.routeLand) || journey.id === 'tenerife-duque-fresh-rebuild-test';
     let diagLastRenderAt = performance.now();
     let diagMaxStallMs = 0;
     let diagMaxStallAtMs = -1;
@@ -1619,7 +1626,7 @@ export default function JourneyMapScene({
           decoys stay visible the whole time regardless, that rules the
           mask out entirely. Not for commit; only for mode 'car' (both
           test-page journeys are car legs). */}
-      {journey.legs.some((l) => l.routeLand) && vehicleMode === 'car' && (
+      {(journey.legs.some((l) => l.routeLand) || journey.id === 'tenerife-duque-fresh-rebuild-test') && vehicleMode === 'car' && (
         <div
           style={{
             position: 'absolute',
@@ -1649,7 +1656,7 @@ export default function JourneyMapScene({
           diagHudRef above. Not for commit. Only for a journey with at
           least one routeLand leg -- never shown on the two confirmed-
           working maps (Home->Vienna, Vienna->Tenerife), which have none. */}
-      {journey.legs.some((l) => l.routeLand) && (
+      {(journey.legs.some((l) => l.routeLand) || journey.id === 'tenerife-duque-fresh-rebuild-test') && (
         <div
           ref={diagHudRef}
           style={{
