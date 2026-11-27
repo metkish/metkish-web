@@ -80,6 +80,48 @@ function bboxesIntersect(
   return a[0] <= b[2] && a[2] >= b[0] && a[1] <= b[3] && a[3] >= b[1];
 }
 
+// ANOTHER ROUND, SAME ROOT CAUSE: hiding/culling the region layer's rings
+// (whole-island granularity) reduced the problem but the user's own
+// retest still showed a (smaller, but real) white rectangle around the
+// route on Playa del Duque -- Tenerife's own single ring, on its own, is
+// still large enough relative to a 0.13-degree viewBox to trip the same
+// Safari failure. Rather than keep chasing a smaller-and-smaller content-
+// extent threshold empirically, this applies the ONE technique already
+// proven twice in this file to defeat this exact bug class (the vehicle
+// icon, then the active route line): stop asking the huge-viewBox-CTM SVG
+// to draw this content at all. Each visible ring's `d` string is
+// retransformed, every frame, into this frame's actual on-screen PIXEL
+// coordinates (same project()/mapOrigin/currentFrame math used
+// everywhere else in this file) and written into a <path> in the plain
+// CSS-pixel overlay SVG below (the same one the active route line/glow
+// already use) -- so this content never has an extreme scale applied to
+// it by the SVG engine itself, on any zoom, ever.
+function transformRingToPixelSpace(
+  d: string,
+  mapOriginX: number,
+  mapOriginY: number,
+  vbX: number,
+  vbY: number,
+  frameWidth: number,
+  frameHeight: number,
+  containerWidth: number,
+  containerHeight: number
+): string {
+  return d.replace(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g, (_match, xs, ys) => {
+    const localX = parseFloat(xs) - mapOriginX;
+    const localY = parseFloat(ys) - mapOriginY;
+    const px = ((localX - vbX) / frameWidth) * containerWidth;
+    const py = ((localY - vbY) / frameHeight) * containerHeight;
+    return `${px.toFixed(2)},${py.toFixed(2)}`;
+  });
+}
+
+// Fixed-size pool: in practice at most 1-2 rings (this region's own
+// island/stretch, rarely a neighbour right at the frame edge) are ever
+// actually in view at once, so 4 slots is generous headroom, not a
+// meaningful limit.
+const REGION_PIXEL_PATH_POOL_SIZE = 4;
+
 // A hand-drawn, editorial-atlas palette — the same warm neutrals used
 // across the rest of the site, kept deliberately muted so the map reads as
 // illustration rather than a navigation tool.
@@ -437,10 +479,11 @@ export default function JourneyMapScene({
   // SLOVENIA_PATHS/AUSTRIA_PATHS) -- see its hide/show toggle in
   // syncViewBoxAttribute below for why this exists.
   const wideLayersGroupRef = useRef<SVGGElement | null>(null);
-  // Parallel to REGION_FINE_DETAIL_PATHS[region] / REGION_PATH_BBOXES[region]
-  // for the region this instance actually renders -- see the per-frame
-  // cull in syncViewBoxAttribute below.
-  const regionPathRefs = useRef<(SVGPathElement | null)[]>([]);
+  // Fixed-size pool of <path> refs in the plain-CSS-pixel overlay SVG
+  // (see activeRoutePxSvgRef's JSX) that the currently-visible region
+  // ring(s) get retransformed into every frame -- see
+  // transformRingToPixelSpace's long comment above.
+  const regionPixelPathRefs = useRef<(SVGPathElement | null)[]>([]);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Separate from labelRefs: the *dot* sits on labelRefs (transformed to
@@ -803,26 +846,20 @@ export default function JourneyMapScene({
         wideLayersGroupRef.current.style.display =
           viewBoxProxy.spanDeg < WIDE_LAYERS_HIDE_BELOW_SPANDEG ? 'none' : '';
       }
-      // Per-ring cull for this region's own fine-detail layer -- see
-      // REGION_PATH_BBOXES' long comment above. Generous padding (half
-      // the current frame's own width/height again on every side) so a
-      // ring doesn't pop in/out right at the frame edge during a pan.
-      //
-      // BUG FOUND AND FIXED (same day, user's own retest caught it: no
-      // more white patches, but the entire coastline/land fill had
-      // vanished instead): CANARY_PATHS/SARDINIA_PATHS render OUTSIDE
-      // the `translate(-mapOrigin)` <g> that the wide/neighbour/Slovenia/
-      // Austria layers sit inside (see that <g>'s own comment above) --
-      // their raw `d` coordinates are in plain, un-shifted project()
-      // space. cx/cy above are toLocal()'d, i.e. already shifted BY
-      // -mapOrigin. Comparing shifted cx/cy against this layer's
-      // un-shifted ring boxes compared two different coordinate systems,
-      // so the intersection test failed for every ring, every time,
-      // hiding the entire layer regardless of zoom or position. Fixed by
-      // building this one comparison in the SAME un-shifted space the
-      // rings themselves are in (project() directly, not toLocal'd).
+      // This region's fine-detail ring(s) -- see
+      // transformRingToPixelSpace's long comment above for why this no
+      // longer renders as native in-huge-CTM-SVG <path> elements at all.
+      // First, the same bbox-intersection cull as before decides WHICH
+      // ring(s) are actually in view (generous padding -- half the
+      // current frame's own width/height again on every side -- so a
+      // ring doesn't pop in/out right at the frame edge during a pan);
+      // CANARY_PATHS/SARDINIA_PATHS' raw `d` coordinates are in plain,
+      // un-shifted project() space (they used to render outside the
+      // translate(-mapOrigin) <g>), so this comparison is built in that
+      // same un-shifted space, not the toLocal()'d cx/cy above.
       if (region) {
         const bboxes = REGION_PATH_BBOXES[region];
+        const paths = REGION_FINE_DETAIL_PATHS[region];
         const [rawCx, rawCy] = project([viewBoxProxy.lng, viewBoxProxy.lat]);
         const padX = currentFrame.width * 0.5;
         const padY = currentFrame.height * 0.5;
@@ -832,11 +869,33 @@ export default function JourneyMapScene({
           rawCx + currentFrame.width / 2 + padX,
           rawCy + currentFrame.height / 2 + padY,
         ];
-        regionPathRefs.current.forEach((el, i) => {
-          if (!el) return;
-          const b = bboxes[i];
-          el.style.display = b && bboxesIntersect(b, viewBBox) ? '' : 'none';
-        });
+        const vbX = cx - currentFrame.width / 2;
+        const vbY = cy - currentFrame.height / 2;
+        let slot = 0;
+        for (let i = 0; i < bboxes.length && slot < REGION_PIXEL_PATH_POOL_SIZE; i++) {
+          if (!bboxesIntersect(bboxes[i], viewBBox)) continue;
+          const el = regionPixelPathRefs.current[slot];
+          if (el) {
+            el.setAttribute(
+              'd',
+              transformRingToPixelSpace(
+                paths[i],
+                mapOrigin[0],
+                mapOrigin[1],
+                vbX,
+                vbY,
+                currentFrame.width,
+                currentFrame.height,
+                containerSize.width,
+                containerSize.height
+              )
+            );
+          }
+          slot++;
+        }
+        for (; slot < REGION_PIXEL_PATH_POOL_SIZE; slot++) {
+          regionPixelPathRefs.current[slot]?.setAttribute('d', '');
+        }
       }
     };
 
@@ -1494,30 +1553,11 @@ export default function JourneyMapScene({
           )}
           </g>
           {/* Canary Islands (Tenerife) or Sardinia (north-east coast /
-              Costa Smeralda) close-up coastline -- see the Stage 4 comment
-              in scripts/build-geo.mjs for why this fine detail exists
-              (e.g. Casagliana -> Spiaggia del Principe's local coastal map
-              needs real bay/headland shapes, which WIDE_EUROPE_PATHS'
-              continental-scale simplification can't provide). Only the
-              one region this page's `region` prop names renders at all --
-              see that prop's doc comment above for why this used to
-              render BOTH regions unconditionally on every destination's
-              maps and why that was a real per-page DOM cost, not just
-              invisible-and-free. */}
-          {(region ? REGION_FINE_DETAIL_PATHS[region] : []).map((d, i) => (
-            <path
-              key={`region-${i}`}
-              ref={(el) => {
-                regionPathRefs.current[i] = el;
-              }}
-              d={d}
-              fill={MUTED_LAND}
-              stroke={MUTED_LINE}
-              strokeWidth={1}
-              vectorEffect='non-scaling-stroke'
-              opacity={0.85}
-            />
-          ))}
+              Costa Smeralda) close-up coastline no longer renders here --
+              see transformRingToPixelSpace's long comment above. It now
+              lives in the plain-CSS-pixel overlay SVG below
+              (activeRoutePxSvgRef), retransformed into screen pixels every
+              frame instead of sharing this SVG's huge-viewBox CTM. */}
           {/* Optional, opt-in supplemental land shapes for this journey only
               — see the Journey.extraLandPatches doc comment in
               lib/journeys/types.ts. Unset (undefined) for every journey but
@@ -1592,6 +1632,23 @@ export default function JourneyMapScene({
           className='absolute inset-0 w-full h-full pointer-events-none'
           preserveAspectRatio='none'
         >
+          {/* This region's fine-detail coastline ring(s), currently in
+              view -- see transformRingToPixelSpace's long comment above.
+              Rendered first (underneath) so the route draws on top of
+              it, same stacking as when this lived in the main SVG. */}
+          {Array.from({ length: REGION_PIXEL_PATH_POOL_SIZE }).map((_, i) => (
+            <path
+              key={`region-px-${i}`}
+              ref={(el) => {
+                regionPixelPathRefs.current[i] = el;
+              }}
+              d=''
+              fill={MUTED_LAND}
+              stroke={MUTED_LINE}
+              strokeWidth={1}
+              opacity={0.85}
+            />
+          ))}
           <path ref={activeRouteGlowRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.14} />
           <path ref={activeRouteLineRef} d='' fill='none' stroke={ROUTE_PINK} strokeLinecap='round' strokeLinejoin='round' opacity={0.92} />
         </svg>
