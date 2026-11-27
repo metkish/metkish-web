@@ -1015,6 +1015,28 @@ export default function JourneyMapScene({
               '\nmaxStall=' + diagMaxStallMs.toFixed(1) + 'ms' +
               (diagMaxStallAtMs >= 0 ? ' @t=' + diagMaxStallAtMs.toFixed(0) : '') +
               '\nlp=' + localProgress.toFixed(3) + ' t=' + Math.round(performance.now());
+
+            // TEMPORARY DIAGNOSTIC -- direct read-back of the vehicle's
+            // own live DOM state, every time the HUD text updates (not
+            // just on a stall). Answers, independent of any stall/cache
+            // question: is the vehicle group's own transform/bbox/DOM
+            // presence actually correct at this exact moment, even while
+            // it's visually frozen or gone? (A getBoundingClientRect() is
+            // purely geometric -- it reports nonzero size even when an
+            // SVG mask reference has failed to resolve and the element is
+            // painting as fully clipped, so this can't by itself rule a
+            // broken mask in or out -- see the two decoy icons below for
+            // that half of the question.)
+            const vg = vehicleGroupRef.current;
+            const vgRect = vg?.getBoundingClientRect();
+            hud.textContent +=
+              '\nvGroup transform=' + (vg?.getAttribute('transform') ?? 'null') +
+              '\nvGroup bbox: w=' + (vgRect ? vgRect.width.toFixed(1) : '?') +
+              ' h=' + (vgRect ? vgRect.height.toFixed(1) : '?') +
+              ' x=' + (vgRect ? vgRect.x.toFixed(0) : '?') +
+              ' y=' + (vgRect ? vgRect.y.toFixed(0) : '?') +
+              '\nvGroup inDom=' + (vg ? document.contains(vg) : false) +
+              ' vehicleSvg viewBox=' + (vehicleSvgRef.current?.getAttribute('viewBox') ?? 'null');
           }
         }
       }
@@ -1530,6 +1552,46 @@ export default function JourneyMapScene({
           </g>
         </svg>
       </div>
+      {/* TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- two
+          small, fixed-position decoy car icons, always drawn at a static
+          screen location (not moved or re-transformed by anything this
+          component does per frame), one WITH the exact same mask the real
+          vehicle uses (same carMaskId, reused by reference) and one with
+          no mask at all. A getBoundingClientRect() read-back (see the HUD
+          text above) can't tell a broken mask reference apart from a
+          correctly-masked-but-empty element -- both report the path's own
+          geometric bbox either way. This pair can: if the real vehicle on
+          the map disappears while the MASKED decoy here also disappears
+          (and the unmasked one stays visible), that's the mask. If both
+          decoys stay visible the whole time regardless, that rules the
+          mask out entirely. Not for commit; only for mode 'car' (both
+          test-page journeys are car legs). */}
+      {journey.legs.some((l) => l.routeLand) && vehicleMode === 'car' && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 4,
+            left: 4,
+            display: 'flex',
+            gap: 8,
+            zIndex: 51,
+            pointerEvents: 'none',
+          }}
+        >
+          <div style={{ background: 'rgba(0,0,0,0.75)', borderRadius: 4, padding: 2 }}>
+            <svg width={28} height={28} viewBox='-4 -4 32 32'>
+              <path d={CAR_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' mask={`url(#${carMaskId})`} />
+            </svg>
+            <div style={{ color: '#fff', fontFamily: 'monospace', fontSize: 8, textAlign: 'center' }}>masked</div>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,0.75)', borderRadius: 4, padding: 2 }}>
+            <svg width={28} height={28} viewBox='-4 -4 32 32'>
+              <path d={CAR_BODY_PATH} fill={VEHICLE_STROKE} stroke='none' />
+            </svg>
+            <div style={{ color: '#fff', fontFamily: 'monospace', fontSize: 8, textAlign: 'center' }}>unmasked</div>
+          </div>
+        </div>
+      )}
       {/* TEMPORARY DIAGNOSTIC (on-screen, visible without devtools) -- see
           diagHudRef above. Not for commit. Only for a journey with at
           least one routeLand leg -- never shown on the two confirmed-
