@@ -382,6 +382,10 @@ export default function JourneyMapScene({
   // for why. Its viewBox must track containerSize (plain CSS pixels, not
   // degree-space), kept in sync from syncViewBoxAttribute() below.
   const activeRoutePxSvgRef = useRef<SVGSVGElement | null>(null);
+  // The far-context layer group (WIDE_EUROPE_PATHS/NEIGHBOUR_PATHS/
+  // SLOVENIA_PATHS/AUSTRIA_PATHS) -- see its hide/show toggle in
+  // syncViewBoxAttribute below for why this exists.
+  const wideLayersGroupRef = useRef<SVGGElement | null>(null);
   const vehicleGroupRef = useRef<SVGGElement | null>(null);
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   // Separate from labelRefs: the *dot* sits on labelRefs (transformed to
@@ -697,6 +701,35 @@ export default function JourneyMapScene({
       idleHandle = null;
     };
 
+    // CONFIRMED ROOT CAUSE (controlled test, real Safari + real iPhone,
+    // 25381da): an exact copy of the always-correct Iceland home->
+    // Ljubljana route/geometry, with ONLY camera.spanDeg forced down to
+    // Duque's real production zoom (0.15), rendered as a completely blank
+    // rectangle in Safari -- nothing at all, not even a partial artifact.
+    // That journey never renders WIDE_EUROPE_PATHS/NEIGHBOUR_PATHS/
+    // SLOVENIA_PATHS/AUSTRIA_PATHS at any ZOOM level other than this
+    // SAME one (its one real leg's own spanDeg is 4.8 and has never once
+    // been reported broken), and includes no region fine-detail layer at
+    // all -- so those four wide/coarse layers, sitting in the SAME SVG
+    // whose viewBox gets rewritten to this extreme a scale, are
+    // sufficient on their own to break Safari's rasterization of the
+    // whole surface. Their own geographic extent (WIDE_BBOX alone is 52
+    // degrees of longitude) next to a ~0.15-degree viewBox is a >300x
+    // content-to-viewport ratio; Safari appears to size (or fail to
+    // size) its compositing surface off the full un-clipped content
+    // extent rather than the visible viewBox region.
+    // Fix: these four layers are never actually visible at this zoom
+    // regardless (Slovenia/Austria/the rest of Europe are thousands of km
+    // from the Canary Islands or Sardinia, whichever this map's `region`
+    // is), so hide them from the DOM entirely below a threshold safely
+    // under every real long-haul leg's own spanDeg (Home->Vienna 9,
+    // Iceland's smallest 4.5, Italy's) and safely over every real
+    // Tenerife/Sardinia local-hop's own spanDeg (largest is 2.1) --
+    // zero visual difference at any zoom where they'd actually be seen,
+    // but removes the oversized content extent that appears to be the
+    // actual trigger.
+    const WIDE_LAYERS_HIDE_BELOW_SPANDEG = 3;
+
     const syncViewBoxAttribute = () => {
       const aspect = containerSize.width / containerSize.height;
       currentFrame = computeFrame(viewBoxProxy.spanDeg, aspect);
@@ -711,6 +744,10 @@ export default function JourneyMapScene({
       // cheap enough to re-set on every camera-tween frame too rather than
       // adding a second code path just to skip it).
       activeRoutePxSvgRef.current?.setAttribute('viewBox', `0 0 ${containerSize.width} ${containerSize.height}`);
+      if (wideLayersGroupRef.current) {
+        wideLayersGroupRef.current.style.display =
+          viewBoxProxy.spanDeg < WIDE_LAYERS_HIDE_BELOW_SPANDEG ? 'none' : '';
+      }
     };
 
     // FOUND AND FIXED (the real root cause, not the earlier CSS/SVG
@@ -1309,7 +1346,21 @@ export default function JourneyMapScene({
               land geometry (see scripts/build-geo.mjs) — layered coarse-to-fine
               so the same shapes read at both the pulled-back Europe view and
               the close-up stages, editorial-atlas style: warm, flat, almost no
-              stroke. */}
+              stroke.
+
+              Wrapped in a group that gets hidden (display:none, toggled
+              imperatively in syncViewBoxAttribute -- never via React state,
+              so it costs nothing per frame) once the camera is zoomed in
+              tighter than WIDE_LAYERS_HIDE_BELOW_SPANDEG. See that
+              constant's own long comment: confirmed by a controlled test
+              on real Safari/iPhone that these four layers' own huge
+              geographic extent, sitting in the same SVG as an extreme
+              viewBox zoom, is sufficient on its own to make Safari fail
+              to rasterize the surface at all -- and they're never
+              actually visible at that zoom regardless, since Central
+              Europe is thousands of km from the Canary Islands or
+              Sardinia. */}
+          <g ref={wideLayersGroupRef}>
           {WIDE_EUROPE_PATHS.map((d, i) => (
             <path key={`wide-${i}`} d={d} fill={MUTED_LAND} opacity={0.4} />
           ))}
@@ -1351,6 +1402,7 @@ export default function JourneyMapScene({
               <path key={`austria-${i}`} d={d} fill={MUTED_LAND} opacity={0.55} />
             )
           )}
+          </g>
           {/* Canary Islands (Tenerife) or Sardinia (north-east coast /
               Costa Smeralda) close-up coastline -- see the Stage 4 comment
               in scripts/build-geo.mjs for why this fine detail exists
