@@ -2912,3 +2912,46 @@ export const TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY: Journey = {
     },
   ],
 };
+
+// =========================================================================
+// TEMPORARY -- FRESH REBUILD TEST, not for production. Built from
+// scratch (not edited from the existing Duque journey above) as a
+// literal structural copy of TENERIFE_HOME_TO_VIENNA_JOURNEY -- same
+// field order, same field set, no routeLand, no shared-corridor spreads,
+// no edit history -- substituting only this leg's own real data (the
+// same 13-point thinned route already verified on-land-safe earlier on
+// this branch). Purpose: rule out any possibility that the original
+// Duque journey object carries some leftover artifact from this
+// session's many successive edits, by comparing a provably clean-room
+// version against the exact same real route data.
+export const TENERIFE_DUQUE_FRESH_REBUILD_TEST: Journey = {
+  id: 'tenerife-duque-fresh-rebuild-test',
+  initialCamera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
+  legs: [
+    {
+      id: 'roca-nivaria-to-duque-fresh',
+      mode: 'car',
+      from: ROCA_NIVARIA,
+      to: PLAYA_DEL_DUQUE,
+      camera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
+      curve: 0.14,
+      route: [
+        [-16.77648, 28.12059],
+        [-16.773635, 28.122406],
+        [-16.773651, 28.124613],
+        [-16.775163, 28.124971],
+        [-16.764009, 28.13216],
+        [-16.754738, 28.127143],
+        [-16.744101, 28.127018],
+        [-16.739013, 28.120302],
+        [-16.731732, 28.105266],
+        [-16.729529, 28.089343],
+        [-16.732274, 28.087897],
+        [-16.735346, 28.089501],
+        PLAYA_DEL_DUQUE.coords,
+      ],
+      weight: 3.5,
+      transition: 'ease',
+    },
+  ],
+};
