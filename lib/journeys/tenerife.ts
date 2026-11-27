@@ -1139,40 +1139,6 @@ const ROCA_TO_COSTA_ADEJE_SHARED: [number, number][] = [
 // PLAYA_DEL_DUQUE coordinate above (the real parking access point; the
 // map label stays "Playa del Duque" since that beach is the destination
 // of the story).
-// TEST ONLY, round 2 -- user asked to go further: match Home->Vienna's
-// own point count (13) exactly, to test the density hypothesis at its
-// most extreme. CAUTION, explicitly flagged (not silently done): at this
-// tolerance (~111m) the real hairpin/S-curve near the final approach to
-// Playa del Duque -- the metkish-route-geometry rule's own named
-// counter-example for over-simplifying THIS SAME corridor -- is no
-// longer represented as a continuous loop, only a single sharper zigzag
-// (points 10-12 below). Re-verified it still stays on real land (same
-// 0.00147 margin as before, at t=0 near the hotel -- that check doesn't
-// certify the hairpin's shape, only that the curve doesn't cross the
-// sea). This is a diagnostic test on the isolated test page only, NOT a
-// candidate for production as-is: if it stops the bug, the real fix
-// still needs a way to reach a working density WITHOUT erasing this real
-// manoeuvre (e.g. thinning the long straight TF-1 stretch much harder
-// while leaving the final-approach curve denser) -- intentionally not
-// attempted yet, pending this test's result. Round-1's 50-point version
-// (tol 0.00008, hairpin fully preserved) is preserved in git history on
-// this branch if round 2 doesn't clear anything round 1 didn't.
-const ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST: [number, number][] = [
-  [-16.77648, 28.12059],
-  [-16.773635, 28.122406],
-  [-16.773651, 28.124613],
-  [-16.775163, 28.124971],
-  [-16.764009, 28.13216],
-  [-16.754738, 28.127143],
-  [-16.744101, 28.127018],
-  [-16.739013, 28.120302],
-  [-16.731732, 28.105266],
-  [-16.729529, 28.089343],
-  [-16.732274, 28.087897],
-  [-16.735346, 28.089501],
-  PLAYA_DEL_DUQUE.coords,
-];
-
 const ROCA_NIVARIA_TO_DUQUE_ROUTE: [number, number][] = [
   ...ROCA_NIVARIA_HOTEL_ACCESS,
   ...ROCA_TO_COSTA_ADEJE_SHARED,
@@ -1333,20 +1299,17 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
 // so the map opens already on the right frame rather than panning in.
 export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
   id: 'tenerife-roca-to-duque',
-  // Zoom was tested extensively and conclusively ruled out as a factor in
-  // the Safari white-patch/missing-bottom investigation (the bug occurred
-  // at 0.13, 0.6, and was unconfirmable either way at 1.5/9 purely because
-  // the view was too distant to judge). Real-waypoint density was also
-  // tested (see ROCA_NIVARIA_TO_DUQUE_ROUTE_THINNED_TEST below, still used
-  // by the separate /test-map-isolated diagnostic page only) and did not
-  // fix it either --
-  // deployed to this exact journey while under test, it did not stop the
-  // bug on the user's own real devices, so it is reverted here to the
-  // real, verified route. The actual fix that was missing: this is a
-  // single-leg journey whose initialCamera already matches the one leg's
-  // camera, so no cameraTween ever ran to trigger the existing
-  // forceSvgRepaint nudge -- see the new nudges on initial measure() and
-  // on IntersectionObserver entry in JourneyMapScene.tsx.
+  // The Safari white-patch/missing-bottom bug on this map (and Los
+  // Gigantes, and Sardinia's Casagliana->Principe) is resolved -- root
+  // cause was the coastline content (wide Europe layers, then the
+  // region's own fine-detail island rings) sharing the same huge-
+  // viewBox-CTM SVG as this tightly-zoomed camera; fixed in
+  // JourneyMapScene.tsx by retransforming the visible coastline into
+  // plain screen-pixel coordinates every frame instead, the same
+  // technique already used for the vehicle icon and the active route
+  // line. Route/zoom/routeLand were each tested and ruled out along the
+  // way; this journey always used its real, verified route data
+  // (ROCA_NIVARIA_TO_DUQUE_ROUTE below).
   initialCamera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
   legs: [
     {
@@ -2918,45 +2881,3 @@ export const TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY: Journey = {
   ],
 };
 
-// =========================================================================
-// TEMPORARY -- FRESH REBUILD TEST, not for production. Built from
-// scratch (not edited from the existing Duque journey above) as a
-// literal structural copy of TENERIFE_HOME_TO_VIENNA_JOURNEY -- same
-// field order, same field set, no routeLand, no shared-corridor spreads,
-// no edit history -- substituting only this leg's own real data (the
-// same 13-point thinned route already verified on-land-safe earlier on
-// this branch). Purpose: rule out any possibility that the original
-// Duque journey object carries some leftover artifact from this
-// session's many successive edits, by comparing a provably clean-room
-// version against the exact same real route data.
-export const TENERIFE_DUQUE_FRESH_REBUILD_TEST: Journey = {
-  id: 'tenerife-duque-fresh-rebuild-test',
-  initialCamera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
-  legs: [
-    {
-      id: 'roca-nivaria-to-duque-fresh',
-      mode: 'car',
-      from: ROCA_NIVARIA,
-      to: PLAYA_DEL_DUQUE,
-      camera: { center: [-16.754, 28.1115], spanDeg: 0.13 },
-      curve: 0.14,
-      route: [
-        [-16.77648, 28.12059],
-        [-16.773635, 28.122406],
-        [-16.773651, 28.124613],
-        [-16.775163, 28.124971],
-        [-16.764009, 28.13216],
-        [-16.754738, 28.127143],
-        [-16.744101, 28.127018],
-        [-16.739013, 28.120302],
-        [-16.731732, 28.105266],
-        [-16.729529, 28.089343],
-        [-16.732274, 28.087897],
-        [-16.735346, 28.089501],
-        PLAYA_DEL_DUQUE.coords,
-      ],
-      weight: 3.5,
-      transition: 'ease',
-    },
-  ],
-};
