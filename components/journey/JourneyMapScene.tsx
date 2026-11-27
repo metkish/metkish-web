@@ -807,15 +807,30 @@ export default function JourneyMapScene({
       // REGION_PATH_BBOXES' long comment above. Generous padding (half
       // the current frame's own width/height again on every side) so a
       // ring doesn't pop in/out right at the frame edge during a pan.
+      //
+      // BUG FOUND AND FIXED (same day, user's own retest caught it: no
+      // more white patches, but the entire coastline/land fill had
+      // vanished instead): CANARY_PATHS/SARDINIA_PATHS render OUTSIDE
+      // the `translate(-mapOrigin)` <g> that the wide/neighbour/Slovenia/
+      // Austria layers sit inside (see that <g>'s own comment above) --
+      // their raw `d` coordinates are in plain, un-shifted project()
+      // space. cx/cy above are toLocal()'d, i.e. already shifted BY
+      // -mapOrigin. Comparing shifted cx/cy against this layer's
+      // un-shifted ring boxes compared two different coordinate systems,
+      // so the intersection test failed for every ring, every time,
+      // hiding the entire layer regardless of zoom or position. Fixed by
+      // building this one comparison in the SAME un-shifted space the
+      // rings themselves are in (project() directly, not toLocal'd).
       if (region) {
         const bboxes = REGION_PATH_BBOXES[region];
+        const [rawCx, rawCy] = project([viewBoxProxy.lng, viewBoxProxy.lat]);
         const padX = currentFrame.width * 0.5;
         const padY = currentFrame.height * 0.5;
         const viewBBox: [number, number, number, number] = [
-          cx - currentFrame.width / 2 - padX,
-          cy - currentFrame.height / 2 - padY,
-          cx + currentFrame.width / 2 + padX,
-          cy + currentFrame.height / 2 + padY,
+          rawCx - currentFrame.width / 2 - padX,
+          rawCy - currentFrame.height / 2 - padY,
+          rawCx + currentFrame.width / 2 + padX,
+          rawCy + currentFrame.height / 2 + padY,
         ];
         regionPathRefs.current.forEach((el, i) => {
           if (!el) return;
