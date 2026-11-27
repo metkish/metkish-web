@@ -975,23 +975,31 @@ export default function JourneyMapScene({
         if (cache) {
           const stepsF = ROUTE_SAMPLES * localProgress;
           const steps = Math.min(ROUTE_SAMPLES, Math.max(1, Math.round(stepsF)));
-          if (steps > activeRouteDrawnSteps) {
-            const newPoints = cache.points
-              .slice(activeRouteDrawnSteps + 1, steps + 1)
-              .map((p, s) => {
-                const isVeryFirstPoint = activeRouteDrawnSteps === -1 && s === 0;
-                return `${isVeryFirstPoint ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`;
-              })
-              .join(' ');
-            activeRoutePartialD = activeRoutePartialD === '' ? newPoints : `${activeRoutePartialD} ${newPoints}`;
-            activeRouteDrawnSteps = steps;
-            if (activeRouteGlowRef.current) activeRouteGlowRef.current.setAttribute('d', activeRoutePartialD);
-            if (activeRouteLineRef.current) activeRouteLineRef.current.setAttribute('d', activeRoutePartialD);
-          } else if (steps < activeRouteDrawnSteps) {
-            // Defensive only -- progress is expected to be monotonic
-            // within a leg, but if it ever isn't, rebuild the partial
-            // path from the cache rather than leaving stale points drawn
-            // past the vehicle.
+          if (steps !== activeRouteDrawnSteps) {
+            // FOUND AND FIXED (the white-box/"mezikanje" flash): this used
+            // to APPEND only the newly-passed points to the end of the
+            // existing `d` string each frame, on the theory that it's
+            // cheaper than rebuilding the whole thing. Confirmed live
+            // (screen recording + the on-screen HUD) that this specific
+            // leg's route line can intermittently vanish behind a sharp,
+            // axis-aligned white rectangle for a few frames, even while
+            // the HUD's own read-back shows a perfectly valid, non-empty,
+            // non-NaN `d` and fully visible CSS at that exact moment --
+            // the same "DOM says fine, paint doesn't match" signature the
+            // vehicle bug had. A tightly-zoomed leg's huge viewBox-to-
+            // pixel CTM (see the comment on mapOrigin above) makes this
+            // the prime suspect: some browsers compute a dirty/repaint
+            // rectangle from only the newly-appended path commands when a
+            // `d` attribute is extended rather than replaced, and at this
+            // scale that incremental-union rectangle can come out wrong,
+            // leaving a stale, unpainted patch exactly where new geometry
+            // was added. Rewriting the full `d` string from scratch every
+            // time `steps` changes makes every frame's attribute write
+            // look like entirely new content, not an extension of the
+            // old one, which sidesteps that incremental dirty-rect path
+            // entirely. ROUTE_SAMPLES is capped at 2000, so a full rebuild
+            // every frame is still cheap -- this was a dirty-rect
+            // correctness bug to avoid, not a real performance bottleneck.
             const rebuilt = cache.points
               .slice(0, steps + 1)
               .map((p, s) => `${s === 0 ? 'M' : 'L'} ${p[0].toFixed(5)},${p[1].toFixed(5)}`)
