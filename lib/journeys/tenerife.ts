@@ -56,7 +56,6 @@ const TENERIFE_SOUTH: JourneyPoint = {
 const ROCA_NIVARIA: JourneyPoint = {
   id: 'roca-nivaria',
   name: 'Roca Nivaria',
-  sublabel: 'Playa Paraiso',
   coords: [-16.77648, 28.12059],
   showMapLabel: true,
 };
@@ -79,7 +78,6 @@ const ROCA_NIVARIA: JourneyPoint = {
 const ROCA_NIVARIA_ARRIVAL: JourneyPoint = {
   id: 'roca-nivaria-arrival',
   name: 'Roca Nivaria',
-  sublabel: 'Playa Paraiso',
   coords: [-16.77648, 28.12059],
   showMapLabel: true,
   labelPlacement: 'above',
@@ -102,7 +100,6 @@ const ROCA_NIVARIA_ARRIVAL: JourneyPoint = {
 const PLAYA_DEL_DUQUE: JourneyPoint = {
   id: 'playa-del-duque',
   name: 'Playa del Duque',
-  sublabel: 'Costa Adeje',
   coords: [-16.7355728, 28.0880504],
   showMapLabel: true,
 };
@@ -1042,7 +1039,6 @@ const TENERIFE_TRANSFER_ROUTE: [number, number][] = [
 const SIAM_PARK: JourneyPoint = {
   id: 'siam-park',
   name: 'Siam Park',
-  sublabel: 'Costa Adeje',
   coords: [-16.724601, 28.069401],
   showMapLabel: true,
 };
@@ -1188,9 +1184,31 @@ export const TENERIFE_HOME_TO_VIENNA_JOURNEY: Journey = {
       // The Journey Map autoplays on a timeline authored directly in
       // seconds (see JourneyMapScene's totalDurationSeconds/legRanges):
       // each leg's `weight` here *is* its share of the total animation
-      // duration. A single-leg journey now, so this weight is simply this
-      // map's whole autoplay duration.
-      weight: 3.5,
+      // duration, in seconds.
+      //
+      // SITE-WIDE SPEED STANDARDIZATION (reported live: the car visibly
+      // moved much faster across some destinations' maps than others,
+      // e.g. Tenerife/Italy felt far quicker than Iceland for no real
+      // reason). Root cause: weight was chosen per leg by eye, with no
+      // link to the leg's real route distance or the camera's zoom
+      // (spanDeg), so the car's actual on-screen speed (how much of the
+      // visible map it crosses per second) varied freely. Fix: every
+      // car/transfer leg's weight across every destination file
+      // (tenerife/italy/barcelona/rome/iceland/sardinia) is now derived
+      // from distanceKm / (spanDeg * targetPace), with targetPace chosen
+      // to match Iceland's own already-consistent, calm pace (its
+      // transfer legs clustered at ~1.8 on this same ratio before this
+      // change) -- capped at 12s per leg (Iceland's own longest existing
+      // leg, vik-to-reykjavik) so no autoplay runs unreasonably long: this
+      // map autoplays once, automatically, when scrolled into view, with
+      // NO scroll-locking (the page keeps scrolling normally underneath),
+      // so an uncapped duration risked a visitor scrolling past a slow,
+      // zoomed-in route (e.g. Teide) before its animation ever finished.
+      // This leg's own real distance/zoom only calls for ~11.5s, under
+      // the cap, so it's unchanged by the cap itself. A single-leg
+      // journey now, so this weight is simply this map's whole autoplay
+      // duration.
+      weight: 11.49,
       transition: 'ease',
     },
   ],
@@ -1276,10 +1294,11 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
       curve: 0.2,
       route: TENERIFE_TRANSFER_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      // The final leg of the same autoplay pacing (see the comment on
-      // home-to-vienna's weight above): a single leg, so this scene's
-      // whole autoplay duration is just this many seconds.
-      weight: 3.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file, for the full rule):
+      // this leg's real distance relative to its tight zoom would need
+      // ~39s to truly match Iceland's pace, so it hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -1329,11 +1348,12 @@ export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
       // anyway since this leg legitimately runs close to the coast and
       // production should keep the safety net regardless.
       routeLand: [CANARY_PATHS[0]],
-      // Same single-leg "ease" pacing as the other short local hop
-      // (airport-to-hotel above) — a quick, compact autoplay rather than
-      // a long cinematic one, matching the editorial-transition role this
-      // map plays (not a large standalone map experience).
-      weight: 3.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): this short, tightly
+      // zoomed-in route would need ~42s to truly match Iceland's pace, so
+      // it hits the 12s cap -- same reasoning as every other capped leg
+      // below.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -1605,10 +1625,10 @@ export const TENERIFE_ROCA_TO_SIAM_JOURNEY: Journey = {
       curve: 0.15,
       route: ROCA_NIVARIA_TO_SIAM_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      // Same single-leg "ease" pacing as the other short local hops on
-      // this page — a quick, compact autoplay matching this map's role as
-      // an editorial transition, not a large standalone experience.
-      weight: 3.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): hits the 12s cap
+      // too, for the same reason as roca-nivaria-to-duque above.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -1680,7 +1700,6 @@ export const TENERIFE_ROCA_TO_SIAM_JOURNEY: Journey = {
 const PLAYA_DE_LAS_TERESITAS: JourneyPoint = {
   id: 'playa-de-las-teresitas',
   name: 'Playa de Las Teresitas',
-  sublabel: 'Santa Cruz de Tenerife',
   coords: [-16.187966, 28.50828],
   showMapLabel: true,
 };
@@ -1847,10 +1866,10 @@ export const TENERIFE_ROCA_TO_TERESITAS_JOURNEY: Journey = {
       curve: 0.15,
       route: ROCA_NIVARIA_TO_TERESITAS_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      // A longer real journey than the local hops above, so it gets a
-      // touch more of the scene's scroll weight — still the single-leg
-      // "ease" pacing every car-journey map on this page uses.
-      weight: 4.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): hits the 12s cap
+      // too.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -1910,7 +1929,6 @@ export const TENERIFE_ROCA_TO_TERESITAS_JOURNEY: Journey = {
 const LOS_GIGANTES_MARINA: JourneyPoint = {
   id: 'los-gigantes-marina',
   name: 'Los Gigantes',
-  sublabel: 'Marina',
   coords: [-16.8431857, 28.2478485],
   showMapLabel: true,
 };
@@ -2089,7 +2107,9 @@ export const TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY: Journey = {
       curve: 0.15,
       route: ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      weight: 4.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -2114,7 +2134,6 @@ export const TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY: Journey = {
 const MOUNT_TEIDE_CABLE_CAR: JourneyPoint = {
   id: 'mount-teide-cable-car',
   name: 'Mount Teide',
-  sublabel: 'Cable Car',
   coords: [-16.625984, 28.254494],
   showMapLabel: true,
 };
@@ -2305,7 +2324,9 @@ export const TENERIFE_ROCA_TO_TEIDE_JOURNEY: Journey = {
       curve: 0.15,
       route: ROCA_NIVARIA_TO_TEIDE_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      weight: 4.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -2339,7 +2360,6 @@ export const TENERIFE_ROCA_TO_TEIDE_JOURNEY: Journey = {
 const LORO_PARQUE: JourneyPoint = {
   id: 'loro-parque',
   name: 'Loro Parque',
-  sublabel: 'Puerto de la Cruz',
   coords: [-16.56417, 28.40833],
   showMapLabel: true,
   labelPlacement: 'above',
@@ -2670,7 +2690,9 @@ export const TENERIFE_ROCA_TO_LORO_PARQUE_JOURNEY: Journey = {
       curve: 0.15,
       route: ROCA_NIVARIA_TO_LORO_PARQUE_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      weight: 4.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -2733,7 +2755,6 @@ const PLAYA_DE_LAS_AMERICAS: JourneyPoint = {
 const TENERIFE_SOUTH_CAR_RETURN: JourneyPoint = {
   id: 'tenerife-south-car-return',
   name: 'Tenerife South',
-  sublabel: 'Airport',
   coords: [-16.577736, 28.047288],
   showMapLabel: true,
   labelPlacement: 'above',
@@ -2861,7 +2882,9 @@ export const TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY: Journey = {
       curve: 0.15,
       route: ROCA_NIVARIA_TO_PLAYA_AMERICAS_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      weight: 3,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
     {
@@ -2873,7 +2896,9 @@ export const TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY: Journey = {
       curve: 0.15,
       route: PLAYA_AMERICAS_TO_TENERIFE_SOUTH_ROUTE,
       routeLand: [CANARY_PATHS[0]],
-      weight: 3,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight, above in this file): hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],

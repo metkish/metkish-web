@@ -95,10 +95,12 @@ export const ITALY_HOME_TO_MILANO_JOURNEY: Journey = {
       route: ITALY_HOME_TO_MILANO_ROUTE,
       // Single-leg journey, so this weight is simply the map's whole
       // autoplay duration in seconds (see JourneyMapScene's
-      // totalDurationSeconds/legRanges) — a touch longer than Tenerife's
-      // Home->Vienna leg (3.5s) since this route covers noticeably more
-      // ground on screen.
-      weight: 4.5,
+      // totalDurationSeconds/legRanges). Site-wide speed standardization
+      // (see the comment on home-to-vienna's weight in
+      // lib/journeys/tenerife.ts, for the full rule): this leg's real
+      // distance relative to its zoom would need ~41s to truly match
+      // Iceland's reference pace, so it hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -234,10 +236,10 @@ export const ITALY_MILANO_TO_LASPEZIA_JOURNEY: Journey = {
       camera: { center: [9.35, 44.78], spanDeg: 4.2 },
       route: ITALY_MILANO_TO_LASPEZIA_ROUTE,
       routeLand: [ITALY_MILANO_LASPEZIA_INLAND_LAND, ITALY_LIGURIA_COAST_LAND],
-      // Shorter/simpler than the Home->Milano leg's 4.5s: meaningfully
-      // less ground and one clear directional turn (south to Genova, then
-      // east along the coast) rather than several country crossings.
-      weight: 3.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
+      // also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -369,10 +371,10 @@ export const ITALY_LASPEZIA_TO_PISA_JOURNEY: Journey = {
         ITALY_LASPEZIA_PISA_INLAND_LAND,
         ITALY_TUSCAN_COAST_LAND,
       ],
-      // Shorter than the Milano -> La Spezia leg's 3.5s: less ground
-      // covered and a simpler shape -- one short directional hook out of
-      // La Spezia, then a long, mostly straight southbound coastal run.
-      weight: 3,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
+      // also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -507,10 +509,10 @@ export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
       route: ITALY_PISA_TO_PECCIOLI_ROUTE,
       // Purely inland, same as every other leg on this route -- no
       // coastline anywhere near this corridor, so no routeLand needed.
-      // Slightly longer than before now that it's framed tight (weight
-      // 1.5, not 1): at this zoom the loop's real shape needs a moment
-      // longer on screen to read clearly before the camera pulls back.
-      weight: 1.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
+      // also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
     {
@@ -524,11 +526,10 @@ export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
       camera: ITALY_PISA_TO_PESCHIERA_WIDE_CAMERA,
       route: ITALY_PECCIOLI_TO_PESCHIERA_ROUTE,
       // Same fast, entirely inland motorway transit as before -- no
-      // routeLand needed. Longer than leg 1: covers the backtrack out of
-      // Peccioli plus the full Florence -> Bologna -> Modena -> Verona ->
-      // Peschiera haul, the most real ground of any leg on this page
-      // after Home->Milano.
-      weight: 4.5,
+      // routeLand needed. Site-wide speed standardization (see the
+      // comment on home-to-vienna's weight in lib/journeys/tenerife.ts):
+      // this leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -601,10 +602,10 @@ export const ITALY_PESCHIERA_TO_HOME_JOURNEY: Journey = {
       to: HOME,
       camera: { center: [13.35, 46.05], spanDeg: 7.5 },
       route: ITALY_PESCHIERA_TO_HOME_ROUTE,
-      // A touch shorter than the Home->Milano leg's 4.5s: this leg
-      // covers slightly less ground (it starts from Peschiera, short of
-      // Milano) even though it retraces most of the same corridor.
-      weight: 4.2,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
+      // also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],

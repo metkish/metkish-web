@@ -31,7 +31,6 @@ const HOME: JourneyPoint = {
 const TRIESTE_AIRPORT: JourneyPoint = {
   id: 'trieste-airport',
   name: 'Trieste Airport',
-  sublabel: 'Ronchi dei Legionari',
   coords: [13.470918, 45.824605],
   showMapLabel: true,
 };
@@ -163,7 +162,12 @@ export const ROME_HOME_TO_TRIESTE_JOURNEY: Journey = {
       camera: { center: [14.7, 46.22], spanDeg: 6.5 },
       curve: 0.14,
       route: HOME_TO_TRIESTE_ROUTE,
-      weight: 3.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
+      // rule): this leg's real distance relative to its zoom would need
+      // ~27s to truly match Iceland's reference pace, so it hits the 12s
+      // cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],

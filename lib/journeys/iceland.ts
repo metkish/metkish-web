@@ -35,7 +35,6 @@ const HOME: JourneyPoint = {
 const LJUBLJANA_AIRPORT: JourneyPoint = {
   id: 'ljubljana-airport',
   name: 'Ljubljana Airport',
-  sublabel: 'Brnik',
   coords: [14.4576, 46.2237],
   showMapLabel: true,
 };
@@ -71,7 +70,12 @@ export const ICELAND_HOME_TO_LJUBLJANA_JOURNEY: Journey = {
       camera: { center: [15.1, 46.55], spanDeg: 4.8 },
       curve: 0.1,
       route: HOME_TO_LJUBLJANA_ROUTE,
-      weight: 3.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
+      // rule): this leg's real distance relative to its zoom would need
+      // ~22s to truly match this same file's own other legs' pace, so it
+      // hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -104,7 +108,6 @@ export const ICELAND_HOME_TO_LJUBLJANA_JOURNEY: Journey = {
 const KEFLAVIK_AIRPORT: JourneyPoint = {
   id: 'keflavik-airport',
   name: 'Keflavík Airport',
-  sublabel: 'Reykjavík',
   coords: [-22.6056, 63.985001],
   showMapLabel: true,
   // The flight's final approach comes in from the south-east at a
@@ -419,7 +422,13 @@ export const ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY: Journey = {
       to: REYKJAVIK,
       camera: ARRIVAL_BLUE_LAGOON_CAMERA,
       route: KEFLAVIK_TO_REYKJAVIK_ROUTE,
-      weight: 4.06,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // journey's transfer legs were already close to the calm reference
+      // pace this change standardizes every destination to -- these three
+      // weights are only a small recalibration to the exact same ratio,
+      // not a cap.
+      weight: 6.05,
       transition: 'ease',
     },
     {
@@ -429,7 +438,7 @@ export const ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY: Journey = {
       to: BLUE_LAGOON,
       camera: ARRIVAL_BLUE_LAGOON_CAMERA,
       route: REYKJAVIK_TO_BLUE_LAGOON_ROUTE,
-      weight: 4.06,
+      weight: 5.94,
       transition: 'ease',
     },
     {
@@ -439,7 +448,7 @@ export const ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY: Journey = {
       to: REYKJAVIK,
       camera: ARRIVAL_BLUE_LAGOON_CAMERA,
       route: BLUE_LAGOON_TO_REYKJAVIK_ROUTE,
-      weight: 4.06,
+      weight: 6.01,
       transition: 'ease',
     },
   ],
@@ -483,7 +492,6 @@ export const ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY: Journey = {
 const THINGVELLIR: JourneyPoint = {
   id: 'thingvellir',
   name: 'Þingvellir',
-  sublabel: 'National Park',
   coords: [-21.03725, 64.253806],
   showMapLabel: true,
   // Sits close to both Reykjavík and Geysir, which both use 'above' on
@@ -507,7 +515,6 @@ const THINGVELLIR: JourneyPoint = {
 const GEYSIR: JourneyPoint = {
   id: 'geysir',
   name: 'Geysir',
-  sublabel: 'Strokkur',
   coords: [-20.30056, 64.31306],
   showMapLabel: true,
   labelPlacement: 'above',
@@ -791,6 +798,11 @@ const GOLDEN_CIRCLE_CAMERA: JourneyCamera = {
 // the same further, modest 1.25x slow-down on top of that (see that
 // journey's own comment) -- relative pacing between legs preserved,
 // only the overall speed changed.
+//
+// Site-wide speed standardization (see the comment on home-to-vienna's
+// weight in lib/journeys/tenerife.ts): these legs' weights below are only
+// a small recalibration to the exact reference ratio every destination
+// now shares -- this journey was already close to it.
 export const ICELAND_GOLDEN_CIRCLE_JOURNEY: Journey = {
   id: 'iceland-golden-circle',
   initialCamera: GOLDEN_CIRCLE_CAMERA,
@@ -802,7 +814,7 @@ export const ICELAND_GOLDEN_CIRCLE_JOURNEY: Journey = {
       to: THINGVELLIR,
       camera: GOLDEN_CIRCLE_CAMERA,
       route: REYKJAVIK_TO_THINGVELLIR_ROUTE,
-      weight: 4.38,
+      weight: 4.02,
       transition: 'ease',
     },
     {
@@ -812,7 +824,7 @@ export const ICELAND_GOLDEN_CIRCLE_JOURNEY: Journey = {
       to: GEYSIR,
       camera: GOLDEN_CIRCLE_CAMERA,
       route: THINGVELLIR_TO_GEYSIR_ROUTE,
-      weight: 4.06,
+      weight: 3.79,
       transition: 'ease',
     },
     {
@@ -822,7 +834,7 @@ export const ICELAND_GOLDEN_CIRCLE_JOURNEY: Journey = {
       to: GULLFOSS,
       camera: GOLDEN_CIRCLE_CAMERA,
       route: GEYSIR_TO_GULLFOSS_ROUTE,
-      weight: 1.88,
+      weight: 0.74,
       transition: 'ease',
     },
     {
@@ -832,7 +844,7 @@ export const ICELAND_GOLDEN_CIRCLE_JOURNEY: Journey = {
       to: REYKJAVIK,
       camera: GOLDEN_CIRCLE_CAMERA,
       route: GULLFOSS_TO_REYKJAVIK_ROUTE,
-      weight: 8.13,
+      weight: 9.38,
       transition: 'ease',
     },
   ],
@@ -892,7 +904,6 @@ const SKOGAFOSS: JourneyPoint = {
 const VIK: JourneyPoint = {
   id: 'vik',
   name: 'Vík',
-  sublabel: 'í Mýrdal',
   coords: [-19.0, 63.41666],
   showMapLabel: true,
   // Only ~2-5px from Reynisfjara's dot (already 'above') even at this
@@ -1217,6 +1228,11 @@ const SOUTH_COAST_CAMERA: JourneyCamera = {
 // pacing-by-distance approach (weight roughly tracks each leg's real
 // driving distance: ~128km out, ~29km, ~35km, ~11km, then the long
 // ~188km return).
+//
+// Site-wide speed standardization (see the comment on home-to-vienna's
+// weight in lib/journeys/tenerife.ts): these legs' weights below are only
+// a small recalibration to the exact reference ratio every destination
+// now shares -- this journey was already close to it.
 export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
   id: 'iceland-south-coast',
   initialCamera: SOUTH_COAST_CAMERA,
@@ -1228,7 +1244,7 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       to: SELJALANDSFOSS,
       camera: SOUTH_COAST_CAMERA,
       route: REYKJAVIK_TO_SELJALANDSFOSS_ROUTE,
-      weight: 8.13,
+      weight: 8.22,
       transition: 'ease',
     },
     {
@@ -1238,7 +1254,7 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       to: SKOGAFOSS,
       camera: SOUTH_COAST_CAMERA,
       route: SELJALANDSFOSS_TO_SKOGAFOSS_ROUTE,
-      weight: 1.88,
+      weight: 1.92,
       transition: 'ease',
     },
     {
@@ -1248,7 +1264,7 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       to: REYNISFJARA,
       camera: SOUTH_COAST_CAMERA,
       route: SKOGAFOSS_TO_REYNISFJARA_ROUTE,
-      weight: 2.19,
+      weight: 2.3,
       transition: 'ease',
     },
     {
@@ -1258,7 +1274,7 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       to: VIK,
       camera: SOUTH_COAST_CAMERA,
       route: REYNISFJARA_TO_VIK_ROUTE,
-      weight: 0.94,
+      weight: 0.73,
       transition: 'ease',
     },
     {
@@ -1268,7 +1284,7 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       to: REYKJAVIK,
       camera: SOUTH_COAST_CAMERA,
       route: VIK_TO_REYKJAVIK_ROUTE,
-      weight: 11.88,
+      weight: 11.95,
       transition: 'ease',
     },
   ],

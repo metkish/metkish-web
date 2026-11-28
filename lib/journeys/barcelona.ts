@@ -289,10 +289,12 @@ export const BARCELONA_AIRPORT_TO_HOTEL_JOURNEY: Journey = {
       camera: { center: [2.123, 41.347], spanDeg: 0.5 },
       curve: 0.08,
       route: BARCELONA_AIRPORT_TO_HOTEL_ROUTE,
-      // Same single-leg "ease" pacing as Tenerife's own airport-transfer
-      // leg (TENERIFE_TRANSFER_JOURNEY) -- a local transfer, not a
-      // cinematic cross-country leg.
-      weight: 3.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
+      // rule): this short, tightly zoomed-in transfer would need well over
+      // a minute to truly match Iceland's reference pace, so it hits the
+      // 12s cap, same as Tenerife's own local hops.
+      weight: 12.0,
       transition: 'ease',
     },
   ],

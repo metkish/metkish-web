@@ -82,7 +82,7 @@ export const SARDINIA_HOME_TO_VIENNA_JOURNEY: Journey = {
       camera: { center: [16.35, 47.45], spanDeg: 9 },
       curve: 0.14,
       route: HOME_TO_VIENNA_ROUTE,
-      weight: 3.5,
+      weight: 11.49,
       transition: 'ease',
     },
   ],
@@ -249,7 +249,10 @@ export const SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
-      weight: 4.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -376,7 +379,10 @@ export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[1], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[10], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[43], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
-      weight: 5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -475,7 +481,10 @@ export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
-      weight: 4,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -556,7 +565,10 @@ export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
-      weight: 4,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -642,7 +654,10 @@ export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[23], SARDINIA_PATHS[30], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
-      weight: 4.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -757,7 +772,10 @@ export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[23], SARDINIA_PATHS[30], SARDINIA_PATHS[31], SARDINIA_PATHS[41], SARDINIA_PATHS[47], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
-      weight: 5.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -859,7 +877,10 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[1], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[43], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
-      weight: 4.5,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
@@ -950,7 +971,10 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY: Journey = {
       // specific route (verified byte-identical rendered geometry against the full
       // 82-ring set before this change shipped — see sardinia-performance-audit.md).
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[30], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
-      weight: 4,
+      // Site-wide speed standardization (see the comment on
+      // home-to-vienna's weight in lib/journeys/tenerife.ts): this
+      // leg also hits the 12s cap.
+      weight: 12.0,
       transition: 'ease',
     },
   ],
