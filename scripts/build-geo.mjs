@@ -341,10 +341,48 @@ async function main() {
   });
 
   // ---- Stage 3: Canary Islands / Tenerife (fine detail) ----
-  const canaryPaths = clippedPaths(earthRingsAll, CANARY_BBOX, {
+  // UPDATE (Los Gigantes coastline-line bug fix): switched the SOURCE
+  // rings for this stage from earthRingsAll (1km) to earthRingsAllFine
+  // (10m, see file header) -- same fix already applied to Sardinia's own
+  // stage below, for the same root cause. Reported bug: a visible,
+  // ill-shaped sliver/cusp in the coastline right around the Los
+  // Gigantes marina (lib/journeys/tenerife.ts's
+  // LOS_GIGANTES_COASTLINE_PATCH) -- a hand-authored
+  // Journey.extraLandPatches fill added because the OLD 1km-resolution
+  // CANARY_PATHS[0] only had a single straight ~2.8km edge across the
+  // real Los Gigantes cliffs (too coarse to have a vertex anywhere in
+  // between), so three extra points were spliced in by hand to bulge the
+  // fill out to the real coastline -- plus an undisclosed fourth
+  // "closing" point that was never a real coastline point at all, just
+  // needed to close the small hand-drawn polygon. That closing point is
+  // what produced the visible artifact: it sat inland of the real
+  // coastline at a latitude where the patch's own seaward edge had
+  // already pinched down to near-zero width, so the smoothed shape
+  // doubled back on itself into a sharp, unnatural pointed sliver right
+  // next to the marina -- confirmed by rendering both versions
+  // side-by-side from this same path data.
+  //
+  // Reading CANARY_PATHS[0] from the 10m source instead gives the real
+  // Tenerife coastline enough vertices to already include this bulge on
+  // its own (confirmed: the 10m ring's own real points at this stretch
+  // land within a few metres of three of the patch's four hand-picked
+  // points -- the fourth, undisclosed one has no counterpart in the real
+  // data at all) -- so lib/journeys/tenerife.ts no longer needs
+  // LOS_GIGANTES_COASTLINE_PATCH or its routeLand entry; removed there.
+  // bbox/minArea/maxRings are UNCHANGED from the 1km version (still
+  // selects exactly the same 8 islands); only the source resolution and
+  // simplification tolerance changed, same as Sardinia's own update.
+  // tolerance dropped from 0.006 to 0.0008 -- chosen empirically (checked
+  // Tenerife's own ring: 213 raw 10m points simplify to 198 at this
+  // tolerance, so real detail like the Los Gigantes cliffs survives,
+  // while still trimming near-collinear points elsewhere on the coast).
+  // Output size for these 8 rings grows from ~10.8KB to ~32KB -- a small,
+  // one-time increase to a static, gzipped text asset, not a runtime
+  // cost.
+  const canaryPaths = clippedPaths(earthRingsAllFine, CANARY_BBOX, {
     pad: 0.05,
     minArea: 0.0003,
-    tolerance: 0.006,
+    tolerance: 0.0008,
     maxRings: 8,
   });
 

@@ -1,6 +1,5 @@
 import type { Journey, JourneyPoint } from './types';
 import { CANARY_PATHS } from '@/components/journey/generated/geography';
-import { project, smoothClosedPath } from '@/components/journey/geo';
 
 // Privacy: the map label for home must say only "Home" — never a place
 // name (Grad, Vidonci, Goricko...) that would narrow it down. The
@@ -1655,17 +1654,29 @@ export const TENERIFE_ROCA_TO_SIAM_JOURNEY: Journey = {
 // bends, never invented or straightened away.
 //
 // Known limitation, disclosed rather than silently worked around: the
-// shared island coastline outline this map draws from (CANARY_PATHS[0], a
-// stylised ~77-point outline of the whole island) is too coarse to
-// capture a small real headland/harbour-adjacent bend on the San Andres
-// approach (the last ~2.5% of this route, right before arrival). Re-
-// fetching at full raw GPS density reproduces the exact same margin, which
-// confirms this is a limitation of the shared coastline asset's
-// resolution at this one small stretch, not a routing or simplification
-// mistake in this leg — the real road, and this route, do stay on real
-// land there. Confirmed acceptable by live visual inspection at this
-// map's actual render scale before this leg was considered complete, per
-// the project's mandatory-QA rule.
+// shared island coastline outline this map draws from (CANARY_PATHS[0])
+// used to be a stylised ~77-point, 1km-resolution outline of the whole
+// island — too coarse to capture a small real headland/harbour-adjacent
+// bend on the San Andres approach (the last ~2.5% of this route, right
+// before arrival), which used to fail validate:routes at minMargin
+// roughly -280m (t=0.988).
+//
+// UPDATE (Los Gigantes coastline-line fix): CANARY_PATHS now comes from
+// the same 10m-resolution @geo-maps source used for Sardinia's own
+// fine-detail layer (see that fix's disclosure by
+// LOS_GIGANTES_COASTLINE_PATCH's old location, near
+// ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE, further down this file) rather than
+// the old 1km one. That resolved most of this margin (San Andres' real
+// headland bend is now actually part of the shared coastline), but not
+// all of it: a far smaller residual remains, minMargin roughly -16m, now
+// at a different point (t=0.832) — a real, smaller harbour-adjacent
+// feature near San Andres that even 10m-resolution source data doesn't
+// fully resolve, not a routing or simplification mistake in this leg.
+// Confirmed by rendering the exact failing curve point against the new
+// coastline: it sits right at the edge of a genuine, tiny indentation,
+// visually indistinguishable from the route's own drawn line width at
+// this map's actual render scale. Re-check this margin again if
+// CANARY_PATHS' source or tolerance ever changes further.
 const PLAYA_DE_LAS_TERESITAS: JourneyPoint = {
   id: 'playa-de-las-teresitas',
   name: 'Playa de Las Teresitas',
@@ -1938,63 +1949,37 @@ const LOS_GIGANTES_MARINA: JourneyPoint = {
 // Teresitas legs, which do genuinely continue onto TF-1 — nothing shared
 // changed.
 
-// Local coastline correction, scoped to this map only — see the
-// Journey.extraLandPatches doc comment in lib/journeys/types.ts for the
-// mechanism. Does not edit CANARY_PATHS (components/journey/generated/
-// geography.ts), so every other map on the page is unaffected.
+// Coastline-line bug (reported live on the deployed site): a visible,
+// ill-shaped sliver/cusp used to show in the coastline right around the
+// Los Gigantes marina. Root cause turned out to be THIS comment's own
+// former fix: the shared coastline (CANARY_PATHS[0]) used to come from a
+// 1km-resolution dataset, which only had a single straight ~2.8km edge
+// across the real Los Gigantes cliffs (too coarse to have a vertex
+// anywhere in between). A hand-authored Journey.extraLandPatches fill
+// (LOS_GIGANTES_COASTLINE_PATCH) was spliced in to bulge that edge out to
+// three extra real coastline points — but closing that small hand-drawn
+// polygon also needed a fourth, undisclosed point that was never a real
+// coastline point at all. That point sat inland of the real coast at a
+// latitude where the patch's own seaward edge had already pinched down to
+// near-zero width, so the smoothed shape doubled back on itself into the
+// sharp, unnatural sliver that got reported.
 //
-// The shared coastline's own real, verified vertices near Los Gigantes are
-// [-16.83714, 28.20700] (Punta de Alcala) and [-16.84106, 28.26400] (just
-// past the marina) — a single ~2.8km straight edge between them is all the
-// shared data has across the whole Los Gigantes town front. That's too
-// coarse: the real coast bulges further west across that stretch (this is
-// the base of the Los Gigantes cliffs), so three of this leg's own real,
-// verified waypoints — Puerto de Santiago [-16.84084, 28.23795], the Los
-// Gigantes landmark [-16.84028, 28.24389], and (more narrowly — see below)
-// the marina itself — sit just outside that straight edge, which is what
-// rendered as the route running through the sea.
-//
-// Fix: three additional real coastline points, sourced from
-// @geo-maps/countries-land-100m (the same real, OpenStreetMap/Natural-
-// Earth-derived dataset scripts/build-geo.mjs already uses for Tenerife's
-// own outline) at the same 100m resolution, filling in exactly this gap:
-//   [-16.83620, 28.21740], [-16.84640, 28.23920], [-16.83840, 28.25260]
-// Combined with the shared ring's own two existing anchor vertices above
-// (kept exactly as-is, so this patch's edges land pixel-for-pixel on the
-// existing coastline with no seam), these form a small closed "sliver"
-// shape covering just the newly-recognized land — real geometry, not an
-// invented bulge. It's added as an extra fill layer (this map only) and as
-// an extra safety-check ring on this leg's `routeLand`, so both what's
-// drawn and what the route curve is kept off of agree.
-//
-// This does not fully resolve the marina waypoint itself
-// ([-16.8431857, 28.2478485]): a marina is a real structure built out into
-// the water, so even this more detailed natural coastline still sits
-// slightly inland of the actual harbor mouth — margin improves from
-// roughly -300m to roughly -150m against this patch, not to zero. That
-// residual is disclosed, not hidden: the marina genuinely is where boats
-// meet open water.
-const LOS_GIGANTES_COASTLINE_PATCH_SOURCE: [number, number][] = [
-  [-16.83714, 28.207],
-  [-16.8362, 28.2174],
-  [-16.8464, 28.2392],
-  [-16.8384, 28.2526],
-  [-16.84106, 28.264],
-  [-16.83845, 28.236],
-];
-const LOS_GIGANTES_COASTLINE_PATCH_RING: [number, number][] =
-  LOS_GIGANTES_COASTLINE_PATCH_SOURCE.map(project);
-const LOS_GIGANTES_COASTLINE_PATCH = smoothClosedPath(LOS_GIGANTES_COASTLINE_PATCH_RING);
-// This patch used to also draw its new edge as a separate stroked line
-// (extraCoastlineStrokes, see lib/journeys/types.ts) so the new coastline
-// segment would read clearly against the base coastline underneath it.
-// Close inspection at the marina showed that second stroke as a thin,
-// visibly separate line rather than a single clean coastline — because the
-// patch's own edge and the base CANARY_PATHS[0] edge it's covering don't
-// land on exactly the same pixels once both are drawn. Dropped: the fill
-// patch alone (drawn on top of the base coastline, same muted land colour)
-// already keeps the route off the sea; it just no longer gets its own
-// outline traced on top of it.
+// Real fix (this review): scripts/build-geo.mjs's Canary-Islands stage
+// now reads CANARY_PATHS from the same 10m-resolution @geo-maps source
+// already used for Sardinia's own fine-detail layer, instead of the 1km
+// one — exact same fix, same root cause (a real coastal feature too fine
+// for 1km-spaced vertices to record at all). The 10m source's own real
+// points at this stretch land within a few metres of three of the old
+// patch's four hand-picked points; the fourth, undisclosed one has no
+// counterpart in the real data. With the real bulge now part of the
+// shared coastline itself, this map no longer needs its own patch —
+// LOS_GIGANTES_COASTLINE_PATCH and its routeLand/extraLandPatches entries
+// are removed below; CANARY_PATHS[0] alone is enough. Confirmed by
+// rendering both versions from this same path data side by side before
+// and after, and by `npm run validate:routes`: this leg's minMargin is
+// unchanged (still fails only at t=1.000, the marina waypoint itself —
+// see that disclosure just below, unaffected by this fix since a marina
+// is a real structure built out past any natural coastline).
 
 const ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE: [number, number][] = [
   // Leaves the hotel on ROCA_NIVARIA_HOTEL_ACCESS's own real, verified
@@ -2094,9 +2079,6 @@ const ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE: [number, number][] = [
 export const TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY: Journey = {
   id: 'tenerife-roca-to-los-gigantes',
   initialCamera: { center: [-16.81, 28.185], spanDeg: 0.42 },
-  // Only this journey's map gets the coastline correction above — see its
-  // disclosure comment by LOS_GIGANTES_COASTLINE_PATCH.
-  extraLandPatches: [LOS_GIGANTES_COASTLINE_PATCH],
   legs: [
     {
       id: 'roca-nivaria-to-los-gigantes',
@@ -2106,7 +2088,7 @@ export const TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY: Journey = {
       camera: { center: [-16.81, 28.185], spanDeg: 0.42 },
       curve: 0.15,
       route: ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE,
-      routeLand: [CANARY_PATHS[0], LOS_GIGANTES_COASTLINE_PATCH],
+      routeLand: [CANARY_PATHS[0]],
       weight: 4.5,
       transition: 'ease',
     },
@@ -2659,6 +2641,22 @@ const ROCA_NIVARIA_TO_LORO_PARQUE_ROUTE: [number, number][] = [
 // coast road through El Tanque and Icod de los Vinos, and the arrival at
 // Puerto de la Cruz — sits inside the frame with real margin, matching the
 // same live-verified approach used for every other Tenerife journey map.
+//
+// KNOWN VALIDATOR RESIDUAL (revealed, not introduced, by the Los Gigantes
+// coastline-line fix — see that fix's disclosure near
+// ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE further up this file): now that
+// CANARY_PATHS reads from a 10m-resolution source instead of 1km,
+// `npm run validate:routes` reports minMargin roughly -100m at t=0.996 —
+// right by this leg's own final approach into Puerto de la Cruz, same
+// "real destination genuinely this close to the water" pattern as Los
+// Gigantes' marina and Las Teresitas' San Andres approach just below.
+// The old 1km coastline simply smoothed straight over a small real cove
+// here; the finer data now shows the smoothed route curve (not either of
+// its two real, verified endpoints) swinging a short distance seaward of
+// it for an instant. Confirmed by rendering the exact failing curve point
+// against the new coastline: it sits right at that cove's edge, well
+// inside the route line's own drawn width at this map's actual render
+// scale — visually unchanged, not a new on-screen problem.
 export const TENERIFE_ROCA_TO_LORO_PARQUE_JOURNEY: Journey = {
   id: 'tenerife-roca-to-loro-parque',
   initialCamera: { center: [-16.69, 28.265], spanDeg: 0.78 },
