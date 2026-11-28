@@ -99,8 +99,8 @@ export const ITALY_HOME_TO_MILANO_JOURNEY: Journey = {
       // (see the comment on home-to-vienna's weight in
       // lib/journeys/tenerife.ts, for the full rule): this leg's real
       // distance relative to its zoom would need ~41s to truly match
-      // Iceland's reference pace, so it hits the 12s cap.
-      weight: 12.0,
+      // Iceland's reference pace, so it hits the 8s cap.
+      weight: 8.0,
       transition: 'ease',
     },
   ],
@@ -238,8 +238,8 @@ export const ITALY_MILANO_TO_LASPEZIA_JOURNEY: Journey = {
       routeLand: [ITALY_MILANO_LASPEZIA_INLAND_LAND, ITALY_LIGURIA_COAST_LAND],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
-      // also hits the 12s cap.
-      weight: 12.0,
+      // also hits the 8s cap.
+      weight: 8.0,
       transition: 'ease',
     },
   ],
@@ -373,8 +373,8 @@ export const ITALY_LASPEZIA_TO_PISA_JOURNEY: Journey = {
       ],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
-      // also hits the 12s cap.
-      weight: 12.0,
+      // also hits the 8s cap.
+      weight: 8.0,
       transition: 'ease',
     },
   ],
@@ -511,8 +511,8 @@ export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
       // coastline anywhere near this corridor, so no routeLand needed.
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
-      // also hits the 12s cap.
-      weight: 12.0,
+      // also hits the 8s cap.
+      weight: 8.0,
       transition: 'ease',
     },
     {
@@ -528,8 +528,8 @@ export const ITALY_PISA_TO_PESCHIERA_JOURNEY: Journey = {
       // Same fast, entirely inland motorway transit as before -- no
       // routeLand needed. Site-wide speed standardization (see the
       // comment on home-to-vienna's weight in lib/journeys/tenerife.ts):
-      // this leg also hits the 12s cap.
-      weight: 12.0,
+      // this leg also hits the 8s cap.
+      weight: 8.0,
       transition: 'ease',
     },
   ],
@@ -604,8 +604,8 @@ export const ITALY_PESCHIERA_TO_HOME_JOURNEY: Journey = {
       route: ITALY_PESCHIERA_TO_HOME_ROUTE,
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this leg
-      // also hits the 12s cap.
-      weight: 12.0,
+      // also hits the 8s cap.
+      weight: 8.0,
       transition: 'ease',
     },
   ],

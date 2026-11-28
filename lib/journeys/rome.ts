@@ -165,9 +165,9 @@ export const ROME_HOME_TO_TRIESTE_JOURNEY: Journey = {
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
       // rule): this leg's real distance relative to its zoom would need
-      // ~27s to truly match Iceland's reference pace, so it hits the 12s
-      // cap.
-      weight: 12.0,
+      // ~27s to truly match Iceland's reference pace, so it hits the 8s
+      // cap (lowered from an initial 12s after live review).
+      weight: 8.0,
       transition: 'ease',
     },
   ],
