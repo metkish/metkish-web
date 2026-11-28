@@ -1205,11 +1205,22 @@ export const TENERIFE_HOME_TO_VIENNA_JOURNEY: Journey = {
       // zoomed-in route (e.g. Teide) before its animation ever finished.
       // The cap started at 12s (Iceland's own longest existing leg,
       // vik-to-reykjavik), then was lowered twice after live review found
-      // it too slow across the board: 12s -> 8s -> 5s. This leg's own
-      // real distance/zoom calls for ~11.5s -- well over the 5s cap, so
-      // it's capped too. A single-leg journey now, so this weight is
-      // simply this map's whole autoplay duration.
-      weight: 5.0,
+      // it too slow across the board: 12s -> 8s -> 5s.
+      //
+      // FOLLOW-UP (reported live: this leg specifically still felt
+      // slower than the others even at the 5s cap everyone else shares).
+      // Real cause: a flat duration cap bounds TIME, not apparent speed --
+      // this map's camera is zoomed out to spanDeg 9 (the whole home
+      // country plus Austria), ~15-70x wider than the tight local-route
+      // maps (spanDeg as small as 0.13-0.78), so the same 5 seconds
+      // covers a far smaller fraction of the visible frame here than on
+      // those. Fix: this leg (and Iceland's similarly wide-zoom
+      // vik-to-reykjavik leg) is shortened specifically to match the
+      // median apparent speed of the 26 other 5s-capped legs (~10 on the
+      // distance/spanDeg/weight ratio used throughout this standardization),
+      // rather than sharing their flat time cap. A single-leg journey now,
+      // so this weight is simply this map's whole autoplay duration.
+      weight: 2.07,
       transition: 'ease',
     },
   ],

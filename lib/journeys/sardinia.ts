@@ -82,12 +82,13 @@ export const SARDINIA_HOME_TO_VIENNA_JOURNEY: Journey = {
       camera: { center: [16.35, 47.45], spanDeg: 9 },
       curve: 0.14,
       route: HOME_TO_VIENNA_ROUTE,
-      // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
-      // rule): this leg's real distance/zoom calls for ~11.5s, over the
-      // 5s cap (lowered from an initial 12s after live review), so it's
-      // capped too.
-      weight: 5.0,
+      // Site-wide speed standardization, then a follow-up fix (see the
+      // full explanation on home-to-vienna's weight in
+      // lib/journeys/tenerife.ts): this leg's wide spanDeg-9 zoom made a
+      // flat duration cap look slower than the tight local-route maps
+      // even at the same seconds, so it's shortened to match their
+      // median apparent speed instead.
+      weight: 2.07,
       transition: 'ease',
     },
   ],

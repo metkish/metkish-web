@@ -1304,8 +1304,16 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       // This leg's real distance relative to its zoom calls for ~12s at
       // the site-wide reference pace, so after the cap was lowered
       // (12s -> 8s -> 5s, see the south-coast journey comment above) it
-      // now hits that 5s cap too.
-      weight: 5.0,
+      // hit that 5s cap too.
+      //
+      // FOLLOW-UP (reported live: still felt slower than the other
+      // 5s-capped legs). Same root cause as home-to-vienna's own
+      // follow-up fix (see lib/journeys/tenerife.ts): this leg's camera
+      // is zoomed out to spanDeg 8.5 for the whole south coast, wide
+      // enough that a flat time cap doesn't give it the same apparent
+      // speed as the tight local-route maps. Shortened to match their
+      // median apparent speed instead.
+      weight: 2.15,
       transition: 'ease',
     },
   ],
