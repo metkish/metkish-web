@@ -1204,12 +1204,12 @@ export const TENERIFE_HOME_TO_VIENNA_JOURNEY: Journey = {
       // an uncapped duration risked a visitor scrolling past a slow,
       // zoomed-in route (e.g. Teide) before its animation ever finished.
       // The cap started at 12s (Iceland's own longest existing leg,
-      // vik-to-reykjavik) and was lowered to 8s after a live review found
-      // 12s too slow across the board. This leg's own real distance/zoom
-      // calls for ~11.5s -- over the 8s cap, so it's capped too. A
-      // single-leg journey now, so this weight is simply this map's whole
-      // autoplay duration.
-      weight: 8.0,
+      // vik-to-reykjavik), then was lowered twice after live review found
+      // it too slow across the board: 12s -> 8s -> 5s. This leg's own
+      // real distance/zoom calls for ~11.5s -- well over the 5s cap, so
+      // it's capped too. A single-leg journey now, so this weight is
+      // simply this map's whole autoplay duration.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -1298,8 +1298,8 @@ export const TENERIFE_TRANSFER_JOURNEY: Journey = {
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight, above in this file, for the full rule):
       // this leg's real distance relative to its tight zoom would need
-      // ~39s to truly match Iceland's pace, so it hits the 8s cap.
-      weight: 8.0,
+      // ~39s to truly match Iceland's pace, so it hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -1352,9 +1352,9 @@ export const TENERIFE_ROCA_TO_DUQUE_JOURNEY: Journey = {
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight, above in this file): this short, tightly
       // zoomed-in route would need ~42s to truly match Iceland's pace, so
-      // it hits the 8s cap -- same reasoning as every other capped leg
+      // it hits the 5s cap -- same reasoning as every other capped leg
       // below.
-      weight: 8.0,
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -1627,9 +1627,9 @@ export const TENERIFE_ROCA_TO_SIAM_JOURNEY: Journey = {
       route: ROCA_NIVARIA_TO_SIAM_ROUTE,
       routeLand: [CANARY_PATHS[0]],
       // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight, above in this file): hits the 8s cap
+      // home-to-vienna's weight, above in this file): hits the 5s cap
       // too, for the same reason as roca-nivaria-to-duque above.
-      weight: 8.0,
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -1868,9 +1868,9 @@ export const TENERIFE_ROCA_TO_TERESITAS_JOURNEY: Journey = {
       route: ROCA_NIVARIA_TO_TERESITAS_ROUTE,
       routeLand: [CANARY_PATHS[0]],
       // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight, above in this file): hits the 8s cap
+      // home-to-vienna's weight, above in this file): hits the 5s cap
       // too.
-      weight: 8.0,
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -2109,8 +2109,8 @@ export const TENERIFE_ROCA_TO_LOS_GIGANTES_JOURNEY: Journey = {
       route: ROCA_NIVARIA_TO_LOS_GIGANTES_ROUTE,
       routeLand: [CANARY_PATHS[0]],
       // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight, above in this file): hits the 8s cap.
-      weight: 8.0,
+      // home-to-vienna's weight, above in this file): hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -2326,8 +2326,8 @@ export const TENERIFE_ROCA_TO_TEIDE_JOURNEY: Journey = {
       route: ROCA_NIVARIA_TO_TEIDE_ROUTE,
       routeLand: [CANARY_PATHS[0]],
       // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight, above in this file): hits the 8s cap.
-      weight: 8.0,
+      // home-to-vienna's weight, above in this file): hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -2692,8 +2692,8 @@ export const TENERIFE_ROCA_TO_LORO_PARQUE_JOURNEY: Journey = {
       route: ROCA_NIVARIA_TO_LORO_PARQUE_ROUTE,
       routeLand: [CANARY_PATHS[0]],
       // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight, above in this file): hits the 8s cap.
-      weight: 8.0,
+      // home-to-vienna's weight, above in this file): hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -2884,8 +2884,8 @@ export const TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY: Journey = {
       route: ROCA_NIVARIA_TO_PLAYA_AMERICAS_ROUTE,
       routeLand: [CANARY_PATHS[0]],
       // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight, above in this file): hits the 8s cap.
-      weight: 8.0,
+      // home-to-vienna's weight, above in this file): hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
     {
@@ -2898,8 +2898,8 @@ export const TENERIFE_ROCA_TO_TENERIFE_SOUTH_JOURNEY: Journey = {
       route: PLAYA_AMERICAS_TO_TENERIFE_SOUTH_ROUTE,
       routeLand: [CANARY_PATHS[0]],
       // Site-wide speed standardization (see the comment on
-      // home-to-vienna's weight, above in this file): hits the 8s cap.
-      weight: 8.0,
+      // home-to-vienna's weight, above in this file): hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],

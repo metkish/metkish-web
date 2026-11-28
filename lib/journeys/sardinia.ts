@@ -85,9 +85,9 @@ export const SARDINIA_HOME_TO_VIENNA_JOURNEY: Journey = {
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
       // rule): this leg's real distance/zoom calls for ~11.5s, over the
-      // 8s cap (lowered from an initial 12s after live review), so it's
+      // 5s cap (lowered from an initial 12s after live review), so it's
       // capped too.
-      weight: 8.0,
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -256,8 +256,8 @@ export const SARDINIA_CASAGLIANA_TO_PRINCIPE_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -386,8 +386,8 @@ export const SARDINIA_CASAGLIANA_TO_PALAU_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[1], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[10], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[43], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -488,8 +488,8 @@ export const SARDINIA_CASAGLIANA_TO_LISCIA_RUJA_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -572,8 +572,8 @@ export const SARDINIA_CASAGLIANA_TO_MOYS_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -661,8 +661,8 @@ export const SARDINIA_CASAGLIANA_TO_LA_CINTA_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[23], SARDINIA_PATHS[30], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -779,8 +779,8 @@ export const SARDINIA_CASAGLIANA_TO_CALA_GONONE_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[23], SARDINIA_PATHS[30], SARDINIA_PATHS[31], SARDINIA_PATHS[41], SARDINIA_PATHS[47], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -884,8 +884,8 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_CERVO_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[1], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[35], SARDINIA_PATHS[36], SARDINIA_PATHS[38], SARDINIA_PATHS[43], SARDINIA_PATHS[54], SARDINIA_PATHS[58], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -978,8 +978,8 @@ export const SARDINIA_CASAGLIANA_TO_PORTO_ISTANA_JOURNEY: Journey = {
       routeLand: [SARDINIA_PATHS[0], SARDINIA_PATHS[6], SARDINIA_PATHS[7], SARDINIA_PATHS[13], SARDINIA_PATHS[16], SARDINIA_PATHS[19], SARDINIA_PATHS[20], SARDINIA_PATHS[21], SARDINIA_PATHS[30], SARDINIA_PATHS[54], SARDINIA_PATHS[60], SARDINIA_PATHS[69], SARDINIA_PATHS[73], SARDINIA_PATHS[80]],
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
-      // leg also hits the 8s cap.
-      weight: 8.0,
+      // leg also hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],

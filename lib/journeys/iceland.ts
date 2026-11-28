@@ -74,8 +74,8 @@ export const ICELAND_HOME_TO_LJUBLJANA_JOURNEY: Journey = {
       // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
       // rule): this leg's real distance relative to its zoom would need
       // ~22s to truly match this same file's own other legs' pace, so it
-      // hits the 8s cap.
-      weight: 8.0,
+      // hits the 5s cap.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -425,10 +425,12 @@ export const ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY: Journey = {
       // Site-wide speed standardization (see the comment on
       // home-to-vienna's weight in lib/journeys/tenerife.ts): this
       // journey's transfer legs were already close to the calm reference
-      // pace this change standardizes every destination to -- these three
-      // weights are only a small recalibration to the exact same ratio,
-      // not a cap.
-      weight: 6.05,
+      // pace this change standardizes every destination to. Their own
+      // real distance/zoom calls for ~6.0s each, which fit under the
+      // original 12s and 8s caps unchanged, but after the cap was
+      // lowered again to 5s (see that same comment) all three of this
+      // journey's legs now hit it too.
+      weight: 5.0,
       transition: 'ease',
     },
     {
@@ -438,7 +440,7 @@ export const ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY: Journey = {
       to: BLUE_LAGOON,
       camera: ARRIVAL_BLUE_LAGOON_CAMERA,
       route: REYKJAVIK_TO_BLUE_LAGOON_ROUTE,
-      weight: 5.94,
+      weight: 5.0,
       transition: 'ease',
     },
     {
@@ -448,7 +450,7 @@ export const ICELAND_ARRIVAL_BLUE_LAGOON_JOURNEY: Journey = {
       to: REYKJAVIK,
       camera: ARRIVAL_BLUE_LAGOON_CAMERA,
       route: BLUE_LAGOON_TO_REYKJAVIK_ROUTE,
-      weight: 6.01,
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -804,7 +806,7 @@ const GOLDEN_CIRCLE_CAMERA: JourneyCamera = {
 // are only a small recalibration to the exact reference ratio every
 // destination now shares -- this journey was already close to it.
 // gullfoss-to-reykjavik is the one exception: its own real distance/zoom
-// calls for ~9.4s, just over the 8s cap (lowered from an initial 12s
+// calls for ~9.4s, just over the 5s cap (lowered from an initial 12s
 // after live review -- see that same comment), so it's capped too.
 export const ICELAND_GOLDEN_CIRCLE_JOURNEY: Journey = {
   id: 'iceland-golden-circle',
@@ -848,10 +850,10 @@ export const ICELAND_GOLDEN_CIRCLE_JOURNEY: Journey = {
       camera: GOLDEN_CIRCLE_CAMERA,
       route: GULLFOSS_TO_REYKJAVIK_ROUTE,
       // This leg's real distance relative to its zoom calls for ~9.4s at
-      // the site-wide reference pace, so after the cap was lowered from
-      // 12s to 8s (see the golden-circle journey comment above) it now
-      // hits that 8s cap too.
-      weight: 8.0,
+      // the site-wide reference pace, so after the cap was lowered
+      // (12s -> 8s -> 5s, see the golden-circle journey comment above)
+      // it now hits that 5s cap too.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
@@ -1242,7 +1244,7 @@ const SOUTH_COAST_CAMERA: JourneyCamera = {
 // destination now shares -- this journey was already close to it.
 // reykjavik-to-seljalandsfoss and vik-to-reykjavik are the two
 // exceptions: their own real distance/zoom calls for ~8.2s and ~12s, at
-// or just over the 8s cap (lowered from an initial 12s after live review
+// or just over the 5s cap (lowered from an initial 12s after live review
 // -- see that same comment), so both are capped too.
 export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
   id: 'iceland-south-coast',
@@ -1256,10 +1258,10 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       camera: SOUTH_COAST_CAMERA,
       route: REYKJAVIK_TO_SELJALANDSFOSS_ROUTE,
       // This leg's real distance relative to its zoom calls for ~8.2s at
-      // the site-wide reference pace, so after the cap was lowered from
-      // 12s to 8s (see the south-coast journey comment above) it now hits
-      // that 8s cap too.
-      weight: 8.0,
+      // the site-wide reference pace, so after the cap was lowered
+      // (12s -> 8s -> 5s, see the south-coast journey comment above) it
+      // now hits that 5s cap too.
+      weight: 5.0,
       transition: 'ease',
     },
     {
@@ -1300,10 +1302,10 @@ export const ICELAND_SOUTH_COAST_JOURNEY: Journey = {
       camera: SOUTH_COAST_CAMERA,
       route: VIK_TO_REYKJAVIK_ROUTE,
       // This leg's real distance relative to its zoom calls for ~12s at
-      // the site-wide reference pace, so after the cap was lowered from
-      // 12s to 8s (see the south-coast journey comment above) it now hits
-      // that 8s cap too.
-      weight: 8.0,
+      // the site-wide reference pace, so after the cap was lowered
+      // (12s -> 8s -> 5s, see the south-coast journey comment above) it
+      // now hits that 5s cap too.
+      weight: 5.0,
       transition: 'ease',
     },
   ],

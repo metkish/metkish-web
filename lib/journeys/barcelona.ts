@@ -293,8 +293,8 @@ export const BARCELONA_AIRPORT_TO_HOTEL_JOURNEY: Journey = {
       // home-to-vienna's weight in lib/journeys/tenerife.ts, for the full
       // rule): this short, tightly zoomed-in transfer would need well over
       // a minute to truly match Iceland's reference pace, so it hits the
-      // 8s cap, same as Tenerife's own local hops.
-      weight: 8.0,
+      // 5s cap, same as Tenerife's own local hops.
+      weight: 5.0,
       transition: 'ease',
     },
   ],
